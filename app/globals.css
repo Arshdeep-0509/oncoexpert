@@ -1,26 +1,413 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "lenis/dist/lenis.css";
 
+/* ------------------------------------------------------------------
+   OncoXpert design tokens
+   --primary matches the OncoXpert logo wordmark blue (#003DAE),
+   sampled from public/images/brand/oncoxpert-logo.png.
+   ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --black: #000000; /* hero + dark photo sections; must stay pure #000 */
+  --ink: #0a1628; /* headings, dark bands */
+  --navy: #0f2a47;
+  --primary: #003dae; /* logo blue: buttons, links */
+  --primary-hover: #00318c;
+  --glow: #2dd4bf; /* accents/glows on dark backgrounds only */
+  --teal: #0e7c86; /* deep clinical teal: start of teal → glow gradients on dark */
+  --slate: #64748b; /* neutral data series (e.g. open surgery, Others) */
+  --surface: #f5f8fa;
+  --white: #ffffff;
+  --text: #1e293b;
+  --muted: #5b6b7f;
+  --border: #e2e8f0;
+  --star: #f5b301; /* review stars only */
+  --whatsapp: #25d366; /* WhatsApp button only */
+
+  --radius: 0.75rem;
+  --shadow-card:
+    0 1px 2px rgb(10 22 40 / 0.04), 0 4px 12px rgb(10 22 40 / 0.05),
+    0 16px 40px rgb(10 22 40 / 0.06);
+  --shadow-card-hover:
+    0 1px 2px rgb(10 22 40 / 0.05), 0 8px 20px rgb(10 22 40 / 0.07),
+    0 24px 56px rgb(10 22 40 / 0.09);
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Brand palette → bg-ink, text-primary, border-border, etc. */
+  --color-black: var(--black);
+  --color-ink: var(--ink);
+  --color-navy: var(--navy);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-glow: var(--glow);
+  --color-teal: var(--teal);
+  --color-slate: var(--slate);
+  --color-surface: var(--surface);
+  --color-white: var(--white);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-star: var(--star);
+  --color-whatsapp: var(--whatsapp);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* shadcn/ui semantic aliases, mapped onto the palette above */
+  --color-background: var(--white);
+  --color-foreground: var(--text);
+  --color-primary-foreground: var(--white);
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--ink);
+  --color-accent: var(--surface);
+  --color-accent-foreground: var(--ink);
+  --color-muted-foreground: var(--muted);
+  --color-popover: var(--white);
+  --color-popover-foreground: var(--text);
+  --color-card: var(--white);
+  --color-card-foreground: var(--text);
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+  --color-destructive: #b42318;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-card: 1.375rem; /* 22px */
+
+  --shadow-card: var(--shadow-card);
+  --shadow-card-hover: var(--shadow-card-hover);
+  --ease-out-expo: var(--ease-out-expo);
+
+  /* One soft ring every 6s: expands over the first ~1.6s, then rests. */
+  --animate-wa-pulse: wa-pulse 6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  @keyframes wa-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.45;
+    }
+    27%,
+    100% {
+      transform: scale(1.7);
+      opacity: 0;
+    }
+  }
+
+  /* Hero: teal glow behind the robot slowly "breathes" around 18% opacity. */
+  --animate-glow-breathe: glow-breathe 9s ease-in-out infinite;
+  @keyframes glow-breathe {
+    0%,
+    100% {
+      opacity: 0.14;
+      scale: 1;
+    }
+    50% {
+      opacity: 0.18;
+      scale: 1.08;
+    }
+  }
+
+  /* Hero: diagonal light sweep, crosses in ~2.5s then rests (7s cycle). */
+  --animate-sweep: sweep 7s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+  @keyframes sweep {
+    0% {
+      translate: -110% 0;
+    }
+    36%,
+    100% {
+      translate: 110% 0;
+    }
+  }
+
+  /* Hero scroll cue: dot travels down the line. */
+  --animate-scroll-dot: scroll-dot 2.4s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+  @keyframes scroll-dot {
+    0% {
+      translate: 0 0;
+      opacity: 0;
+    }
+    20%,
+    75% {
+      opacity: 1;
+    }
+    100% {
+      translate: 0 44px;
+      opacity: 0;
+    }
+  }
+
+  /* Gentle ±6px float. Duration/phase per element via --float-duration / animation-delay. */
+  --animate-float: float var(--float-duration, 6s) ease-in-out infinite;
+  @keyframes float {
+    0%,
+    100% {
+      translate: 0 -6px;
+    }
+    50% {
+      translate: 0 6px;
+    }
+  }
+
+  /* Final CTA: background outline drifts slowly. */
+  --animate-drift: drift 24s ease-in-out infinite alternate;
+  @keyframes drift {
+    from {
+      translate: 0 0;
+      rotate: 0deg;
+    }
+    to {
+      translate: -40px 18px;
+      rotate: -2deg;
+    }
+  }
+
+  /* Rotating conic border (see border-conic): one turn per 8s. */
+  --animate-border-spin: border-spin 8s linear infinite;
+  @keyframes border-spin {
+    to {
+      --border-angle: 360deg;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--white);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    /* tabular-nums is applied per number element: on body it would also widen hyphens in Inter */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: inherit;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  /* lucide: every icon at stroke width 1.75 (incl. icons inside shadcn primitives) */
+  .lucide {
+    stroke-width: 1.75;
+  }
+
+  /* Focus rings switch to the glow accent on dark surfaces */
+  :where([data-tone="black"], [data-tone="ink"], .on-dark) :focus-visible {
+    outline-color: var(--glow);
+  }
+
+  /* ...and back to primary for light panels nested inside dark areas */
+  :where(.on-light) :focus-visible {
+    outline-color: var(--primary);
+  }
+
+  [id] {
+    scroll-margin-top: 96px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   Type scale
+   ------------------------------------------------------------------ */
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 6vw, 5.25rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+@utility type-body {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+@utility type-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.78125rem; /* 12.5px */
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Photo blending: hides the solid background rectangle of robot photos */
+@utility blend-on-dark {
+  mix-blend-mode: screen;
+}
+
+@utility blend-on-light {
+  mix-blend-mode: multiply;
+}
+
+/* 1px teal conic-gradient border on a pure black card; animate with animate-border-spin. */
+@utility border-conic {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--black), var(--black)) padding-box,
+    conic-gradient(
+        from var(--border-angle),
+        rgb(45 212 191 / 0.1) 0deg,
+        rgb(45 212 191 / 0.1) 200deg,
+        var(--glow) 290deg,
+        rgb(45 212 191 / 0.1) 360deg
+      )
+      border-box;
+}
+
+/* Faint 1px grid, faded out toward the edges. */
+@utility precision-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center;
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 100%);
+}
+
+/* ------------------------------------------------------------------
+   Intro preloader (components/layout/Preloader.tsx)
+   ------------------------------------------------------------------ */
+@keyframes pl-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pl-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes pl-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pl-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes pl-track {
+  from {
+    opacity: 0;
+    letter-spacing: 0.4em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.16em;
+  }
+}
+@keyframes pl-badge-out {
+  to {
+    transform: scale(1.06);
+    opacity: 0;
+  }
+}
+@keyframes pl-exit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+/* Brush sweep that paints the logo mark in (registered so the angle animates smoothly). */
+@property --sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 400deg;
+}
+@keyframes pl-sweep {
+  from {
+    --sweep: 0deg;
+  }
+  to {
+    --sweep: 400deg;
+  }
+}
+/* Ribbon + hands grow out of the centre of the mark. */
+@keyframes pl-center {
+  from {
+    clip-path: circle(0% at var(--clip-x) var(--clip-y));
+  }
+  to {
+    clip-path: circle(var(--clip-r) at var(--clip-x) var(--clip-y));
+  }
+}
+/* Already played this session (or reduced motion): never show it. */
+.intro-seen .preloader {
+  display: none;
 }

@@ -5,11 +5,11 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useReducedMotion } from "motion/react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { reviews, type Review } from "@/content/robotic-surgery";
+import { reviews, type Review } from "@/content/pages/robotic-surgery";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/robotic/ui/section";
+import { Reveal } from "@/components/robotic/ui/reveal";
 
 const initials = (name: string) =>
   name

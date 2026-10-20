@@ -10,8 +10,11 @@ import { EASE_OUT_EXPO } from "@/components/ui/reveal";
 
 const wa = site.whatsapp;
 
-/** Floating WhatsApp button (bottom right, safe-area aware) with a small chat card. */
-export function WhatsAppWidget() {
+/**
+ * Floating WhatsApp button (bottom right, safe-area aware) with a small chat card.
+ * `hideOnMobile`: hidden under 768px (pages with the MobileActionBar, which has its own WhatsApp action).
+ */
+export function WhatsAppButton({ hideOnMobile = false }: { hideOnMobile?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const reduce = useReducedMotion();
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -43,7 +46,10 @@ export function WhatsAppWidget() {
   return (
     <div
       ref={rootRef}
-      className="on-light fixed right-[max(16px,env(safe-area-inset-right))] bottom-[max(16px,env(safe-area-inset-bottom))] z-40 flex flex-col items-end"
+      className={cn(
+        "on-light fixed right-[max(16px,env(safe-area-inset-right))] bottom-[max(16px,env(safe-area-inset-bottom))] z-40 flex-col items-end",
+        hideOnMobile ? "hidden md:flex" : "flex",
+      )}
     >
       <AnimatePresence>
         {open ? (
@@ -57,9 +63,9 @@ export function WhatsAppWidget() {
             animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: reduce ? 0 : 0.35, ease: EASE_OUT_EXPO }}
-            className="relative mb-3 w-[min(320px,calc(100vw-32px))] overflow-hidden rounded-[20px] border border-border bg-white text-[15px] leading-relaxed text-text shadow-card-hover outline-none"
+            className="relative mb-3 w-[min(320px,calc(100vw-32px))] overflow-hidden rounded-[20px] border border-line bg-white text-[15px] leading-relaxed text-text shadow-card-hover outline-none"
           >
-            <div className="border-b border-border bg-surface px-5 pt-4 pb-3.5 pr-14">
+            <div className="border-b border-line bg-surface-alt px-5 pt-4 pb-3.5 pr-14">
               <p id={titleId} className="font-display text-base font-semibold text-ink">
                 {wa.greeting}
               </p>

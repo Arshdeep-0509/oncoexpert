@@ -1,9 +1,9 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import type { AppointmentService } from "@/content/robotic-surgery";
+import type { AppointmentService } from "@/content/pages/robotic-surgery";
 import { APPOINTMENT_ID, useAppointment } from "@/components/robotic/AppointmentContext";
-import { pillArrow } from "@/components/ui/buttons";
+import { pillArrow } from "@/components/robotic/ui/buttons";
 
 type AppointmentButtonProps = {
   label: string;

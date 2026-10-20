@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import { benefits } from "@/content/robotic-surgery";
+import { benefits } from "@/content/pages/robotic-surgery";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal, EASE_OUT_EXPO } from "@/components/ui/reveal";
+import { Section } from "@/components/robotic/ui/section";
+import { SectionHeading } from "@/components/robotic/ui/section-heading";
+import { Reveal, EASE_OUT_EXPO } from "@/components/robotic/ui/reveal";
 import { ContentIconView } from "@/components/robotic/icons";
 
 export function Benefits() {

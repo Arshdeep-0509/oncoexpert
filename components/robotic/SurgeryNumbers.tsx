@@ -3,11 +3,11 @@
 import * as React from "react";
 import Image from "next/image";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { images, surgeryNumbers, surgeryTotal, type SurgeryKey } from "@/content/robotic-surgery";
+import { images, surgeryNumbers, surgeryTotal, type SurgeryKey } from "@/content/pages/robotic-surgery";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal, EASE_OUT_EXPO } from "@/components/ui/reveal";
+import { Section } from "@/components/robotic/ui/section";
+import { Eyebrow } from "@/components/robotic/ui/eyebrow";
+import { Reveal, EASE_OUT_EXPO } from "@/components/robotic/ui/reveal";
 import { Counter } from "@/components/ui/counter";
 
 const { counts, a11y } = surgeryNumbers;

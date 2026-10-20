@@ -1,11 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import dynamic from "next/dynamic";
-import { meta } from "@/content/robotic-surgery";
-
-import { TopBar } from "@/components/layout/TopBar";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { WhatsAppWidget } from "@/components/layout/WhatsAppWidget";
+import { meta } from "@/content/pages/robotic-surgery";
+import { pages } from "@/content/pages";
+import { pageViewport } from "@/lib/seo";
 
 import { HeroSlider } from "@/components/robotic/HeroSlider";
 import { IntroSection } from "@/components/robotic/IntroSection";
@@ -22,7 +19,6 @@ import { Testimonials } from "@/components/robotic/Testimonials";
 import { ContactSection } from "@/components/robotic/ContactSection";
 import { Locations } from "@/components/robotic/Locations";
 import { FinalCta } from "@/components/robotic/FinalCta";
-import { AppointmentProvider } from "@/components/robotic/AppointmentContext";
 import { JsonLd } from "@/components/robotic/JsonLd";
 
 // Below the fold and JS-heavy (scroll-driven): split into its own chunk.
@@ -48,35 +44,31 @@ export const metadata: Metadata = {
   },
 };
 
+export function generateViewport(): Viewport {
+  return pageViewport(pages["robotic-surgery"]);
+}
+
+// Header, footer, WhatsApp and the appointment context come from app/robotic-surgery/layout.tsx (SiteShell).
 export default function RoboticSurgeryPage() {
   return (
-    <AppointmentProvider>
+    <>
       <JsonLd />
-      {/* 0 */}
-      <TopBar />
-      <Navbar appointmentHref="#appointment" />
-
-      <main id="main">
-        <HeroSlider /> {/* 1  #hero             black   */}
-        <IntroSection /> {/* 2  #overview         white   */}
-        <RoboticsInOncology /> {/* 3  #why-robotic      surface */}
-        <SurgicalTechniques /> {/* 4  #techniques       white   */}
-        <InsideTheRobot /> {/* 5  #inside-the-robot black   */}
-        <RoboticVsOpen /> {/* 6  #outcomes         ink     */}
-        <ComparingModalities /> {/* 7  #compare          white   */}
-        <SurgeryNumbers /> {/* 8  #numbers          black   */}
-        <CancersWeTreat /> {/* 9  #cancers          surface */}
-        <Benefits /> {/* 10 #benefits         white   */}
-        <MeetTheDoctor /> {/* 11 #doctor           surface */}
-        <VideosGallery /> {/* 12 #media            white   */}
-        <Testimonials /> {/* 13 #reviews          surface */}
-        <ContactSection /> {/* 14 #appointment      white   */}
-        <Locations /> {/* 15 #locations        surface */}
-        <FinalCta /> {/* 16 ink → teal band */}
-      </main>
-
-      <Footer />
-      <WhatsAppWidget />
-    </AppointmentProvider>
+      <HeroSlider /> {/* 1  #hero             black   */}
+      <IntroSection /> {/* 2  #overview         white   */}
+      <RoboticsInOncology /> {/* 3  #why-robotic      surface */}
+      <SurgicalTechniques /> {/* 4  #techniques       white   */}
+      <InsideTheRobot /> {/* 5  #inside-the-robot black   */}
+      <RoboticVsOpen /> {/* 6  #outcomes         ink     */}
+      <ComparingModalities /> {/* 7  #compare          white   */}
+      <SurgeryNumbers /> {/* 8  #numbers          black   */}
+      <CancersWeTreat /> {/* 9  #cancers          surface */}
+      <Benefits /> {/* 10 #benefits         white   */}
+      <MeetTheDoctor /> {/* 11 #doctor           surface */}
+      <VideosGallery /> {/* 12 #media            white   */}
+      <Testimonials /> {/* 13 #reviews          surface */}
+      <ContactSection /> {/* 14 #appointment      white   */}
+      <Locations /> {/* 15 #locations        surface */}
+      <FinalCta /> {/* 16 ink → teal band */}
+    </>
   );
 }

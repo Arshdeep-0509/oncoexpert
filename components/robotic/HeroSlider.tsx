@@ -13,12 +13,12 @@ import {
   type MotionValue,
 } from "motion/react";
 import { Pause, Play } from "lucide-react";
-import { hero } from "@/content/robotic-surgery";
+import { hero } from "@/content/pages/robotic-surgery";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
-import { EASE_OUT_EXPO } from "@/components/ui/reveal";
-import { pillGhostDark, pillGlow } from "@/components/ui/buttons";
+import { EASE_OUT_EXPO } from "@/components/robotic/ui/reveal";
+import { pillGhostDark, pillGlow } from "@/components/robotic/ui/buttons";
 import { AppointmentButton } from "@/components/robotic/AppointmentButton";
 import { contentIcons } from "@/components/robotic/icons";
 import { introRemainingSeconds } from "@/lib/intro";

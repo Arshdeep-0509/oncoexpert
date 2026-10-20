@@ -10,6 +10,13 @@
  * permitted edits are the approved spelling/punctuation fixes listed in the brief.
  */
 
+import type { Review } from "@/content/types";
+import { site } from "@/content/site";
+import { googleReviews } from "@/content/shared/reviews";
+import { youtubeVideos } from "@/content/shared/videos";
+import { appointmentSection, finalCtaSection, locationsSection } from "@/content/shared/sections";
+import { organization } from "@/content/shared/organization";
+
 export type Tone = "black" | "white" | "surface" | "ink";
 export type Source = "EXISTING" | "DOCTOR" | "NEW" | "EXISTING + DOCTOR";
 
@@ -99,12 +106,7 @@ export const robotPhotos: readonly GalleryItem[] = [
 export type AppointmentService = (typeof appointmentServices)[number];
 
 // SOURCE: EXISTING (form options, "Consulation" → "Consultation" per approved fix)
-export const appointmentServices = [
-  "Consultation",
-  "Second Opinion",
-  "Consultation For Surgery",
-  "Follow Up",
-] as const;
+export const appointmentServices = site.appointmentServices;
 
 // SOURCE: EXISTING (button labels) → service preselected in the appointment form
 export const consultCtas = {
@@ -566,7 +568,7 @@ export const media = {
   heading: "Patient stories",
   // SOURCE: EXISTING (YouTube video IDs). Titles are fetched from YouTube at build time.
   // The first video is shown large. Add or reorder IDs here.
-  videos: ["nV-3cYw4f3w", "f9C2rx-d3vA", "5eQ4jZxbz4U", "3PQkYqAZLoY"],
+  videos: youtubeVideos,
 
   // SOURCE: NEW (screen-reader / control labels)
   a11y: {
@@ -580,87 +582,14 @@ export const media = {
 /* Google reviews, verbatim (reviewers' own spelling is preserved).    */
 /* ------------------------------------------------------------------ */
 
-export type Review = {
-  author: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-  paragraphs: readonly string[];
-};
+export type { Review };
 
 export const reviews = {
   // SOURCE: EXISTING
   heading: "Every patient story reflects our commitment to clinical excellence.",
   postedOn: "Posted on Google",
-  // SOURCE: EXISTING (quotes: do not correct spelling)
-  items: [
-    {
-      author: "Muralidharan Chinnusamy",
-      rating: 5,
-      paragraphs: [
-        "Dr.Sunil Navalgund is a care and compassionate surgeon who performed lump removal for my wife one and half years back and she is doing well. Thanking Dr.Sunil Navalgund and recommend him for Onco surgeries.",
-      ],
-    },
-    {
-      author: "Veena Iyer",
-      rating: 5,
-      paragraphs: [
-        "I underwent a surgery with Dr Sunil..Very patient and understanding . Did a very good job . This clinical and post op instructions on follow up was very clear..",
-      ],
-    },
-    {
-      author: "shwetha jayaraj",
-      rating: 5,
-      paragraphs: [
-        "Hi- We visited Sparsh Hospital for my mother's cancer treatment, and our experience was very positive. Dr. Sunil, who treated my mother, was exceptionally professional, knowledgeable, and compassionate. He took the time to explain the diagnosis and treatment plan in detail, ensuring that we understood every step of the process.",
-        "What stood out the most was his calm and reassuring approach. Cancer treatment can be overwhelming for both patients and their families, but Dr. Sunil's patience, confidence, and positive attitude helped ease our fears and prevented unnecessary panic. He was always approachable and willing to answer our questions, which gave us great confidence throughout the treatment journey.",
-        "We are truly grateful for the care, support, and guidance provided by Dr. Sunil and the team at Sparsh Hospital. Thank you for making a challenging time more manageable for our family.",
-      ],
-    },
-    {
-      author: "padmavathi p",
-      rating: 5,
-      paragraphs: [
-        "One of the finest doctor's i ever met a very good human being more than a doctor and his hands are safe, skilful and he is a very efficient surgeon",
-        '" ವೈದ್ಯೋ ನಾರಾಯಣೊ ಹರಿ"',
-        "ನಿಮ್ಮ ದಣಿವರಿಯದ ಸೇವೆ, ಸಹಾನುಭೂತಿಯಿಂದ ಇನ್ನಷ್ಟು ಮತ್ತಷ್ಟು ಜನರು ಗುಣಮುಖರಾಗಲೆಂದು ಆಶಿಸುತ್ತ ನಿಮಗೆ ಧನ್ಯವಾದಗಳನ್ನು ಅರ್ಪಿಸುತ್ತೇನೆ",
-      ],
-    },
-    {
-      author: "Jayashree Ajith",
-      rating: 5,
-      paragraphs: [
-        "Dr.Sunil Navalgund is definitely a good Oncologist,I am absolutely fine now after the surgery, he is guiding me to have post surgery tests like scanning etc.",
-      ],
-    },
-    {
-      author: "Friendly Work",
-      rating: 5,
-      paragraphs: ["Highly recommended doctor we are thankfully to you gods gift to cure patients"],
-    },
-    {
-      author: "Narasimhamurthy SM",
-      rating: 5,
-      paragraphs: ["Dr. Sunil Navalgund has provided good service to me."],
-    },
-    {
-      author: "Vasudeva Murthy",
-      rating: 4,
-      paragraphs: [
-        "Review for Dr. Sunil Navalgund. Oncology surgen.",
-        "Rating: ★★★★☆",
-        "I am a 75-year-old patient who recently underwent surgery performed by Dr. Sunil Navalgund for Stage 3 colon cancer. I am writing this to express my sincere gratitude for his skill and professionalism during a very difficult time in my life.",
-        "The surgery was successful, and I am now well on my road to recovery. Dr. Sunil Navalgund is clearly a very talented surgeon who knows his craft. He took the time to explain the procedure to me and my family, which helped ease some of our anxieties. The clinical outcome has been excellent, and for that, I am truly thankful to Dr Sunil Navalgund.",
-        "In terms of the actual medical care and the success of the operation itself, I couldn't have asked for a better result.",
-        "If you are facing a similar diagnosis, I would certainly recommend Dr. Sunil Navalgund.He is a man of great competence, and I am glad he was the one looking after me and he is epitome of simplicity.",
-      ],
-    },
-    {
-      author: "mangala music",
-      rating: 5,
-      paragraphs: [
-        "My mother was admitted for a surgery at sparsh hospital RR nagar, she was treated under the guidance of DR sunil Navanlgund and his team, with great care, Dr mrudul and all the medical team took good care of my mother, and she is back home healthy, thanks to the whole team of Dr sunil and sparsh hospital RR nagar",
-      ],
-    },
-  ] satisfies Review[],
+  // SOURCE: EXISTING (quotes: do not correct spelling), shared: content/shared/reviews.ts
+  items: googleReviews,
   // SOURCE: NEW
   readMore: "Read more",
   readLess: "Read less",
@@ -678,82 +607,22 @@ export const reviews = {
 /* 14 · #appointment — ContactSection                                  */
 /* ------------------------------------------------------------------ */
 
-export const appointment = {
-  // SOURCE: EXISTING
-  eyebrow: "GET IN TOUCH",
-  heading: "Need Clarity?",
-  body: "Whether it’s a new diagnosis or you’re seeking a second opinion on surgical options, our specialists are here to provide clear, compassionate guidance.",
-  form: {
-    // SOURCE: EXISTING
-    title: "Appointment Form",
-    name: "Name",
-    phone: "Contact Number",
-    service: "Service Required",
-    servicePlaceholder: "- Select -",
-    services: appointmentServices,
-    dateTime: "Date / Time",
-    submit: "Submit Form",
-    // SOURCE: NEW
-    sending: "Sending…",
-    success: "Thank you! Our team will call you shortly to confirm your appointment.",
-    error: "Something went wrong. Please call +91 8002 8002 95.",
-    // SOURCE: NEW (validation messages)
-    errors: {
-      name: "Please enter your name.",
-      phone: "Please enter a valid 10-digit Indian mobile number.",
-      service: "Please choose a service.",
-      dateTime: "Please choose a future date and time.",
-    },
-    // SOURCE: NEW (hidden spam trap label, never visible)
-    honeypot: "Leave this field empty",
-  },
-} as const;
+// SOURCE: shared with every page (content/shared/sections.ts)
+export const appointment = appointmentSection;
 
 /* ------------------------------------------------------------------ */
 /* 15 · #locations — Locations                                         */
 /* ------------------------------------------------------------------ */
 
-export const locations = {
-  // SOURCE: EXISTING
-  heading: "Our Clinical Locations",
-  intro:
-    "Visit any of our cancer care centers across Bengaluru for expert consultations and advanced surgical oncology care.",
-  items: [
-    {
-      name: "South End Clinics",
-      area: "Jayanagar",
-      mapHref: "https://share.google/mNL5rEF9Ughai9bgl",
-      image: { src: "/images/locations/south-end-clinics.webp", width: 512, height: 294 },
-    },
-    {
-      name: "SPARSH Hospital",
-      area: "RR Nagar",
-      mapHref: "https://share.google/xmRyLd7Tkaf1fnlBQ",
-      image: { src: "/images/locations/sparsh-hospital.webp", width: 512, height: 335 },
-    },
-    {
-      name: "Joshis Clinic",
-      area: "Sahakara Nagar",
-      mapHref: "https://share.google/ydsuRZi3sietkT4LR",
-      // TODO(client): add public/images/locations/joshis-clinic.webp and set it here.
-      image: null,
-    },
-  ] satisfies { name: string; area: string; mapHref: string; image: { src: string; width: number; height: number } | null }[],
-  // SOURCE: NEW
-  mapLabel: "Open in Maps",
-  // SOURCE: NEW (alt text)
-  imageAlt: (name: string, area: string) => `${name}, ${area}`,
-} as const;
+// SOURCE: shared with every page (content/shared/sections.ts)
+export const locations = locationsSection;
 
 /* ------------------------------------------------------------------ */
 /* 16 · FinalCta                                                       */
 /* ------------------------------------------------------------------ */
 
-export const finalCta = {
-  // SOURCE: EXISTING
-  text: "Call 8002 8002 95 For Appointments",
-  href: "tel:+918002800295",
-} as const;
+// SOURCE: shared with every page (content/shared/sections.ts)
+export const finalCta = finalCtaSection;
 
 /* ------------------------------------------------------------------ */
 /* Structured data (JSON-LD). Not visible on the page.                 */
@@ -761,21 +630,7 @@ export const finalCta = {
 
 export const structuredData = {
   pageAbout: "Robotic surgery",
-  physician: {
-    name: "Dr. Sunil Navalgund",
-    jobTitle: "Lead Surgical Oncologist",
-    specialty: "Oncologic",
-    qualifications: "MCH Surgical Oncology, FIAGES",
-  },
-  clinic: {
-    name: "OncoXpert",
-    telephone: "+91-8002800295",
-    address: {
-      streetAddress: "South end clinics, Old Kanakapura Rd, near Mecon and shell petrol bunk, Basavanagudi",
-      addressLocality: "Bengaluru",
-      addressRegion: "Karnataka",
-      postalCode: "560004",
-      addressCountry: "IN",
-    },
-  },
+  // Shared with every page: content/shared/organization.ts
+  physician: organization.physician,
+  clinic: organization.clinic,
 } as const;

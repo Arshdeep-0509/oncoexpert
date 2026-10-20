@@ -1,9 +1,9 @@
 import { Mail, Phone } from "lucide-react";
-import { appointment } from "@/content/robotic-surgery";
+import { appointment } from "@/content/pages/robotic-surgery";
 import { site } from "@/content/site";
-import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/robotic/ui/section";
+import { Eyebrow } from "@/components/robotic/ui/eyebrow";
+import { Reveal } from "@/components/robotic/ui/reveal";
 import { LazyAppointmentForm } from "@/components/robotic/LazyAppointmentForm";
 
 const contactCards = [

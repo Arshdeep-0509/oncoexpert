@@ -1,0 +1,74 @@
+/* ==================================================================
+   Robotic Surgery theme: /robotic-surgery/
+   The exact palette and fonts the page was built with (moved here from
+   globals.css :root). Deep navy ink, logo blue, teal glow on black.
+   ================================================================== */
+
+[data-theme="robotic"] {
+  /* Palette (unchanged; robotic components also read some of these directly) */
+  --black: #000000; /* hero + dark photo sections; must stay pure #000 */
+  --ink: #0a1628; /* headings, dark bands */
+  --navy: #0f2a47;
+  --primary: #003dae; /* logo blue: buttons, links */
+  --primary-hover: #00318c;
+  --glow: #2dd4bf; /* accents/glows on dark backgrounds only */
+  --teal: #0e7c86; /* deep clinical teal: start of teal → glow gradients on dark */
+  --slate: #64748b; /* neutral data series (e.g. open surgery, Others) */
+  --surface: #f5f8fa;
+  --white: #ffffff;
+  --text: #1e293b;
+  --muted: #5b6b7f;
+  --border: #e2e8f0;
+  --star: #f5b301; /* review stars only */
+  --whatsapp: #25d366; /* WhatsApp button only */
+
+  /* Semantic tokens → the palette above */
+  --surface-alt: var(--surface);
+  --surface-warm: var(--surface);
+  --accent: var(--primary);
+  --accent-hover: var(--primary-hover);
+  --accent-soft: var(--surface);
+  --accent-glow: var(--glow);
+  --petal: var(--surface);
+  --gold: var(--star);
+  --line: var(--border);
+  --grad-hero: linear-gradient(var(--black), var(--black));
+  /* = the original bg-linear-to-r from-primary to-glow (scroll progress line) */
+  --grad-accent: linear-gradient(to right in oklab, var(--primary), var(--glow));
+  --grad-plum: linear-gradient(160deg, var(--ink), var(--navy));
+
+  /* Type: Inter body, Plus Jakarta Sans headings */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --display-weight: 700;
+  --display-tracking: -0.025em;
+
+  /* Radii: derived from a 0.75rem base */
+  --radius: 0.75rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Shadows */
+  --shadow-rgb: 10 22 40;
+  --shadow-card:
+    0 1px 2px rgb(10 22 40 / 0.04), 0 4px 12px rgb(10 22 40 / 0.05), 0 16px 40px rgb(10 22 40 / 0.06);
+  --shadow-card-hover:
+    0 1px 2px rgb(10 22 40 / 0.05), 0 8px 20px rgb(10 22 40 / 0.07), 0 24px 56px rgb(10 22 40 / 0.09);
+  --header-shadow: 0 1px 2px rgb(10 22 40 / 0.04), 0 12px 32px -16px rgb(10 22 40 / 0.18);
+  --accent-shadow: 0 1px 2px rgb(0 61 174 / 0.2), 0 8px 20px -8px rgb(0 61 174 / 0.5);
+  --wa-pulse-duration: 6s;
+
+  /* Layout: 72px / 120px bands; 32px gutters from 1024px */
+  --section-y: 72px;
+  --gutter: 20px;
+  --header-h: 80px;
+}
+
+@media (min-width: 1024px) {
+  [data-theme="robotic"] {
+    --section-y: 120px;
+    --gutter: 32px;
+  }
+}

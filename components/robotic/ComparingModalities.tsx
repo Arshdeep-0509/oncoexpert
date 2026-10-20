@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { compare } from "@/content/robotic-surgery";
+import { compare } from "@/content/pages/robotic-surgery";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal, EASE_OUT_EXPO } from "@/components/ui/reveal";
-import { pillPrimary } from "@/components/ui/buttons";
+import { Section } from "@/components/robotic/ui/section";
+import { SectionHeading } from "@/components/robotic/ui/section-heading";
+import { Reveal, EASE_OUT_EXPO } from "@/components/robotic/ui/reveal";
+import { pillPrimary } from "@/components/robotic/ui/buttons";
 import { AppointmentButton } from "@/components/robotic/AppointmentButton";
 import { ContentIconView } from "@/components/robotic/icons";
 

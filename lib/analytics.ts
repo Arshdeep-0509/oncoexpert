@@ -2,8 +2,8 @@
 export type AnalyticsEvent =
   | { event: "phone_click"; location: string }
   | { event: "whatsapp_click"; location: string }
-  | { event: "cta_click"; label: string; location: string }
-  | { event: "form_submit"; status: "success" | "error" | "invalid"; service?: string };
+  | { event: "cta_click"; label: string; location: string; section: string }
+  | { event: "form_submit"; status: "success" | "error" | "invalid"; service?: string; page?: string };
 
 declare global {
   interface Window {

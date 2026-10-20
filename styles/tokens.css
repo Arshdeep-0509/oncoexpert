@@ -1,0 +1,129 @@
+/* ==================================================================
+   Shared design tokens (every page).
+
+   How theming works
+   - Components only use semantic utilities: bg-surface, text-ink, bg-accent,
+     border-line, font-display, rounded-lg, py-(--section-y) …
+   - Each page's layout wraps everything in <SiteShell theme="…">, which renders
+     <div data-theme="…">. styles/themes/<name>.css redefines the semantic tokens
+     on that element, so the same classes look different per page, on first paint.
+   - This file holds the shared neutral values and a NEUTRAL default for every
+     semantic token (used outside any theme, e.g. the intro preloader).
+   ================================================================== */
+
+/*
+ * Tailwind theme keys that a theme may override. Not `inline`: the generated
+ * utilities read the variable at runtime (`.font-display { font-family: var(--font-display) }`),
+ * so a theme file can change them. `static` always emits them on :root.
+ * next/font provides --font-jakarta, --font-fraunces and --font-inter (app/layout.tsx).
+ */
+@theme static {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  /* The OncoXpert wordmark face (intro preloader); never themed. */
+  --font-brand: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-brand-text: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+}
+
+:root {
+  /* Brand: the OncoXpert logo wordmark blue, sampled from public/images/brand/oncoxpert-logo.png */
+  --brand: #003dae;
+
+  --white: #ffffff;
+  --black: #000000;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+
+  /* Third-party brand colours, never themed */
+  --whatsapp: #25d366;
+  --star: #f5b301;
+
+  /* Base radius (rounded-(--radius)). sm / md / lg / xl / pill are Tailwind keys above. */
+  --radius: 16px;
+
+  /* Layout rhythm */
+  --section-y: clamp(64px, 10vw, 128px);
+  --gutter: 20px;
+  /* Main header bar: 64px on phones/tablets, 76px from lg */
+  --header-h: 64px;
+  /* WhatsApp button: one soft ring per cycle */
+  --wa-pulse-duration: 8s;
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 76px;
+  }
+}
+
+/*
+ * Semantic tokens: neutral defaults. Declared on :root AND on every [data-theme]
+ * element (zero specificity via :where), so derived values such as the shadows and
+ * --accent-shadow are recomputed from each theme's own colours. A theme overrides
+ * any of them simply by setting it.
+ */
+:where(:root, [data-theme]) {
+  --ink: var(--gray-900);
+  --text: var(--gray-800);
+  --muted: var(--gray-600);
+  --surface: var(--white);
+  --surface-alt: var(--gray-50);
+  --surface-warm: var(--gray-100);
+  --accent: var(--brand);
+  --accent-hover: #00318c;
+  --accent-soft: #e8eefa;
+  --accent-glow: #8fb0f0;
+  --accent-bright: color-mix(in oklab, var(--accent) 70%, white);
+  --petal: var(--gray-200);
+  --gold: var(--star);
+  --line: var(--gray-200);
+
+  --grad-hero: linear-gradient(180deg, var(--surface-alt), var(--surface));
+  --grad-accent: linear-gradient(120deg, var(--accent), var(--accent-bright));
+  --grad-plum: linear-gradient(160deg, var(--ink), var(--ink));
+
+  /* Headings set in --font-display */
+  --display-weight: 700;
+  --display-tracking: -0.025em;
+
+  /* Shadows: soft and layered, tinted with the theme's ink (an "r g b" triplet). */
+  --shadow-rgb: 15 23 42;
+  --shadow-sm: 0 1px 2px rgb(var(--shadow-rgb) / 0.04), 0 2px 8px rgb(var(--shadow-rgb) / 0.04);
+  --shadow:
+    0 1px 2px rgb(var(--shadow-rgb) / 0.04), 0 4px 12px rgb(var(--shadow-rgb) / 0.05),
+    0 16px 40px rgb(var(--shadow-rgb) / 0.06);
+  --shadow-lg:
+    0 1px 2px rgb(var(--shadow-rgb) / 0.05), 0 8px 20px rgb(var(--shadow-rgb) / 0.07),
+    0 24px 56px rgb(var(--shadow-rgb) / 0.1);
+  /* Cards / popovers (shadow-card, shadow-card-hover) */
+  --shadow-card: var(--shadow);
+  --shadow-card-hover: var(--shadow-lg);
+  /* Solid header bar (hairline + shadow-sm) and accent buttons */
+  --header-shadow: var(--shadow-sm);
+  --accent-shadow:
+    0 1px 2px color-mix(in srgb, var(--accent) 20%, transparent),
+    0 8px 20px -8px color-mix(in srgb, var(--accent) 50%, transparent);
+}

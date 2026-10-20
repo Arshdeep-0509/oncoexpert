@@ -6,14 +6,15 @@ import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import { ArrowRight, Phone } from "lucide-react";
 import { site } from "@/content/site";
+import type { HeaderVariant } from "@/content/types";
 import { cn, focusRing } from "@/lib/utils";
 import { isActivePath } from "@/lib/nav";
-import { getLenis } from "@/lib/lenis";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { BurgerIcon } from "@/components/layout/burger-icon";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { socialIcons } from "@/components/ui/brand-icons";
 import { serviceIcons, ICON_STROKE } from "@/components/layout/nav-icons";
+import { useAppointment } from "@/components/layout/AppointmentProvider";
 import { EASE_OUT_EXPO } from "@/components/ui/reveal";
 
 export type MobileMenuSheetProps = {
@@ -21,26 +22,45 @@ export type MobileMenuSheetProps = {
   onOpenChange: (open: boolean) => void;
   pathname: string | null;
   appointmentHref: string;
+  variant: HeaderVariant;
   /** Focus returns here when the sheet closes. */
   triggerRef: React.RefObject<HTMLButtonElement | null>;
 };
 
-const item: Variants = {
-  hidden: { opacity: 0, x: 16 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.5, ease: EASE_OUT_EXPO, delay: 0.12 + i * 0.05 },
-  }),
-};
+/**
+ * Per-variant styles. "dark" is the robotic page's original drawer; "light" is the
+ * full-screen blush sheet (420px max on tablets) with 22px / 56px rows and a contact card.
+ */
+const STYLE = {
+  dark: {
+    content: "w-[88vw] max-w-[400px] bg-white sm:max-w-[400px]",
+    row: "min-h-14 text-xl",
+    stagger: 0.05,
+    serviceTile: "rounded-lg bg-accent/[0.07] ring-1 ring-accent/10",
+    actions: "mt-6 grid gap-3",
+    action: "h-14",
+  },
+  light: {
+    content: "w-screen max-w-none bg-surface-alt sm:w-[420px] sm:max-w-[420px]",
+    row: "min-h-14 text-[22px] leading-tight",
+    stagger: 0.04,
+    serviceTile: "rounded-[10px] bg-accent-soft",
+    actions: "mt-6 grid gap-3 rounded-lg bg-surface p-4 shadow-soft-sm ring-1 ring-line",
+    action: "min-h-14",
+  },
+} as const;
 
-type StaggerItemProps = { i: number; reduce: boolean | null; children: React.ReactNode };
+type StaggerItemProps = { i: number; step: number; reduce: boolean | null; children: React.ReactNode };
 
-/** Menu rows slide in 0.05s apart; no motion with prefers-reduced-motion. */
-function StaggerItem({ i, reduce, children }: StaggerItemProps) {
+/** Menu rows slide in `step` seconds apart; no motion with prefers-reduced-motion. */
+function StaggerItem({ i, step, reduce, children }: StaggerItemProps) {
   if (reduce) return <li>{children}</li>;
+  const item: Variants = {
+    hidden: { opacity: 0, x: 16 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: EASE_OUT_EXPO, delay: 0.12 + i * step } },
+  };
   return (
-    <motion.li custom={i} variants={item} initial="hidden" animate="visible">
+    <motion.li variants={item} initial="hidden" animate="visible">
       {children}
     </motion.li>
   );
@@ -57,39 +77,44 @@ function MorphingX() {
 }
 
 /** The drawer itself; loaded on demand by MobileMenu (first tap / hover / focus). */
-export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname, appointmentHref, triggerRef }: MobileMenuSheetProps) {
-  const pendingHash = React.useRef<string | null>(null);
+export default function MobileMenuSheet({
+  open,
+  onOpenChange: setOpen,
+  pathname,
+  appointmentHref,
+  variant,
+  triggerRef,
+}: MobileMenuSheetProps) {
+  const pendingAppointment = React.useRef(false);
   const reduce = useReducedMotion();
+  const { openAppointment } = useAppointment();
+  const s = STYLE[variant];
 
-  // In-page targets (#appointment) scroll after the sheet has closed and unlocked scrolling.
-  const onHashClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.startsWith("#")) return;
+  // "For Appointment" on a page with the form: close first (Radix then unlocks scrolling),
+  // then scroll to the form from onCloseAutoFocus.
+  const onAppointmentClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!appointmentHref.startsWith("#")) {
+      setOpen(false);
+      return;
+    }
     e.preventDefault();
-    pendingHash.current = href;
+    pendingAppointment.current = true;
     setOpen(false);
   };
 
   const onCloseAutoFocus = (e: Event) => {
-    const hash = pendingHash.current;
-    if (!hash) {
-      e.preventDefault();
+    e.preventDefault();
+    if (!pendingAppointment.current) {
       triggerRef.current?.focus();
       return;
     }
-    pendingHash.current = null;
-    e.preventDefault();
-    requestAnimationFrame(() => {
-      const target = document.querySelector<HTMLElement>(hash);
-      if (!target) return;
-      const lenis = getLenis();
-      if (lenis) lenis.scrollTo(target); // Lenis honours scroll-margin-top (96px, globals.css)
-      else target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-      history.replaceState(null, "", hash);
-    });
+    pendingAppointment.current = false;
+    requestAnimationFrame(() => openAppointment());
   };
 
   const rowLink = cn(
-    "flex min-h-14 items-center justify-between gap-3 rounded-lg text-xl font-semibold text-ink transition-colors hover:text-primary",
+    "flex items-center justify-between gap-3 rounded-lg font-semibold text-ink transition-colors hover:text-accent",
+    s.row,
   );
 
   return (
@@ -99,9 +124,9 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
         showCloseButton={false}
         aria-describedby={undefined}
         onCloseAutoFocus={onCloseAutoFocus}
-        className="on-light w-[88vw] max-w-[400px] gap-0 border-l-0 bg-white p-0 sm:max-w-[400px] data-[state=open]:duration-500"
+        className={cn("on-light gap-0 border-l-0 p-0 data-[state=open]:duration-500", s.content)}
       >
-        <div className="flex h-[68px] shrink-0 items-center justify-between border-b border-border pr-3 pl-5">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line pr-3 pl-5 data-[variant=dark]:h-[68px]" data-variant={variant}>
           <SheetTitle className="sr-only">{site.a11y.menuTitle}</SheetTitle>
           <SheetClose asChild>
             <Link href="/" aria-label={site.a11y.home} className="rounded-lg">
@@ -117,7 +142,11 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
           </SheetClose>
           <SheetClose
             aria-label={site.a11y.closeMenu}
-            className={cn("grid size-11 place-items-center rounded-full text-ink hover:bg-surface", focusRing)}
+            className={cn(
+              "grid place-items-center rounded-full text-ink hover:bg-surface-alt",
+              variant === "dark" ? "size-11" : "size-12 hover:bg-accent-soft",
+              focusRing,
+            )}
           >
             <MorphingX />
           </SheetClose>
@@ -128,11 +157,11 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
           data-lenis-prevent
           className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-5 pt-3 pb-[max(24px,env(safe-area-inset-bottom))]"
         >
-          <ul className="divide-y divide-border border-b border-border">
+          <ul className="divide-y divide-line border-b border-line">
             {site.nav.map((navItem, i) => {
               if (navItem.children) {
                 return (
-                  <StaggerItem key={navItem.href} i={i} reduce={reduce}>
+                  <StaggerItem key={navItem.href} i={i} step={s.stagger} reduce={reduce}>
                     <Accordion type="single" collapsible>
                       <AccordionItem value="services" className="border-b-0">
                         <AccordionTrigger
@@ -156,12 +185,18 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
                                       href={child.href}
                                       prefetch={false}
                                       aria-current={current ? "page" : undefined}
-                                      className="flex min-h-12 items-center gap-3 rounded-xl px-1.5 text-base font-medium text-ink transition-colors hover:bg-surface"
+                                      className="flex min-h-12 items-center gap-3 rounded-xl px-1.5 text-base font-medium text-ink transition-colors hover:bg-surface-alt"
                                     >
-                                      <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary/[0.07] ring-1 ring-primary/10">
-                                        <Icon className="size-[17px] text-primary" strokeWidth={ICON_STROKE} aria-hidden="true" />
+                                      <span className={cn("grid size-9 shrink-0 place-items-center", s.serviceTile)}>
+                                        <Icon className="size-[17px] text-accent" strokeWidth={ICON_STROKE} aria-hidden="true" />
                                       </span>
                                       {child.label}
+                                      {current && variant === "light" ? (
+                                        <>
+                                          <span aria-hidden="true" className="ml-auto size-2 shrink-0 rounded-full bg-accent" />
+                                          <span className="sr-only">({site.a11y.youAreHere})</span>
+                                        </>
+                                      ) : null}
                                     </Link>
                                   </SheetClose>
                                 </li>
@@ -172,7 +207,7 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
                                 <Link
                                   href={navItem.href}
                                   prefetch={false}
-                                  className="flex min-h-12 items-center justify-between rounded-xl px-1.5 text-base font-semibold text-primary transition-colors hover:bg-surface"
+                                  className="flex min-h-12 items-center justify-between rounded-xl px-1.5 text-base font-semibold text-accent transition-colors hover:bg-surface-alt"
                                 >
                                   {navItem.label}
                                   <ArrowRight className="size-4" strokeWidth={ICON_STROKE} aria-hidden="true" />
@@ -188,16 +223,16 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
               }
               const current = isActivePath(pathname, navItem.href);
               return (
-                <StaggerItem key={navItem.href} i={i} reduce={reduce}>
+                <StaggerItem key={navItem.href} i={i} step={s.stagger} reduce={reduce}>
                   <SheetClose asChild>
                     <Link
                       href={navItem.href}
                       prefetch={false}
                       aria-current={current ? "page" : undefined}
-                      className={cn(rowLink, current && "text-primary")}
+                      className={cn(rowLink, current && "text-accent")}
                     >
                       {navItem.label}
-                      {current ? <span aria-hidden="true" className="size-2 rounded-full bg-primary" /> : null}
+                      {current ? <span aria-hidden="true" className="size-2 rounded-full bg-accent" /> : null}
                     </Link>
                   </SheetClose>
                 </StaggerItem>
@@ -205,22 +240,29 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
             })}
           </ul>
 
-          <ul className="mt-6 grid gap-3">
-            <StaggerItem i={site.nav.length + 0} reduce={reduce}>
+          <ul className={s.actions}>
+            <StaggerItem i={site.nav.length + 0} step={s.stagger} reduce={reduce}>
               <Link
                 href={appointmentHref}
                 prefetch={false}
-                onClick={(e) => (appointmentHref.startsWith("#") ? onHashClick(e, appointmentHref) : setOpen(false))}
-                className="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-semibold text-white transition-colors hover:bg-primary-hover"
+                onClick={onAppointmentClick}
+                data-cta="menu-appointment"
+                className={cn(
+                  "flex items-center justify-center gap-2 rounded-full bg-accent px-6 text-base font-semibold text-white transition-colors hover:bg-accent-hover",
+                  s.action,
+                )}
               >
                 {site.appointmentCta.label}
                 <ArrowRight className="size-[18px]" strokeWidth={ICON_STROKE} aria-hidden="true" />
               </Link>
             </StaggerItem>
-            <StaggerItem i={site.nav.length + 1} reduce={reduce}>
+            <StaggerItem i={site.nav.length + 1} step={s.stagger} reduce={reduce}>
               <a
                 href={site.contact.phoneHref}
-                className="flex h-14 items-center justify-center gap-2 rounded-full border border-border px-6 text-base font-semibold text-ink tabular-nums transition-colors hover:border-primary/40 hover:text-primary"
+                className={cn(
+                  "flex items-center justify-center gap-2 rounded-full border border-line px-6 text-base font-semibold text-ink tabular-nums transition-colors hover:border-accent/40 hover:text-accent",
+                  s.action,
+                )}
               >
                 <Phone className="size-[18px]" strokeWidth={ICON_STROKE} aria-hidden="true" />
                 {site.contact.phoneDisplay}
@@ -229,16 +271,19 @@ export default function MobileMenuSheet({ open, onOpenChange: setOpen, pathname,
           </ul>
 
           <ul className="mt-6 flex gap-2" aria-label={site.socials.label}>
-            {site.socials.links.map((s, i) => {
-              const Icon = socialIcons[s.key];
+            {site.socials.links.map((social, i) => {
+              const Icon = socialIcons[social.key];
               return (
-                <StaggerItem key={s.key} i={site.nav.length + 2 + i} reduce={reduce}>
+                <StaggerItem key={social.key} i={site.nav.length + 2 + i} step={s.stagger} reduce={reduce}>
                   <a
-                    href={s.href}
+                    href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${s.label} ${site.a11y.newTab}`}
-                    className="grid size-11 place-items-center rounded-full border border-border text-ink transition-colors hover:border-primary/40 hover:text-primary"
+                    aria-label={`${social.label} ${site.a11y.newTab}`}
+                    className={cn(
+                      "grid place-items-center rounded-full border border-line text-ink transition-colors hover:border-accent/40 hover:text-accent",
+                      variant === "dark" ? "size-11" : "size-12 bg-surface",
+                    )}
                   >
                     <Icon className="size-[18px]" />
                   </a>

@@ -1,4 +1,9 @@
-# OncoXpert — Robotic Surgery page
+# OncoXpert website
+
+**Start with [docs/PROJECT.md](docs/PROJECT.md)**: stack, folder map, theme system, content rules,
+responsive rules and the add-a-page checklist.
+
+## Robotic Surgery page
 
 The rebuilt **Robotic Surgery** page for [oncoxpert.in](https://oncoxpert.in/robotic-surgery/),
 with the new site navbar and footer.
@@ -45,7 +50,8 @@ Every word on the page is in two files. Components contain no copy.
 
 | File                          | Contains                                                          |
 | ----------------------------- | ----------------------------------------------------------------- |
-| `content/robotic-surgery.ts`  | All page sections, numbers, reviews, videos, gallery, alt text    |
+| `content/pages/robotic-surgery.ts`  | All page sections, numbers, gallery, alt text                     |
+| `content/shared/*.ts`         | Google reviews and YouTube IDs (shared by every page)             |
 | `content/site.ts`             | Navigation, phone, email, address, socials, footer, WhatsApp text |
 
 Each block is tagged with its source:
@@ -60,7 +66,7 @@ Patient reviews are quotes: keep their original spelling.
 
 ## Update the surgery numbers
 
-Open `content/robotic-surgery.ts` and find `surgeryNumbers`:
+Open `content/pages/robotic-surgery.ts` and find `surgeryNumbers`:
 
 ```ts
 counts: [
@@ -83,7 +89,7 @@ The outcome percentages (blood loss, hospital stay, pain) and the scar sizes are
 
 1. Put the image in `public/images/gallery/` (JPG or WebP, at most 2400 px wide;
    `node scripts/optimize-images.mjs` compresses everything in `public/images`).
-2. Add an entry to `robotPhotos` in `content/robotic-surgery.ts`:
+2. Add an entry to `robotPhotos` in `content/pages/robotic-surgery.ts`:
 
 ```ts
 export const robotPhotos = [
@@ -103,7 +109,7 @@ frame. Always write a descriptive `alt`.
 
 ## Add or change videos
 
-Videos are YouTube IDs in `media.videos` (`content/robotic-surgery.ts`). The ID is the part
+Videos are YouTube IDs in `content/shared/videos.ts` (shared by every page). The ID is the part
 after `watch?v=` in a YouTube link:
 
 ```ts
@@ -115,7 +121,7 @@ at build time. The YouTube player only loads when a visitor presses play.
 
 ## Other common edits
 
-- **Clinic locations / map links**: `locations` in `content/robotic-surgery.ts`. Joshis Clinic
+- **Clinic locations / map links**: `locations` in `content/site.ts` (shared by every page). Joshis Clinic
   has no photo yet: add `public/images/locations/joshis-clinic.webp` and set its `image`.
 - **Phone, email, socials, address**: `content/site.ts`.
 - **Hero slides**: `hero.slides`. `position` / `mobilePosition` set the focal point of each photo.

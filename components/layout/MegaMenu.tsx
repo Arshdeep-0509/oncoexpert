@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { NavChild } from "@/content/site";
+import { site, type NavChild } from "@/content/site";
+import type { HeaderVariant } from "@/content/types";
 import { cn, focusRing } from "@/lib/utils";
 import { isActivePath } from "@/lib/nav";
 import {
@@ -20,11 +21,30 @@ type MegaMenuProps = {
   items: readonly NavChild[];
   onDark: boolean;
   pathname: string | null;
+  variant: HeaderVariant;
 };
 
-/** "Our Services" dropdown: a 2-column, ~560px panel. Radix handles Esc, outside click and arrow keys. */
-export function MegaMenu({ label, href, items, onDark, pathname }: MegaMenuProps) {
+/** Per-variant panel styles ("dark" is the robotic page's original panel). */
+const PANEL = {
+  dark: {
+    content: "ml-[-280px] w-[560px] md:w-[560px]",
+    tile: "rounded-xl bg-accent/[0.07] ring-1 ring-accent/10 group-hover/item:bg-accent/[0.12]",
+    triggerDot: true,
+  },
+  light: {
+    content: "ml-[-290px] w-[580px] md:w-[580px]",
+    tile: "rounded-[12px] bg-accent-soft group-hover/item:bg-accent group-hover/item:text-white",
+    triggerDot: false,
+  },
+} as const;
+
+/**
+ * "Our Services" dropdown: a 2-column panel with a footer row linking to the services page.
+ * Radix handles Esc, outside click, arrow keys and focus; it opens with fade + 8px slide.
+ */
+export function MegaMenu({ label, href, items, onDark, pathname, variant }: MegaMenuProps) {
   const active = [href, ...items.map((c) => c.href)].some((href) => isActivePath(pathname, href));
+  const panel = PANEL[variant];
 
   return (
     <NavigationMenuItem>
@@ -39,11 +59,13 @@ export function MegaMenu({ label, href, items, onDark, pathname }: MegaMenuProps
             : "focus:text-ink data-[state=open]:text-ink",
         )}
       >
-        {active ? <ActiveDot onDark={onDark} /> : null}
+        {active && panel.triggerDot ? <ActiveDot onDark={onDark} /> : null}
         {label}
       </NavigationMenuTrigger>
 
-      <NavigationMenuContent className="on-light left-1/2 ml-[-280px] w-[560px] md:w-[560px] rounded-[20px] border-border bg-white p-2.5 shadow-card-hover">
+      <NavigationMenuContent
+        className={cn("on-light left-1/2 rounded-[20px] border-line bg-white p-2.5 shadow-card-hover", panel.content)}
+      >
         <ul className="grid grid-cols-2 gap-1">
           {items.map((child) => {
             const Icon = serviceIcons[child.icon];
@@ -54,15 +76,26 @@ export function MegaMenu({ label, href, items, onDark, pathname }: MegaMenuProps
                   asChild
                   active={current}
                   className={cn(
-                    "group/item min-h-11 flex-row items-center gap-3 rounded-xl p-2 text-ink hover:bg-surface focus:bg-surface data-[active=true]:bg-surface",
+                    "group/item min-h-11 flex-row items-center gap-3 rounded-xl p-2 text-ink hover:bg-surface-alt focus:bg-surface-alt data-[active=true]:bg-surface-alt",
                     focusRing,
                   )}
                 >
                   <Link href={child.href} prefetch={false} aria-current={current ? "page" : undefined}>
-                    <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/[0.07] ring-1 ring-primary/10 transition-colors duration-300 group-hover/item:bg-primary/[0.12]">
-                      <Icon className="size-[18px] text-primary" strokeWidth={ICON_STROKE} aria-hidden="true" />
+                    <span
+                      className={cn(
+                        "grid size-10 shrink-0 place-items-center text-accent transition-colors duration-300",
+                        panel.tile,
+                      )}
+                    >
+                      <Icon className="size-[18px] text-current" strokeWidth={ICON_STROKE} aria-hidden="true" />
                     </span>
                     <span className="text-[15px] font-medium">{child.label}</span>
+                    {current && variant === "light" ? (
+                      <>
+                        <span aria-hidden="true" className="-ml-1 size-1.5 shrink-0 rounded-full bg-accent" />
+                        <span className="sr-only">({site.a11y.youAreHere})</span>
+                      </>
+                    ) : null}
                   </Link>
                 </NavigationMenuLink>
               </li>
@@ -70,18 +103,18 @@ export function MegaMenu({ label, href, items, onDark, pathname }: MegaMenuProps
           })}
         </ul>
 
-        <div className="mt-2 border-t border-border pt-2">
+        <div className="mt-2 border-t border-line pt-2">
           <NavigationMenuLink
             asChild
             className={cn(
-              "group/all min-h-11 flex-row items-center justify-between rounded-xl px-3 text-[15px] font-semibold text-primary hover:bg-surface hover:text-primary-hover focus:bg-surface focus:text-primary-hover",
+              "group/all min-h-11 flex-row items-center justify-between rounded-xl px-3 text-[15px] font-semibold text-accent hover:bg-surface-alt hover:text-accent-hover focus:bg-surface-alt focus:text-accent-hover",
               focusRing,
             )}
           >
             <Link href={href} prefetch={false}>
               {label}
               <ArrowRight
-                className="size-4 text-primary transition-transform duration-300 ease-out-expo group-hover/all:translate-x-1"
+                className="size-4 text-accent transition-transform duration-300 ease-out-expo group-hover/all:translate-x-1"
                 strokeWidth={ICON_STROKE}
                 aria-hidden="true"
               />

@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { overview } from "@/content/robotic-surgery";
+import { overview } from "@/content/pages/robotic-surgery";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal } from "@/components/ui/reveal";
-import { pillOutline, pillPrimary } from "@/components/ui/buttons";
+import { Section } from "@/components/robotic/ui/section";
+import { Eyebrow } from "@/components/robotic/ui/eyebrow";
+import { Reveal } from "@/components/robotic/ui/reveal";
+import { pillOutline, pillPrimary } from "@/components/robotic/ui/buttons";
 import { AppointmentButton } from "@/components/robotic/AppointmentButton";
 import { contentIcons } from "@/components/robotic/icons";
 

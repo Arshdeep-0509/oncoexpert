@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { CircleCheck } from "lucide-react";
-import { techniques } from "@/content/robotic-surgery";
+import { techniques } from "@/content/pages/robotic-surgery";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/robotic/ui/section";
+import { SectionHeading } from "@/components/robotic/ui/section-heading";
+import { Reveal } from "@/components/robotic/ui/reveal";
 
 const lift =
   "h-full transition-[translate,box-shadow] duration-500 ease-out-expo motion-safe:hover:-translate-y-1";

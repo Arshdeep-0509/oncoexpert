@@ -1,19 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { useInView } from "motion/react";
+import { cn } from "@/lib/utils";
 
+/** The site's easing curve, for motion transitions. */
 export const EASE_OUT_EXPO = [0.22, 1, 0.36, 1] as const;
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  // Only set `delay` when given: an explicit delay would override the parent's stagger offset.
-  visible: (delay?: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: EASE_OUT_EXPO, ...(delay ? { delay } : {}) },
-  }),
-};
+const STAGGER_S = 0.08;
 
 type RevealProps = {
   children: React.ReactNode;
@@ -21,61 +15,50 @@ type RevealProps = {
   /** Delay before the reveal starts, in seconds. */
   delay?: number;
   /**
-   * Reveal each direct child in turn, 0.08s apart.
-   * Each child is wrapped in a div, so use it on grids/lists.
+   * Reveal each direct child in turn, 0.08s apart. Each child is wrapped in a
+   * div (styled with `itemClassName`), so use it on grids and lists.
    */
   stagger?: boolean;
-  /** Class applied to each stagger wrapper (e.g. to keep grid sizing). */
   itemClassName?: string;
+  as?: "div" | "ul" | "ol";
 };
 
 /**
- * Fades in and rises 24px → 0 over 0.7s, once, when 20% visible.
- * With prefers-reduced-motion the final state renders immediately.
+ * Fades in and rises 24px (16px under 768px) over 0.7s with the site easing,
+ * once, when 15% visible. CSS transitions on opacity + translate only (globals.css
+ * `.reveal`); with prefers-reduced-motion the content is simply shown.
  */
-export function Reveal({ children, className, delay = 0, stagger = false, itemClassName }: RevealProps) {
-  const reduce = useReducedMotion();
-
-  if (reduce) {
-    return stagger ? (
-      <div className={className}>
-        {React.Children.map(children, (child) => (
-          <div className={itemClassName}>{child}</div>
-        ))}
-      </div>
-    ) : (
-      <div className={className}>{children}</div>
-    );
-  }
+export function Reveal({ children, className, delay = 0, stagger = false, itemClassName, as: Tag = "div" }: RevealProps) {
+  const ref = React.useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.15 });
+  const revealed = inView ? "" : undefined;
 
   if (!stagger) {
     return (
-      <motion.div
-        className={className}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={item}
-        custom={delay}
+      <Tag
+        ref={ref as React.Ref<never>}
+        className={cn("reveal", className)}
+        data-revealed={revealed}
+        style={delay ? ({ "--reveal-delay": `${delay}s` } as React.CSSProperties) : undefined}
       >
         {children}
-      </motion.div>
+      </Tag>
     );
   }
 
+  const ItemTag = Tag === "div" ? "div" : "li";
   return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: delay } } }}
-    >
-      {React.Children.map(children, (child) => (
-        <motion.div className={itemClassName} variants={item}>
+    <Tag ref={ref as React.Ref<never>} className={className}>
+      {React.Children.toArray(children).map((child, i) => (
+        <ItemTag
+          key={React.isValidElement(child) && child.key != null ? child.key : i}
+          className={cn("reveal", itemClassName)}
+          data-revealed={revealed}
+          style={{ "--reveal-delay": `${delay + i * STAGGER_S}s` } as React.CSSProperties}
+        >
           {child}
-        </motion.div>
+        </ItemTag>
       ))}
-    </motion.div>
+    </Tag>
   );
 }

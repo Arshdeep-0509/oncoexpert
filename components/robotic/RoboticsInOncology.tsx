@@ -1,7 +1,7 @@
-import { whyRobotic } from "@/content/robotic-surgery";
-import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal } from "@/components/ui/reveal";
+import { whyRobotic } from "@/content/pages/robotic-surgery";
+import { Section } from "@/components/robotic/ui/section";
+import { Eyebrow } from "@/components/robotic/ui/eyebrow";
+import { Reveal } from "@/components/robotic/ui/reveal";
 
 export function RoboticsInOncology() {
   const [p1, p2, p3] = whyRobotic.paragraphs;

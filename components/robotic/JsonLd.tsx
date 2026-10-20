@@ -1,4 +1,4 @@
-import { doctor, meta, structuredData } from "@/content/robotic-surgery";
+import { doctor, meta, structuredData } from "@/content/pages/robotic-surgery";
 import { site } from "@/content/site";
 
 /** MedicalWebPage + Physician + MedicalClinic, linked in one @graph. */

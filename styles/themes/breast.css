@@ -1,0 +1,39 @@
+/* ==================================================================
+   Breast Cancer theme: /breast-cancer-treatment-bangalore/
+   Warm, hopeful, feminine and clinical at the same time.
+   Deep plum ink, rose accent, blush and peach surfaces, Fraunces display.
+   Never bubblegum pink, never teal, never black.
+   ================================================================== */
+
+[data-theme="breast"] {
+  --ink: #3a1430; /* deep plum: headings, dark bands */
+  --text: #2a1f27; /* body text */
+  --muted: #6e5a66; /* secondary text (6.3:1 on white) */
+  --surface: #ffffff;
+  --surface-alt: #fff5f7; /* blush sections */
+  --surface-warm: #fff1e8; /* peach sections */
+  --accent: #c2255c; /* rose: buttons, links, icons (5.7:1 on white, AA) */
+  --accent-hover: #a61e4d;
+  --accent-soft: #fde4ec; /* chips, icon tiles */
+  --accent-glow: #f7a8c4; /* decoration on plum only */
+  --accent-bright: #e0568a; /* second stop of --grad-accent */
+  --petal: #f9c9d6; /* decoration */
+  --gold: #e8a33d; /* tiny highlights on plum only (stars, sparkles) */
+  --line: #f3d9e1; /* borders */
+
+  --grad-hero:
+    radial-gradient(60% 55% at 85% 15%, rgb(249 201 214 / 0.75), transparent 70%),
+    radial-gradient(55% 50% at 10% 85%, rgb(255 232 220 / 0.95), transparent 70%),
+    radial-gradient(40% 40% at 50% 50%, rgb(255 232 220 / 0.5), transparent 75%),
+    linear-gradient(180deg, #fff5f7, #fff5f7);
+  --grad-accent: linear-gradient(120deg, var(--accent), var(--accent-bright));
+  --grad-plum: linear-gradient(160deg, #3a1430, #5a1e48);
+
+  /* Type: Plus Jakarta Sans body, Fraunces display */
+  --font-display: var(--font-serif);
+  --display-weight: 560;
+  --display-tracking: -0.02em;
+
+  /* Shadows tinted with plum */
+  --shadow-rgb: 58 20 48;
+}

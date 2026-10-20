@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { site } from "@/content/site";
 import { getLenis } from "@/lib/lenis";
-import { INTRO_EXIT_START_MS, INTRO_SEEN_CLASS, INTRO_TOTAL_MS } from "@/lib/intro";
+import { INTRO_EXIT_START_MS, INTRO_TOTAL_MS, introDisabled } from "@/lib/intro";
 
 /*
  * Intro preloader. Sequence (seconds from first paint):
@@ -50,7 +50,7 @@ export function Preloader() {
 
   React.useEffect(() => {
     const html = document.documentElement;
-    if (html.classList.contains(INTRO_SEEN_CLASS)) {
+    if (introDisabled()) {
       const id = requestAnimationFrame(() => setGone(true));
       return () => cancelAnimationFrame(id);
     }
@@ -98,7 +98,8 @@ export function Preloader() {
       width={MARK.width}
       height={MARK.height}
       sizes="(min-width: 640px) 260px, 50vw"
-      loading="eager"
+      // Lazy: when a page turns the intro off, the hidden (display: none) overlay never fetches it.
+      loading="lazy"
       className="absolute inset-0 size-full select-none"
       draggable={false}
     />
@@ -110,7 +111,7 @@ export function Preloader() {
       aria-hidden="true"
       // 100vw/100dvh (not inset-0) so it is centred on the whole screen even while a
       // desktop scrollbar is still showing, and never shifts when scrolling locks.
-      className="preloader fixed top-0 left-0 z-[200] grid h-dvh w-screen place-items-center bg-white"
+      className="preloader font-brand-text fixed top-0 left-0 z-[200] grid h-dvh w-screen place-items-center bg-white"
       style={{ animation: anim("pl-exit", 0.6, EXIT, "cubic-bezier(0.4, 0, 0.2, 1)") }}
     >
       <div
@@ -189,7 +190,7 @@ export function Preloader() {
           </div>
 
           {/* Wordmark */}
-          <p className="mt-[2cqw] font-display text-[11cqw] leading-none font-bold tracking-[0.03em]">
+          <p className="mt-[2cqw] font-brand text-[11cqw] leading-none font-bold tracking-[0.03em]">
             {letters.map((l, i) => (
               <span key={i} className="inline-block overflow-hidden pb-[0.08em] align-bottom">
                 <span className="inline-block" style={{ color: l.color, animation: anim("pl-rise", 0.6, 1.4 + i * 0.055) }}>

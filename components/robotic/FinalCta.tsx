@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Phone } from "lucide-react";
-import { finalCta, images } from "@/content/robotic-surgery";
+import { finalCta, images } from "@/content/pages/robotic-surgery";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
+import { Reveal } from "@/components/robotic/ui/reveal";
 
 export function FinalCta() {
   const img = images.armsBlack;

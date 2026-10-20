@@ -8,7 +8,7 @@ import { track } from "@/lib/analytics";
  *  - tel: links            → phone_click
  *  - wa.me links            → whatsapp_click
  *  - elements with data-cta → cta_click (label = data-cta)
- * `location` is the id of the nearest section (or header/footer).
+ * `location` (and `section`, same value) is the id of the nearest section (or header/footer).
  */
 export function AnalyticsListener() {
   useEffect(() => {
@@ -22,7 +22,7 @@ export function AnalyticsListener() {
 
       if (href.startsWith("tel:")) track({ event: "phone_click", location });
       else if (href.includes("wa.me/")) track({ event: "whatsapp_click", location });
-      if (el.dataset.cta) track({ event: "cta_click", label: el.dataset.cta, location });
+      if (el.dataset.cta) track({ event: "cta_click", label: el.dataset.cta, location, section: location });
     };
     document.addEventListener("click", onClick, { capture: true });
     return () => document.removeEventListener("click", onClick, { capture: true });

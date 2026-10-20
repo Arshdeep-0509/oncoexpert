@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import { outcomes, type OutcomeItem } from "@/content/robotic-surgery";
-import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal, EASE_OUT_EXPO } from "@/components/ui/reveal";
+import { outcomes, type OutcomeItem } from "@/content/pages/robotic-surgery";
+import { Section } from "@/components/robotic/ui/section";
+import { Eyebrow } from "@/components/robotic/ui/eyebrow";
+import { Reveal, EASE_OUT_EXPO } from "@/components/robotic/ui/reveal";
 import { Counter } from "@/components/ui/counter";
 import { ScarCompare } from "@/components/robotic/ScarCompare";
 import { bleedFade } from "@/lib/image-fade";

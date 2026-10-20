@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { outcomes, scarLabels } from "@/content/robotic-surgery";
+import { outcomes, scarLabels } from "@/content/pages/robotic-surgery";
 import { cn } from "@/lib/utils";
-import { EASE_OUT_EXPO } from "@/components/ui/reveal";
+import { EASE_OUT_EXPO } from "@/components/robotic/ui/reveal";
 
 type Mode = "open" | "robotic";
 

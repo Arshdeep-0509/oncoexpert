@@ -10,12 +10,24 @@ export const INTRO_TOTAL_MS = 3900; // fully gone
 export const INTRO_SEEN_CLASS = "intro-seen";
 
 /**
+ * Pages can opt out of the intro: SiteShell renders data-intro="off" on its wrapper.
+ * The overlay is then hidden by CSS from first paint (globals.css) and never locks scrolling.
+ */
+export const INTRO_OFF_SELECTOR = '[data-intro="off"]';
+
+/** True when the intro does not play on this page load. */
+export function introDisabled(): boolean {
+  if (typeof document === "undefined") return false;
+  return document.documentElement.classList.contains(INTRO_SEEN_CLASS) || !!document.querySelector(INTRO_OFF_SELECTOR);
+}
+
+/**
  * Seconds until the page is revealed (0 if the intro is hidden or already over).
  * Client-only; use it for animation delays, never for rendered markup.
  */
 export function introRemainingSeconds(): number {
   if (typeof document === "undefined") return 0;
-  if (document.documentElement.classList.contains(INTRO_SEEN_CLASS)) return 0;
+  if (introDisabled()) return 0;
   // Prefer the real clock: the overlay's CSS exit animation (it starts at first paint).
   const exit = document
     .querySelector(".preloader")

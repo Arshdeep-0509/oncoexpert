@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { ArrowUpRight, MapPin } from "lucide-react";
-import { locations } from "@/content/robotic-surgery";
+import { locations } from "@/content/pages/robotic-surgery";
 import { site } from "@/content/site";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/robotic/ui/section";
+import { SectionHeading } from "@/components/robotic/ui/section-heading";
+import { Reveal } from "@/components/robotic/ui/reveal";
 
 export function Locations() {
   return (

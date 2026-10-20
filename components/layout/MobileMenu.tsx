@@ -3,6 +3,7 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
 import { site } from "@/content/site";
+import type { HeaderVariant } from "@/content/types";
 import { cn } from "@/lib/utils";
 import { getLenis } from "@/lib/lenis";
 import { BurgerIcon } from "@/components/layout/burger-icon";
@@ -16,10 +17,11 @@ type MobileMenuProps = {
   onDark: boolean;
   pathname: string | null;
   appointmentHref: string;
+  variant: HeaderVariant;
   className?: string;
 };
 
-export function MobileMenu({ onDark, pathname, appointmentHref, className }: MobileMenuProps) {
+export function MobileMenu({ onDark, pathname, appointmentHref, variant, className }: MobileMenuProps) {
   const [open, setOpen] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -49,8 +51,9 @@ export function MobileMenu({ onDark, pathname, appointmentHref, className }: Mob
           setOpen(true);
         }}
         className={cn(
-          "grid size-11 place-items-center rounded-full transition-colors duration-300",
-          onDark ? "text-white hover:bg-white/10" : "text-ink hover:bg-surface",
+          "grid place-items-center rounded-full transition-colors duration-300",
+          variant === "dark" ? "size-11" : "size-12",
+          onDark ? "text-white hover:bg-white/10" : "text-ink hover:bg-surface-alt",
           className,
         )}
       >
@@ -62,6 +65,7 @@ export function MobileMenu({ onDark, pathname, appointmentHref, className }: Mob
           onOpenChange={setOpen}
           pathname={pathname}
           appointmentHref={appointmentHref}
+          variant={variant}
           triggerRef={triggerRef}
         />
       ) : null}

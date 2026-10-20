@@ -1,31 +1,15 @@
 "use client";
 
-import * as React from "react";
-import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { doctor } from "@/content/robotic-surgery";
-import { Section } from "@/components/ui/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal } from "@/components/ui/reveal";
-import { pillPrimary } from "@/components/ui/buttons";
+import { doctor } from "@/content/pages/robotic-surgery";
+import { Section } from "@/components/robotic/ui/section";
+import { Eyebrow } from "@/components/robotic/ui/eyebrow";
+import { Reveal } from "@/components/robotic/ui/reveal";
+import { pillPrimary } from "@/components/robotic/ui/buttons";
 import { AppointmentButton } from "@/components/robotic/AppointmentButton";
 import { ContentIconView } from "@/components/robotic/icons";
-
-/**
- * The portrait's studio backdrop, sampled from the photo's top row (left → right) and
- * darkening downward like the original, so the zoomed-out photo blends in seamlessly.
- */
-const PORTRAIT_BACKDROP = [
-  "linear-gradient(to bottom, transparent 25%, rgb(10 18 30 / 0.22))",
-  "linear-gradient(to right, #4c5a6d 0%, #5a6a7f 10%, #68788f 20%, #73859d 30%, #7a8ba3 40%, #7c8ca4 50%, #7889a1 60%, #70829b 70%, #65768e 80%, #59697f 90%, #4d5b70 100%)",
-].join(", ");
+import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 
 export function MeetTheDoctor() {
-  const reduce = useReducedMotion();
-  const frameRef = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "end start"] });
-  // Slow parallax: the photo drifts ~40px inside its arch as the section scrolls past.
-  const y = useTransform(scrollYProgress, [0, 1], [-20, 20]);
   const [lead, rest] = doctor.paragraphs;
   const img = doctor.image;
 
@@ -33,40 +17,7 @@ export function MeetTheDoctor() {
     <Section id="doctor" tone="surface" className="overflow-hidden">
       <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-5">
-          <div ref={frameRef} className="relative mx-auto w-full max-w-[420px]">
-            {/* Soft teal glow behind the frame */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-6 top-16 -bottom-6 -z-10 rounded-[200px_200px_24px_24px] bg-teal/30 blur-[60px]"
-            />
-            {/* The frame is filled with the portrait's own studio backdrop (sampled from the photo),
-                so the photo can sit zoomed-out inside the arch: head clear of the curve,
-                shoulders in frame, and its edges fading invisibly into the backdrop. */}
-            <div
-              className="relative aspect-[4/5] overflow-hidden rounded-[200px_200px_24px_24px] border border-white shadow-[0_30px_60px_-30px_rgb(10_22_40/0.45)]"
-              style={{ background: PORTRAIT_BACKDROP }}
-            >
-              <motion.div className="absolute inset-x-[4%] top-[14%] -bottom-6" style={{ y: reduce ? 0 : y }}>
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes="(min-width: 1024px) 400px, (min-width: 480px) 400px, 92vw"
-                  className="object-contain object-bottom"
-                  style={{
-                    // sides fade  ∩  (long top fade  ∪  short fade around the head, which reaches the photo's top edge)
-                    maskImage: [
-                      "linear-gradient(to right, transparent, black 9%, black 91%, transparent)",
-                      "linear-gradient(to bottom, transparent 1.5%, black 24%)",
-                      "radial-gradient(ellipse 24% 18% at 50% 0%, black 55%, transparent 100%)",
-                    ].join(", "),
-                    maskComposite: "intersect, add, add",
-                    WebkitMaskComposite: "source-in, source-over, source-over",
-                  }}
-                />
-              </motion.div>
-            </div>
-          </div>
+          <DoctorPortrait image={img} glowClassName="bg-teal/30" />
         </Reveal>
 
         <Reveal stagger className="lg:col-span-7">

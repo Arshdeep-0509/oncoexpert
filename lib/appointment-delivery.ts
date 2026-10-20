@@ -16,13 +16,15 @@ export async function deliverAppointment(data: Omit<AppointmentInput, "company">
   // Must be an address on a domain verified in Resend (onboarding@resend.dev only reaches the account owner).
   const from = process.env.APPOINTMENT_FROM_EMAIL || "OncoXpert Website <onboarding@resend.dev>";
 
+  const page = data.page || "Website";
   const lines = [
     `Name: ${data.name}`,
     `Contact Number: ${data.phone}`,
     `Service Required: ${data.service}`,
     `Date / Time: ${data.dateTime || "-"}`,
+    ...(data.note ? [`Note: ${data.note}`] : []),
     "",
-    "Sent from the Robotic Surgery page appointment form.",
+    `Sent from the ${page} page appointment form.`,
   ];
 
   try {
@@ -30,7 +32,7 @@ export async function deliverAppointment(data: Omit<AppointmentInput, "company">
     const { error } = await resend.emails.send({
       from,
       to,
-      subject: `Appointment request: ${data.service} (${data.name})`,
+      subject: `New appointment request - ${page} page`,
       text: lines.join("\n"),
     });
     return error ? { delivered: false, reason: "failed" } : { delivered: true };

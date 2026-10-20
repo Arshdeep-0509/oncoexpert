@@ -3,11 +3,11 @@
 import * as React from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { insideTheRobot, type ShowcaseStep } from "@/content/robotic-surgery";
+import { insideTheRobot, type ShowcaseStep } from "@/content/pages/robotic-surgery";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal, EASE_OUT_EXPO } from "@/components/ui/reveal";
+import { Eyebrow } from "@/components/robotic/ui/eyebrow";
+import { Reveal, EASE_OUT_EXPO } from "@/components/robotic/ui/reveal";
 import { bleedFade } from "@/lib/image-fade";
 
 const steps = insideTheRobot.steps as readonly ShowcaseStep[];

@@ -1,26 +1,29 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import type { Tone } from "@/content/robotic-surgery";
+import type { SectionTone } from "@/content/types";
 import { Container } from "@/components/ui/container";
 
-const toneClasses: Record<Tone, string> = {
-  black: "bg-black text-white",
-  ink: "bg-ink text-white",
+const toneClasses: Record<SectionTone, string> = {
   surface: "bg-surface text-text",
-  white: "bg-white text-text",
+  alt: "bg-surface-alt text-text",
+  warm: "bg-surface-warm text-text",
+  plum: "on-dark bg-ink bg-(image:--grad-plum) text-white",
 };
 
-type SectionProps = React.ComponentProps<"section"> & {
-  tone?: Tone;
+type SectionProps = Omit<React.ComponentProps<"section">, "id"> & {
+  /** Anchor id, e.g. "overview" → #overview. */
+  id: string;
+  tone?: SectionTone;
   /** Wrap children in <Container>. Default true. */
   contained?: boolean;
-  /** Remove the default 72px / 120px vertical padding. */
+  /** Remove the default vertical padding (var(--section-y)). */
   flush?: boolean;
 };
 
-/** Page band. 72px vertical padding on mobile, 120px on desktop. */
+/** Page band. Vertical padding is the theme's --section-y (64–128px, fluid). */
 export function Section({
-  tone = "white",
+  id,
+  tone = "surface",
   contained = true,
   flush = false,
   className,
@@ -29,8 +32,14 @@ export function Section({
 }: SectionProps) {
   return (
     <section
+      id={id}
       data-tone={tone}
-      className={cn("relative isolate", toneClasses[tone], !flush && "py-[72px] lg:py-[120px]", className)}
+      className={cn(
+        "relative isolate",
+        toneClasses[tone],
+        !flush && "py-(--section-y)",
+        className,
+      )}
       {...props}
     >
       {contained ? <Container>{children}</Container> : children}

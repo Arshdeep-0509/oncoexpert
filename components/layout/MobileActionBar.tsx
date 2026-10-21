@@ -73,9 +73,9 @@ export function MobileActionBar() {
           type="button"
           onClick={() => openAppointment()}
           data-cta="action-bar-appointment"
-          className="flex min-h-12 items-center justify-center gap-1.5 rounded-pill bg-accent px-3 text-sm font-semibold whitespace-nowrap text-white shadow-(--accent-shadow) transition-colors active:bg-accent-hover min-[390px]:text-[15px]"
+          className="flex h-11 items-center justify-center gap-1.5 justify-self-end rounded-pill bg-accent px-4 text-[13px] font-semibold whitespace-nowrap text-white shadow-(--accent-shadow) transition-colors active:bg-accent-hover"
         >
-          <CalendarCheck className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden="true" />
+          <CalendarCheck className="size-4 shrink-0" strokeWidth={1.75} aria-hidden="true" />
           {site.actionBar.book}
         </button>
       </div>

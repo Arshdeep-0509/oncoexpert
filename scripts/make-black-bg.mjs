@@ -17,7 +17,8 @@ while (stack.length) {
   const p = stack.pop();
   if (bg[p] || !isLight(p)) continue;
   bg[p] = 255;
-  const x = p % W, y = (p / W) | 0;
+  const x = p % W,
+    y = (p / W) | 0;
   if (x > 0) stack.push(p - 1);
   if (x < W - 1) stack.push(p + 1);
   if (y > 0) stack.push(p - W);
@@ -35,5 +36,13 @@ for (let p = 0; p < W * H; p++) {
   const k = 1 - matte[p] / 255;
   for (let c = 0; c < 3; c++) out[p * 3 + c] = Math.round(data[p * 3 + c] * k);
 }
-await sharp(out, { raw: { width: W, height: H, channels: 3 } }).jpeg({ quality: 86, mozjpeg: true }).toFile(output);
-console.log("wrote", output, `${W}x${H}`, "background", Math.round((bg.reduce((a, v) => a + (v ? 1 : 0), 0) / (W * H)) * 100) + "%");
+await sharp(out, { raw: { width: W, height: H, channels: 3 } })
+  .jpeg({ quality: 86, mozjpeg: true })
+  .toFile(output);
+console.log(
+  "wrote",
+  output,
+  `${W}x${H}`,
+  "background",
+  Math.round((bg.reduce((a, v) => a + (v ? 1 : 0), 0) / (W * H)) * 100) + "%",
+);

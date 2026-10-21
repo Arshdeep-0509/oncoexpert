@@ -9,16 +9,11 @@
  * URLs are relative so they keep working as the rest of the site moves to Next.js.
  */
 
+import type { Location } from "@/content/types";
+
 /** Icon keys are mapped to lucide icons in components/layout/nav-icons.tsx. */
 export type ServiceIcon =
-  | "breast"
-  | "colorectal"
-  | "endometrial"
-  | "lung"
-  | "urology"
-  | "stomach"
-  | "ovarian"
-  | "thyroid";
+  "breast" | "colorectal" | "endometrial" | "lung" | "urology" | "stomach" | "ovarian" | "thyroid";
 
 export type NavChild = { label: string; href: string; icon: ServiceIcon };
 export type NavItem = { label: string; href: string; children?: readonly NavChild[] };
@@ -85,6 +80,28 @@ export const site = {
     mapHref: "https://maps.app.goo.gl/jM5SVCXp6iHMGHcS8",
   },
 
+  // SOURCE: EXISTING (clinic locations; shown by the Locations section on every page)
+  locations: [
+    {
+      name: "South End Clinics",
+      area: "Jayanagar",
+      mapHref: "https://share.google/mNL5rEF9Ughai9bgl",
+      image: { src: "/images/locations/south-end-clinics.webp", width: 512, height: 294 },
+    },
+    {
+      name: "SPARSH Hospital",
+      area: "RR Nagar",
+      mapHref: "https://share.google/xmRyLd7Tkaf1fnlBQ",
+      image: { src: "/images/locations/sparsh-hospital.webp", width: 512, height: 335 },
+    },
+    {
+      name: "Joshis Clinic",
+      area: "Sahakara Nagar",
+      mapHref: "https://share.google/ydsuRZi3sietkT4LR",
+      image: { src: "/images/locations/joshis-clinic.webp", width: 1024, height: 655 },
+    },
+  ] satisfies Location[],
+
   // SOURCE: EXISTING
   socials: {
     label: "Our Social Media Handles",
@@ -106,7 +123,9 @@ export const site = {
     // SOURCE: EXISTING
     tagline: "Expert oncology care bridging world-class technology with compassionate healing.",
     // SOURCE: NEW
-    copyright: (year: number) => `© ${year} OncoXpert`,
+    copyright: (year: number) => `© ${year} OncoXpert. All rights reserved.`,
+    // SOURCE: NEW (mobile footer: title of the quick-links accordion)
+    quickLinks: "Quick Links",
   },
 
   // SOURCE: EXISTING (live WhatsApp chat popup)
@@ -119,6 +138,17 @@ export const site = {
     closing: "We're here to help.",
     openLabel: "Open Chat",
   },
+
+  // Mobile action bar (fixed to the bottom of the screen under 768px).
+  actionBar: {
+    // SOURCE: NEW
+    call: "Call",
+    whatsapp: "WhatsApp",
+    book: "Book Appointment",
+  },
+
+  // SOURCE: EXISTING ("Service Required" options of the appointment form)
+  appointmentServices: ["Consultation", "Second Opinion", "Consultation For Surgery", "Follow Up"],
 
   // Google Tag Manager container (loaded via @next/third-parties)
   analytics: { gtmId: "GTM-PBNWCFV7" },
@@ -149,7 +179,12 @@ export const site = {
     newTab: "(opens in a new tab)",
     carousel: "carousel",
     slide: "slide",
+    actionBar: "Quick contact",
+    youAreHere: "You are here",
   },
 } as const;
 
-export type Site = typeof site;
+type Site = typeof site;
+
+/** "Service Required" options of the appointment form. */
+export type AppointmentService = Site["appointmentServices"][number];

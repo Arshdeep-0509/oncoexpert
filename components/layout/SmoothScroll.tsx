@@ -17,7 +17,11 @@ export function SmoothScroll() {
     const sync = () => {
       const enable = !reduce.matches && !coarse.matches && navigator.maxTouchPoints === 0;
       if (enable && !lenis) {
-        lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.09 /* anchor offset comes from scroll-margin-top */ });
+        lenis = new Lenis({
+          autoRaf: true,
+          anchors: true,
+          lerp: 0.09 /* anchor offset comes from scroll-margin-top */,
+        });
         setLenis(lenis);
       } else if (!enable && lenis) {
         lenis.destroy();

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { appointment, appointmentServices } from "@/content/robotic-surgery";
+import { appointmentSection } from "@/content/shared/sections";
 
-const { errors } = appointment.form;
+const { errors, services: appointmentServices } = appointmentSection.form;
 
 /** 10-digit Indian mobile (starts 6–9), optional +91 / 91 prefix; spaces and dashes ignored. */
 export const normalizePhone = (value: string) => value.replace(/[\s-]/g, "");
@@ -22,7 +22,14 @@ export const appointmentSchema = z.object({
   dateTime: z
     .string()
     .trim()
-    .refine((v) => v === "" || (!Number.isNaN(Date.parse(v)) && Date.parse(v) >= Date.now() - SKEW_MS), errors.dateTime),
+    .refine(
+      (v) => v === "" || (!Number.isNaN(Date.parse(v)) && Date.parse(v) >= Date.now() - SKEW_MS),
+      errors.dateTime,
+    ),
+  /** Hidden: which page the request came from, e.g. "Breast Cancer". */
+  page: z.string().trim().max(60).optional(),
+  /** Hidden: context from the button that opened the form, e.g. "Package request". */
+  note: z.string().trim().max(120).optional(),
   /** Honeypot: real visitors never see or fill this. */
   company: z.string().optional(),
 });
@@ -31,4 +38,8 @@ export type AppointmentInput = z.infer<typeof appointmentSchema>;
 
 export type AppointmentResult =
   | { ok: true }
-  | { ok: false; reason: "invalid" | "unavailable" | "failed"; fieldErrors?: Partial<Record<keyof AppointmentInput, string[]>> };
+  | {
+      ok: false;
+      reason: "invalid" | "unavailable" | "failed";
+      fieldErrors?: Partial<Record<keyof AppointmentInput, string[]>>;
+    };

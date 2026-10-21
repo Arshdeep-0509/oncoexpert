@@ -2,88 +2,72 @@
 @import "tw-animate-css";
 @import "lenis/dist/lenis.css";
 
+/* Design tokens: shared neutrals first, then one file per page theme. */
+@import "../styles/tokens.css";
+@import "../styles/themes/breast.css";
+@import "../styles/themes/robotic.css";
+
 /* ------------------------------------------------------------------
-   OncoXpert design tokens
-   --primary matches the OncoXpert logo wordmark blue (#003DAE),
-   sampled from public/images/brand/oncoxpert-logo.png.
+   Token → utility map. `inline`: each utility reads the CSS variable
+   where it is used, so bg-accent is rose inside [data-theme="breast"]
+   and logo blue inside [data-theme="robotic"].
+   Fonts and radii are mapped in styles/tokens.css (@theme static).
    ------------------------------------------------------------------ */
-:root {
-  --black: #000000; /* hero + dark photo sections; must stay pure #000 */
-  --ink: #0a1628; /* headings, dark bands */
-  --navy: #0f2a47;
-  --primary: #003dae; /* logo blue: buttons, links */
-  --primary-hover: #00318c;
-  --glow: #2dd4bf; /* accents/glows on dark backgrounds only */
-  --teal: #0e7c86; /* deep clinical teal: start of teal → glow gradients on dark */
-  --slate: #64748b; /* neutral data series (e.g. open surgery, Others) */
-  --surface: #f5f8fa;
-  --white: #ffffff;
-  --text: #1e293b;
-  --muted: #5b6b7f;
-  --border: #e2e8f0;
-  --star: #f5b301; /* review stars only */
-  --whatsapp: #25d366; /* WhatsApp button only */
-
-  --radius: 0.75rem;
-  --shadow-card:
-    0 1px 2px rgb(10 22 40 / 0.04), 0 4px 12px rgb(10 22 40 / 0.05),
-    0 16px 40px rgb(10 22 40 / 0.06);
-  --shadow-card-hover:
-    0 1px 2px rgb(10 22 40 / 0.05), 0 8px 20px rgb(10 22 40 / 0.07),
-    0 24px 56px rgb(10 22 40 / 0.09);
-  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 @theme inline {
-  /* Brand palette → bg-ink, text-primary, border-border, etc. */
-  --color-black: var(--black);
-  --color-ink: var(--ink);
-  --color-navy: var(--navy);
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-glow: var(--glow);
-  --color-teal: var(--teal);
-  --color-slate: var(--slate);
-  --color-surface: var(--surface);
+  /* Semantic palette (use these in all new components) */
   --color-white: var(--white);
+  --color-black: var(--black);
+  --color-brand: var(--brand);
+  --color-ink: var(--ink);
   --color-text: var(--text);
   --color-muted: var(--muted);
-  --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-surface-warm: var(--surface-warm);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-glow: var(--accent-glow);
+  --color-accent-bright: var(--accent-bright);
+  --color-petal: var(--petal);
+  --color-gold: var(--gold);
+  --color-line: var(--line);
   --color-star: var(--star);
   --color-whatsapp: var(--whatsapp);
 
-  /* shadcn/ui semantic aliases, mapped onto the palette above */
+  /* Robotic page palette names (components/robotic only) */
+  --color-navy: var(--navy);
+  --color-teal: var(--teal);
+  --color-slate: var(--slate);
+  --color-primary: var(--accent);
+  --color-primary-hover: var(--accent-hover);
+  --color-glow: var(--accent-glow);
+  --color-border: var(--line);
+
+  /* shadcn/ui aliases */
   --color-background: var(--white);
   --color-foreground: var(--text);
   --color-primary-foreground: var(--white);
   --color-secondary: var(--surface);
   --color-secondary-foreground: var(--ink);
-  --color-accent: var(--surface);
   --color-accent-foreground: var(--ink);
   --color-muted-foreground: var(--muted);
   --color-popover: var(--white);
   --color-popover-foreground: var(--text);
   --color-card: var(--white);
   --color-card-foreground: var(--text);
-  --color-input: var(--border);
-  --color-ring: var(--primary);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
   --color-destructive: #b42318;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
   --radius-card: 1.375rem; /* 22px */
 
   --shadow-card: var(--shadow-card);
   --shadow-card-hover: var(--shadow-card-hover);
   --ease-out-expo: var(--ease-out-expo);
 
-  /* One soft ring every 6s: expands over the first ~1.6s, then rests. */
-  --animate-wa-pulse: wa-pulse 6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  /* One soft ring per --wa-pulse-duration (8s; 6s on the robotic page): expands, then rests. */
+  --animate-wa-pulse: wa-pulse var(--wa-pulse-duration) cubic-bezier(0.22, 1, 0.36, 1) infinite;
   @keyframes wa-pulse {
     0% {
       transform: scale(1);
@@ -151,6 +135,19 @@
     }
   }
 
+  /* SwipeRow hint: the chevrons nudge right, then rest. */
+  --animate-swipe-nudge: swipe-nudge 1.6s ease-in-out infinite;
+  @keyframes swipe-nudge {
+    0%,
+    60%,
+    100% {
+      translate: 0 0;
+    }
+    30% {
+      translate: 4px 0;
+    }
+  }
+
   /* Final CTA: background outline drifts slowly. */
   --animate-drift: drift 24s ease-in-out infinite alternate;
   @keyframes drift {
@@ -183,7 +180,7 @@
   *,
   ::before,
   ::after {
-    border-color: var(--color-border);
+    border-color: var(--line);
   }
 
   html {
@@ -202,6 +199,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* The theme wrapper (SiteShell) re-applies the page's body font and text colour. */
+  [data-theme] {
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+
   h1,
   h2,
   h3,
@@ -216,7 +219,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--primary);
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
 
@@ -226,13 +229,13 @@
   }
 
   /* Focus rings switch to the glow accent on dark surfaces */
-  :where([data-tone="black"], [data-tone="ink"], .on-dark) :focus-visible {
-    outline-color: var(--glow);
+  :where([data-tone="black"], [data-tone="ink"], [data-tone="plum"], .on-dark) :focus-visible {
+    outline-color: var(--accent-glow);
   }
 
-  /* ...and back to primary for light panels nested inside dark areas */
+  /* ...and back to the accent for light panels nested inside dark areas */
   :where(.on-light) :focus-visible {
-    outline-color: var(--primary);
+    outline-color: var(--accent);
   }
 
   [id] {
@@ -407,7 +410,127 @@
     clip-path: circle(var(--clip-r) at var(--clip-x) var(--clip-y));
   }
 }
-/* Already played this session (or reduced motion): never show it. */
+/* It plays on every full page load. `intro-seen` on <html> (set by nothing today) would hide it. */
 .intro-seen .preloader {
   display: none;
+}
+
+/* ------------------------------------------------------------------
+   Shared primitives (components/ui). Theme-aware: they read tokens only.
+   ------------------------------------------------------------------ */
+
+/* Display headings in the theme's --font-display (Fraunces on the breast page). */
+@utility heading-1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.4vw, 4.75rem);
+  font-weight: var(--display-weight);
+  line-height: 1.04;
+  letter-spacing: var(--display-tracking);
+}
+
+@utility heading-2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.25rem);
+  font-weight: var(--display-weight);
+  line-height: 1.1;
+  letter-spacing: var(--display-tracking);
+}
+
+@utility heading-3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  font-weight: var(--display-weight);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* Readable line length for body copy */
+@utility measure {
+  max-width: 68ch;
+}
+
+/* Soft layered shadows from styles/tokens.css */
+@utility shadow-soft-sm {
+  box-shadow: var(--shadow-sm);
+}
+@utility shadow-soft {
+  box-shadow: var(--shadow);
+}
+@utility shadow-soft-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Entrance animations that play on page load wait for the intro preloader: it is a sibling
+   before the page wrapper in <body> on a full load (never after client-side navigation).
+   Use animation-delay: calc(var(--intro-delay, 0s) + …). Matches INTRO_EXIT_START_MS - 0.2s. */
+.preloader ~ [data-theme] {
+  --intro-delay: 3.1s;
+}
+
+/* Reveal (components/ui/reveal.tsx): fade + rise, transform and opacity only.
+   --reveal-amount is the visible fraction that triggers it. Themes may override both. */
+:root {
+  --reveal-y: 16px;
+  --reveal-amount: 0.15;
+}
+@media (min-width: 768px) {
+  :root {
+    --reveal-y: 24px;
+  }
+}
+.reveal {
+  opacity: 0;
+  translate: 0 var(--reveal-y);
+  transition:
+    opacity 0.7s var(--ease-out-expo) var(--reveal-delay, 0s),
+    translate 0.7s var(--ease-out-expo) var(--reveal-delay, 0s);
+}
+.reveal[data-revealed] {
+  opacity: 1;
+  translate: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}
+
+/* CTA shine (components/layout/MobileActionBar.tsx): a soft light sweep across the pill once
+   every 7s, transform only. Off with reduced motion. */
+.cta-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cta-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.3) 50%, transparent 70%);
+  translate: -120% 0;
+  pointer-events: none;
+}
+@keyframes cta-shine {
+  0%,
+  72% {
+    translate: -120% 0;
+  }
+  100% {
+    translate: 120% 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cta-shine::after {
+    animation: cta-shine 7s ease-in-out 1.5s infinite;
+  }
 }

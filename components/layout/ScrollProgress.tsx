@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 
-/** 2px reading-progress line (primary → glow) along the bottom edge of the navbar. */
+/** 2px reading-progress line (the theme's --grad-accent) along the bottom edge of the navbar. */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const reduce = useReducedMotion();
@@ -11,7 +11,7 @@ export function ScrollProgress() {
   return (
     <motion.div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 -bottom-px h-0.5 origin-left bg-linear-to-r from-primary to-glow"
+      className="pointer-events-none absolute inset-x-0 -bottom-px h-0.5 origin-left bg-(image:--grad-accent)"
       style={{ scaleX: reduce ? scrollYProgress : smooth }}
     />
   );

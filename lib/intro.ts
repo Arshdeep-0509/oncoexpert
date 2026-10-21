@@ -7,7 +7,13 @@
 export const INTRO_EXIT_START_MS = 3300; // the overlay starts fading out
 export const INTRO_TOTAL_MS = 3900; // fully gone
 
-export const INTRO_SEEN_CLASS = "intro-seen";
+const INTRO_SEEN_CLASS = "intro-seen";
+
+/** True when the intro does not play on this page load. */
+export function introDisabled(): boolean {
+  if (typeof document === "undefined") return false;
+  return document.documentElement.classList.contains(INTRO_SEEN_CLASS);
+}
 
 /**
  * Seconds until the page is revealed (0 if the intro is hidden or already over).
@@ -15,7 +21,7 @@ export const INTRO_SEEN_CLASS = "intro-seen";
  */
 export function introRemainingSeconds(): number {
   if (typeof document === "undefined") return 0;
-  if (document.documentElement.classList.contains(INTRO_SEEN_CLASS)) return 0;
+  if (introDisabled()) return 0;
   // Prefer the real clock: the overlay's CSS exit animation (it starts at first paint).
   const exit = document
     .querySelector(".preloader")

@@ -1,0 +1,333 @@
+/* ==================================================================
+   Breast hero "Bloom": entrance choreography and ambient loops.
+   Plain CSS with bloom- prefixes (CSS modules are not available: the Turbopack rule in
+   next.config.ts turns every .css file into plain CSS). Class names: hero-styles.ts.
+   - Every entrance animation is offset by --intro (the intro preloader covers the page
+     on a full load) and scaled by --pace (faster on phones).
+   - All motion lives inside prefers-reduced-motion: no-preference. Without it the
+     elements simply render in their final state: slide 1, ribbon drawn and filled.
+   ================================================================== */
+
+.bloom-hero {
+  /* --intro-delay (globals.css): the intro preloader covers the page on a full load */
+  --intro: var(--intro-delay, 0s);
+  --pace: 0.75;
+  --rise: 16px;
+  --ribbon-draw: 0.7s;
+  --ribbon-fill: 0.35s;
+  --ribbon-at: 0.45s;
+}
+@media (min-width: 768px) {
+  .bloom-hero {
+    --pace: 1;
+    --rise: 24px;
+    --ribbon-draw: 1.6s;
+    --ribbon-fill: 0.6s;
+    --ribbon-at: 0.7s;
+  }
+}
+
+/* Delay helper: --d is the step's time in the desktop choreography. */
+.bloom-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Background                                                          */
+/* ------------------------------------------------------------------ */
+
+.bloom-blob {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* 3% grain */
+.bloom-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ */
+/* Headline                                                            */
+/* ------------------------------------------------------------------ */
+
+/* Each line sits in its own mask; extra bottom room keeps descenders and the italic intact. */
+.bloom-lineMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.bloom-line {
+  display: block;
+}
+
+.bloom-gradientText {
+  background-image: var(--grad-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.08em; /* italic overhang */
+}
+
+.bloom-underline {
+  position: absolute;
+  left: 0;
+  right: 0.08em;
+  bottom: -0.02em;
+  height: 0.28em;
+  width: calc(100% - 0.08em);
+  overflow: visible;
+}
+.bloom-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Stage                                                               */
+/* ------------------------------------------------------------------ */
+
+.bloom-arch {
+  border-radius: 999px 999px 32px 32px;
+}
+
+/* Cover panel over the arch; only visible while its entrance animation runs. */
+.bloom-archCover {
+  transform-origin: 50% 0;
+  scale: 1 0;
+}
+
+.bloom-slide {
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+.bloom-slide[data-active] {
+  opacity: 1;
+}
+
+.bloom-ribbonStroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* Primary button: soft shine sweep every 6s */
+.bloom-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.bloom-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  translate: -120% 0;
+  pointer-events: none;
+}
+
+/* Petals (desktop) */
+.bloom-petal {
+  position: absolute;
+  top: -40px;
+  opacity: 0;
+  will-change: transform;
+}
+.bloom-petals[data-paused] .bloom-petal {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bloom-fadeIn {
+    animation-name: bloom-fadeIn;
+    animation-duration: 0.9s;
+  }
+  .bloom-fadeDown {
+    animation-name: bloom-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .bloom-rise {
+    animation-name: bloom-rise;
+    animation-duration: calc(0.9s * var(--pace));
+  }
+  .bloom-fadeUp {
+    animation-name: bloom-fadeUp;
+    animation-duration: 0.7s;
+  }
+  /* The arch reveal: a cover panel shrinks away (scaleY), so the photo underneath is
+     painted from the start (it is the LCP image). */
+  .bloom-archCover {
+    animation-name: bloom-archCover;
+    animation-duration: calc(1.1s * var(--pace));
+  }
+  .bloom-pop {
+    animation-name: bloom-pop;
+    animation-duration: 0.7s;
+  }
+
+  .bloom-underline path {
+    animation: bloom-draw calc(0.8s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + 1s * var(--pace));
+  }
+
+  .bloom-ribbonStroke {
+    animation: bloom-draw var(--ribbon-draw) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + var(--ribbon-at));
+  }
+  .bloom-ribbonFill {
+    animation: bloom-fadeIn var(--ribbon-fill) ease-out both;
+    animation-delay: calc(var(--intro) + var(--ribbon-at) + var(--ribbon-draw));
+  }
+  .bloom-ribbonBreathe {
+    animation: bloom-breathe 6s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + var(--ribbon-at) + var(--ribbon-draw) + var(--ribbon-fill));
+    transform-origin: 50% 40%;
+  }
+
+  .bloom-drift1 {
+    animation: bloom-drift1 26s ease-in-out infinite alternate;
+  }
+  .bloom-drift2 {
+    animation: bloom-drift2 30s ease-in-out infinite alternate;
+  }
+  .bloom-drift3 {
+    animation: bloom-drift3 22s ease-in-out infinite alternate;
+  }
+
+  .bloom-kenBurns {
+    animation: bloom-kenBurns 6.7s linear both;
+  }
+  .bloom-stage[data-paused] .bloom-kenBurns {
+    animation-play-state: paused;
+  }
+
+  .bloom-shine::after {
+    animation: bloom-shine 6s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 2.5s);
+  }
+
+  .bloom-petal {
+    animation:
+      bloom-petalFall var(--fall, 18s) linear infinite,
+      bloom-petalSway var(--sway, 5s) ease-in-out infinite alternate;
+    animation-delay: var(--start, 0s), var(--start, 0s);
+  }
+}
+
+/* The slide crossfade is decorative too. */
+@media (prefers-reduced-motion: reduce) {
+  .bloom-slide {
+    transition: none;
+  }
+}
+
+@keyframes bloom-fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes bloom-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes bloom-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise);
+  }
+}
+@keyframes bloom-rise {
+  from {
+    translate: 0 110%;
+  }
+}
+@keyframes bloom-archCover {
+  from {
+    scale: 1 1;
+  }
+  to {
+    scale: 1 0;
+  }
+}
+@keyframes bloom-pop {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+@keyframes bloom-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes bloom-breathe {
+  50% {
+    scale: 1.02;
+  }
+}
+@keyframes bloom-kenBurns {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.06;
+  }
+}
+@keyframes bloom-shine {
+  0% {
+    translate: -120% 0;
+  }
+  18%,
+  100% {
+    translate: 120% 0;
+  }
+}
+@keyframes bloom-drift1 {
+  to {
+    translate: 6vw 4vh;
+    scale: 1.08;
+  }
+}
+@keyframes bloom-drift2 {
+  to {
+    translate: -5vw -3vh;
+    scale: 0.94;
+  }
+}
+@keyframes bloom-drift3 {
+  to {
+    translate: 4vw -5vh;
+    scale: 1.05;
+  }
+}
+@keyframes bloom-petalFall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  8%,
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift, 80px), 110vh, 0) rotate(var(--spin, 220deg));
+  }
+}
+@keyframes bloom-petalSway {
+  from {
+    translate: -14px 0;
+  }
+  to {
+    translate: 14px 0;
+  }
+}

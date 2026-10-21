@@ -36,7 +36,7 @@ Before committing: `npm run typecheck && npm run lint && npm run format:check &&
 ```
 app/
   layout.tsx                 html, body, fonts, providers, Preloader (no header/footer)
-  page.tsx                   / → redirects to /robotic-surgery/
+  page.tsx                   / → redirects to /breast-cancer-treatment-bangalore/
   globals.css                imports tokens + themes; @theme inline token → utility map; shared keyframes
   sitemap.ts, robots.ts      from content/pages/index.ts
   robotic-surgery/           layout.tsx = <SiteShell theme="robotic" …>; page.tsx = sections in order

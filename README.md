@@ -18,7 +18,7 @@ Requires Node.js 20 or newer.
 ```bash
 npm install
 cp .env.example .env.local     # then fill in RESEND_API_KEY (see "Appointment form")
-npm run dev                    # http://localhost:3000 → redirects to /robotic-surgery/
+npm run dev                    # http://localhost:3000 → opens /breast-cancer-treatment-bangalore/
 ```
 
 | Command             | What it does                                                |

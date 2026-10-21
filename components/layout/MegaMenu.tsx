@@ -12,7 +12,8 @@ import {
   NavigationMenuLink,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { ActiveDot, navLinkClass } from "@/components/layout/nav-link";
+import { ActiveDot } from "@/components/layout/ActiveDot";
+import { navLinkClass } from "@/components/layout/nav-link";
 import { serviceIcons, ICON_STROKE } from "@/components/layout/nav-icons";
 
 type MegaMenuProps = {
@@ -54,9 +55,7 @@ export function MegaMenu({ label, href, items, onDark, pathname, variant }: Mega
           navLinkClass(onDark),
           focusRing,
           "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent",
-          onDark
-            ? "focus:text-white data-[state=open]:text-white"
-            : "focus:text-ink data-[state=open]:text-ink",
+          onDark ? "focus:text-white data-[state=open]:text-white" : "focus:text-ink data-[state=open]:text-ink",
         )}
       >
         {active && panel.triggerDot ? <ActiveDot onDark={onDark} /> : null}

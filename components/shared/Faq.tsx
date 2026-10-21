@@ -3,9 +3,9 @@ import { ArrowRight, MapPin, MessageCircleQuestion, Phone } from "lucide-react";
 import type { Cta, FaqItem, Location, SectionTone } from "@/content/types";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
 
@@ -82,7 +82,10 @@ export function Faq({ id = "faq", tone = "surface", title, contactTitle, items, 
                 >
                   {item.question}
                   {/* Plus → minus: the vertical bar rotates flat when open */}
-                  <span aria-hidden="true" className="relative grid size-9 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+                  <span
+                    aria-hidden="true"
+                    className="relative grid size-9 shrink-0 place-items-center rounded-full bg-accent-soft text-accent"
+                  >
                     <span className="absolute h-0.5 w-3.5 rounded-full bg-current" />
                     <span className="absolute h-3.5 w-0.5 rounded-full bg-current transition-transform duration-300 ease-out-expo group-data-[state=open]:rotate-90" />
                   </span>

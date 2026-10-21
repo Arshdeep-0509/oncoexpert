@@ -10,7 +10,8 @@ import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
-import { Field, formCopy as f, type FormStyles } from "./form-ui";
+import { Field } from "@/components/shared/appointment/Field";
+import { formCopy as f, type FormStyles } from "@/components/shared/appointment/form";
 
 type Status = "idle" | "success" | "error";
 

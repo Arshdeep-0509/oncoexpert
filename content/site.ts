@@ -13,14 +13,7 @@ import type { Location } from "@/content/types";
 
 /** Icon keys are mapped to lucide icons in components/layout/nav-icons.tsx. */
 export type ServiceIcon =
-  | "breast"
-  | "colorectal"
-  | "endometrial"
-  | "lung"
-  | "urology"
-  | "stomach"
-  | "ovarian"
-  | "thyroid";
+  "breast" | "colorectal" | "endometrial" | "lung" | "urology" | "stomach" | "ovarian" | "thyroid";
 
 export type NavChild = { label: string; href: string; icon: ServiceIcon };
 export type NavItem = { label: string; href: string; children?: readonly NavChild[] };
@@ -192,7 +185,7 @@ export const site = {
   },
 } as const;
 
-export type Site = typeof site;
+type Site = typeof site;
 
 /** "Service Required" options of the appointment form. */
 export type AppointmentService = Site["appointmentServices"][number];

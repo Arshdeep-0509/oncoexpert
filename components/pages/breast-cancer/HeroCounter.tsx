@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { introRemainingSeconds } from "@/lib/intro";
-import { Counter } from "@/components/ui/counter";
+import { Counter } from "@/components/ui/Counter";
 
 /** Hero stat number: counts up when the stat cards pop in (after the intro, at ~1.0s; 0.75s on phones). */
 export function HeroCounter({ value, prefix, suffix }: { value: number; prefix?: string; suffix?: string }) {

@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { pricing } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
-import { PriceCards } from "./PriceCards";
+import { PriceCards } from "@/components/pages/breast-cancer/PriceCards";
 
 /** 10 · #pricing */
 export function CareFinancing() {
@@ -18,7 +18,7 @@ export function CareFinancing() {
     <Section id="pricing" tone="surface" aria-labelledby="pricing-title">
       <Reveal>
         <SectionHeading id="pricing-title" title={pricing.title} intro={pricing.intro} />
-        <p className="measure mt-3 text-base font-semibold text-accent md:text-[1.0625rem]">{pricing.doctorLine}</p>
+        <p className="mt-3 measure text-base font-semibold text-accent md:text-[1.0625rem]">{pricing.doctorLine}</p>
       </Reveal>
 
       <Reveal className="mt-10 md:mt-12" delay={0.05}>

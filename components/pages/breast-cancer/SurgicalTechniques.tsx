@@ -4,13 +4,13 @@ import { ArrowRight, Bot, Flower2, Network, Sparkles, Users, type LucideIcon } f
 import { surgery, type SurgeryCardKey } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
-import { ProgressRing } from "@/components/ui/progress-ring";
-import { Counter } from "@/components/ui/counter";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
+import { ProgressRing } from "@/components/ui/ProgressRing";
+import { Counter } from "@/components/ui/Counter";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
-import { ReconstructionOptions } from "./ReconstructionOptions";
+import { ReconstructionOptions } from "@/components/pages/breast-cancer/ReconstructionOptions";
 
 const icons: Record<SurgeryCardKey, LucideIcon> = {
   conservation: Flower2,

@@ -4,7 +4,7 @@ import * as React from "react";
 import { CalendarCheck, Phone } from "lucide-react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
-import { useInViewById } from "@/lib/use-element-by-id";
+import { useInViewById } from "@/lib/hooks/use-element-by-id";
 import { WhatsappIcon } from "@/components/ui/brand-icons";
 import { useAppointment, APPOINTMENT_ID } from "@/components/layout/AppointmentProvider";
 
@@ -73,7 +73,7 @@ export function MobileActionBar() {
           type="button"
           onClick={() => openAppointment()}
           data-cta="action-bar-appointment"
-          className="flex min-h-12 items-center justify-center gap-1.5 rounded-pill bg-accent px-3 text-sm font-semibold min-[390px]:text-[15px] whitespace-nowrap text-white shadow-(--accent-shadow) transition-colors active:bg-accent-hover"
+          className="flex min-h-12 items-center justify-center gap-1.5 rounded-pill bg-accent px-3 text-sm font-semibold whitespace-nowrap text-white shadow-(--accent-shadow) transition-colors active:bg-accent-hover min-[390px]:text-[15px]"
         >
           <CalendarCheck className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden="true" />
           {site.actionBar.book}

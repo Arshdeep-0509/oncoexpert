@@ -2,7 +2,7 @@ import { Mail, Phone } from "lucide-react";
 import type { HeaderVariant } from "@/content/types";
 import { cn } from "@/lib/utils";
 import { site } from "@/content/site";
-import { Container } from "@/components/ui/container";
+import { Container } from "@/components/ui/Container";
 import { socialIcons } from "@/components/ui/brand-icons";
 
 // 40px bars can't hold 44px targets, so each link's hit area extends past
@@ -17,14 +17,22 @@ const hit = "relative after:absolute after:-inset-y-1 after:-inset-x-1 after:con
 export function TopBar({ variant = "dark" }: { variant?: HeaderVariant }) {
   const height = variant === "dark" ? "h-10" : "h-9";
   return (
-    <div className={cn("on-dark hidden bg-ink text-[13px] text-white/80", variant === "dark" ? "md:block" : "lg:block")}>
+    <div
+      className={cn("on-dark hidden bg-ink text-[13px] text-white/80", variant === "dark" ? "md:block" : "lg:block")}
+    >
       <Container className={cn("flex items-center justify-between", height)}>
         <div className="flex items-center gap-6">
-          <a href={site.contact.phoneHref} className={`${hit} inline-flex h-full items-center gap-2 tabular-nums transition-colors hover:text-accent-glow`}>
+          <a
+            href={site.contact.phoneHref}
+            className={`${hit} inline-flex h-full items-center gap-2 tabular-nums transition-colors hover:text-accent-glow`}
+          >
             <Phone className="size-3.5" strokeWidth={1.75} aria-hidden="true" />
             {site.contact.phoneDisplay}
           </a>
-          <a href={site.contact.emailHref} className={`${hit} inline-flex h-full items-center gap-2 transition-colors hover:text-accent-glow`}>
+          <a
+            href={site.contact.emailHref}
+            className={`${hit} inline-flex h-full items-center gap-2 transition-colors hover:text-accent-glow`}
+          >
             <Mail className="size-3.5" strokeWidth={1.75} aria-hidden="true" />
             {site.contact.email}
           </a>

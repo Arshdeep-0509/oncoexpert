@@ -10,15 +10,10 @@
  * permitted edits are the approved spelling/punctuation fixes listed in the brief.
  */
 
-import type { Review } from "@/content/types";
-import { site } from "@/content/site";
+import type { AppointmentService } from "@/content/site";
 import { googleReviews } from "@/content/shared/reviews";
 import { youtubeVideos } from "@/content/shared/videos";
-import { appointmentSection, finalCtaSection, locationsSection } from "@/content/shared/sections";
 import { organization } from "@/content/shared/organization";
-
-export type Tone = "black" | "white" | "surface" | "ink";
-export type Source = "EXISTING" | "DOCTOR" | "NEW" | "EXISTING + DOCTOR";
 
 /* ------------------------------------------------------------------ */
 /* Metadata                                                            */
@@ -60,19 +55,61 @@ const ARMS = { width: 1200, height: 839 } as const;
 
 export const images = {
   xFrontWhite: { src: "/images/robotic/davinci-x-front-white.jpg", alt: ALT.front, bg: "white", ...PORTRAIT },
-  xInstrumentsWhite: { src: "/images/robotic/davinci-x-instruments-white.jpg", alt: ALT.instruments, bg: "white", ...PORTRAIT },
-  xInstrumentsBlack: { src: "/images/robotic/davinci-x-instruments-black.jpg", alt: ALT.instruments, bg: "black", subject: { x: 10.7, y: 30.2, w: 75, h: 56.2 }, ...PORTRAIT },
+  xInstrumentsWhite: {
+    src: "/images/robotic/davinci-x-instruments-white.jpg",
+    alt: ALT.instruments,
+    bg: "white",
+    ...PORTRAIT,
+  },
+  xInstrumentsBlack: {
+    src: "/images/robotic/davinci-x-instruments-black.jpg",
+    alt: ALT.instruments,
+    bg: "black",
+    subject: { x: 10.7, y: 30.2, w: 75, h: 56.2 },
+    ...PORTRAIT,
+  },
   xBackWhite: { src: "/images/robotic/davinci-x-back-white.jpg", alt: ALT.back, bg: "white", ...PORTRAIT },
-  xBackBlack: { src: "/images/robotic/davinci-x-back-black.jpg", alt: ALT.back, bg: "black", subject: { x: 17.2, y: 15.4, w: 71.2, h: 68.4 }, ...PORTRAIT },
+  xBackBlack: {
+    src: "/images/robotic/davinci-x-back-black.jpg",
+    alt: ALT.back,
+    bg: "black",
+    subject: { x: 17.2, y: 15.4, w: 71.2, h: 68.4 },
+    ...PORTRAIT,
+  },
   // The arms run off the photo's top and left edges (`bleed`): those edges get faded wherever it is shown.
   armsWhite: { src: "/images/robotic/davinci-arms-white.jpg", alt: ALT.arms, bg: "white", bleed: "top-left", ...ARMS },
-  armsBlack: { src: "/images/robotic/davinci-arms-black.jpg", alt: ALT.arms, bg: "black", bleed: "top-left", subject: { x: 0, y: 0, w: 82.8, h: 68.3 }, ...ARMS },
+  armsBlack: {
+    src: "/images/robotic/davinci-arms-black.jpg",
+    alt: ALT.arms,
+    bg: "black",
+    bleed: "top-left",
+    subject: { x: 0, y: 0, w: 82.8, h: 68.3 },
+    ...ARMS,
+  },
   systemWhite: { src: "/images/robotic/davinci-system-white.jpg", alt: ALT.system, bg: "white", ...LANDSCAPE },
-  systemBlack: { src: "/images/robotic/davinci-system-black.jpg", alt: ALT.system, bg: "black", subject: { x: 26, y: 28.3, w: 52.5, h: 42.8 }, ...LANDSCAPE },
+  systemBlack: {
+    src: "/images/robotic/davinci-system-black.jpg",
+    alt: ALT.system,
+    bg: "black",
+    subject: { x: 26, y: 28.3, w: 52.5, h: 42.8 },
+    ...LANDSCAPE,
+  },
   visionCart: { src: "/images/robotic/davinci-vision-cart.jpg", alt: ALT.visionCart, bg: "white", ...PORTRAIT },
   // Black-background copies made with scripts/make-black-bg.mjs (from the white originals above).
-  xFrontBlack: { src: "/images/robotic/davinci-x-front-black.jpg", alt: ALT.front, bg: "black", subject: { x: 12.2, y: 15.8, w: 75.5, h: 67.3 }, ...PORTRAIT },
-  visionCartBlack: { src: "/images/robotic/davinci-vision-cart-black.jpg", alt: ALT.visionCart, bg: "black", subject: { x: 24.8, y: 2.8, w: 50.8, h: 93.2 }, ...PORTRAIT },
+  xFrontBlack: {
+    src: "/images/robotic/davinci-x-front-black.jpg",
+    alt: ALT.front,
+    bg: "black",
+    subject: { x: 12.2, y: 15.8, w: 75.5, h: 67.3 },
+    ...PORTRAIT,
+  },
+  visionCartBlack: {
+    src: "/images/robotic/davinci-vision-cart-black.jpg",
+    alt: ALT.visionCart,
+    bg: "black",
+    subject: { x: 24.8, y: 2.8, w: 50.8, h: 93.2 },
+    ...PORTRAIT,
+  },
   doctor: {
     src: "/images/brand/dr-sunil-navalgund.png",
     // SOURCE: NEW
@@ -85,13 +122,27 @@ export const images = {
 
 /**
  * SOURCE: DOCTOR (asked for more images). The photos shown in the hero slider, in this order.
- * Add operating-room / team photos here: put the file in public/images/gallery/ and add an
+ * Add operating-room / team photos here: put the file in public/images/robotic/ and add an
  * entry ({ src, alt, width, height, bg }). The hero is pure black: use black-background photos
  * (bg: "black"; make one from a white product shot with scripts/make-black-bg.mjs) or real
  * photographs (bg: "photo"). Every photo is shown in the same-size frame; give black product
  * shots a `subject` box so the machine is drawn at the same size as on the first slide.
  */
-export const robotPhotos: readonly GalleryItem[] = [
+type GalleryItem = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** "white" photos are multiply-blended on the white section; "photo" = normal photograph. */
+  bg: "white" | "black" | "photo";
+  /**
+   * Where the machine sits inside the photo, in % of the photo (measured on the file).
+   * The hero slider uses it to show every machine at the same size and centred.
+   */
+  subject?: { x: number; y: number; w: number; h: number };
+};
+
+const robotPhotos: readonly GalleryItem[] = [
   images.systemBlack,
   images.xInstrumentsBlack,
   images.armsBlack,
@@ -103,13 +154,11 @@ export const robotPhotos: readonly GalleryItem[] = [
 /* 1 · #hero — HeroSlider                                              */
 /* ------------------------------------------------------------------ */
 
-export type AppointmentService = (typeof appointmentServices)[number];
-
-// SOURCE: EXISTING (form options, "Consulation" → "Consultation" per approved fix)
-export const appointmentServices = site.appointmentServices;
+// Form options are shared by every page: content/site.ts → appointmentServices.
+export type { AppointmentService };
 
 // SOURCE: EXISTING (button labels) → service preselected in the appointment form
-export const consultCtas = {
+const consultCtas = {
   primary: { label: "Book Consultation", service: "Consultation" },
   secondary: { label: "Get Second Opinion", service: "Second Opinion" },
 } as const satisfies Record<string, { label: string; service: AppointmentService }>;
@@ -188,8 +237,7 @@ export const whyRobotic = {
 // SOURCE: EXISTING
 export const techniques = {
   heading: "Advanced Surgical Techniques",
-  intro:
-    "We specialize in two primary minimally invasive methods, choosing the best fit for your specific condition.",
+  intro: "We specialize in two primary minimally invasive methods, choosing the best fit for your specific condition.",
   items: [
     {
       tag: "Next-Gen Tech",
@@ -360,8 +408,7 @@ export const compare = {
   // SOURCE: EXISTING
   eyebrow: "COMPARING MODALITIES",
   heading: "Which Option is Right for You?",
-  intro:
-    "A detailed comparison of our advanced surgical approaches to help you make an informed decision.",
+  intro: "A detailed comparison of our advanced surgical approaches to help you make an informed decision.",
   // SOURCE: EXISTING (row labels); icons are presentation only
   rows: [
     { label: "TECHNOLOGY", icon: "cpu" },
@@ -401,14 +448,7 @@ export const compare = {
 /* ------------------------------------------------------------------ */
 
 export type SurgeryKey =
-  | "colorectal"
-  | "stomach"
-  | "endometrium"
-  | "esophagus"
-  | "lung"
-  | "thyroid"
-  | "kidney"
-  | "others";
+  "colorectal" | "stomach" | "endometrium" | "esophagus" | "lung" | "thyroid" | "kidney" | "others";
 
 export type SurgeryCount = {
   key: SurgeryKey;
@@ -446,8 +486,7 @@ export const surgeryNumbers = {
 export const surgeryTotal = (counts: readonly SurgeryCount[] = surgeryNumbers.counts) =>
   counts.reduce((sum, c) => sum + c.count, 0);
 
-export const surgeryCount = (key: SurgeryKey) =>
-  surgeryNumbers.counts.find((c) => c.key === key)?.count ?? 0;
+export const surgeryCount = (key: SurgeryKey) => surgeryNumbers.counts.find((c) => c.key === key)?.count ?? 0;
 
 /* ------------------------------------------------------------------ */
 /* 9 · #cancers — CancersWeTreat                                       */
@@ -524,17 +563,15 @@ export const benefits = {
 } as const;
 
 /* ------------------------------------------------------------------ */
-/* 11 · #doctor — MeetTheDoctor                                        */
+/* 11 · #doctor — shared DoctorCard (classic look)                     */
 /* ------------------------------------------------------------------ */
 
 export const doctor = {
   // SOURCE: EXISTING
-  heading: "Meet Dr. Sunil Navalgund",
-  eyebrow: "LEAD SURGICAL ONCOLOGIST",
-  paragraphs: [
-    "Dr. Sunil Navalgund is a pioneer in minimally invasive cancer surgery.",
-    "With thousands of successful robotic and laparoscopic procedures, he brings a level of precision that ensures the best possible clinical outcomes for his patients.",
-  ],
+  name: "Meet Dr. Sunil Navalgund",
+  label: "LEAD SURGICAL ONCOLOGIST",
+  lead: "Dr. Sunil Navalgund is a pioneer in minimally invasive cancer surgery.",
+  bio: "With thousands of successful robotic and laparoscopic procedures, he brings a level of precision that ensures the best possible clinical outcomes for his patients.",
   credentials: [
     { label: "Education", value: "MCH Surgical Oncology, FIAGES", icon: "graduation-cap" },
     { label: "Expertise", value: "Robotic & GI Oncology", icon: "stethoscope" },
@@ -544,22 +581,8 @@ export const doctor = {
 } as const;
 
 /* ------------------------------------------------------------------ */
-/* 12 · #media — VideosGallery                                         */
+/* 12 · #media — shared Videos (classic look)                          */
 /* ------------------------------------------------------------------ */
-
-export type GalleryItem = {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  /** "white" photos are multiply-blended on the white section; "photo" = normal photograph. */
-  bg: "white" | "black" | "photo";
-  /**
-   * Where the machine sits inside the photo, in % of the photo (measured on the file).
-   * The hero slider uses it to show every machine at the same size and centred.
-   */
-  subject?: { x: number; y: number; w: number; h: number };
-};
 
 export const media = {
   // SOURCE: NEW
@@ -571,58 +594,30 @@ export const media = {
   videos: youtubeVideos,
 
   // SOURCE: NEW (screen-reader / control labels)
-  a11y: {
-    play: (title: string | null) => (title ? `Play video: ${title}` : "Play video"),
-    videoFrame: "YouTube video",
-  },
+  // (the play button reads "Play video: <title>")
+  a11y: { play: "Play video", frame: "YouTube video", list: "Videos" },
 } as const;
 
 /* ------------------------------------------------------------------ */
-/* 13 · #reviews — Testimonials                                        */
+/* 13 · #reviews — shared Reviews (classic look)                       */
 /* Google reviews, verbatim (reviewers' own spelling is preserved).    */
+/* Labels: content/shared/reviews.ts (reviewLabels)                    */
 /* ------------------------------------------------------------------ */
-
-export type { Review };
 
 export const reviews = {
   // SOURCE: EXISTING
   heading: "Every patient story reflects our commitment to clinical excellence.",
-  postedOn: "Posted on Google",
   // SOURCE: EXISTING (quotes: do not correct spelling), shared: content/shared/reviews.ts
   items: googleReviews,
-  // SOURCE: NEW
-  readMore: "Read more",
-  readLess: "Read less",
-  // SOURCE: NEW (screen-reader / control labels)
-  a11y: {
-    region: "Patient reviews",
-    rating: (n: number) => `Rated ${n} out of 5`,
-    previous: "Previous reviews",
-    next: "Next reviews",
-    goTo: (n: number, total: number) => `Go to review ${n} of ${total}`,
-  },
 } as const;
 
 /* ------------------------------------------------------------------ */
-/* 14 · #appointment — ContactSection                                  */
+/* 14–16 · #appointment, #locations, final band: shared sections       */
+/* (classic look). Copy: content/shared/sections.ts                    */
 /* ------------------------------------------------------------------ */
 
-// SOURCE: shared with every page (content/shared/sections.ts)
-export const appointment = appointmentSection;
-
-/* ------------------------------------------------------------------ */
-/* 15 · #locations — Locations                                         */
-/* ------------------------------------------------------------------ */
-
-// SOURCE: shared with every page (content/shared/sections.ts)
-export const locations = locationsSection;
-
-/* ------------------------------------------------------------------ */
-/* 16 · FinalCta                                                       */
-/* ------------------------------------------------------------------ */
-
-// SOURCE: shared with every page (content/shared/sections.ts)
-export const finalCta = finalCtaSection;
+/** Page name used in the appointment email subject and the form's hidden "page" field. */
+export const pageName = "Robotic Surgery";
 
 /* ------------------------------------------------------------------ */
 /* Structured data (JSON-LD). Not visible on the page.                 */

@@ -1,13 +1,13 @@
 import { MessageCircleHeart } from "lucide-react";
 import { survivors } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/ui/reveal";
-import { HeroPetals } from "./HeroPetals";
-import { SurvivorsCollage } from "./SurvivorsCollage";
-import "./hero.css"; // petal styles (bloom-petal*)
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Button } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
+import { HeroPetals } from "@/components/pages/breast-cancer/HeroPetals";
+import { SurvivorsCollage } from "@/components/pages/breast-cancer/SurvivorsCollage";
+import "@/components/pages/breast-cancer/hero.css"; // petal styles (bloom-petal*)
 
 const pick = (key: keyof typeof breastImages) => {
   const img = breastImages[key];
@@ -40,7 +40,7 @@ export function SurvivorsCircle() {
             emphasis={survivors.emphasis}
             onDark
           />
-          <p className="measure mt-6 font-display text-[1.3rem] leading-relaxed text-white/90 md:text-[1.5rem]">
+          <p className="mt-6 measure font-display text-[1.3rem] leading-relaxed text-white/90 md:text-[1.5rem]">
             {survivors.body}
           </p>
 

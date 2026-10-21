@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { styles } from "./hero-styles";
+import { styles } from "@/components/pages/breast-cancer/hero-styles";
 
 // left %, size px, fall s, sway s, start delay s, sideways drift px, spin deg
 const PETALS = [
@@ -17,7 +17,7 @@ const PETALS = [
 ] as const;
 
 /** The petals themselves; paused while the hero is off-screen. */
-export default function HeroPetalsLayer() {
+export function HeroPetalsLayer() {
   const ref = React.useRef<HTMLDivElement>(null);
   const [paused, setPaused] = React.useState(false);
 
@@ -52,8 +52,16 @@ export default function HeroPetalsLayer() {
           }
         >
           <svg width={size} height={size * 1.3} viewBox="0 0 20 26" className="block">
-            <path d="M10 1C16 7 18 14 14.5 20 12.5 23.5 7.5 23.5 5.5 20 2 14 4 7 10 1Z" style={{ fill: "var(--petal)" }} />
-            <path d="M10 4C10.5 10 10.5 15 10 21" fill="none" style={{ stroke: "var(--accent-glow)" }} strokeWidth="0.8" />
+            <path
+              d="M10 1C16 7 18 14 14.5 20 12.5 23.5 7.5 23.5 5.5 20 2 14 4 7 10 1Z"
+              style={{ fill: "var(--petal)" }}
+            />
+            <path
+              d="M10 4C10.5 10 10.5 15 10 21"
+              fill="none"
+              style={{ stroke: "var(--accent-glow)" }}
+              strokeWidth="0.8"
+            />
           </svg>
         </span>
       ))}

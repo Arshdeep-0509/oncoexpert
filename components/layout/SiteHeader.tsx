@@ -1,50 +1,17 @@
 "use client";
 
-import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, Phone } from "lucide-react";
 import { site } from "@/content/site";
 import type { HeaderVariant } from "@/content/types";
-import { cn, focusRing } from "@/lib/utils";
-import { isActivePath } from "@/lib/nav";
-import { useElementById } from "@/lib/use-element-by-id";
-import { Container } from "@/components/ui/container";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
-import { useAppointment } from "@/components/layout/AppointmentProvider";
-import { MegaMenu } from "@/components/layout/MegaMenu";
-import { MobileMenu } from "@/components/layout/MobileMenu";
+import { cn } from "@/lib/utils";
+import { Container } from "@/components/ui/Container";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { ActiveDot, navLinkClass } from "@/components/layout/nav-link";
-
-/**
- * Per-variant sizes. "dark" is the robotic page's original bar (80 → 68px after 40px of
- * scroll, CTA from md); "light" is 64px on phones/tablets and 76 → 64px on desktop after
- * 24px of scroll, CTA on desktop only.
- */
-const VARIANTS = {
-  dark: {
-    barPx: 80,
-    compactAfter: 40,
-    bar: "h-20",
-    barCompact: "h-[68px]",
-    logo: "h-9 group-data-[compact=true]/nav:h-8",
-    cta: "md:inline-flex",
-    phone: "size-11",
-    activeDot: true,
-  },
-  light: {
-    barPx: 76,
-    compactAfter: 24,
-    bar: "h-16 lg:h-[76px]",
-    barCompact: "h-16",
-    logo: "h-8 lg:h-9 lg:group-data-[compact=true]/nav:h-8",
-    cta: "lg:inline-flex",
-    phone: "size-12 lg:size-11",
-    activeDot: false,
-  },
-} as const;
+import { headerVariants } from "@/components/layout/header/header-variants";
+import { useHeaderState } from "@/components/layout/header/use-header-state";
+import { DesktopNav } from "@/components/layout/header/DesktopNav";
+import { HeaderActions } from "@/components/layout/header/HeaderActions";
 
 type SiteHeaderProps = {
   /**
@@ -72,56 +39,13 @@ export function SiteHeader({
 }: SiteHeaderProps) {
   const pathname = usePathname();
   const current = activeHref ?? pathname;
-  const v = VARIANTS[variant];
+  const v = headerVariants[variant];
   const overlay = heroId !== null;
-  const [overHero, setOverHero] = React.useState(overlay);
-  const [compact, setCompact] = React.useState(false);
-  const { openAppointment } = useAppointment();
-
-  const sentinelRef = React.useRef<HTMLDivElement>(null);
-  const observer = React.useRef<IntersectionObserver | null>(null);
-
-  // ONE IntersectionObserver, no scroll listeners. Its root starts below the bar, and it
-  // watches (1) the hero: transparent ↔ solid, and (2) a sentinel spanning the first
-  // `compactAfter` px of scroll just below the bar: once it has left, the bar is compact.
-  React.useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.target === sentinelRef.current) setCompact(!entry.isIntersecting);
-          else setOverHero(entry.isIntersecting);
-        }
-      },
-      { rootMargin: `-${v.barPx}px 0px 0px 0px` },
-    );
-    observer.current = io;
-    if (sentinelRef.current) io.observe(sentinelRef.current);
-    return () => io.disconnect();
-  }, [v.barPx]);
-
-  // Track the hero element (it can mount after the header, or be replaced).
-  const heroRef = React.useRef<HTMLElement | null>(null);
-  useElementById(
-    heroId,
-    (hero) => {
-      const io = observer.current;
-      if (heroRef.current) io?.unobserve(heroRef.current);
-      heroRef.current = hero;
-      if (hero) io?.observe(hero);
-      else setOverHero(false); // no hero on this page: solid bar
-    },
-    [pathname, v.barPx],
-  );
+  const { sentinelRef, overHero, compact } = useHeaderState({ heroId, barPx: v.barPx, pathname });
 
   // Transparent while over the hero; white text only when that hero is dark.
   const transparent = overlay && overHero;
   const onDark = variant === "dark" && transparent;
-
-  const onAppointmentClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!appointmentHref.startsWith("#")) return;
-    e.preventDefault();
-    openAppointment();
-  };
 
   return (
     <>
@@ -161,87 +85,14 @@ export function SiteHeader({
                   height={site.logo.height}
                   sizes="150px"
                   loading="eager"
-                  className={cn("blend-on-light w-auto transition-[height] duration-500 ease-out-expo", v.logo)}
+                  className={cn("w-auto blend-on-light transition-[height] duration-500 ease-out-expo", v.logo)}
                 />
               </span>
             </Link>
 
-            {/* Desktop links */}
-            <NavigationMenu viewport={false} aria-label={site.a11y.mainNav} className="hidden lg:flex">
-              <NavigationMenuList className="gap-0.5">
-                {site.nav.map((item) => {
-                  if (item.children) {
-                    return (
-                      <MegaMenu
-                        key={item.href}
-                        label={item.label}
-                        href={item.href}
-                        items={item.children}
-                        onDark={onDark}
-                        pathname={current}
-                        variant={variant}
-                      />
-                    );
-                  }
-                  const active = isActivePath(current, item.href);
-                  return (
-                    <NavigationMenuItem key={item.href}>
-                      <Link
-                        href={item.href}
-                        prefetch={false}
-                        data-active={active}
-                        aria-current={active ? "page" : undefined}
-                        className={navLinkClass(onDark)}
-                      >
-                        {active && v.activeDot ? <ActiveDot onDark={onDark} /> : null}
-                        {item.label}
-                      </Link>
-                    </NavigationMenuItem>
-                  );
-                })}
-              </NavigationMenuList>
-            </NavigationMenu>
+            <DesktopNav current={current} onDark={onDark} variant={variant} />
 
-            {/* Actions */}
-            <div className="flex items-center gap-2 justify-self-end lg:gap-3">
-              <a
-                href={site.contact.phoneHref}
-                aria-label={`${site.a11y.call} ${site.contact.phoneDisplay}`}
-                className={cn(
-                  "grid place-items-center rounded-full border transition-colors duration-300",
-                  v.phone,
-                  onDark
-                    ? "border-white/25 text-white hover:border-white/50 hover:bg-white/10"
-                    : "border-line text-ink hover:border-accent/40 hover:text-accent",
-                )}
-              >
-                <Phone className="size-[18px]" strokeWidth={1.75} aria-hidden="true" />
-              </a>
-              <Link
-                href={appointmentHref}
-                prefetch={false}
-                onClick={onAppointmentClick}
-                data-cta="header-appointment"
-                className={cn(
-                  "group/cta hidden h-11 items-center gap-2 rounded-full bg-accent pr-4 pl-5 text-[15px] font-semibold text-white shadow-(--accent-shadow) transition-colors duration-300 hover:bg-accent-hover",
-                  v.cta,
-                )}
-              >
-                {site.appointmentCta.label}
-                <ArrowRight
-                  className="size-4 transition-transform duration-300 ease-out-expo group-hover/cta:translate-x-1"
-                  strokeWidth={1.75}
-                  aria-hidden="true"
-                />
-              </Link>
-              <MobileMenu
-                onDark={onDark}
-                pathname={current}
-                appointmentHref={appointmentHref}
-                variant={variant}
-                className={cn("lg:hidden", focusRing)}
-              />
-            </div>
+            <HeaderActions current={current} onDark={onDark} variant={variant} appointmentHref={appointmentHref} />
           </Container>
 
           <ScrollProgress />

@@ -1,0 +1,15 @@
+# Build output, local QA, dependencies
+.next/
+.qa/
+node_modules/
+package-lock.json
+next-env.d.ts
+
+# Assets
+public/
+
+# shadcn/ui primitives: kept as generated, so `npx shadcn add` updates apply cleanly
+components/ui/accordion.tsx
+components/ui/navigation-menu.tsx
+components/ui/select.tsx
+components/ui/sheet.tsx

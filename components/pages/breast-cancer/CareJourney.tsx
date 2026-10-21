@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { journey } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
-import { ScrollFillLine } from "@/components/ui/scroll-fill-line";
-import { JourneyPath } from "./JourneyPath";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
+import { ScrollFillLine } from "@/components/ui/ScrollFillLine";
+import { textStyles } from "@/components/ui/text-styles";
+import { JourneyPath } from "@/components/pages/breast-cancer/JourneyPath";
 
 const pick = (key: keyof typeof breastImages) => {
   const img = breastImages[key];
@@ -57,7 +58,7 @@ export function CareJourney() {
                   ) : null}
                   <div className={i === last ? "bg-linear-to-br from-surface-alt to-accent-soft p-5" : "p-5"}>
                     <h3 className="font-display text-xl leading-snug text-ink">{step.title}</h3>
-                    <p className="mt-2 text-[15px] leading-relaxed text-muted">{step.body}</p>
+                    <p className={textStyles.cardBody}>{step.body}</p>
                   </div>
                 </div>
               </Reveal>

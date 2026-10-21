@@ -55,11 +55,15 @@ export function LiteYouTube({
             <Image
               src={video.thumbnail}
               alt=""
+              aria-hidden="true"
               fill
               sizes={featured ? "(min-width: 1024px) 960px, 100vw" : sizes}
               className="object-cover transition-transform duration-700 ease-out-expo motion-safe:group-hover:scale-[1.03]"
             />
-            <span aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent" />
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent"
+            />
             <span
               aria-hidden="true"
               className={cn(
@@ -68,13 +72,18 @@ export function LiteYouTube({
                 featured ? "size-20" : "size-14",
               )}
             >
-              <Play className={cn("translate-x-[2px] fill-current", featured ? "size-7" : "size-5")} strokeWidth={1.75} />
+              <Play
+                className={cn("translate-x-[2px] fill-current", featured ? "size-7" : "size-5")}
+                strokeWidth={1.75}
+              />
             </span>
           </button>
         )}
       </div>
       {video.title ? (
-        <figcaption className={cn("mt-3 leading-snug font-medium text-ink", featured ? "text-lg" : "line-clamp-2 text-[15px]")}>
+        <figcaption
+          className={cn("mt-3 leading-snug font-medium text-ink", featured ? "text-lg" : "line-clamp-2 text-[15px]")}
+        >
           {video.title}
         </figcaption>
       ) : null}

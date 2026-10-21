@@ -1,11 +1,11 @@
 import { outcomes } from "@/content/pages/breast-cancer";
-import { sumBy } from "@/lib/content";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
-import { ProgressRing } from "@/components/ui/progress-ring";
-import { Counter } from "@/components/ui/counter";
-import { OutcomeStages } from "./OutcomeStages";
+import { sumBy } from "@/lib/utils";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
+import { ProgressRing } from "@/components/ui/ProgressRing";
+import { Counter } from "@/components/ui/Counter";
+import { OutcomeStages } from "@/components/pages/breast-cancer/OutcomeStages";
 
 /** 8 · #outcomes */
 export function ProvenOutcomes() {
@@ -47,7 +47,9 @@ export function ProvenOutcomes() {
           <p className="font-display text-[clamp(3.5rem,11vw,6rem)] leading-none font-semibold">
             <Counter value={total} reserveWidth />
           </p>
-          <p className="mt-3 text-base font-semibold tracking-wide text-accent-glow md:text-lg">{outcomes.totalLabel}</p>
+          <p className="mt-3 text-base font-semibold tracking-wide text-accent-glow md:text-lg">
+            {outcomes.totalLabel}
+          </p>
         </div>
       </Reveal>
 
@@ -75,7 +77,10 @@ export function ProvenOutcomes() {
         </table>
       </Reveal>
 
-      <p className="mt-6 max-w-[80ch] text-[13px] leading-relaxed text-muted" data-pending-approval={outcomes.pendingApproval}>
+      <p
+        className="mt-6 max-w-[80ch] text-[13px] leading-relaxed text-muted"
+        data-pending-approval={outcomes.pendingApproval}
+      >
         {outcomes.disclaimer}
       </p>
     </Section>

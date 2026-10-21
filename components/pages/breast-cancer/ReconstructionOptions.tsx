@@ -22,7 +22,10 @@ export function ReconstructionOptions({ options }: { options: readonly string[] 
         >
           <span
             aria-hidden="true"
-            className={cn("absolute inset-0 -z-10 bg-accent-soft transition-opacity duration-700", lit ? "opacity-100" : "opacity-0")}
+            className={cn(
+              "absolute inset-0 -z-10 bg-accent-soft transition-opacity duration-700",
+              lit ? "opacity-100" : "opacity-0",
+            )}
             style={{ transitionDelay: lit ? `${0.25 + i * 0.3}s` : "0s" }}
           />
           <span

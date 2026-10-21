@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { styles } from "./hero-styles";
+import { styles } from "@/components/pages/breast-cancer/hero-styles";
 
 /*
  * Awareness ribbon as one centre-line path, stroked wide:
@@ -22,9 +22,22 @@ export function HeroRibbon({ className }: { className?: string }) {
         </defs>
         <g fill="none" strokeLinejoin="round">
           {/* Soft shadow: the same path, offset and faint (no SVG filter: filters are costly to paint) */}
-          <path d={RIBBON} transform="translate(0 5)" style={{ stroke: "var(--ink)" }} strokeOpacity={0.08} strokeWidth={WIDTH + 4} className={styles.ribbonFill} />
+          <path
+            d={RIBBON}
+            transform="translate(0 5)"
+            style={{ stroke: "var(--ink)" }}
+            strokeOpacity={0.08}
+            strokeWidth={WIDTH + 4}
+            className={styles.ribbonFill}
+          />
           {/* 1 · the draw: a solid accent stroke */}
-          <path d={RIBBON} pathLength={1} style={{ stroke: "var(--accent)" }} strokeWidth={WIDTH} className={styles.ribbonStroke} />
+          <path
+            d={RIBBON}
+            pathLength={1}
+            style={{ stroke: "var(--accent)" }}
+            strokeWidth={WIDTH}
+            className={styles.ribbonStroke}
+          />
           {/* 2 · the fill: gradient fades in over it, with a soft highlight along the ribbon */}
           <g className={styles.ribbonFill}>
             <path d={RIBBON} stroke="url(#hero-ribbon-grad)" strokeWidth={WIDTH} />

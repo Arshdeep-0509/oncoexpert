@@ -1,8 +1,8 @@
 import { Headset, PiggyBank, Receipt, ShieldCheck, BadgeIndianRupee, type LucideIcon } from "lucide-react";
 import { value, type ValueIcon } from "@/content/pages/breast-cancer";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Reveal } from "@/components/ui/Reveal";
 
 const icons: Record<ValueIcon, LucideIcon> = {
   "shield-check": ShieldCheck,
@@ -18,7 +18,7 @@ export function InstitutionalValue() {
       <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
         <Reveal>
           <SectionHeading id="value-title" title={value.title} />
-          <p className="measure mt-5 text-[1.0625rem] leading-relaxed text-text md:text-lg">{value.body}</p>
+          <p className="mt-5 measure text-[1.0625rem] leading-relaxed text-text md:text-lg">{value.body}</p>
 
           {/* Highlight card */}
           <div className="mt-8 flex items-start gap-4 rounded-lg bg-ink bg-(image:--grad-plum) p-6 text-white shadow-soft">
@@ -38,7 +38,10 @@ export function InstitutionalValue() {
             {value.items.map((item) => {
               const Icon = icons[item.icon];
               return (
-                <li key={item.title} className="flex flex-col rounded-lg border border-line bg-surface p-4 shadow-soft-sm md:p-6">
+                <li
+                  key={item.title}
+                  className="flex flex-col rounded-lg border border-line bg-surface p-4 shadow-soft-sm md:p-6"
+                >
                   <div className="flex flex-col gap-3 md:flex-row md:items-center">
                     <span className="grid size-10 shrink-0 place-items-center rounded-[12px] bg-accent-soft text-accent md:size-12 md:rounded-[14px]">
                       <Icon className="size-5 md:size-[22px]" strokeWidth={1.75} aria-hidden="true" />

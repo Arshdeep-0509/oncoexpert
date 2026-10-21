@@ -475,9 +475,11 @@
   --intro-delay: 3.1s;
 }
 
-/* Reveal (components/ui/reveal.tsx): fade + rise, transform and opacity only. */
+/* Reveal (components/ui/reveal.tsx): fade + rise, transform and opacity only.
+   --reveal-amount is the visible fraction that triggers it. Themes may override both. */
 :root {
   --reveal-y: 16px;
+  --reveal-amount: 0.15;
 }
 @media (min-width: 768px) {
   :root {

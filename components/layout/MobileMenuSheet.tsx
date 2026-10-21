@@ -3,19 +3,20 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { useReducedMotion } from "motion/react";
 import { ArrowRight, Phone } from "lucide-react";
 import { site } from "@/content/site";
 import type { HeaderVariant } from "@/content/types";
 import { cn, focusRing } from "@/lib/utils";
 import { isActivePath } from "@/lib/nav";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { BurgerIcon } from "@/components/layout/burger-icon";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { socialIcons } from "@/components/ui/brand-icons";
-import { serviceIcons, ICON_STROKE } from "@/components/layout/nav-icons";
+import { ICON_STROKE } from "@/components/layout/nav-icons";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
-import { EASE_OUT_EXPO } from "@/components/ui/reveal";
+import { menuStyles } from "@/components/layout/mobile-menu/menu-styles";
+import { StaggerItem } from "@/components/layout/mobile-menu/StaggerItem";
+import { MorphingX } from "@/components/layout/mobile-menu/MorphingX";
+import { ServicesAccordion } from "@/components/layout/mobile-menu/ServicesAccordion";
 
 export type MobileMenuSheetProps = {
   open: boolean;
@@ -27,57 +28,8 @@ export type MobileMenuSheetProps = {
   triggerRef: React.RefObject<HTMLButtonElement | null>;
 };
 
-/**
- * Per-variant styles. "dark" is the robotic page's original drawer; "light" is the
- * full-screen blush sheet (420px max on tablets) with 22px / 56px rows and a contact card.
- */
-const STYLE = {
-  dark: {
-    content: "w-[88vw] max-w-[400px] bg-white sm:max-w-[400px]",
-    row: "min-h-14 text-xl",
-    stagger: 0.05,
-    serviceTile: "rounded-lg bg-accent/[0.07] ring-1 ring-accent/10",
-    actions: "mt-6 grid gap-3",
-    action: "h-14",
-  },
-  light: {
-    content: "w-screen max-w-none bg-surface-alt sm:w-[420px] sm:max-w-[420px]",
-    row: "min-h-14 text-[22px] leading-tight",
-    stagger: 0.04,
-    serviceTile: "rounded-[10px] bg-accent-soft",
-    actions: "mt-6 grid gap-3 rounded-lg bg-surface p-4 shadow-soft-sm ring-1 ring-line",
-    action: "min-h-14",
-  },
-} as const;
-
-type StaggerItemProps = { i: number; step: number; reduce: boolean | null; children: React.ReactNode };
-
-/** Menu rows slide in `step` seconds apart; no motion with prefers-reduced-motion. */
-function StaggerItem({ i, step, reduce, children }: StaggerItemProps) {
-  if (reduce) return <li>{children}</li>;
-  const item: Variants = {
-    hidden: { opacity: 0, x: 16 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: EASE_OUT_EXPO, delay: 0.12 + i * step } },
-  };
-  return (
-    <motion.li variants={item} initial="hidden" animate="visible">
-      {children}
-    </motion.li>
-  );
-}
-
-/** Close button glyph: mounts as a burger, then morphs into an X. */
-function MorphingX() {
-  const [morphed, setMorphed] = React.useState(false);
-  React.useEffect(() => {
-    const id = requestAnimationFrame(() => setMorphed(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-  return <BurgerIcon open={morphed} />;
-}
-
 /** The drawer itself; loaded on demand by MobileMenu (first tap / hover / focus). */
-export default function MobileMenuSheet({
+export function MobileMenuSheet({
   open,
   onOpenChange: setOpen,
   pathname,
@@ -88,7 +40,7 @@ export default function MobileMenuSheet({
   const pendingAppointment = React.useRef(false);
   const reduce = useReducedMotion();
   const { openAppointment } = useAppointment();
-  const s = STYLE[variant];
+  const s = menuStyles[variant];
 
   // "For Appointment" on a page with the form: close first (Radix then unlocks scrolling),
   // then scroll to the form from onCloseAutoFocus.
@@ -126,7 +78,10 @@ export default function MobileMenuSheet({
         onCloseAutoFocus={onCloseAutoFocus}
         className={cn("on-light gap-0 border-l-0 p-0 data-[state=open]:duration-500", s.content)}
       >
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line pr-3 pl-5 data-[variant=dark]:h-[68px]" data-variant={variant}>
+        <div
+          className="flex h-16 shrink-0 items-center justify-between border-b border-line pr-3 pl-5 data-[variant=dark]:h-[68px]"
+          data-variant={variant}
+        >
           <SheetTitle className="sr-only">{site.a11y.menuTitle}</SheetTitle>
           <SheetClose asChild>
             <Link href="/" aria-label={site.a11y.home} className="rounded-lg">
@@ -136,7 +91,7 @@ export default function MobileMenuSheet({
                 width={site.logo.width}
                 height={site.logo.height}
                 sizes="140px"
-                className="blend-on-light h-8 w-auto"
+                className="h-8 w-auto blend-on-light"
               />
             </Link>
           </SheetClose>
@@ -162,62 +117,7 @@ export default function MobileMenuSheet({
               if (navItem.children) {
                 return (
                   <StaggerItem key={navItem.href} i={i} step={s.stagger} reduce={reduce}>
-                    <Accordion type="single" collapsible>
-                      <AccordionItem value="services" className="border-b-0">
-                        <AccordionTrigger
-                          className={cn(
-                            rowLink,
-                            "items-center py-0 hover:no-underline [&>svg]:size-5 [&>svg]:translate-y-0 [&>svg]:text-muted",
-                            focusRing,
-                          )}
-                        >
-                          {navItem.label}
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-3">
-                          <ul className="grid gap-0.5">
-                            {navItem.children.map((child) => {
-                              const Icon = serviceIcons[child.icon];
-                              const current = isActivePath(pathname, child.href);
-                              return (
-                                <li key={child.href}>
-                                  <SheetClose asChild>
-                                    <Link
-                                      href={child.href}
-                                      prefetch={false}
-                                      aria-current={current ? "page" : undefined}
-                                      className="flex min-h-12 items-center gap-3 rounded-xl px-1.5 text-base font-medium text-ink transition-colors hover:bg-surface-alt"
-                                    >
-                                      <span className={cn("grid size-9 shrink-0 place-items-center", s.serviceTile)}>
-                                        <Icon className="size-[17px] text-accent" strokeWidth={ICON_STROKE} aria-hidden="true" />
-                                      </span>
-                                      {child.label}
-                                      {current && variant === "light" ? (
-                                        <>
-                                          <span aria-hidden="true" className="ml-auto size-2 shrink-0 rounded-full bg-accent" />
-                                          <span className="sr-only">({site.a11y.youAreHere})</span>
-                                        </>
-                                      ) : null}
-                                    </Link>
-                                  </SheetClose>
-                                </li>
-                              );
-                            })}
-                            <li>
-                              <SheetClose asChild>
-                                <Link
-                                  href={navItem.href}
-                                  prefetch={false}
-                                  className="flex min-h-12 items-center justify-between rounded-xl px-1.5 text-base font-semibold text-accent transition-colors hover:bg-surface-alt"
-                                >
-                                  {navItem.label}
-                                  <ArrowRight className="size-4" strokeWidth={ICON_STROKE} aria-hidden="true" />
-                                </Link>
-                              </SheetClose>
-                            </li>
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                    <ServicesAccordion navItem={navItem} pathname={pathname} variant={variant} rowLink={rowLink} />
                   </StaggerItem>
                 );
               }

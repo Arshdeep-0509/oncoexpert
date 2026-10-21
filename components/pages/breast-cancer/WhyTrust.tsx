@@ -3,10 +3,10 @@ import { Crosshair, FlaskConical, HeartHandshake, Scissors, Wallet, type LucideI
 import { whyTrust, type WhyTrustIcon } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { SwipeRow } from "@/components/ui/swipe-row";
-import { Reveal } from "@/components/ui/reveal";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SwipeRow } from "@/components/ui/SwipeRow";
+import { Reveal } from "@/components/ui/Reveal";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
 
 const icons: Record<WhyTrustIcon, LucideIcon> = {

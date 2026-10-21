@@ -22,7 +22,10 @@ export const appointmentSchema = z.object({
   dateTime: z
     .string()
     .trim()
-    .refine((v) => v === "" || (!Number.isNaN(Date.parse(v)) && Date.parse(v) >= Date.now() - SKEW_MS), errors.dateTime),
+    .refine(
+      (v) => v === "" || (!Number.isNaN(Date.parse(v)) && Date.parse(v) >= Date.now() - SKEW_MS),
+      errors.dateTime,
+    ),
   /** Hidden: which page the request came from, e.g. "Breast Cancer". */
   page: z.string().trim().max(60).optional(),
   /** Hidden: context from the button that opened the form, e.g. "Package request". */
@@ -35,4 +38,8 @@ export type AppointmentInput = z.infer<typeof appointmentSchema>;
 
 export type AppointmentResult =
   | { ok: true }
-  | { ok: false; reason: "invalid" | "unavailable" | "failed"; fieldErrors?: Partial<Record<keyof AppointmentInput, string[]>> };
+  | {
+      ok: false;
+      reason: "invalid" | "unavailable" | "failed";
+      fieldErrors?: Partial<Record<keyof AppointmentInput, string[]>>;
+    };

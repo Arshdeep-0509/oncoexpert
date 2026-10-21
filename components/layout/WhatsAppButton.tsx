@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { WhatsappIcon } from "@/components/ui/brand-icons";
-import { EASE_OUT_EXPO } from "@/components/ui/reveal";
+import { EASE_OUT_EXPO } from "@/lib/motion";
 
 const wa = site.whatsapp;
 
@@ -65,7 +65,7 @@ export function WhatsAppButton({ hideOnMobile = false }: { hideOnMobile?: boolea
             transition={{ duration: reduce ? 0 : 0.35, ease: EASE_OUT_EXPO }}
             className="relative mb-3 w-[min(320px,calc(100vw-32px))] overflow-hidden rounded-[20px] border border-line bg-white text-[15px] leading-relaxed text-text shadow-card-hover outline-none"
           >
-            <div className="border-b border-line bg-surface-alt px-5 pt-4 pb-3.5 pr-14">
+            <div className="border-b border-line bg-surface-alt px-5 pt-4 pr-14 pb-3.5">
               <p id={titleId} className="font-display text-base font-semibold text-ink">
                 {wa.greeting}
               </p>
@@ -123,11 +123,7 @@ export function WhatsAppButton({ hideOnMobile = false }: { hideOnMobile?: boolea
           )}
         />
         <span className="relative">
-          {open ? (
-            <X className="size-6" strokeWidth={1.75} aria-hidden="true" />
-          ) : (
-            <WhatsappIcon size={28} />
-          )}
+          {open ? <X className="size-6" strokeWidth={1.75} aria-hidden="true" /> : <WhatsappIcon size={28} />}
         </span>
       </button>
     </div>

@@ -13,18 +13,12 @@
  * STEP 1: the section objects below are typed and intentionally EMPTY.
  * Steps 2–6 fill them. Images: content/pages/breast-cancer.images.ts.
  */
-import type {
-  Cta,
-  FaqItem,
-  PageMeta,
-  SectionCopy,
-  Stat,
-} from "@/content/types";
+import type { Cta, FaqItem, PageMeta, SectionCopy, Stat } from "@/content/types";
 import type { BreastImageKey } from "@/content/pages/breast-cancer.images";
 import { breastOgImage } from "@/content/pages/breast-cancer.images";
 import type { AppointmentService } from "@/content/site";
 import type { ReviewId } from "@/content/shared/reviews";
-import { formatRupees } from "@/lib/content";
+import { formatRupees } from "@/lib/format";
 
 /* ------------------------------------------------------------------ */
 /* Metadata                                                            */
@@ -46,7 +40,7 @@ export const meta = {
 /** The four treatments of multimodality care. Icons are mapped in the components. */
 export type Treatment = "surgery" | "chemotherapy" | "immunotherapy" | "radiotherapy";
 
-export type AppointmentCta = { label: string; service: AppointmentService };
+type AppointmentCta = { label: string; service: AppointmentService };
 
 export type HeroContent = {
   eyebrow: string;
@@ -66,7 +60,6 @@ export type OverviewContent = Required<Pick<SectionCopy, "eyebrow" | "title" | "
   image: BreastImageKey;
   diagram: { label: string; centre: string; nodes: readonly { key: Treatment; label: string }[] };
 };
-
 
 /* ------------------------------------------------------------------ */
 /* 1 · #hero                                                           */
@@ -372,7 +365,10 @@ export const journey = {
   title: "Personalized Care Journey",
   // SOURCE: EXISTING
   steps: [
-    { title: "Comprehensive Diagnosis", body: "Genetic profiling and deep imaging to understand the tumor’s blueprint." },
+    {
+      title: "Comprehensive Diagnosis",
+      body: "Genetic profiling and deep imaging to understand the tumor’s blueprint.",
+    },
     { title: "Collaborative Planning", body: "Designing your surgical and systemic roadmap with the Tumor Board." },
     { title: "Targeted Therapy", body: "Executing treatment using advanced chemo and immunotherapy agents." },
     { title: "Holistic Recovery", body: "Continuous monitoring and support during your return to full health." },
@@ -524,7 +520,7 @@ export const value = {
 /* 10 · #pricing                                                       */
 /* ------------------------------------------------------------------ */
 
-export type PriceCard = {
+type PriceCard = {
   name: string;
   /** Rupees, as a number. */
   amount: number;
@@ -649,6 +645,9 @@ export const surgeon = {
 /** Page name used in the appointment email subject and the form's hidden "page" field. */
 export const pageName = "Breast Cancer";
 export const pageSlug = "breast-cancer-treatment-bangalore";
+
+/** Structured data (JSON-LD): the condition this page is about. Not visible on the page. */
+export const structuredData = { pageAbout: "Breast cancer" } as const;
 
 export const reviews = {
   // SOURCE: EXISTING

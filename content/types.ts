@@ -11,8 +11,6 @@
  *    computed (lib/content.ts), never typed in.
  */
 
-export type Source = "EXISTING" | "DOCTOR" | "NEW";
-
 /* ------------------------------------------------------------------ */
 /* Themes and pages                                                    */
 /* ------------------------------------------------------------------ */
@@ -24,7 +22,10 @@ export type ThemeName = "breast" | "robotic";
 export type HeaderVariant = "light" | "dark";
 
 /** Background tone of a page band (components/ui/section.tsx). */
-export type SectionTone = "surface" | "alt" | "warm" | "plum";
+export type SectionTone = "surface" | "alt" | "warm" | "plum" | "white" | "black" | "ink";
+
+/** Visual style of a shared section: "soft" (rounded pills, display serif; the default) or "classic" (the robotic page's original look). */
+export type SectionLook = "soft" | "classic";
 
 export type PageMeta = {
   title: string;
@@ -58,7 +59,8 @@ export type PageImage = {
   /** Empty string for decorative images (rendered with aria-hidden). */
   alt: string;
   decorative?: boolean;
-  credit: { photographer: string; url: string };
+  /** Stock photos only (Pexels); own photos have none. */
+  credit?: { photographer: string; url: string };
   /** CSS object-position, e.g. "50% 30%". */
   focal: string;
   width: number;
@@ -79,27 +81,6 @@ export type Stat = {
   /** e.g. "%", "k", "+" */
   suffix?: string;
   label: string;
-};
-
-/** Generic card: icon key + title + body. Icons are mapped to lucide in the component. */
-export type CardItem = {
-  icon?: string;
-  title: string;
-  body?: string;
-};
-
-export type StepItem = {
-  title: string;
-  body?: string;
-  /** Optional sub-points */
-  points?: readonly string[];
-};
-
-/** A priced line item. Amounts are rupees, as numbers. */
-export type PriceItem = {
-  label: string;
-  amount: number;
-  note?: string;
 };
 
 export type FaqItem = {

@@ -4,13 +4,14 @@ import * as React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Pause, Play } from "lucide-react";
+import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
-import { MEDIA, useMedia } from "@/lib/use-media";
-import { styles } from "./hero-styles";
+import { MEDIA, useMedia } from "@/lib/hooks/use-media";
+import { styles } from "@/components/pages/breast-cancer/hero-styles";
 
 const INTERVAL_MS = 5500;
 
-export type HeroSlide = { src: string; alt: string; focal: string };
+type HeroSlide = { src: string; alt: string; focal: string };
 
 type HeroStageProps = {
   slides: readonly HeroSlide[];
@@ -74,12 +75,15 @@ export function HeroStage({ slides, labels, children, className }: HeroStageProp
       {/* 10px blush ring, offset and rotated behind the arch */}
       <div
         aria-hidden="true"
-        className={cn(styles.arch, "absolute inset-0 translate-x-3 translate-y-3 rotate-3 border-[10px] border-petal/80")}
+        className={cn(
+          styles.arch,
+          "absolute inset-0 translate-x-3 translate-y-3 rotate-3 border-[10px] border-petal/80",
+        )}
       />
 
       <div
         role="group"
-        aria-roledescription="carousel"
+        aria-roledescription={site.a11y.carousel}
         aria-label={labels.slideshow}
         data-paused={playing ? undefined : ""}
         className={cn(styles.stage, styles.arch, "relative aspect-[4/5] overflow-hidden bg-petal shadow-soft-lg")}
@@ -119,7 +123,7 @@ export function HeroStage({ slides, labels, children, className }: HeroStageProp
           type="button"
           onClick={() => setUserPaused((p) => !p)}
           aria-label={userPaused ? labels.play : labels.pause}
-          className="absolute right-3 bottom-3 z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink shadow-soft-sm ring-1 ring-line transition-colors hover:bg-white md:right-4 md:bottom-4"
+          className="absolute right-3 bottom-3 z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink ring-1 shadow-soft-sm ring-line transition-colors hover:bg-white md:right-4 md:bottom-4"
         >
           {userPaused ? (
             <Play className="size-4 translate-x-px" strokeWidth={1.75} aria-hidden="true" />

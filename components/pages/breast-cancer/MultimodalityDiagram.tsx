@@ -5,7 +5,7 @@ import { useInView } from "motion/react";
 import { Ribbon } from "lucide-react";
 import type { Treatment } from "@/content/pages/breast-cancer";
 import { cn } from "@/lib/utils";
-import { treatmentIcons } from "./treatment-icons";
+import { treatmentIcons } from "@/components/pages/breast-cancer/treatment-icons";
 
 type MultimodalityDiagramProps = {
   label: string;
@@ -77,7 +77,7 @@ export function MultimodalityDiagram({ label, centre, nodes }: MultimodalityDiag
           : null}
 
         {/* Centre */}
-        <div className="absolute top-1/2 left-1/2 grid size-[184px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface-alt shadow-soft ring-1 ring-line lg:size-[200px]">
+        <div className="absolute top-1/2 left-1/2 grid size-[184px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface-alt ring-1 shadow-soft ring-line lg:size-[200px]">
           <div className="absolute inset-3 rounded-full border border-dashed border-accent/30" aria-hidden="true" />
           <div className="relative flex flex-col items-center gap-2 px-6 text-center">
             <span className="grid size-11 place-items-center rounded-full bg-accent text-white shadow-(--accent-shadow)">
@@ -150,7 +150,7 @@ export function MultimodalityDiagram({ label, centre, nodes }: MultimodalityDiag
             );
           })}
         </ul>
-        <div className="absolute top-1/2 left-1/2 grid size-[92px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface text-center shadow-soft ring-4 ring-surface">
+        <div className="absolute top-1/2 left-1/2 grid size-[92px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface text-center ring-4 shadow-soft ring-surface">
           <div className="flex flex-col items-center gap-1 px-2">
             <Ribbon className="size-4 text-accent" strokeWidth={1.75} aria-hidden="true" />
             <span className="text-[11px] leading-tight font-semibold text-ink">{centre}</span>

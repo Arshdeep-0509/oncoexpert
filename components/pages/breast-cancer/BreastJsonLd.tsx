@@ -1,9 +1,9 @@
-import { meta, surgeon } from "@/content/pages/breast-cancer";
+import { meta, structuredData, surgeon } from "@/content/pages/breast-cancer";
 import { organization as org } from "@/content/shared/organization";
 import { site } from "@/content/site";
 
 /**
- * MedicalWebPage (about: MedicalCondition "Breast cancer") + Physician + MedicalClinic,
+ * MedicalWebPage (about: the page's MedicalCondition) + Physician + MedicalClinic,
  * linked in one @graph. BreadcrumbList (hero) and FAQPage (#faq) are emitted by those sections.
  */
 export function BreastJsonLd() {
@@ -18,7 +18,7 @@ export function BreastJsonLd() {
         name: meta.title,
         description: meta.description,
         inLanguage: "en-IN",
-        about: { "@type": "MedicalCondition", name: "Breast cancer" },
+        about: { "@type": "MedicalCondition", name: structuredData.pageAbout },
         reviewedBy: { "@id": org.physicianId },
         publisher: { "@id": org.clinicId },
       },

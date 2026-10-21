@@ -50,7 +50,11 @@ export function SiteShell({
   children,
 }: SiteShellProps) {
   return (
-    <div data-theme={theme} data-intro={intro ? undefined : "off"} className="min-h-svh overflow-x-clip bg-surface text-text">
+    <div
+      data-theme={theme}
+      data-intro={intro ? undefined : "off"}
+      className="min-h-svh overflow-x-clip bg-surface text-text"
+    >
       <ThemeSync theme={theme} />
       <SkipLink />
       <AppointmentProvider>

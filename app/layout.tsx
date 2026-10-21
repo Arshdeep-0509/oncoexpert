@@ -6,7 +6,7 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { AnalyticsListener } from "@/components/layout/AnalyticsListener";
 import { DeferredGTM } from "@/components/layout/DeferredGTM";
 import { Preloader } from "@/components/layout/Preloader";
-import "./globals.css";
+import "@/app/globals.css";
 
 // Header, footer and the "Skip to content" link come from each page's SiteShell.
 // Fonts are loaded once, here. styles/tokens.css maps them to --font-sans / --font-serif /
@@ -62,10 +62,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en-IN"
-      className={`${jakarta.variable} ${jakartaText.variable} ${fraunces.variable} ${inter.variable}`}
-    >
+    <html lang="en-IN" className={`${jakarta.variable} ${jakartaText.variable} ${fraunces.variable} ${inter.variable}`}>
       <body className="min-h-dvh bg-white font-sans text-text antialiased">
         <Preloader />
         <SmoothScroll />

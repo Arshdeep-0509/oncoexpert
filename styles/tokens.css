@@ -41,17 +41,50 @@
   --gray-50: #f8fafc;
   --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
   --gray-600: #475569;
-  --gray-700: #334155;
   --gray-800: #1e293b;
   --gray-900: #0f172a;
 
   /* Third-party brand colours, never themed */
   --whatsapp: #25d366;
   --star: #f5b301;
+  --google-blue: #4285f4;
+  --google-green: #34a853;
+  --google-yellow: #fbbc05;
+  --google-red: #ea4335;
+
+  /* Intro preloader (components/layout/Preloader.tsx): the logo's own colours, never themed */
+  --logo-blue: #0b40b2;
+  --logo-orange: #f15a22;
+  --logo-ring-right-1: #e5157a;
+  --logo-ring-right-2: #7a2fb8;
+  --logo-ring-right-3: #2563d9;
+  --logo-ring-left-1: #f0592a;
+  --logo-ring-left-2: #f7941d;
+  --logo-ring-left-3: #8db43c;
+  --logo-ring-end: #0fa3a0;
+  --preloader-text: #3a3f4b;
+  --preloader-line: #e3e6ee;
+
+  /* Doctor portrait (components/shared/DoctorPortrait.tsx): the photo's studio backdrop,
+     sampled from its top row (left → right) and darkening downward, so the zoomed-out
+     photo blends into its frame. Derived from the photo, so not a theme colour. */
+  --portrait-backdrop:
+    linear-gradient(to bottom, transparent 25%, rgb(10 18 30 / 0.22)),
+    linear-gradient(
+      to right,
+      #4c5a6d 0%,
+      #5a6a7f 10%,
+      #68788f 20%,
+      #73859d 30%,
+      #7a8ba3 40%,
+      #7c8ca4 50%,
+      #7889a1 60%,
+      #70829b 70%,
+      #65768e 80%,
+      #59697f 90%,
+      #4d5b70 100%
+    );
 
   /* Base radius (rounded-(--radius)). sm / md / lg / xl / pill are Tailwind keys above. */
   --radius: 16px;

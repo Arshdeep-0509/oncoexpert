@@ -26,6 +26,4 @@ export const pages = {
   },
 } as const satisfies Record<string, PageEntry>;
 
-export type PageSlug = keyof typeof pages;
-
 export const pageList: readonly PageEntry[] = Object.values(pages);

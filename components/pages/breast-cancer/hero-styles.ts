@@ -1,3 +1,5 @@
+import type * as React from "react";
+
 /** Class names from hero.css (plain CSS, `bloom-` prefix). */
 export const styles = {
   hero: "bloom-hero",
@@ -28,3 +30,6 @@ export const styles = {
   kenBurns: "bloom-kenBurns",
   stage: "bloom-stage",
 } as const;
+
+/** Entrance step at `d` seconds of the (desktop) choreography; see hero.css. */
+export const at = (d: number) => ({ "--d": `${d}s` }) as React.CSSProperties;

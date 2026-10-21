@@ -4,8 +4,8 @@ import * as React from "react";
 import { useInView } from "motion/react";
 import type { StageOutcome } from "@/content/pages/breast-cancer";
 import { cn } from "@/lib/utils";
-import { ProgressRing } from "@/components/ui/progress-ring";
-import { Counter } from "@/components/ui/counter";
+import { ProgressRing } from "@/components/ui/ProgressRing";
+import { Counter } from "@/components/ui/Counter";
 
 const STAGGER = 0.12;
 
@@ -23,10 +23,7 @@ export function OutcomeStages({ stages, survivalLabel }: { stages: readonly Stag
   return (
     <ul ref={ref} aria-hidden="true" className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-4">
       {stages.map((s, i) => (
-        <li
-          key={s.stage}
-          className="flex flex-col rounded-lg border border-line bg-surface p-4 shadow-soft-sm md:p-6"
-        >
+        <li key={s.stage} className="flex flex-col rounded-lg border border-line bg-surface p-4 shadow-soft-sm md:p-6">
           <p className="font-display text-lg leading-none text-ink md:text-[1.4rem]">{s.stage}</p>
 
           <div className="mt-4 flex items-center gap-3 md:mt-5 md:flex-col md:items-start md:gap-4 lg:flex-row lg:items-center">
@@ -53,7 +50,9 @@ export function OutcomeStages({ stages, survivalLabel }: { stages: readonly Stag
             </p>
             <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-accent-soft">
               <div
-                className={cn("h-full origin-left rounded-full bg-accent transition-transform duration-1000 ease-out-expo")}
+                className={cn(
+                  "h-full origin-left rounded-full bg-accent transition-transform duration-1000 ease-out-expo",
+                )}
                 style={{
                   transform: `scaleX(${inView ? s.cases / max : 0})`,
                   transitionDelay: inView ? `${0.2 + i * STAGGER}s` : "0s",

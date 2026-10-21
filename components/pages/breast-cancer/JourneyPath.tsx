@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export type JourneyImage = { src: string; alt: string; focal: string };
+type JourneyImage = { src: string; alt: string; focal: string };
 
 type JourneyPathProps = {
   steps: readonly { title: string; body: string }[];
@@ -122,7 +122,7 @@ export function JourneyPath({ steps, main, inset, label }: JourneyPathProps) {
                 style={{ transitionDelay: isLit ? "0.15s" : "0s" }}
               >
                 {last ? (
-                  <div className="grid h-full grid-cols-[minmax(0,5fr)_minmax(0,6fr)] items-stretch overflow-hidden rounded-xl bg-linear-to-br from-surface-alt to-accent-soft shadow-soft-lg ring-1 ring-line">
+                  <div className="grid h-full grid-cols-[minmax(0,5fr)_minmax(0,6fr)] items-stretch overflow-hidden rounded-xl bg-linear-to-br from-surface-alt to-accent-soft ring-1 shadow-soft-lg ring-line">
                     <div className="flex flex-col justify-center p-7">
                       <h3 className="font-display text-[1.45rem] leading-snug text-ink">{step.title}</h3>
                       <p className="mt-2.5 text-base leading-relaxed text-muted">{step.body}</p>
@@ -136,7 +136,7 @@ export function JourneyPath({ steps, main, inset, label }: JourneyPathProps) {
                         className="object-cover"
                         style={{ objectPosition: main.focal }}
                       />
-                      <div className="absolute bottom-4 left-4 aspect-[4/5] w-[38%] overflow-hidden rounded-[16px] shadow-soft-lg ring-4 ring-white">
+                      <div className="absolute bottom-4 left-4 aspect-[4/5] w-[38%] overflow-hidden rounded-[16px] ring-4 shadow-soft-lg ring-white">
                         <Image
                           src={inset.src}
                           alt={inset.alt}

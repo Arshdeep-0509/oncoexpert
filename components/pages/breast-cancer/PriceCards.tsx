@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Counter } from "@/components/ui/counter";
+import { Counter } from "@/components/ui/Counter";
 
 type PriceCardsProps = {
   cards: readonly { name: string; amount: number; unit: string; body: string }[];

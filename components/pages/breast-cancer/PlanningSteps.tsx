@@ -3,8 +3,8 @@
 import * as React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Chip } from "@/components/ui/chip";
-import { ScrollFillLine } from "@/components/ui/scroll-fill-line";
+import { Chip } from "@/components/ui/Chip";
+import { ScrollFillLine } from "@/components/ui/ScrollFillLine";
 
 export type PlanningImage = { src: string; alt: string; focal: string };
 
@@ -97,7 +97,7 @@ export function PlanningSteps({ heading, steps, images, mobileImage, label }: Pl
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "absolute top-3 left-0 grid size-10 lg:top-1/2 lg:-translate-y-1/2 place-items-center rounded-full text-[15px] font-semibold tabular-nums transition-[background-color,color,box-shadow] duration-500 lg:size-12 lg:text-base",
+                    "absolute top-3 left-0 grid size-10 place-items-center rounded-full text-[15px] font-semibold tabular-nums transition-[background-color,color,box-shadow] duration-500 lg:top-1/2 lg:size-12 lg:-translate-y-1/2 lg:text-base",
                     isActive
                       ? "bg-accent text-white shadow-(--accent-shadow) ring-4 ring-accent-soft"
                       : done
@@ -111,7 +111,7 @@ export function PlanningSteps({ heading, steps, images, mobileImage, label }: Pl
                   aria-current={isActive ? "step" : undefined}
                   className={cn(
                     "rounded-lg p-5 transition-[background-color,box-shadow] duration-500 lg:w-full lg:p-7",
-                    isActive ? "bg-surface shadow-soft-lg ring-1 ring-line" : "bg-surface-alt/60 lg:bg-transparent",
+                    isActive ? "bg-surface ring-1 shadow-soft-lg ring-line" : "bg-surface-alt/60 lg:bg-transparent",
                   )}
                 >
                   <h3 className="font-display text-xl leading-snug text-ink lg:text-[1.5rem]">{step.title}</h3>

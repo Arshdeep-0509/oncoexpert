@@ -1,28 +1,32 @@
 import type { Metadata, Viewport } from "next";
 import dynamic from "next/dynamic";
-import { meta } from "@/content/pages/robotic-surgery";
+import { doctor, images, media, meta, pageName, reviews } from "@/content/pages/robotic-surgery";
 import { pages } from "@/content/pages";
 import { pageViewport } from "@/lib/seo";
 
-import { HeroSlider } from "@/components/robotic/HeroSlider";
-import { IntroSection } from "@/components/robotic/IntroSection";
-import { RoboticsInOncology } from "@/components/robotic/RoboticsInOncology";
-import { SurgicalTechniques } from "@/components/robotic/SurgicalTechniques";
-import { RoboticVsOpen } from "@/components/robotic/RoboticVsOpen";
-import { ComparingModalities } from "@/components/robotic/ComparingModalities";
-import { SurgeryNumbers } from "@/components/robotic/SurgeryNumbers";
-import { CancersWeTreat } from "@/components/robotic/CancersWeTreat";
-import { Benefits } from "@/components/robotic/Benefits";
-import { MeetTheDoctor } from "@/components/robotic/MeetTheDoctor";
-import { VideosGallery } from "@/components/robotic/VideosGallery";
-import { Testimonials } from "@/components/robotic/Testimonials";
-import { ContactSection } from "@/components/robotic/ContactSection";
-import { Locations } from "@/components/robotic/Locations";
-import { FinalCta } from "@/components/robotic/FinalCta";
-import { JsonLd } from "@/components/robotic/JsonLd";
+import { HeroSlider } from "@/components/pages/robotic-surgery/HeroSlider";
+import { IntroSection } from "@/components/pages/robotic-surgery/IntroSection";
+import { RoboticsInOncology } from "@/components/pages/robotic-surgery/RoboticsInOncology";
+import { SurgicalTechniques } from "@/components/pages/robotic-surgery/SurgicalTechniques";
+import { RoboticVsOpen } from "@/components/pages/robotic-surgery/RoboticVsOpen";
+import { ComparingModalities } from "@/components/pages/robotic-surgery/ComparingModalities";
+import { SurgeryNumbers } from "@/components/pages/robotic-surgery/SurgeryNumbers";
+import { CancersWeTreat } from "@/components/pages/robotic-surgery/CancersWeTreat";
+import { Benefits } from "@/components/pages/robotic-surgery/Benefits";
+import { RoboticJsonLd } from "@/components/pages/robotic-surgery/RoboticJsonLd";
+import { pillLook } from "@/components/pages/robotic-surgery/pills";
+import { roboticFormStyles } from "@/components/pages/robotic-surgery/form-styles";
+import { DoctorCard } from "@/components/shared/DoctorCard";
+import { Videos } from "@/components/shared/Videos";
+import { Reviews } from "@/components/shared/Reviews";
+import { AppointmentSection } from "@/components/shared/AppointmentSection";
+import { Locations } from "@/components/shared/Locations";
+import { FinalCta } from "@/components/shared/FinalCta";
 
 // Below the fold and JS-heavy (scroll-driven): split into its own chunk.
-const InsideTheRobot = dynamic(() => import("@/components/robotic/InsideTheRobot").then((m) => m.InsideTheRobot));
+const InsideTheRobot = dynamic(() =>
+  import("@/components/pages/robotic-surgery/InsideTheRobot").then((m) => m.InsideTheRobot),
+);
 
 export const metadata: Metadata = {
   title: { absolute: meta.title },
@@ -52,7 +56,7 @@ export function generateViewport(): Viewport {
 export default function RoboticSurgeryPage() {
   return (
     <>
-      <JsonLd />
+      <RoboticJsonLd />
       <HeroSlider /> {/* 1  #hero             black   */}
       <IntroSection /> {/* 2  #overview         white   */}
       <RoboticsInOncology /> {/* 3  #why-robotic      surface */}
@@ -63,12 +67,24 @@ export default function RoboticSurgeryPage() {
       <SurgeryNumbers /> {/* 8  #numbers          black   */}
       <CancersWeTreat /> {/* 9  #cancers          surface */}
       <Benefits /> {/* 10 #benefits         white   */}
-      <MeetTheDoctor /> {/* 11 #doctor           surface */}
-      <VideosGallery /> {/* 12 #media            white   */}
-      <Testimonials /> {/* 13 #reviews          surface */}
-      <ContactSection /> {/* 14 #appointment      white   */}
-      <Locations /> {/* 15 #locations        surface */}
-      <FinalCta /> {/* 16 ink → teal band */}
+      <DoctorCard id="doctor" tone="surface" look="classic" {...doctor} ctaLook={pillLook.primary} />{" "}
+      {/* 11 #doctor           surface */}
+      <Videos
+        id="media"
+        tone="white"
+        look="classic"
+        eyebrow={media.eyebrow}
+        title={media.heading}
+        ids={media.videos}
+        labels={media.a11y}
+      />{" "}
+      {/* 12 #media            white   */}
+      <Reviews tone="surface" look="classic" title={reviews.heading} reviews={reviews.items} />{" "}
+      {/* 13 #reviews          surface */}
+      <AppointmentSection tone="white" look="classic" page={pageName} formStyles={roboticFormStyles} />{" "}
+      {/* 14 #appointment      white   */}
+      <Locations tone="surface" look="classic" /> {/* 15 #locations        surface */}
+      <FinalCta look="classic" image={images.armsBlack} /> {/* 16 ink → teal band */}
     </>
   );
 }

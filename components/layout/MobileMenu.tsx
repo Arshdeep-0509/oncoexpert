@@ -6,11 +6,11 @@ import { site } from "@/content/site";
 import type { HeaderVariant } from "@/content/types";
 import { cn } from "@/lib/utils";
 import { getLenis } from "@/lib/lenis";
-import { BurgerIcon } from "@/components/layout/burger-icon";
+import { BurgerIcon } from "@/components/layout/BurgerIcon";
 
 // The drawer (Radix Dialog + Accordion) isn't needed for the first paint: its code
 // starts loading when a finger/pointer reaches the button, and mounts on first tap.
-const loadSheet = () => import("@/components/layout/MobileMenuSheet");
+const loadSheet = () => import("@/components/layout/MobileMenuSheet").then((m) => m.MobileMenuSheet);
 const MobileMenuSheet = dynamic(loadSheet, { ssr: false });
 
 type MobileMenuProps = {

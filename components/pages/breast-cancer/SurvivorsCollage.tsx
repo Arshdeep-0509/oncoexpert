@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { MEDIA, useMedia } from "@/lib/use-media";
+import { MEDIA, useMedia } from "@/lib/hooks/use-media";
 
 type CollageImage = { src: string; alt: string; focal: string };
 
@@ -43,7 +43,7 @@ export function SurvivorsCollage({ main, secondary }: { main: CollageImage; seco
 
       {/* Secondary: circle over the arch's lower-left edge */}
       <motion.div style={{ y: move ? ySecondary : 0 }} className="absolute bottom-0 left-0 w-[46%]">
-        <div className="relative aspect-square overflow-hidden rounded-full shadow-soft-lg ring-[6px] ring-accent-glow/50">
+        <div className="relative aspect-square overflow-hidden rounded-full ring-[6px] shadow-soft-lg ring-accent-glow/50">
           <Image
             src={secondary.src}
             alt={secondary.alt}

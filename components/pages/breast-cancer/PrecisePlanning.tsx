@@ -1,10 +1,10 @@
 import { planning } from "@/content/pages/breast-cancer";
 import { breastImages, type BreastImageKey } from "@/content/pages/breast-cancer.images";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Chip } from "@/components/ui/chip";
-import { Reveal } from "@/components/ui/reveal";
-import { PlanningSteps, type PlanningImage } from "./PlanningSteps";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Chip } from "@/components/ui/Chip";
+import { Reveal } from "@/components/ui/Reveal";
+import { PlanningSteps, type PlanningImage } from "@/components/pages/breast-cancer/PlanningSteps";
 
 const toImage = (key: BreastImageKey): PlanningImage => {
   const img = breastImages[key];
@@ -27,7 +27,12 @@ export function PrecisePlanning() {
         mobileImage={toImage(planning.mobileImage)}
         heading={
           <Reveal>
-            <SectionHeading id="planning-title" eyebrow={planning.eyebrow} title={planning.title} intro={planning.intro} />
+            <SectionHeading
+              id="planning-title"
+              eyebrow={planning.eyebrow}
+              title={planning.title}
+              intro={planning.intro}
+            />
           </Reveal>
         }
       />

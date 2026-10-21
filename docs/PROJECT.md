@@ -234,8 +234,12 @@ the same values as `variant`.
 - Mobile layouts may differ completely from desktop (re-order, stack, `SwipeRow`); never just shrink.
 - Body text ≥ 16px, line length ≤ 68ch (`measure`), tap targets ≥ 48px, 20px gutters.
 - No horizontal page scroll (only inside `SwipeRow`). Use `svh`; respect `env(safe-area-inset-*)`.
-- Phones get the fixed `MobileActionBar` (Call · WhatsApp · For Appointment); `SiteShell` reserves its
-  space and hides the floating WhatsApp button under 768px.
+- Phones get the `MobileActionBar` dock (Call · WhatsApp · Book Appointment), floating 8px above the
+  bottom edge. It appears once the hero has scrolled away, steps aside while the visitor scrolls down
+  (back on scroll up, after a 0.9s pause, or at the end of the page), and hides over #appointment and
+  while the keyboard is open. The Book pill sizes to its label (fits from 320px); its colours are
+  the `--grad-cta` / `--cta-glow` tokens. The footer reserves room for it and `SiteShell` hides the
+  floating WhatsApp button under 768px.
 
 ## Performance notes
 

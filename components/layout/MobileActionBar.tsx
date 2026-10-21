@@ -10,9 +10,15 @@ import { useAppointment, APPOINTMENT_ID } from "@/components/layout/AppointmentP
 
 /** A viewport this much shorter than the window means the on-screen keyboard is open. */
 const KEYBOARD_PX = 150;
+/** Scrolling down this far in one go tucks the dock away… */
+const TUCK_AFTER_PX = 80;
+/** …scrolling back up this far, or pausing this long, brings it back. */
+const SHOW_ON_UP_PX = 12;
+const SHOW_AFTER_IDLE_MS = 900;
 
 const iconAction =
-  "flex min-h-12 flex-col items-center justify-center gap-1 rounded-md text-xs leading-none font-semibold text-ink transition-colors active:bg-surface-alt";
+  "flex w-14 shrink-0 flex-col items-center justify-center gap-1 rounded-xl py-1 text-[11px] leading-none font-semibold text-ink/80 transition-colors active:bg-surface-alt";
+const iconChip = "grid size-9 place-items-center rounded-full transition-transform active:scale-95";
 
 function useKeyboardOpen() {
   const [open, setOpen] = React.useState(false);
@@ -27,25 +33,74 @@ function useKeyboardOpen() {
 }
 
 /**
- * Phones only (under 768px): Call · WhatsApp · Book Appointment, fixed to the bottom edge
- * (64px + the home-indicator inset). It slides up once the hero has left the screen and
- * slides away while #appointment is on screen or the keyboard is open.
+ * True while the visitor is scrolling down (the dock steps aside so it never gets in the
+ * way of reading). Scrolling up, pausing, or reaching the end of the page brings it back.
+ */
+function useTuckedWhileScrollingDown() {
+  const [tucked, setTucked] = React.useState(false);
+  React.useEffect(() => {
+    let lastY = window.scrollY;
+    let down = 0;
+    let frame = 0;
+    let idle: number | undefined;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const y = window.scrollY;
+        const dy = y - lastY;
+        lastY = y;
+        const atEnd = window.innerHeight + y >= document.documentElement.scrollHeight - 160;
+        if (atEnd) {
+          down = 0;
+          setTucked(false);
+        } else if (dy > 0) {
+          down += dy;
+          if (down > TUCK_AFTER_PX) setTucked(true);
+        } else if (dy < -SHOW_ON_UP_PX) {
+          down = 0;
+          setTucked(false);
+        }
+        window.clearTimeout(idle);
+        idle = window.setTimeout(() => {
+          down = 0;
+          setTucked(false);
+        }, SHOW_AFTER_IDLE_MS);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+      window.clearTimeout(idle);
+    };
+  }, []);
+  return tucked;
+}
+
+/**
+ * Phones only (under 768px): a floating dock with Call · WhatsApp · Book Appointment.
+ * It slides up once the hero has left the screen, steps aside while the visitor scrolls
+ * down (back on scroll up, a pause, or at the end of the page), and stays away while
+ * #appointment is on screen or the keyboard is open. The Book pill sizes to its label,
+ * so it fits from 320px up.
  */
 export function MobileActionBar() {
   const { openAppointment } = useAppointment();
   const heroInView = useInViewById("hero");
   const appointmentInView = useInViewById(APPOINTMENT_ID);
   const keyboardOpen = useKeyboardOpen();
+  const tucked = useTuckedWhileScrollingDown();
 
   // null = no such element on the page. The hero counts as "in view" until measured,
-  // so the bar never flashes in over the hero on first paint.
+  // so the dock never flashes in over the hero on first paint.
   const [measured, setMeasured] = React.useState(false);
   React.useEffect(() => {
     const id = window.setTimeout(() => setMeasured(true), 300);
     return () => window.clearTimeout(id);
   }, []);
   const overHero = heroInView ?? !measured;
-  const visible = !overHero && !appointmentInView && !keyboardOpen;
+  const visible = !overHero && !appointmentInView && !keyboardOpen && !tucked;
 
   return (
     <nav
@@ -53,18 +108,20 @@ export function MobileActionBar() {
       aria-hidden={!visible}
       inert={!visible}
       className={cn(
-        "on-light fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md backdrop-saturate-150 transition-transform duration-500 ease-out-expo md:hidden",
-        visible ? "translate-y-0" : "translate-y-full",
+        "on-light fixed inset-x-2 bottom-[calc(8px+env(safe-area-inset-bottom))] z-40 transition-[translate,opacity] duration-300 ease-out-expo motion-reduce:transition-none md:hidden",
+        visible ? "translate-y-0 opacity-100" : "translate-y-[calc(100%+24px)] opacity-0",
       )}
     >
-      <div className="mx-auto grid h-16 max-w-[480px] grid-cols-[64px_76px_1fr] items-center gap-1.5 px-[max(12px,env(safe-area-inset-left))]">
+      <div className="mx-auto flex h-[60px] max-w-[460px] items-center gap-1 rounded-[22px] bg-white/90 pr-2 pl-1.5 shadow-[0_12px_32px_-12px_rgb(var(--shadow-rgb)/0.4),0_2px_6px_rgb(var(--shadow-rgb)/0.08)] ring-1 ring-line backdrop-blur-md backdrop-saturate-150">
         <a href={site.contact.phoneHref} className={iconAction}>
-          <Phone className="size-5 text-accent" strokeWidth={1.75} aria-hidden="true" />
+          <span className={cn(iconChip, "bg-accent-soft text-accent")}>
+            <Phone className="size-[18px]" strokeWidth={1.75} aria-hidden="true" />
+          </span>
           {site.actionBar.call}
         </a>
         <a href={site.whatsapp.href} target="_blank" rel="noopener noreferrer" className={iconAction}>
-          <span className="text-whatsapp">
-            <WhatsappIcon size={20} />
+          <span className={cn(iconChip, "bg-whatsapp text-white")}>
+            <WhatsappIcon size={18} />
           </span>
           {site.actionBar.whatsapp}
           <span className="sr-only">{site.a11y.newTab}</span>
@@ -73,7 +130,7 @@ export function MobileActionBar() {
           type="button"
           onClick={() => openAppointment()}
           data-cta="action-bar-appointment"
-          className="flex h-11 items-center justify-center gap-1.5 justify-self-end rounded-pill bg-accent px-4 text-[13px] font-semibold whitespace-nowrap text-white shadow-(--accent-shadow) transition-colors active:bg-accent-hover"
+          className="cta-shine ml-auto flex h-11 items-center gap-1.5 rounded-pill bg-(image:--grad-cta) px-3.5 text-[12px] font-semibold whitespace-nowrap text-white shadow-(--cta-glow) transition-transform active:scale-[0.97] min-[360px]:px-4 min-[360px]:text-[13px]"
         >
           <CalendarCheck className="size-4 shrink-0" strokeWidth={1.75} aria-hidden="true" />
           {site.actionBar.book}

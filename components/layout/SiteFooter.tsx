@@ -24,7 +24,7 @@ type SiteFooterProps = {
    * targets; "stacked" lists everything (the robotic page's original footer).
    */
   mobileLayout?: "accordion" | "stacked";
-  /** Leave room under the copyright line for the fixed MobileActionBar on phones. */
+  /** Leave room under the copyright line for the floating MobileActionBar on phones (8px gap + 60px dock + 8px). */
   reserveActionBar?: boolean;
 };
 
@@ -120,7 +120,7 @@ export function SiteFooter({ art, mobileLayout = "stacked", reserveActionBar = f
         <Container
           className={cn(
             "flex min-h-16 items-center py-5 text-sm text-white/55",
-            reserveActionBar && "max-md:pb-[calc(20px+64px+env(safe-area-inset-bottom))]",
+            reserveActionBar && "max-md:pb-[calc(20px+76px+env(safe-area-inset-bottom))]",
           )}
         >
           <p>

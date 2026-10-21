@@ -10,11 +10,6 @@ import { useAppointment, APPOINTMENT_ID } from "@/components/layout/AppointmentP
 
 /** A viewport this much shorter than the window means the on-screen keyboard is open. */
 const KEYBOARD_PX = 150;
-/** Scrolling down this far in one go tucks the dock away… */
-const TUCK_AFTER_PX = 80;
-/** …scrolling back up this far, or pausing this long, brings it back. */
-const SHOW_ON_UP_PX = 12;
-const SHOW_AFTER_IDLE_MS = 900;
 
 const iconAction =
   "flex w-14 shrink-0 flex-col items-center justify-center gap-1 rounded-xl py-1 text-[11px] leading-none font-semibold text-ink/80 transition-colors active:bg-surface-alt";
@@ -33,64 +28,16 @@ function useKeyboardOpen() {
 }
 
 /**
- * True while the visitor is scrolling down (the dock steps aside so it never gets in the
- * way of reading). Scrolling up, pausing, or reaching the end of the page brings it back.
- */
-function useTuckedWhileScrollingDown() {
-  const [tucked, setTucked] = React.useState(false);
-  React.useEffect(() => {
-    let lastY = window.scrollY;
-    let down = 0;
-    let frame = 0;
-    let idle: number | undefined;
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const y = window.scrollY;
-        const dy = y - lastY;
-        lastY = y;
-        const atEnd = window.innerHeight + y >= document.documentElement.scrollHeight - 160;
-        if (atEnd) {
-          down = 0;
-          setTucked(false);
-        } else if (dy > 0) {
-          down += dy;
-          if (down > TUCK_AFTER_PX) setTucked(true);
-        } else if (dy < -SHOW_ON_UP_PX) {
-          down = 0;
-          setTucked(false);
-        }
-        window.clearTimeout(idle);
-        idle = window.setTimeout(() => {
-          down = 0;
-          setTucked(false);
-        }, SHOW_AFTER_IDLE_MS);
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(frame);
-      window.clearTimeout(idle);
-    };
-  }, []);
-  return tucked;
-}
-
-/**
  * Phones only (under 768px): a floating dock with Call · WhatsApp · Book Appointment.
- * It slides up once the hero has left the screen, steps aside while the visitor scrolls
- * down (back on scroll up, a pause, or at the end of the page), and stays away while
- * #appointment is on screen or the keyboard is open. The Book pill sizes to its label,
- * so it fits from 320px up.
+ * It slides up once the hero has left the screen and then stays visible while scrolling in
+ * either direction; it only steps away while #appointment is on screen (the form is right
+ * there) or the keyboard is open. The Book pill sizes to its label, so it fits from 320px up.
  */
 export function MobileActionBar() {
   const { openAppointment } = useAppointment();
   const heroInView = useInViewById("hero");
   const appointmentInView = useInViewById(APPOINTMENT_ID);
   const keyboardOpen = useKeyboardOpen();
-  const tucked = useTuckedWhileScrollingDown();
 
   // null = no such element on the page. The hero counts as "in view" until measured,
   // so the dock never flashes in over the hero on first paint.
@@ -100,7 +47,7 @@ export function MobileActionBar() {
     return () => window.clearTimeout(id);
   }, []);
   const overHero = heroInView ?? !measured;
-  const visible = !overHero && !appointmentInView && !keyboardOpen && !tucked;
+  const visible = !overHero && !appointmentInView && !keyboardOpen;
 
   return (
     <nav

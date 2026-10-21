@@ -255,4 +255,3 @@ the same values as `variant`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's
   PENDING items in `content/pages/breast-cancer.ts`.
-- Open: Joshis Clinic photo (`content/site.ts`, TODO(client)).

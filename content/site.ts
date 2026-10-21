@@ -98,8 +98,7 @@ export const site = {
       name: "Joshis Clinic",
       area: "Sahakara Nagar",
       mapHref: "https://share.google/ydsuRZi3sietkT4LR",
-      // TODO(client): add public/images/locations/joshis-clinic.webp and set it here.
-      image: null,
+      image: { src: "/images/locations/joshis-clinic.webp", width: 1024, height: 655 },
     },
   ] satisfies Location[],
 

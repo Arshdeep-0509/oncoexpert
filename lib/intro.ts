@@ -9,16 +9,10 @@ export const INTRO_TOTAL_MS = 3900; // fully gone
 
 const INTRO_SEEN_CLASS = "intro-seen";
 
-/**
- * Pages can opt out of the intro: SiteShell renders data-intro="off" on its wrapper.
- * The overlay is then hidden by CSS from first paint (globals.css) and never locks scrolling.
- */
-const INTRO_OFF_SELECTOR = '[data-intro="off"]';
-
 /** True when the intro does not play on this page load. */
 export function introDisabled(): boolean {
   if (typeof document === "undefined") return false;
-  return document.documentElement.classList.contains(INTRO_SEEN_CLASS) || !!document.querySelector(INTRO_OFF_SELECTOR);
+  return document.documentElement.classList.contains(INTRO_SEEN_CLASS);
 }
 
 /**

@@ -239,8 +239,10 @@ the same values as `variant`.
 
 ## Performance notes
 
-- `<SiteShell intro={false}>` turns the brand intro off for a page (it covers the page for ~3.3s, which
-  costs LCP). The breast page turns it off; the robotic page keeps it.
+- The brand intro (preloader) plays on every full page load / refresh, on every page; there is no
+  per-page opt-out. It covers the page for ~3.3s, so anything that animates or auto-advances on load
+  must wait for it: CSS via `--intro-delay`, JS via `introRemainingSeconds()` (`lib/intro.ts`).
+  In-site navigation does not replay it (the root layout stays mounted).
 - Never hide the hero LCP image behind clip-path / opacity at load; reveal it with a transform on a
   cover element.
 - Avoid `filter: blur()` / `backdrop-filter` on large or animated elements above the fold.

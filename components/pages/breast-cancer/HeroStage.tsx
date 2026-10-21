@@ -7,6 +7,7 @@ import { Pause, Play } from "lucide-react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { MEDIA, useMedia } from "@/lib/hooks/use-media";
+import { introRemainingSeconds } from "@/lib/intro";
 import { styles } from "@/components/pages/breast-cancer/hero-styles";
 
 const INTERVAL_MS = 5500;
@@ -41,6 +42,15 @@ export function HeroStage({ slides, labels, children, className }: HeroStageProp
   const [tabVisible, setTabVisible] = React.useState(true);
   // Slides 2–3 are only requested once the first (the LCP image) has loaded.
   const [loadRest, setLoadRest] = React.useState(false);
+  // While the intro preloader covers the page, hold the slideshow so slide 1 gets its full time.
+  const [intro] = React.useState(introRemainingSeconds);
+  const [introPlaying, setIntroPlaying] = React.useState(intro > 0);
+
+  React.useEffect(() => {
+    if (!introPlaying) return;
+    const t = window.setTimeout(() => setIntroPlaying(false), intro * 1000);
+    return () => window.clearTimeout(t);
+  }, [introPlaying, intro]);
 
   React.useEffect(() => {
     const el = rootRef.current;
@@ -55,7 +65,7 @@ export function HeroStage({ slides, labels, children, className }: HeroStageProp
     };
   }, []);
 
-  const playing = !reduce && !userPaused && onScreen && tabVisible && loadRest;
+  const playing = !reduce && !userPaused && onScreen && tabVisible && loadRest && !introPlaying;
 
   React.useEffect(() => {
     if (!playing) return;

@@ -410,9 +410,8 @@
     clip-path: circle(var(--clip-r) at var(--clip-x) var(--clip-y));
   }
 }
-/* Already played this session (or reduced motion): never show it. */
-.intro-seen .preloader,
-.preloader:has(~ [data-intro="off"]) {
+/* It plays on every full page load. `intro-seen` on <html> (set by nothing today) would hide it. */
+.intro-seen .preloader {
   display: none;
 }
 
@@ -471,7 +470,7 @@
 /* Entrance animations that play on page load wait for the intro preloader: it is a sibling
    before the page wrapper in <body> on a full load (never after client-side navigation).
    Use animation-delay: calc(var(--intro-delay, 0s) + …). Matches INTRO_EXIT_START_MS - 0.2s. */
-.preloader ~ [data-theme]:not([data-intro="off"]) {
+.preloader ~ [data-theme] {
   --intro-delay: 3.1s;
 }
 

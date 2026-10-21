@@ -25,11 +25,6 @@ type SiteShellProps = {
   footerArt?: FooterArt;
   /** Fixed Call · WhatsApp · Book bar on phones (the floating WhatsApp button then shows from md). */
   mobileActionBar?: boolean;
-  /**
-   * Play the brand intro (preloader) on a full page load. It covers the page for ~3.3s,
-   * which costs Largest Contentful Paint / Speed Index, so performance-critical pages turn it off.
-   */
-  intro?: boolean;
   children: React.ReactNode;
 };
 
@@ -46,15 +41,10 @@ export function SiteShell({
   appointmentHref = "#appointment",
   footerArt,
   mobileActionBar = true,
-  intro = true,
   children,
 }: SiteShellProps) {
   return (
-    <div
-      data-theme={theme}
-      data-intro={intro ? undefined : "off"}
-      className="min-h-svh overflow-x-clip bg-surface text-text"
-    >
+    <div data-theme={theme} className="min-h-svh overflow-x-clip bg-surface text-text">
       <ThemeSync theme={theme} />
       <SkipLink />
       <AppointmentProvider>

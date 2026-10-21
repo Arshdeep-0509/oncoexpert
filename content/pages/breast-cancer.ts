@@ -695,11 +695,12 @@ export type FaqEntry = FaqItem & {
 export const faq = {
   // SOURCE: NEW
   title: "Questions women often ask",
-  // SOURCE: NEW (contact card beside the questions on desktop)
+  // SOURCE: NEW (contact card after the questions)
   contactTitle: "Still have a question?",
   items: [
     {
       question: "What treatments are available for breast cancer at OncoXpert?",
+      icon: "stethoscope",
       // SOURCE: DOCTOR
       answer: [
         "In keeping with the international standards breast cancer is given multimodality treatment at our center involving surgery, chemotherapy, immunotherapy and radiotherapy.",
@@ -707,6 +708,7 @@ export const faq = {
     },
     {
       question: "How is my treatment planned?",
+      icon: "clipboard-list",
       // SOURCE: DOCTOR + EXISTING
       answer: [
         "Each patient is staged and subtyped precisely with biopsy and PET-CT scans and appropriate treatment advised.",
@@ -715,6 +717,7 @@ export const faq = {
     },
     {
       question: "Can my breast be preserved during surgery?",
+      icon: "heart-handshake",
       // SOURCE: DOCTOR
       answer: [
         "The focus of surgery is to remove the tumor with oncological safety and also to maintain the size and shape of the breast. This cosmetic surgery is achieved using oncoplastic techniques and flaps.",
@@ -722,6 +725,7 @@ export const faq = {
     },
     {
       question: "Do you offer robotic or keyhole surgery?",
+      icon: "cpu",
       // SOURCE: EXISTING
       answer: [
         "Utilizing state-of-the-art robotic assistance for extreme precision, smaller incisions, and significantly faster recovery times.",
@@ -731,16 +735,19 @@ export const faq = {
     },
     {
       question: "What does breast cancer treatment cost?",
+      icon: "indian-rupee",
       // Generated from the price cards (DOCTOR = EXISTING) + EXISTING contact line
       answer: [priceAnswer, `${pricing.plan.contactLine} ${pricing.plan.contactLink.label}.`],
     },
     {
       question: "Do you accept health insurance?",
+      icon: "shield-check",
       // SOURCE: EXISTING
       answer: ["We assist with most major health insurance providers for a hassle-free treatment experience."],
     },
     {
       question: "Is there support during and after treatment?",
+      icon: "users",
       // SOURCE: DOCTOR + EXISTING
       answer: [
         "We have a survivors group which meets regularly and helps new patients cope with the treatment effectively.",
@@ -749,6 +756,7 @@ export const faq = {
     },
     {
       question: "Where can I consult Dr. Sunil Navalgund?",
+      icon: "map-pin",
       // SOURCE: EXISTING (+ the clinic list from content/site.ts)
       answer: [
         "Visit any of our cancer care centers across Bengaluru for expert consultations and advanced surgical oncology care.",

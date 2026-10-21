@@ -83,10 +83,15 @@ export type Stat = {
   label: string;
 };
 
+/** Icon shown on a FAQ card (components/shared/Faq.tsx). */
+export type FaqIcon =
+  "stethoscope" | "clipboard-list" | "heart-handshake" | "cpu" | "indian-rupee" | "shield-check" | "users" | "map-pin";
+
 export type FaqItem = {
   question: string;
   /** One string per paragraph. */
   answer: readonly string[];
+  icon: FaqIcon;
 };
 
 /** Google review, verbatim (reviewers' own spelling is preserved). */

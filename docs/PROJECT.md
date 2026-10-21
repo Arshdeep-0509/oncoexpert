@@ -155,16 +155,16 @@ Each component keeps its looks in a class map at the top of the file (`const loo
 A new page normally uses `soft` and re-themes it with its theme file. `Eyebrow` and `SectionHeading` take
 the same values as `variant`.
 
-| Component            | Props (besides `id`, `tone`, `look`)                                                                          |
-| -------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared)                                            |
-| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                           |
-| `Faq` (no `look`)    | `title`, `contactTitle`, `items`, `locations` (+ FAQPage JSON-LD)                                             |
-| `AppointmentSection` | `page` (email subject), `formStyles?`                                                                         |
-| `Locations`          | none (clinics from content)                                                                                   |
-| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                               |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image` |
-| `AppointmentButton`  | `label`, `service?`, `note?`, `variant?` or `look?` (a page's own link classes)                               |
+| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                 |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared)                                                                                                   |
+| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                  |
+| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD) |
+| `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                |
+| `Locations`          | none (clinics from content)                                                                                                                                          |
+| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                      |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image`                                                        |
+| `AppointmentButton`  | `label`, `service?`, `note?`, `variant?` or `look?` (a page's own link classes)                                                                                      |
 
 - The appointment form is one component. `useAppointment().openAppointment(service?, note?)` scrolls to
   `#appointment` below the header, preselects the service, stores the note and focuses Name; without

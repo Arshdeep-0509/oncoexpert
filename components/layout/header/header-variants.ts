@@ -3,7 +3,7 @@ import type { HeaderVariant } from "@/content/types";
 /**
  * Per-variant sizes. "dark" is the robotic page's original bar (80 → 68px after 40px of
  * scroll, CTA from md); "light" is 64px on phones/tablets and 76 → 64px on desktop after
- * 24px of scroll, CTA on desktop only.
+ * 24px of scroll, CTA on desktop only. Text colour over the hero is SiteHeader's `heroTone`.
  */
 export const headerVariants = {
   dark: {

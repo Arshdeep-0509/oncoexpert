@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
 import { pageList } from "@/content/pages";
 
-/** Every rebuilt page, from the registry (content/pages/index.ts). */
+/** Every rebuilt page, from the registry (content/pages/index.ts). Home first, at priority 1. */
 export default function sitemap(): MetadataRoute.Sitemap {
   return pageList.map((page) => ({
     url: page.meta.canonical,
     changeFrequency: "monthly",
-    priority: 0.8,
+    priority: page.sitemapPriority ?? 0.8,
   }));
 }

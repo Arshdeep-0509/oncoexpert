@@ -3,8 +3,8 @@
 Read this first. oncoxpert.in is a surgical oncology practice in Bengaluru led by Dr. Sunil Navalgund.
 The site is rebuilt page by page. Most visitors are on phones: design mobile-first.
 
-Pages so far: **Robotic Surgery** (`/robotic-surgery/`) and **Breast Cancer**
-(`/breast-cancer-treatment-bangalore/`). Both share one site shell and one set of section components;
+Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`) and **Breast Cancer**
+(`/breast-cancer-treatment-bangalore/`). They share one site shell and one set of section components;
 each page has its own theme.
 
 ## Stack
@@ -15,19 +15,19 @@ each page has its own theme.
 - `motion` (import from `"motion/react"`), lucide-react (stroke width 1.75), Embla (+ autoplay), Lenis
 - react-hook-form + zod, Resend (appointment form), clsx + tailwind-merge (`cn()`)
 - Prettier + prettier-plugin-tailwindcss (class order), ESLint (next config), knip (dead-code check)
-- sharp (dev): `npm run images` downloads and resizes the breast page photos
-- Fonts (next/font, loaded once in `app/layout.tsx`): Plus Jakarta Sans (UI/body), Fraunces (breast
-  display), Inter (robotic body)
+- sharp (dev): `npm run images [page]` downloads and resizes a page's stock photos and makes its og.jpg
+- Fonts (next/font, loaded once in `app/layout.tsx`): Plus Jakarta Sans (UI/body, home display), Fraunces
+  (breast display, emphasis words), Inter (robotic body)
 
-| Command             | Does                                      |
-| ------------------- | ----------------------------------------- |
-| `npm run dev`       | dev server on :3000                       |
-| `npm run build`     | production build (must pass)              |
-| `npm run lint`      | ESLint                                    |
-| `npm run typecheck` | `tsc --noEmit`                            |
-| `npm run format`    | Prettier (write); `format:check` to check |
-| `npm run images`    | fetch + resize the breast page photos     |
-| `npx knip`          | unused files, exports, types, packages    |
+| Command                 | Does                                                             |
+| ----------------------- | ---------------------------------------------------------------- |
+| `npm run dev`           | dev server on :3000                                              |
+| `npm run build`         | production build (must pass)                                     |
+| `npm run lint`          | ESLint                                                           |
+| `npm run typecheck`     | `tsc --noEmit`                                                   |
+| `npm run format`        | Prettier (write); `format:check` to check                        |
+| `npm run images [page]` | fetch + resize a page's photos, make its og.jpg (default breast) |
+| `npx knip`              | unused files, exports, types, packages                           |
 
 Before committing: `npm run typecheck && npm run lint && npm run format:check && npm run build`.
 
@@ -36,7 +36,7 @@ Before committing: `npm run typecheck && npm run lint && npm run format:check &&
 ```
 app/
   layout.tsx                 html, body, fonts, providers, Preloader (no header/footer)
-  page.tsx                   / → redirects to /breast-cancer-treatment-bangalore/
+  page.tsx                   / Home: renders its own <SiteShell theme="home" …> (see "Home route")
   globals.css                imports tokens + themes; @theme inline token → utility map; shared keyframes
   sitemap.ts, robots.ts      from content/pages/index.ts
   robotic-surgery/           layout.tsx = <SiteShell theme="robotic" …>; page.tsx = sections in order
@@ -54,6 +54,7 @@ components/
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, ProgressRing, Reveal,
                              ScrollFillLine, Section, SectionHeading, SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
+  pages/home/                sections used only by Home (HomeHero; SectionPlaceholder until each is built)
   pages/breast-cancer/       sections used only by the breast page (+ hero.css, hero-styles.ts)
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
@@ -63,7 +64,7 @@ content/
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
   shared/                    reviews.ts (Google reviews, verbatim), videos.ts (YouTube IDs),
                              sections.ts (appointment / locations / final band copy), organization.ts (JSON-LD facts)
-  pages/index.ts             page registry: slug, path, title, theme, themeColor, meta
+  pages/index.ts             page registry: slug, path, title, theme, themeColor, sitemapPriority?, meta
   pages/<page>.ts            every word and number on that page
   pages/<page>.images.ts     image manifest (file, alt, credit, focal point, size)
 lib/
@@ -76,11 +77,11 @@ lib/
   analytics.ts, intro.ts, lenis.ts, motion.ts (EASE_OUT_EXPO), nav.ts, image-fade.ts, youtube.ts
 styles/
   tokens.css                 shared palette, third-party brand colours, neutral defaults for every token
-  themes/breast.css, themes/robotic.css   one theme per page
+  themes/home.css, themes/breast.css, themes/robotic.css   one theme per page
 scripts/
-  fetch-images.mjs           npm run images
+  fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
-public/images/               brand/ locations/ breast-cancer/ robotic/
+public/images/               brand/ locations/ home/ breast-cancer/ robotic/
 ```
 
 ### Naming
@@ -98,7 +99,7 @@ public/images/               brand/ locations/ breast-cancer/ robotic/
 
 - Components never hardcode a colour or font (no hex, no font names). They use semantic utilities:
   `bg-surface` `bg-surface-alt` `bg-surface-warm` `text-ink` `text-text` `text-muted` `bg-accent`
-  `text-accent` `hover:bg-accent-hover` `bg-accent-soft` `text-accent-glow` `bg-petal` `text-gold`
+  `text-accent` `hover:bg-accent-hover` `bg-accent-soft` `text-accent-glow` `bg-highlight` `bg-petal` `text-gold`
   `border-line` `font-display` `font-serif` `rounded-sm|md|lg|xl|pill` `shadow-soft-sm|soft|soft-lg`
   `shadow-card` `py-(--section-y)` `bg-(image:--grad-hero)`. Fixed brand artwork colours (logo, Google
   mark, WhatsApp, the portrait backdrop) are tokens in `styles/tokens.css` too.
@@ -129,6 +130,7 @@ public/images/               brand/ locations/ breast-cancer/ robotic/
   --accent-hover: …;
   --accent-soft: …;
   --accent-glow: …;
+  --highlight: …; /* optional second brand colour, decoration only (home: logo orange) */
   --petal: …;
   --gold: …;
   --line: …;
@@ -141,7 +143,20 @@ public/images/               brand/ locations/ breast-cancer/ robotic/
 }
 ```
 
-Anything a theme leaves out falls back to the neutral defaults in `styles/tokens.css`.
+Anything a theme leaves out falls back to the neutral defaults in `styles/tokens.css`. List the
+contrast of every text/background pair in the theme file's header comment (see `themes/home.css`).
+
+### Header over the hero
+
+`SiteShell` takes two independent header props:
+
+- `headerVariant`: the bar's sizes and layout. `"dark"` = the robotic page's original bar (80 → 68px,
+  40px top bar from md, CTA from md, stacked mobile footer); `"light"` = the shared bar (64px; 76 → 64px
+  on desktop, 36px top bar from lg, CTA from lg, accordion mobile footer).
+- `heroTone`: the tone of the hero the transparent bar floats over; `"dark"` gives white text and the
+  white logo pill. Defaults to `headerVariant`.
+
+Robotic = `dark` + dark hero, breast = `light` + light hero, home = `light` sizes over a `dark` hero.
 
 ## Shared sections and looks
 
@@ -209,14 +224,19 @@ the same values as `variant`.
    has photos (and a `pageName` / `pageSlug` export for the form and reviews).
 3. **Registry**: add the page to `content/pages/index.ts` (slug, path, title, theme, themeColor, meta);
    sitemap and robots pick it up.
-4. **Route**: `app/<slug>/layout.tsx` = `<SiteShell theme="<name>" headerVariant="light|dark">`;
+4. **Route**: `app/<slug>/layout.tsx` = `<SiteShell theme="<name>" headerVariant="light|dark">`
+   (+ `heroTone` when the hero's tone differs, see "Header over the hero");
    `app/<slug>/page.tsx` exports `metadata`, `generateViewport` (`pageViewport(pages[slug])`) and lists
    the sections. Give the hero `id="hero"`.
-5. **Sections**: reuse `components/shared/*` (Reviews, Videos, Faq, AppointmentSection, Locations,
-   FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
-   `components/pages/<name>/`.
-6. **Nav**: add the page to `site.nav` in `content/site.ts` if it should appear in the menus.
-7. **Check**: typecheck, lint, format, build; look at 375 / 768 / 1440; run Lighthouse (mobile).
+
+### Home route
+
+`/` is `app/page.tsx`, and a `layout.tsx` beside it would be the root layout, which wraps every route
+(the other pages would get two shells). So Home's page renders its own `<SiteShell theme="home"
+headerVariant="light" heroTone="dark">` around its sections. Home has no child routes, so a layout's only
+advantage (staying mounted across child navigations) does not apply: the rendered tree is the same. 5. **Sections**: reuse `components/shared/*` (Reviews, Videos, Faq, AppointmentSection, Locations,
+FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
+`components/pages/<name>/`. 6. **Nav**: add the page to `site.nav` in `content/site.ts` if it should appear in the menus. 7. **Check**: typecheck, lint, format, build; look at 375 / 768 / 1440; run Lighthouse (mobile).
 
 ## Page CSS
 
@@ -255,6 +275,11 @@ the same values as `variant`.
 
 ## Status
 
+- Home: foundation. Theme (`themes/home.css`), every word of the live homepage in
+  `content/pages/home.ts`, images (`home.images.ts`, `npm run images home`, og.jpg), registry, sitemap
+  (priority 1) and a skeleton: the hero plus one placeholder per block (#hero, #surgeon, #robotic,
+  #specialties, #services, #approach, #value, #reviews, #videos, #faq, #appointment, #locations,
+  #final-cta). Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's
   PENDING items in `content/pages/breast-cancer.ts`.

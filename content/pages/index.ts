@@ -4,10 +4,20 @@
  * Adding a page: see "Add a page" in docs/PROJECT.md.
  */
 import type { PageEntry } from "@/content/types";
+import { meta as homeMeta } from "@/content/pages/home";
 import { meta as breastMeta } from "@/content/pages/breast-cancer";
 import { meta as roboticMeta } from "@/content/pages/robotic-surgery";
 
 export const pages = {
+  home: {
+    slug: "home",
+    path: "/",
+    title: homeMeta.title,
+    theme: "home",
+    themeColor: "#0A1633",
+    sitemapPriority: 1,
+    meta: homeMeta,
+  },
   "robotic-surgery": {
     slug: "robotic-surgery",
     path: "/robotic-surgery/",

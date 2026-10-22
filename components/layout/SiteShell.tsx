@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { HeaderVariant, ThemeName } from "@/content/types";
+import type { HeaderVariant, HeroTone, ThemeName } from "@/content/types";
 import { ThemeSync } from "@/components/layout/ThemeSync";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { TopBar } from "@/components/layout/TopBar";
@@ -12,8 +12,10 @@ import { AppointmentProvider } from "@/components/layout/AppointmentProvider";
 type SiteShellProps = {
   /** styles/themes/<theme>.css decides what every semantic token means on this page. */
   theme: ThemeName;
-  /** "dark" over a dark hero (robotic page's original header), "light" over a light one. */
+  /** Bar sizes and layout: "dark" = the robotic page's original header, "light" = the shared one. */
   headerVariant: HeaderVariant;
+  /** Tone of the hero under the transparent header (white text over "dark"). Defaults to headerVariant. */
+  heroTone?: HeroTone;
   /** Nav item to mark as current, e.g. "/breast-cancer-treatment-bangalore/". Defaults to the URL. */
   activeHref?: string;
   /**
@@ -37,6 +39,7 @@ type SiteShellProps = {
 export function SiteShell({
   theme,
   headerVariant,
+  heroTone = headerVariant,
   activeHref,
   appointmentHref = "#appointment",
   footerArt,
@@ -49,7 +52,12 @@ export function SiteShell({
       <SkipLink />
       <AppointmentProvider>
         <TopBar variant={headerVariant} />
-        <SiteHeader variant={headerVariant} appointmentHref={appointmentHref} activeHref={activeHref} />
+        <SiteHeader
+          variant={headerVariant}
+          heroTone={heroTone}
+          appointmentHref={appointmentHref}
+          activeHref={activeHref}
+        />
         <main id="main">{children}</main>
         <SiteFooter
           art={footerArt}

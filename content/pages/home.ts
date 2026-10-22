@@ -42,7 +42,7 @@ export const pageSlug = "home";
 type AppointmentCta = { label: string; service: AppointmentService };
 type LinkCta = { label: string; href: string };
 
-type SpecialtyKey = "breast" | "colorectal" | "endometrial" | "lung" | "thyroid" | "ovarian";
+export type SpecialtyKey = "breast" | "colorectal" | "endometrial" | "lung" | "thyroid" | "ovarian";
 
 export type HeroContent = {
   eyebrow: string;
@@ -92,29 +92,50 @@ export type RoboticContent = {
 
 export type SpecialtiesContent = {
   title: string;
+  /** Words of `title` set in the serif italic. */
+  emphasis: string;
   items: readonly { key: SpecialtyKey; name: string; body: string; href: string; image: HomeImageKey }[];
+  a11y: { list: string };
 };
+
+/** Icon keys for the services (mapped to lucide icons in components/pages/home). */
+export type ServiceIcon = "scalpel" | "robot" | "syringe" | "radiation" | "immune" | "screening";
+
+/** A service card either links to a page or opens the appointment form, preset. */
+type ServiceAction =
+  | { kind: "link"; label: string; href: string }
+  | { kind: "appointment"; label: string; service: AppointmentService; note: string };
 
 export type ServicesContent = {
   title: string;
-  items: readonly { name: string; body: string }[];
+  emphasis: string;
+  items: readonly { name: string; body: string; icon: ServiceIcon; action: ServiceAction }[];
 };
+
+/** Icon keys for the approach pillars. */
+export type ApproachIcon = "award" | "scale" | "heart-handshake" | "target" | "cpu";
 
 export type ApproachContent = {
-  /** Rendered as separate lines of the heading. */
+  /** Rendered as separate lines of the heading; `emphasis` (in the last line) in the serif italic. */
   title: readonly string[];
+  emphasis: string;
   body: string;
   cta: AppointmentCta;
-  pillars: readonly { title: string; body: string }[];
+  pillars: readonly { title: string; body: string; icon: ApproachIcon }[];
 };
 
+/** Icon keys for the value cards. */
+export type ValueIcon = "wallet" | "receipt" | "shield-check";
+
 /** A value item; `range` renders before the title: { from: 30, to: 40, suffix: "%" } → "30–40% …". */
-type ValueItem = { title: string; range?: { from: number; to: number; suffix: string } };
+type ValueItem = { title: string; icon?: ValueIcon; range?: { from: number; to: number; suffix: string } };
 
 export type ValueContent = {
   title: string;
+  emphasis: string;
   items: readonly ValueItem[];
-  cta: AppointmentCta;
+  /** Opens the appointment form with `note` stored on the request. */
+  cta: AppointmentCta & { note: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -244,6 +265,10 @@ export const robotic = {
 export const specialties = {
   // SOURCE: EXISTING
   title: "Expertise Across All Cancer Specialties",
+  // NEW (presentation only): set in the serif italic
+  emphasis: "Cancer Specialties",
+  // SOURCE: NEW (screen-reader label of the phone swipe row)
+  a11y: { list: "Cancer specialties" },
   // SOURCE: EXISTING (names and one-liners, in the live order). Links: the site menu's pages
   // (content/site.ts). The live cards link Colorectal to /colon-page/ and Endometrial to
   // /endometrial-cancer-2/, which both return 404.
@@ -310,14 +335,49 @@ export const heroTicker = {
 export const services = {
   // SOURCE: EXISTING
   title: "Comprehensive Oncology Services",
-  // SOURCE: EXISTING (names and one-liners, in the live order)
+  // NEW (presentation only): set in the serif italic
+  emphasis: "Oncology Services",
+  // SOURCE: EXISTING (names and one-liners, in the live order; action labels are the live site's
+  // "Learn About Robotic Surgery" and "Book a Consultation" buttons). Icons and actions NEW: the
+  // two surgical services link to the robotic page, the others open the form ("Consultation")
+  // with the service's name stored as the note.
   items: [
-    { name: "Surgical Oncology", body: "Expert tumor removals with focus on organ preservation." },
-    { name: "Robotic Surgery", body: "Minimally invasive advanced robotic-assisted procedures." },
-    { name: "Chemotherapy", body: "Personalized drug therapy protocols with precision dosing." },
-    { name: "Radiation Therapy", body: "Targeted radiation for localized cancer control." },
-    { name: "Immunotherapy", body: "Boosting the immune system to fight cancer cells." },
-    { name: "Cancer Screening", body: "Early detection programs for at-risk populations." },
+    {
+      name: "Surgical Oncology",
+      body: "Expert tumor removals with focus on organ preservation.",
+      icon: "scalpel",
+      action: { kind: "link", label: "Learn About Robotic Surgery", href: "/robotic-surgery/" },
+    },
+    {
+      name: "Robotic Surgery",
+      body: "Minimally invasive advanced robotic-assisted procedures.",
+      icon: "robot",
+      action: { kind: "link", label: "Learn About Robotic Surgery", href: "/robotic-surgery/" },
+    },
+    {
+      name: "Chemotherapy",
+      body: "Personalized drug therapy protocols with precision dosing.",
+      icon: "syringe",
+      action: { kind: "appointment", label: "Book a Consultation", service: "Consultation", note: "Chemotherapy" },
+    },
+    {
+      name: "Radiation Therapy",
+      body: "Targeted radiation for localized cancer control.",
+      icon: "radiation",
+      action: { kind: "appointment", label: "Book a Consultation", service: "Consultation", note: "Radiation Therapy" },
+    },
+    {
+      name: "Immunotherapy",
+      body: "Boosting the immune system to fight cancer cells.",
+      icon: "immune",
+      action: { kind: "appointment", label: "Book a Consultation", service: "Consultation", note: "Immunotherapy" },
+    },
+    {
+      name: "Cancer Screening",
+      body: "Early detection programs for at-risk populations.",
+      icon: "screening",
+      action: { kind: "appointment", label: "Book a Consultation", service: "Consultation", note: "Cancer Screening" },
+    },
   ],
 } as const satisfies ServicesContent;
 
@@ -328,30 +388,37 @@ export const services = {
 export const approach = {
   // SOURCE: EXISTING (one string per sentence)
   title: ["Fight Cancer with Clarity.", "Reclaim Life with Confidence."],
+  // NEW (presentation only): set in the serif italic
+  emphasis: "Confidence.",
   body: "At OncoXpert, we combine advanced surgical expertise, ethical guidance, and personalized treatment plans to help every patient make informed decisions and achieve the best possible outcomes.",
   // SOURCE: EXISTING (button label; opens the booking page on the live site)
   cta: { label: "Book a Consultation", service: "Consultation" },
-  // SOURCE: EXISTING (the 5 pillars, in the live order)
+  // SOURCE: EXISTING (the 5 pillars, in the live order); icons NEW
   pillars: [
     {
       title: "Best-in-Class Treatment Protocols",
       body: "Evidence-based cancer treatment aligned with global standards.",
+      icon: "award",
     },
     {
       title: "Ethical & Clear Guidance",
       body: "Honest recommendations with complete transparency at every step.",
+      icon: "scale",
     },
     {
       title: "Holistic Healing & Quality of Life",
       body: "Comprehensive care focused on recovery, comfort, and long term well-being.",
+      icon: "heart-handshake",
     },
     {
       title: "Precision & Personalized Care",
       body: "Tailored treatment plans designed around each patient's unique condition.",
+      icon: "target",
     },
     {
       title: "Cutting-Edge Surgical Technology",
       body: "Advanced minimally invasive and robotic surgical techniques for better outcomes.",
+      icon: "cpu",
     },
   ],
 } as const satisfies ApproachContent;
@@ -363,17 +430,19 @@ export const approach = {
 export const value = {
   // SOURCE: EXISTING
   title: "Where Excellence, Compassion, Trust & Affordability Come Together",
-  // SOURCE: EXISTING (the 4 items, in the live order)
+  // NEW (presentation only): set in the serif italic
+  emphasis: "Come Together",
+  // SOURCE: EXISTING (the 4 items, in the live order); icons NEW
   items: [
-    { title: "Affordable & Budget-Friendly Treatment" },
-    // Renders "30–40% Cost Savings", as on the live page.
+    { title: "Affordable & Budget-Friendly Treatment", icon: "wallet" },
+    // Renders "30–40% Cost Savings", as on the live page (the big animated number).
     // PENDING DOCTOR: confirm the 30–40% cost savings claim, and what it is compared with.
     { title: "Cost Savings", range: { from: 30, to: 40, suffix: "%" } },
-    { title: "Transparent Pricing, No Hidden Charges" },
-    { title: "Cashless Insurance Assistance" },
+    { title: "Transparent Pricing, No Hidden Charges", icon: "receipt" },
+    { title: "Cashless Insurance Assistance", icon: "shield-check" },
   ],
-  // SOURCE: EXISTING (button label; opens the booking page on the live site)
-  cta: { label: "Request a Treatment Estimate", service: "Consultation" },
+  // SOURCE: EXISTING (button label; opens the booking page on the live site); note NEW
+  cta: { label: "Request a Treatment Estimate", service: "Consultation", note: "Estimate request" },
 } as const satisfies ValueContent;
 
 /* ------------------------------------------------------------------ */

@@ -2,7 +2,7 @@
    Home #robotic: the dark band that hands off to the robotic page (RoboticSection.tsx).
    Plain CSS, prefix rband- (see docs/PROJECT.md, "Page CSS").
    - The feature tiles reveal in turn (Reveal, data-revealed); then each icon draws itself
-     (a small SVG stroke draw) and one soft glow passes over the tiles, left to right, once.
+     (icon-draw.css) and one soft glow passes over the tiles, left to right, once.
    - The arms photo drifts 40px as the band scrolls past (scroll-driven, transform only).
    - The default styles are the final state; all motion is in prefers-reduced-motion: no-preference.
    ================================================================== */
@@ -31,16 +31,6 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* Icons: every stroke of the lucide icon draws in (lengths stay under 150 in its 24px box). */
-  .rband-tile[data-revealed] .rband-icon :is(path, circle, line, rect, polyline, polygon, ellipse) {
-    animation: rband-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) backwards;
-    animation-delay: calc(var(--reveal-delay, 0s) + 0.25s);
-  }
-  .rband-tile:not([data-revealed]) .rband-icon :is(path, circle, line, rect, polyline, polygon, ellipse) {
-    stroke-dasharray: 150;
-    stroke-dashoffset: 150;
-  }
-
   /* One pass of light across the grid: column by column, after every tile is in. */
   .rband-tile[data-revealed] .rband-sheen {
     animation: rband-sheen 1.2s ease-in-out both;
@@ -56,16 +46,6 @@
   }
 }
 
-@keyframes rband-draw {
-  from {
-    stroke-dasharray: 150;
-    stroke-dashoffset: 150;
-  }
-  to {
-    stroke-dasharray: 150;
-    stroke-dashoffset: 0;
-  }
-}
 @keyframes rband-sheen {
   from {
     translate: -120% 0;

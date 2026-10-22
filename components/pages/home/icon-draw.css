@@ -1,0 +1,30 @@
+/* ==================================================================
+   Home: line icons that draw themselves (a small SVG stroke draw) when their card is revealed.
+   Plain CSS, prefix icon-draw (see docs/PROJECT.md, "Page CSS").
+   - .icon-draw-in on the Reveal item (it gets data-revealed and --reveal-delay),
+     .icon-draw on the icon's <svg> (lucide or the specialty set: 24px box).
+   - Every stroke of a 24px icon is shorter than 150, so dash 150 draws each one in full.
+   - The default is the drawn icon; with reduced motion nothing animates.
+   ================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .icon-draw-in:not([data-revealed]) .icon-draw :is(path, circle, line, rect, polyline, polygon, ellipse) {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+  }
+  .icon-draw-in[data-revealed] .icon-draw :is(path, circle, line, rect, polyline, polygon, ellipse) {
+    animation: icon-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) backwards;
+    animation-delay: calc(var(--reveal-delay, 0s) + 0.25s);
+  }
+}
+
+@keyframes icon-draw {
+  from {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+  }
+  to {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 0;
+  }
+}

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { approach, faq, pageSlug, reviews, services, specialties, value, videos } from "@/content/pages/home";
+import { faq, pageSlug, reviews, videos } from "@/content/pages/home";
 import { appointmentSection, finalCtaSection, locationsSection } from "@/content/shared/sections";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
@@ -8,6 +8,10 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { HomeHero } from "@/components/pages/home/HomeHero";
 import { SurgeonSection } from "@/components/pages/home/SurgeonSection";
 import { RoboticSection } from "@/components/pages/home/RoboticSection";
+import { SpecialtiesSection } from "@/components/pages/home/SpecialtiesSection";
+import { ServicesSection } from "@/components/pages/home/ServicesSection";
+import { ApproachSection } from "@/components/pages/home/ApproachSection";
+import { ValueSection } from "@/components/pages/home/ValueSection";
 import { SectionPlaceholder } from "@/components/pages/home/SectionPlaceholder";
 
 const page = pages[pageSlug];
@@ -32,10 +36,10 @@ export default function HomePage() {
       <HomeHero /> {/* 1  #hero         navy hero gradient */}
       <SurgeonSection /> {/* 2  #surgeon      warm */}
       <RoboticSection /> {/* 3  #robotic      navy band */}
-      <SectionPlaceholder index={4} id="specialties" tone="alt" title={specialties.title} />
-      <SectionPlaceholder index={5} id="services" tone="surface" title={services.title} />
-      <SectionPlaceholder index={6} id="approach" tone="plum" title={approach.title} />
-      <SectionPlaceholder index={7} id="value" tone="warm" title={value.title} />
+      <SpecialtiesSection /> {/* 4  #specialties  ice */}
+      <ServicesSection /> {/* 5  #services     white */}
+      <ApproachSection /> {/* 6  #approach     navy band */}
+      <ValueSection /> {/* 7  #value        blush → white */}
       <SectionPlaceholder index={8} id="reviews" tone="alt" title={reviews.title} />
       <SectionPlaceholder index={9} id="videos" tone="plum" title={videos.title} />
       <SectionPlaceholder index={10} id="faq" tone="surface" title={faq.title} />

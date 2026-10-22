@@ -59,7 +59,10 @@ components/
                              HeroHeadline, HeroStats, HeroTrustStrip (server) and the islands HeroTicker,
                              HeroCounter, HeroParallax, HeroMotionToggle, HeroParticles(Layer).
                              SurgeonSection (+ SurgeonStats, JourneyTimeline + journey.css),
-                             RoboticSection (+ robotic-band.css)
+                             RoboticSection (+ robotic-band.css), SpecialtiesSection (+ specialties.css,
+                             specialty-icons.tsx icon set), ServicesSection, ApproachSection (+ the island
+                             ApproachPillars), ValueSection (+ the island ValueRange, value-band.css);
+                             icon-draw.css: the shared "line art draws itself on reveal" for icons
   pages/breast-cancer/       sections used only by the breast page (+ hero.css, hero-styles.ts)
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
@@ -292,11 +295,13 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 
 - Home: foundation. Theme (`themes/home.css`), every word of the live homepage in
   `content/pages/home.ts`, images (`home.images.ts`, `npm run images home`, og.jpg), registry, sitemap
-  (priority 1) and one placeholder per block still to build (#specialties, #services, #approach,
-  #value, #reviews, #videos, #faq, #appointment, #locations, #final-cta).
+  (priority 1) and one placeholder per block still to build (#reviews, #videos, #faq,
+  #appointment, #locations, #final-cta).
   Built: #hero ("Orbit": gradient ring with the portrait, ticker, stat chips, trust marquee),
-  #surgeon (portrait, training-journey timeline, stats band) and #robotic (dark band with the
-  da Vinci arms and the 8 features).
+  #surgeon (portrait, training-journey timeline, stats band), #robotic (dark band with the
+  da Vinci arms and the 8 features), #specialties (bento grid, swipe row on phones), #services
+  (icon cards that draw themselves), #approach (sticky heading, the pillar at mid-screen lit) and
+  #value ("30–40%" counter, cards, drifting glow).
   Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's

@@ -20,6 +20,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
+import "@/components/pages/home/icon-draw.css";
 import "@/components/pages/home/robotic-band.css";
 
 const icons: Record<RoboticFeatureIcon, LucideIcon> = {
@@ -33,11 +34,11 @@ const icons: Record<RoboticFeatureIcon, LucideIcon> = {
   house: House,
 };
 
-/** Class names from robotic-band.css (plain CSS, `rband-` prefix). */
+/** Class names from robotic-band.css (`rband-`) and icon-draw.css (the icons draw on reveal). */
 const styles = {
-  tile: "rband-tile",
+  tile: "rband-tile icon-draw-in",
   card: "rband-card",
-  icon: "rband-icon",
+  icon: "icon-draw",
   sheen: "rband-sheen",
   drift: "rband-drift",
 } as const;

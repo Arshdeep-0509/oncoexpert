@@ -15,7 +15,7 @@
 import type { FaqItem, PageMeta, Stat } from "@/content/types";
 import type { HomeImageKey } from "@/content/pages/home.images";
 import { homeOgImage } from "@/content/pages/home.images";
-import type { AppointmentService } from "@/content/site";
+import { site, type AppointmentService } from "@/content/site";
 import type { ReviewId } from "@/content/shared/reviews";
 
 /* ------------------------------------------------------------------ */
@@ -45,12 +45,21 @@ type LinkCta = { label: string; href: string };
 type SpecialtyKey = "breast" | "colorectal" | "endometrial" | "lung" | "thyroid" | "ovarian";
 
 export type HeroContent = {
+  eyebrow: string;
   title: string;
+  /** Words of `title` set in the accent gradient; the last one gets the drawn underline. */
+  emphasis: string;
   body: string;
-  ctas: { primary: AppointmentCta; secondary: AppointmentCta };
-  /** The specialties listed in the hero, in this order (labels: `specialties.items`). */
+  /** "Expert care for ___ cancer": the blank cycles through `specialties` (heroTicker below). */
+  ticker: { lead: string; tail: string; and: string };
+  /** The specialties the ticker cycles through, in this order (names: `specialties.items`). */
   specialties: readonly SpecialtyKey[];
-  a11y: { specialties: string };
+  ctas: { primary: AppointmentCta; secondary: AppointmentCta };
+  /** "Or call" + the clinic phone number (content/site.ts). */
+  phone: { lead: string };
+  /** The trust strip along the bottom edge. */
+  trust: readonly string[];
+  a11y: { stats: string; trust: string; pause: string; play: string; scroll: string };
 };
 
 export type SurgeonContent = {
@@ -102,20 +111,44 @@ export type ValueContent = {
 /* ------------------------------------------------------------------ */
 
 export const hero = {
+  // SOURCE: NEW
+  eyebrow: "Surgical Oncology · Bengaluru",
   // SOURCE: EXISTING
   title: "State-of-the-Art Cancer Care by Trusted & Experienced Oncologists",
+  // NEW (presentation only): these words of the title get the gradient
+  emphasis: "Trusted & Experienced",
+  // SOURCE: EXISTING
   body: "Focused on achieving the best possible outcomes through advanced surgical oncology, robotic surgery, minimally invasive procedures, and personalized cancer care.",
+  // SOURCE: NEW (the words around the cycling specialty name)
+  ticker: { lead: "Expert care for", tail: "cancer", and: "and" },
+  // SOURCE: EXISTING (names: the specialties below, without "Cancer")
+  // PENDING DOCTOR: the order of the specialties in the hero ticker (and which to lead with).
+  specialties: ["breast", "colorectal", "lung", "thyroid", "ovarian", "endometrial"],
   // SOURCE: EXISTING (button labels; both open the booking page on the live site)
   ctas: {
     primary: { label: "Book Appointment", service: "Consultation" },
     secondary: { label: "Get Second Opinion", service: "Second Opinion" },
   },
-  // SOURCE: EXISTING (labels: the specialty names in `specialties` below)
-  // PENDING DOCTOR: the order of the specialties listed in the hero. It follows the live page's
-  // "Expertise Across All Cancer Specialties" grid until the doctor picks which to lead with.
-  specialties: ["breast", "colorectal", "endometrial", "lung", "thyroid", "ovarian"],
-  // SOURCE: NEW (screen-reader label)
-  a11y: { specialties: "Cancer specialties we treat" },
+  // SOURCE: NEW
+  phone: { lead: "Or call" },
+  // SOURCE: NEW (wording); every fact is EXISTING: M.Ch at Tata Memorial Hospital, former
+  // consultant at Apollo Hospitals, senior consultant at Sparsh Hospitals, the Da Vinci system,
+  // and the clinic count (computed from the clinic list in content/site.ts).
+  trust: [
+    "Trained at Tata Memorial Hospital",
+    "Former Consultant, Apollo Hospitals",
+    "Senior Consultant, Sparsh Hospitals",
+    "Da Vinci Robotic Surgery",
+    `${site.locations.length} clinics across Bengaluru`,
+  ],
+  // SOURCE: NEW (screen-reader / control labels)
+  a11y: {
+    stats: "Dr. Sunil Navalgund in numbers",
+    trust: "Credentials",
+    pause: "Pause animation",
+    play: "Play animation",
+    scroll: "Scroll to the next section",
+  },
 } as const satisfies HeroContent;
 
 /* ------------------------------------------------------------------ */
@@ -229,6 +262,16 @@ export const specialties = {
     },
   ],
 } as const satisfies SpecialtiesContent;
+
+/** Hero ticker: the specialty names above without "Cancer", in hero.specialties order. */
+const tickerWords = hero.specialties.map((key) =>
+  specialties.items.find((item) => item.key === key)!.name.replace(/ Cancer$/, ""),
+);
+export const heroTicker = {
+  words: tickerWords,
+  /** The whole list in one sentence, for screen readers (the visible ticker is aria-hidden). */
+  sentence: `${hero.ticker.lead} ${tickerWords.slice(0, -1).join(", ")} ${hero.ticker.and} ${tickerWords.at(-1)} ${hero.ticker.tail}.`,
+} as const;
 
 /* ------------------------------------------------------------------ */
 /* 5 · #services                                                       */

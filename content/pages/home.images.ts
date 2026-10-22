@@ -27,6 +27,17 @@ export const homeImages = {
     width: 886,
     height: 1024,
   },
+  // The head cut out of the same photo (scripts/make-portrait-cutout.mjs: its top 40%, backdrop
+  // removed), so it can break out of the hero ring. Decorative: the portrait above carries the alt.
+  doctorHead: {
+    file: "dr-sunil-navalgund-head.png",
+    src: "/images/brand/dr-sunil-navalgund-head.png",
+    alt: "",
+    decorative: true,
+    focal: "50% 0%",
+    width: 886,
+    height: 410,
+  },
   // Black-background shots: on navy they blend away with `blend-on-dark`.
   roboticSystem: {
     file: "davinci-system-black.jpg",

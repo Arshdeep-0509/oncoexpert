@@ -4,6 +4,7 @@
     "components/ui/navigation-menu.tsx",
     "components/ui/select.tsx",
     "components/ui/sheet.tsx",
-    "scripts/make-black-bg.mjs"
+    "scripts/make-black-bg.mjs",
+    "scripts/make-portrait-cutout.mjs"
   ]
 }

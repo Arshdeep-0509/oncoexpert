@@ -54,7 +54,10 @@ components/
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, ProgressRing, Reveal,
                              ScrollFillLine, Section, SectionHeading, SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
-  pages/home/                sections used only by Home (HomeHero; SectionPlaceholder until each is built)
+  pages/home/                sections used only by Home; SectionPlaceholder until each is built.
+                             Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
+                             HeroHeadline, HeroStats, HeroTrustStrip (server) and the islands HeroTicker,
+                             HeroCounter, HeroParallax, HeroMotionToggle, HeroParticles(Layer)
   pages/breast-cancer/       sections used only by the breast page (+ hero.css, hero-styles.ts)
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
@@ -81,6 +84,7 @@ styles/
 scripts/
   fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
+  make-portrait-cutout.mjs   one-off: Dr. Sunil's head cut out of the portrait (Home hero ring)
 public/images/               brand/ locations/ home/ breast-cancer/ robotic/
 ```
 
@@ -198,7 +202,7 @@ the same values as `variant`.
   `leadingIcon`, `href` → link, `cta` → analytics label. `buttonClasses()` for non-button elements.
 - `Reveal`: fade + rise by `--reveal-y` over 0.7s, once, when `--reveal-amount` of it is visible;
   `stagger` = 0.08s per child. CSS opacity/translate only; reduced motion shows the content at once.
-- `Counter` (counts up in view; `reserveWidth` keeps CLS at 0), `ProgressRing` (transform-only fill),
+- `Counter` (counts up in view over `duration`, default 1.6s; `reserveWidth` keeps CLS at 0), `ProgressRing` (transform-only fill),
   `Chip`, `ScrollFillLine`, `SwipeRow` (under 768px a scroll-snap row with peek, dots and hint; from md a
   grid), `textStyles` (shared text class strings).
 
@@ -266,6 +270,14 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   per-page opt-out. It covers the page for ~3.3s, so anything that animates or auto-advances on load
   must wait for it: CSS via `--intro-delay`, JS via `introRemainingSeconds()` (`lib/intro.ts`).
   In-site navigation does not replay it (the root layout stays mounted).
+- Known issue: `--intro-delay` comes from `.preloader ~ [data-theme]`, so it drops to 0 when the
+  overlay unmounts (end of its fade, intro + 0.8s; earlier on slow loads, where the overlay's safety
+  timer, counted from navigation start, fires before the CSS fade ends). Every entrance animation
+  still running then jumps to its end. The Home hero pins its own `--intro` on hydration
+  (`HeroMotionToggle`); the breast hero does not yet, and the overlay timer is unchanged, so the
+  other pages keep their current behaviour.
+- Loops longer than 5s on Home stop on hover/focus or with a pause control; the hero's button
+  (`data-paused` on #hero) stops every hero loop, and leaving the screen does too (`data-offscreen`).
 - Never hide the hero LCP image behind clip-path / opacity at load; reveal it with a transform on a
   cover element.
 - Avoid `filter: blur()` / `backdrop-filter` on large or animated elements above the fold.
@@ -277,9 +289,10 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 
 - Home: foundation. Theme (`themes/home.css`), every word of the live homepage in
   `content/pages/home.ts`, images (`home.images.ts`, `npm run images home`, og.jpg), registry, sitemap
-  (priority 1) and a skeleton: the hero plus one placeholder per block (#hero, #surgeon, #robotic,
-  #specialties, #services, #approach, #value, #reviews, #videos, #faq, #appointment, #locations,
-  #final-cta). Waiting on the doctor's PENDING items in `content/pages/home.ts`.
+  (priority 1) and one placeholder per block (#surgeon, #robotic, #specialties, #services,
+  #approach, #value, #reviews, #videos, #faq, #appointment, #locations, #final-cta).
+  Hero built ("Orbit": gradient ring with the portrait, ticker, stat chips, trust marquee).
+  Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's
   PENDING items in `content/pages/breast-cancer.ts`.

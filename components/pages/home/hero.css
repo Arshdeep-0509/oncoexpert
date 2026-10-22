@@ -1,0 +1,760 @@
+/* ==================================================================
+   Home hero "Orbit": layout, entrance choreography and ambient loops.
+   Plain CSS with orbit- prefixes (CSS modules are not available: the Turbopack rule in
+   next.config.ts turns every .css file into plain CSS). Class names: hero-styles.ts.
+
+   - The default styles are the final state. Every animation lives inside
+     prefers-reduced-motion: no-preference, so reduced motion shows the finished hero.
+   - Entrance steps wait for the intro preloader: delay = --intro + --d (the step's time).
+   - Transform and opacity only, except the underline's small SVG stroke draw.
+   - Each kind of motion has its own wrapper so they never fight over a property:
+     entrance (the element), ambient loop (.orbit-loop), pointer parallax ([data-depth],
+     JS `translate`), scroll drift / fade (scroll-driven, on the grid items).
+   - Ambient loops carry .orbit-loop: the pause button (data-paused on the section) and
+     leaving the screen (data-offscreen) stop them all.
+   ================================================================== */
+
+.orbit-hero {
+  --intro: var(--intro-delay, 0s);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Ring diameter */
+  --stage: min(72vw, 340px);
+  /* Ring thickness and the gap to the portrait, relative to the ring (cqw: the stage box) */
+  --th: 1.7cqw;
+  --inset: 4.6cqw;
+  /* Marquee: 40s per loop, 60% speed on phones */
+  --marquee: 66.67s;
+  /* The ring paint: the logo's two half-gradients, from 12 o'clock (right: magenta → blue →
+     teal at 6 o'clock; left: green → amber → orange back at the top). */
+  --orbit-paint: conic-gradient(
+    from 0deg,
+    var(--logo-ring-right-1),
+    var(--logo-ring-right-2) 72deg,
+    var(--logo-ring-right-3) 135deg,
+    var(--logo-ring-end) 180deg,
+    var(--logo-ring-left-3) 216deg,
+    var(--logo-ring-left-2) 279deg,
+    var(--logo-ring-left-1) 360deg
+  );
+}
+@media (min-width: 768px) {
+  .orbit-hero {
+    --stage: 420px;
+    --marquee: 40s;
+  }
+}
+@media (min-width: 1024px) {
+  .orbit-hero {
+    --stage: min(520px, 92%);
+  }
+}
+
+/* Entrance helper: --d is the step's time in the choreography (seconds after the intro). */
+.orbit-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s));
+  animation-fill-mode: both;
+  animation-timing-function: var(--ease);
+}
+
+/* Ambient loops stop while paused (button) or off-screen. */
+.orbit-hero:is([data-paused], [data-offscreen]) :is(.orbit-loop, .orbit-loop::after) {
+  animation-play-state: paused;
+}
+
+/* ------------------------------------------------------------------ */
+/* Layout: one grid, three arrangements                                */
+/* phone: ring first; tablet: text, then ring; desktop: text | ring    */
+/* ------------------------------------------------------------------ */
+
+.orbit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "stage" "head" "ticker" "cta" "body" "stats";
+}
+@media (min-width: 768px) {
+  .orbit-grid {
+    grid-template-areas: "head" "body" "ticker" "cta" "stage" "stats";
+  }
+}
+@media (min-width: 1024px) {
+  .orbit-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: 1fr auto auto auto auto 1fr;
+    column-gap: 24px;
+    grid-template-areas:
+      ".    .    .    .    .    .    stage stage stage stage stage stage"
+      "head head head head head head stage stage stage stage stage stage"
+      "body body body body body body stage stage stage stage stage stage"
+      "tick tick tick tick tick tick stage stage stage stage stage stage"
+      "cta  cta  cta  cta  cta  cta  stage stage stage stage stage stage"
+      ".    .    .    .    .    .    stage stage stage stage stage stage";
+  }
+}
+.orbit-areaStage {
+  grid-area: stage;
+}
+.orbit-areaHead {
+  grid-area: head;
+}
+.orbit-areaBody {
+  grid-area: body;
+}
+.orbit-areaTicker {
+  grid-area: ticker;
+}
+@media (min-width: 1024px) {
+  .orbit-areaTicker {
+    grid-area: tick;
+  }
+}
+.orbit-areaCta {
+  grid-area: cta;
+}
+.orbit-areaStats {
+  grid-area: stats;
+}
+@media (min-width: 1024px) {
+  /* The chips float around the ring: same grid area, same box as the stage. */
+  .orbit-areaStats {
+    grid-area: stage;
+    place-self: center;
+    position: relative;
+    width: var(--stage);
+    aspect-ratio: 1;
+    pointer-events: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Background                                                          */
+/* ------------------------------------------------------------------ */
+
+.orbit-bg {
+  position: absolute;
+  inset: 0;
+  background-image: var(--grad-hero);
+}
+.orbit-glow {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+.orbit-glowBlue {
+  top: -26%;
+  right: -16%;
+  width: min(90vw, 900px);
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--logo-blue) 42%, transparent), transparent);
+}
+.orbit-glowWarm {
+  bottom: -40%;
+  left: -18%;
+  width: min(80vw, 760px);
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--logo-orange) 14%, transparent), transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Headline                                                            */
+/* ------------------------------------------------------------------ */
+
+/* Each word rises inside its own mask; the extra bottom room keeps descenders intact. */
+.orbit-wordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.orbit-word {
+  display: inline-block;
+}
+/* Gradient words: each word paints its own slice of blue → teal → orange (--from → --to),
+   so the phrase reads as one gradient on one line and stays coherent when it wraps. */
+.orbit-gradWord {
+  background-image: linear-gradient(90deg, var(--from), var(--to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.orbit-underline {
+  position: absolute;
+  left: 0;
+  bottom: -0.04em;
+  width: 100%;
+  height: 0.3em;
+  overflow: visible;
+}
+.orbit-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Ticker: "Expert care for ___ cancer"                                */
+/* ------------------------------------------------------------------ */
+
+.orbit-slot {
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.orbit-slot > span {
+  grid-area: 1 / 1;
+  justify-self: start; /* each word keeps its own width, so "cancer" can sit right after it */
+  white-space: nowrap;
+}
+.orbit-slot > span:not([data-state="current"]) {
+  opacity: 0;
+  translate: 0 100%;
+}
+.orbit-slot > span[data-state="prev"] {
+  translate: 0 -100%;
+}
+/* The tail ("cancer") slides to sit right after the current word (JS sets --tail-shift). */
+.orbit-tail {
+  display: inline-block;
+  translate: var(--tail-shift, 0) 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* The Ring                                                            */
+/* ------------------------------------------------------------------ */
+
+.orbit-stage {
+  position: relative;
+  width: var(--stage);
+  aspect-ratio: 1;
+  justify-self: center;
+  align-self: center;
+  container-type: inline-size;
+}
+@media (min-width: 1024px) {
+  /* Hug the right of the column: room for the left-hand chips between the ring and the text. */
+  .orbit-stage,
+  .orbit-areaStats {
+    justify-self: end;
+    margin-right: 4%;
+  }
+}
+.orbit-layer {
+  position: absolute;
+  inset: 0;
+}
+.orbit-halo {
+  position: absolute;
+  inset: -24%;
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--logo-blue) 55%, transparent), transparent 72%);
+}
+/* A ring of thickness --th: everything inside the inner edge is masked away. */
+.orbit-annulus {
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--th) - 0.6px), #000 calc(100% - var(--th)));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--th) - 0.6px), #000 calc(100% - var(--th)));
+}
+.orbit-track {
+  position: absolute;
+  inset: 0;
+  background: rgb(255 255 255 / 0.07);
+}
+/* Drawn like ProgressRing: each half-window holds a half-disc (the piece) that turns 180° into
+   it. The paint inside the piece turns the other way at the same rate, so the gradient stays
+   put and only the reveal sweeps (otherwise the colours would slide round while drawing). */
+.orbit-window {
+  position: absolute;
+  inset: 0;
+}
+.orbit-window[data-half="r"] {
+  clip-path: inset(0 0 0 50%);
+}
+.orbit-window[data-half="l"] {
+  clip-path: inset(0 50% 0 0);
+}
+.orbit-piece {
+  position: absolute;
+  inset: 0;
+  rotate: 180deg;
+}
+.orbit-window[data-half="r"] .orbit-piece {
+  clip-path: inset(0 50% 0 0);
+}
+.orbit-window[data-half="l"] .orbit-piece {
+  clip-path: inset(0 0 0 50%);
+}
+.orbit-paint {
+  position: absolute;
+  inset: 0;
+  background: var(--orbit-paint);
+  rotate: -180deg;
+}
+/* Orange sparks: small glowing beads on the ring's path. */
+.orbit-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2.6cqw;
+  height: 2.6cqw;
+  margin: -1.3cqw 0 0 -1.3cqw;
+  transform: rotate(var(--a)) translateY(calc(var(--th) / 2 - 50cqw));
+}
+.orbit-sparkCore {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 16%, var(--highlight) 34%, transparent 70%);
+}
+
+/* Portrait: shoulders inside the ring, the head breaking out of its top. */
+.orbit-portrait {
+  position: absolute;
+  inset: var(--inset);
+}
+.orbit-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--portrait-backdrop);
+}
+/* The photo box: 120% of the circle, raised so the crown sits above the circle's top edge. */
+.orbit-photo {
+  position: absolute;
+  left: -10%;
+  top: -11%;
+  width: 120%;
+  aspect-ratio: 886 / 1024;
+}
+/* The head cutout, same box (its image is the photo's top 40%), shown only above the line where
+   the circle takes over (--cut, in % of this box). */
+.orbit-head {
+  position: absolute;
+  left: -10%;
+  top: -11%;
+  width: 120%;
+  aspect-ratio: 886 / 410;
+  --cut: 33%;
+  -webkit-mask: linear-gradient(to bottom, #000 calc(var(--cut) - 3%), transparent var(--cut));
+  mask: linear-gradient(to bottom, #000 calc(var(--cut) - 3%), transparent var(--cut));
+  pointer-events: none;
+}
+.orbit-fill {
+  position: absolute;
+  inset: 0;
+}
+/* Entrance cover: an ink disc with a hole that widens (scale), so the photo underneath is painted
+   from the start (it is the LCP image). Hidden at rest. */
+.orbit-iris {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle closest-side, transparent 18%, var(--ink) 19.5%);
+}
+
+/* Stat chips */
+.orbit-chip {
+  pointer-events: auto;
+}
+/* Around the ring; below 1280px they stay close so the left ones never reach the headline. */
+@media (min-width: 1024px) {
+  .orbit-chip {
+    position: absolute;
+  }
+  .orbit-chip:nth-child(1) {
+    top: 1%;
+    left: -2%;
+  }
+  .orbit-chip:nth-child(2) {
+    top: 26%;
+    right: -6%;
+  }
+  .orbit-chip:nth-child(3) {
+    bottom: 17%;
+    left: -4%;
+  }
+  .orbit-chip:nth-child(4) {
+    bottom: -2%;
+    right: -1%;
+  }
+}
+@media (min-width: 1280px) {
+  .orbit-chip:nth-child(1) {
+    top: 3%;
+    left: -9%;
+  }
+  .orbit-chip:nth-child(2) {
+    top: 27%;
+    right: -9%;
+  }
+  .orbit-chip:nth-child(3) {
+    bottom: 19%;
+    left: -12%;
+  }
+  .orbit-chip:nth-child(4) {
+    bottom: -1%;
+    right: -3%;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Trust strip                                                         */
+/* ------------------------------------------------------------------ */
+
+.orbit-marquee {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+/* At rest (and with reduced motion): one static, wrapped list. */
+.orbit-marqueeTrack {
+  display: flex;
+}
+.orbit-trustList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1.75rem;
+  row-gap: 0.25rem;
+}
+.orbit-trustList[aria-hidden] {
+  display: none;
+}
+
+/* Scroll cue */
+.orbit-cueDot {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 4px;
+  height: 8px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--highlight);
+}
+
+/* Particles (desktop) */
+.orbit-particle {
+  position: absolute;
+  bottom: -12px;
+  border-radius: 999px;
+  background: var(--particle, #fff);
+  box-shadow: 0 0 8px 1px color-mix(in srgb, var(--particle, #fff) 55%, transparent);
+  opacity: 0;
+  will-change: transform;
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion                                                              */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 0.0  background and glows */
+  .orbit-fadeIn {
+    animation-name: orbit-fadeIn;
+    animation-duration: 1.2s;
+  }
+
+  /* 0.1  the ring draws itself clockwise from the top: right half (ease-in), then left
+     (ease-out), 0.7s each; the speeds match where they meet, so it reads as one stroke. */
+  .orbit-window[data-half="r"] :is(.orbit-piece, .orbit-paint) {
+    animation: orbit-draw 0.7s cubic-bezier(0.12, 0, 0.39, 0) both;
+    animation-delay: calc(var(--intro) + 0.1s);
+  }
+  .orbit-window[data-half="l"] :is(.orbit-piece, .orbit-paint) {
+    animation: orbit-draw 0.7s cubic-bezier(0.61, 1, 0.88, 1) both;
+    animation-delay: calc(var(--intro) + 0.8s);
+  }
+  .orbit-window[data-half] .orbit-paint {
+    animation-name: orbit-undraw;
+  }
+  .orbit-spin {
+    animation: orbit-spin 90s linear infinite;
+    animation-delay: calc(var(--intro) + 1.5s);
+  }
+  .orbit-sparkIn {
+    animation-name: orbit-pop;
+    animation-duration: 0.6s;
+  }
+  .orbit-twinkle {
+    animation: orbit-twinkle 4.8s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 2.2s + var(--phase, 0s));
+  }
+
+  /* 0.3  the portrait rises into the ring while the circle opens */
+  .orbit-rise {
+    animation-name: orbit-rise;
+    animation-duration: 0.9s;
+  }
+  .orbit-iris {
+    animation: orbit-iris 1s var(--ease) backwards;
+    animation-delay: calc(var(--intro) + 0.3s);
+  }
+  /* The crown over the ring: in quickly once the circle has opened near its top edge. */
+  .orbit-crownIn {
+    animation-name: orbit-fadeIn;
+    animation-duration: 0.45s;
+  }
+
+  /* 0.4–1.0  words; 1.0 body, ticker; 1.5 buttons; 1.8 trust strip */
+  .orbit-wordRise {
+    animation-name: orbit-wordRise;
+    animation-duration: 0.8s;
+  }
+  .orbit-fadeUp {
+    animation-name: orbit-fadeUp;
+    animation-duration: 0.7s;
+  }
+  .orbit-fadeDown {
+    animation-name: orbit-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .orbit-underline path {
+    animation: orbit-draw-stroke 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + 1s);
+  }
+
+  /* Ticker slot motion (JS swaps data-state every 2.4s) */
+  .orbit-slot > span,
+  .orbit-tail {
+    transition:
+      translate 0.5s var(--ease),
+      opacity 0.5s var(--ease);
+  }
+
+  /* 1.2  chips pop in, count up, then float (desktop) */
+  .orbit-pop {
+    animation-name: orbit-pop;
+    animation-duration: 0.7s;
+  }
+  @media (min-width: 1024px) {
+    .orbit-float {
+      animation: orbit-float var(--float, 7s) ease-in-out infinite;
+      animation-delay: calc(var(--intro) + 2.7s + var(--phase, 0s));
+    }
+    .orbit-chip:hover .orbit-float {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Primary button: the shared cta-shine, every 6s once the buttons are in */
+  .orbit-hero .cta-shine::after {
+    animation: cta-shine 6s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 2.2s);
+  }
+
+  /* Marquee: seamless (two copies, -50%), paused on hover / focus */
+  .orbit-marqueeTrack {
+    width: max-content;
+    animation: orbit-marquee var(--marquee) linear infinite;
+    animation-delay: calc(var(--intro) + 1.8s);
+  }
+  .orbit-trustList {
+    flex-wrap: nowrap;
+    padding-right: 1.75rem;
+  }
+  .orbit-trustList[aria-hidden] {
+    display: flex;
+  }
+  .orbit-trust:is(:hover, :focus-within) .orbit-marqueeTrack {
+    animation-play-state: paused;
+  }
+
+  /* Scroll cue: three runs, then rests */
+  .orbit-cueDot {
+    animation: orbit-cue 2.2s var(--ease) 3 both;
+    animation-delay: calc(var(--intro) + 2.4s);
+  }
+
+  /* Ambient glows (tablet / desktop; static on phones) */
+  @media (min-width: 768px) {
+    .orbit-drift1 {
+      animation: orbit-drift1 25s ease-in-out infinite alternate;
+      animation-delay: calc(var(--intro) + 1.2s);
+    }
+    .orbit-drift2 {
+      animation: orbit-drift2 30s ease-in-out infinite alternate;
+      animation-delay: calc(var(--intro) + 1.2s);
+    }
+  }
+
+  .orbit-particle {
+    animation: orbit-particle var(--dur) linear infinite;
+    animation-delay: var(--delay);
+  }
+
+  /* Scroll (desktop): over the first 600px the ring drifts down 40px and the text settles. */
+  @media (min-width: 1024px) {
+    @supports (animation-timeline: scroll()) {
+      .orbit-scrollStage {
+        animation: orbit-scrollDrift linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 600px;
+      }
+      .orbit-scrollText {
+        transform-origin: 0 50%;
+        animation: orbit-scrollFade linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 600px;
+      }
+    }
+  }
+}
+
+/* Reduced motion: nothing to pause */
+@media (prefers-reduced-motion: reduce) {
+  .orbit-pause {
+    display: none;
+  }
+}
+
+@keyframes orbit-fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes orbit-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+@keyframes orbit-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes orbit-wordRise {
+  from {
+    translate: 0 110%;
+  }
+}
+@keyframes orbit-draw {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 180deg;
+  }
+}
+@keyframes orbit-undraw {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: -180deg;
+  }
+}
+@keyframes orbit-draw-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes orbit-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes orbit-pop {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+@keyframes orbit-twinkle {
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes orbit-rise {
+  from {
+    translate: 0 8cqw;
+  }
+}
+@keyframes orbit-iris {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 1;
+    scale: 6;
+  }
+}
+@keyframes orbit-float {
+  0%,
+  100% {
+    translate: 0 -3px;
+  }
+  50% {
+    translate: 0 3px;
+  }
+}
+@keyframes orbit-marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+@keyframes orbit-cue {
+  0% {
+    translate: 0 0;
+    opacity: 1;
+  }
+  60% {
+    translate: 0 12px;
+    opacity: 0;
+  }
+  61% {
+    translate: 0 0;
+    opacity: 0;
+  }
+  100% {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+@keyframes orbit-drift1 {
+  to {
+    translate: -6vw 5vh;
+    scale: 1.08;
+  }
+}
+@keyframes orbit-drift2 {
+  to {
+    translate: 5vw -4vh;
+    scale: 0.94;
+  }
+}
+@keyframes orbit-particle {
+  0% {
+    opacity: 0;
+    translate: 0 0;
+  }
+  15% {
+    opacity: var(--glow, 0.7);
+  }
+  80% {
+    opacity: calc(var(--glow, 0.7) * 0.6);
+  }
+  100% {
+    opacity: 0;
+    translate: var(--drift, 0) calc(-1 * var(--travel, 900px));
+  }
+}
+@keyframes orbit-scrollDrift {
+  to {
+    translate: 0 40px;
+  }
+}
+@keyframes orbit-scrollFade {
+  to {
+    opacity: 0.6;
+    scale: 0.97;
+  }
+}

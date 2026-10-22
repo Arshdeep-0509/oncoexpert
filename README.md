@@ -144,6 +144,9 @@ The doctor's portrait is `public/images/brand/dr-sunil-navalgund.png`, used by e
 file with one of the same framing and update `width`/`height` in `surgeon.image`
 (`content/pages/breast-cancer.ts`), `images.doctor` (`content/pages/robotic-surgery.ts`) and `doctor`
 (`content/pages/home.images.ts`), then delete `public/images/home/og.jpg` and run `npm run images home`.
+The Home hero also shows his head cut out of the photo (it breaks out of the ring): run
+`node scripts/make-portrait-cutout.mjs` to remake `dr-sunil-navalgund-head.png` from the new portrait
+and check it at 390 and 1440 px (the cut works on a plain studio backdrop like the current one).
 
 Robotic page photos live in `public/images/robotic/` and `images` / `robotPhotos` in
 `content/pages/robotic-surgery.ts`. The hero slider shows `robotPhotos`. It is on pure black, so use

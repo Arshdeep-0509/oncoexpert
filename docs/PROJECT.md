@@ -57,7 +57,9 @@ components/
   pages/home/                sections used only by Home; SectionPlaceholder until each is built.
                              Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
                              HeroHeadline, HeroStats, HeroTrustStrip (server) and the islands HeroTicker,
-                             HeroCounter, HeroParallax, HeroMotionToggle, HeroParticles(Layer)
+                             HeroCounter, HeroParallax, HeroMotionToggle, HeroParticles(Layer).
+                             SurgeonSection (+ SurgeonStats, JourneyTimeline + journey.css),
+                             RoboticSection (+ robotic-band.css)
   pages/breast-cancer/       sections used only by the breast page (+ hero.css, hero-styles.ts)
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
@@ -203,7 +205,8 @@ the same values as `variant`.
 - `Reveal`: fade + rise by `--reveal-y` over 0.7s, once, when `--reveal-amount` of it is visible;
   `stagger` = 0.08s per child. CSS opacity/translate only; reduced motion shows the content at once.
 - `Counter` (counts up in view over `duration`, default 1.6s; `reserveWidth` keeps CLS at 0), `ProgressRing` (transform-only fill),
-  `Chip`, `ScrollFillLine`, `SwipeRow` (under 768px a scroll-snap row with peek, dots and hint; from md a
+  `Chip`, `ScrollFillLine` (its scroll range is `SCROLL_FILL_OFFSET`, so a timeline can light stops in
+  step with the fill), `SwipeRow` (under 768px a scroll-snap row with peek, dots and hint; from md a
   grid), `textStyles` (shared text class strings).
 
 ## Content rules
@@ -289,9 +292,11 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 
 - Home: foundation. Theme (`themes/home.css`), every word of the live homepage in
   `content/pages/home.ts`, images (`home.images.ts`, `npm run images home`, og.jpg), registry, sitemap
-  (priority 1) and one placeholder per block (#surgeon, #robotic, #specialties, #services,
-  #approach, #value, #reviews, #videos, #faq, #appointment, #locations, #final-cta).
-  Hero built ("Orbit": gradient ring with the portrait, ticker, stat chips, trust marquee).
+  (priority 1) and one placeholder per block still to build (#specialties, #services, #approach,
+  #value, #reviews, #videos, #faq, #appointment, #locations, #final-cta).
+  Built: #hero ("Orbit": gradient ring with the portrait, ticker, stat chips, trust marquee),
+  #surgeon (portrait, training-journey timeline, stats band) and #robotic (dark band with the
+  da Vinci arms and the 8 features).
   Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's

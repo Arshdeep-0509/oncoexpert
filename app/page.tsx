@@ -1,22 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import {
-  approach,
-  faq,
-  pageSlug,
-  reviews,
-  robotic,
-  services,
-  specialties,
-  surgeon,
-  value,
-  videos,
-} from "@/content/pages/home";
+import { approach, faq, pageSlug, reviews, services, specialties, value, videos } from "@/content/pages/home";
 import { appointmentSection, finalCtaSection, locationsSection } from "@/content/shared/sections";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SiteShell } from "@/components/layout/SiteShell";
 import { HomeHero } from "@/components/pages/home/HomeHero";
+import { SurgeonSection } from "@/components/pages/home/SurgeonSection";
+import { RoboticSection } from "@/components/pages/home/RoboticSection";
 import { SectionPlaceholder } from "@/components/pages/home/SectionPlaceholder";
 
 const page = pages[pageSlug];
@@ -39,8 +30,8 @@ export default function HomePage() {
   return (
     <SiteShell theme="home" headerVariant="light" heroTone="dark" activeHref={page.path}>
       <HomeHero /> {/* 1  #hero         navy hero gradient */}
-      <SectionPlaceholder index={2} id="surgeon" tone="surface" title={surgeon.name} />
-      <SectionPlaceholder index={3} id="robotic" tone="plum" title={robotic.title} />
+      <SurgeonSection /> {/* 2  #surgeon      warm */}
+      <RoboticSection /> {/* 3  #robotic      navy band */}
       <SectionPlaceholder index={4} id="specialties" tone="alt" title={specialties.title} />
       <SectionPlaceholder index={5} id="services" tone="surface" title={services.title} />
       <SectionPlaceholder index={6} id="approach" tone="plum" title={approach.title} />

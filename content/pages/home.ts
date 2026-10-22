@@ -63,20 +63,31 @@ export type HeroContent = {
 };
 
 export type SurgeonContent = {
+  /** Section heading; `emphasis` is set in the serif italic. */
+  heading: { title: string; emphasis: string };
   name: string;
   tagline: string;
   credentials: readonly string[];
   stats: readonly Stat[];
   training: { title: string; body: string; institutes: readonly string[] };
+  /** The training journey timeline, in order. */
+  journey: { label: string; stops: readonly { role: string; place: string; note?: string }[] };
+  cta: AppointmentCta;
   image: HomeImageKey;
+  a11y: { stats: string };
 };
+
+/** Icon keys for the robotic features (mapped to lucide icons in components/pages/home). */
+export type RoboticFeatureIcon =
+  "crosshair" | "eye" | "hand" | "droplet-off" | "smile" | "sparkles" | "timer" | "house";
 
 export type RoboticContent = {
   title: string;
   intro: string;
-  features: readonly string[];
+  features: readonly { label: string; icon: RoboticFeatureIcon }[];
   cta: LinkCta;
-  images: readonly HomeImageKey[];
+  image: HomeImageKey;
+  a11y: { features: string };
 };
 
 export type SpecialtiesContent = {
@@ -156,6 +167,8 @@ export const hero = {
 /* ------------------------------------------------------------------ */
 
 export const surgeon = {
+  // SOURCE: NEW (the name is EXISTING; non-breaking spaces keep the name on one line)
+  heading: { title: "Meet Dr. Sunil Navalgund", emphasis: "Dr. Sunil Navalgund" },
   // SOURCE: EXISTING
   name: "Dr. Sunil Navalgund",
   tagline: "One of the most respected Surgical Oncologists in Bangalore.",
@@ -180,7 +193,22 @@ export const surgeon = {
     body: "Dr. Sunil Navalgund brings global expertise and precision to surgical oncology, having trained at India’s most prestigious medical centers.",
     institutes: ["MS General Surgery", "M.Ch Surgical Oncology", "Tata Memorial Hospital", "Apollo & Sparsh Hospitals"],
   },
+  // SOURCE: NEW (the order and the "/ OncoXpert"); every role, place and note is EXISTING, from the
+  // credentials above ("Ex - Consultant Apollo Hospitals" → "Consultant", "Apollo Hospitals").
+  journey: {
+    label: "Training journey",
+    stops: [
+      { role: "M.S. General Surgery", place: "VIMS, Ballari" },
+      { role: "M.Ch Surgical Oncology", place: "Tata Memorial Hospital", note: "Asia's Best Cancer Hospital" },
+      { role: "Consultant", place: "Apollo Hospitals" },
+      { role: "Senior Consultant", place: "Sparsh Hospitals / OncoXpert" },
+    ],
+  },
+  // SOURCE: EXISTING (button label from the robotic page)
+  cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
   image: "doctor",
+  // SOURCE: NEW (screen-reader label)
+  a11y: { stats: "Dr. Sunil Navalgund in numbers" },
 } as const satisfies SurgeonContent;
 
 /* ------------------------------------------------------------------ */
@@ -191,20 +219,22 @@ export const robotic = {
   // SOURCE: EXISTING
   title: "Transforming Surgical Outcomes with Robotic Surgery",
   intro: "Harnessing the power of the Da Vinci system for unmatched precision and patient recovery.",
-  // SOURCE: EXISTING (the 8 features, in the live order)
+  // SOURCE: EXISTING (the 8 features, in the live order); icons NEW
   features: [
-    "Unmatched Precision",
-    "Excellent 3D Vision",
-    "Superior Dexterity",
-    "Minimal Blood Loss",
-    "Less Pain",
-    "Minimal Scars",
-    "Faster Recovery",
-    "Early Discharge",
+    { label: "Unmatched Precision", icon: "crosshair" },
+    { label: "Excellent 3D Vision", icon: "eye" },
+    { label: "Superior Dexterity", icon: "hand" },
+    { label: "Minimal Blood Loss", icon: "droplet-off" },
+    { label: "Less Pain", icon: "smile" },
+    { label: "Minimal Scars", icon: "sparkles" },
+    { label: "Faster Recovery", icon: "timer" },
+    { label: "Early Discharge", icon: "house" },
   ],
   // SOURCE: EXISTING
   cta: { label: "Learn About Robotic Surgery", href: "/robotic-surgery/" },
-  images: ["roboticSystem", "roboticArms", "roboticInstruments"],
+  image: "roboticArms",
+  // SOURCE: NEW (screen-reader label)
+  a11y: { features: "Benefits of robotic surgery" },
 } as const satisfies RoboticContent;
 
 /* ------------------------------------------------------------------ */

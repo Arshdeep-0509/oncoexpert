@@ -449,12 +449,25 @@ export const value = {
 /* 8–13 · shared sections: this page's settings and headings           */
 /* (reviews: content/shared/reviews.ts; videos: content/shared/videos.ts;
     appointment, locations, final band: content/shared/sections.ts)    */
+/* Not built: the live page's "Join Our Newsletter" box (email sign-up for blog posts; there is
+   no backend for it here). Waiting on a decision.                     */
 /* ------------------------------------------------------------------ */
+
+/**
+ * SOURCE: NEW. Preselected by the buttons that name no service: header, menu, mobile action bar
+ * and the FAQ's contact card. Every Home section button names its own (above).
+ */
+export const defaultAppointmentService: AppointmentService = "Consultation";
 
 export const reviews = {
   // SOURCE: EXISTING (as displayed: the live markup is sentence case, capitalised by CSS; same
   // string as the breast page)
   title: "Every Patient Story Reflects Our Commitment To Clinical Excellence.",
+  // SOURCE: NEW (label; replaces the live page's "Verified by Trustindex" badge). The link is
+  // EXISTING: the live site's "Main Clinic Location" Google profile (site.mainClinic).
+  // PENDING DOCTOR: the doctor has three Google profiles (one per clinic); confirm which one
+  // these reviews are on.
+  link: { label: "Read all reviews on Google", href: site.mainClinic.mapHref },
   // The live page's order.
   order: [
     "muralidharan-chinnusamy",
@@ -467,7 +480,7 @@ export const reviews = {
     "vasudeva-murthy",
     "mangala-music",
   ],
-} as const satisfies { title: string; order: readonly ReviewId[] };
+} as const satisfies { title: string; link: { label: string; href: string }; order: readonly ReviewId[] };
 
 export const videos = {
   // SOURCE: NEW (the live page shows its videos without a heading)

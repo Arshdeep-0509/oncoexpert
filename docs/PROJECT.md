@@ -54,7 +54,7 @@ components/
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, ProgressRing, Reveal,
                              ScrollFillLine, Section, SectionHeading, SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
-  pages/home/                sections used only by Home; SectionPlaceholder until each is built.
+  pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
                              Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
                              HeroHeadline, HeroStats, HeroTrustStrip (server) and the islands HeroTicker,
                              HeroCounter, HeroParallax, HeroMotionToggle, HeroParticles(Layer).
@@ -181,7 +181,7 @@ the same values as `variant`.
 
 | Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                 |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared)                                                                                                   |
+| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                              |
 | `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                  |
 | `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD) |
 | `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                |
@@ -192,7 +192,9 @@ the same values as `variant`.
 
 - The appointment form is one component. `useAppointment().openAppointment(service?, note?)` scrolls to
   `#appointment` below the header, preselects the service, stores the note and focuses Name; without
-  `#appointment` on the page it navigates to the booking page. The server action emails "New appointment
+  `#appointment` on the page it navigates to the booking page. Buttons that name no service (header, menu,
+  action bar) keep the last one chosen, else `SiteShell`'s `defaultService` (Home: "Consultation"; other
+  pages: none, so "- Select -" stays). The server action emails "New appointment
   request - <page> page". Needs `RESEND_API_KEY` (+ `APPOINTMENT_TO_EMAIL`, `APPOINTMENT_FROM_EMAIL`).
 - Every page with a hero gives it `id="hero"`; the form section is `id="appointment"`.
 
@@ -295,13 +297,15 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 
 - Home: foundation. Theme (`themes/home.css`), every word of the live homepage in
   `content/pages/home.ts`, images (`home.images.ts`, `npm run images home`, og.jpg), registry, sitemap
-  (priority 1) and one placeholder per block still to build (#reviews, #videos, #faq,
-  #appointment, #locations, #final-cta).
-  Built: #hero ("Orbit": gradient ring with the portrait, ticker, stat chips, trust marquee),
-  #surgeon (portrait, training-journey timeline, stats band), #robotic (dark band with the
+  (priority 1).
+  All 13 blocks built: #hero ("Orbit": gradient ring with the portrait, ticker, stat chips, trust
+  marquee), #surgeon (portrait, training-journey timeline, stats band), #robotic (dark band with the
   da Vinci arms and the 8 features), #specialties (bento grid, swipe row on phones), #services
-  (icon cards that draw themselves), #approach (sticky heading, the pillar at mid-screen lit) and
-  #value ("30–40%" counter, cards, drifting glow).
+  (icon cards that draw themselves), #approach (sticky heading, the pillar at mid-screen lit),
+  #value ("30–40%" counter, cards, drifting glow), then the shared sections in the soft look
+  (#reviews with a link to Google, #videos, #faq + FAQPage JSON-LD, #appointment, #locations,
+  #final-cta) and the mobile action bar.
+  Not built: the live page's "Join Our Newsletter" box (no backend; waiting on a decision).
   Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's

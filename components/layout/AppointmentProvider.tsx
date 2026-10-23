@@ -72,8 +72,17 @@ const AppointmentContext = React.createContext<AppointmentContextValue>({
   },
 });
 
+type AppointmentProviderProps = {
+  /**
+   * Preselected when a button names no service (header, menu, action bar) and none was chosen
+   * before. Default: none, so the form keeps its "- Select -" placeholder.
+   */
+  defaultService?: AppointmentService;
+  children: React.ReactNode;
+};
+
 /** Wraps every page (SiteShell). Header, action bar and page buttons all call openAppointment. */
-export function AppointmentProvider({ children }: { children: React.ReactNode }) {
+export function AppointmentProvider({ defaultService, children }: AppointmentProviderProps) {
   const router = useRouter();
   const [state, setState] = React.useState<AppointmentState>({ service: null, note: null, requestId: 0 });
 
@@ -84,11 +93,15 @@ export function AppointmentProvider({ children }: { children: React.ReactNode })
         router.push(site.appointmentCta.href);
         return;
       }
-      setState((s) => ({ service: service ?? s.service, note: note ?? null, requestId: s.requestId + 1 }));
+      setState((s) => ({
+        service: service ?? s.service ?? defaultService ?? null,
+        note: note ?? null,
+        requestId: s.requestId + 1,
+      }));
       scrollToTarget(target);
       focusNameField(target);
     },
-    [router],
+    [router, defaultService],
   );
 
   const value = React.useMemo(() => ({ ...state, openAppointment }), [state, openAppointment]);

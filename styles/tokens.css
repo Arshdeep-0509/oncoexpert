@@ -130,6 +130,8 @@
   --accent-soft: #e8eefa;
   --accent-glow: #8fb0f0;
   --accent-bright: color-mix(in oklab, var(--accent) 70%, white);
+  /* Second brand colour for decoration only (glows, underlines, dots); never small text. */
+  --highlight: var(--accent);
   --petal: var(--gray-200);
   --gold: var(--star);
   --line: var(--gray-200);

@@ -1,0 +1,120 @@
+/* ==================================================================
+   Home #specialties: hover and focus states of the specialty tiles (SpecialtiesSection.tsx).
+   Plain CSS, prefix spec- (see docs/PROJECT.md, "Page CSS"). Transform and opacity only.
+   On hover / keyboard focus a tile lifts (its shadow layer fades in), its icon fills with the
+   accent (an accent disc scales in, a white copy of the icon fades in over the accent one), and
+   a gradient border sweeps around it once.
+   ================================================================== */
+
+.spec-tile {
+  position: relative;
+  isolation: isolate;
+}
+/* Deeper shadow, shown on hover (opacity only). */
+.spec-shadow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+  pointer-events: none;
+}
+
+/* Icon: the accent disc and the white icon sit over the resting icon, hidden. */
+.spec-iconFill {
+  scale: 0.6;
+  opacity: 0;
+  transition:
+    scale 0.45s var(--ease-out-expo),
+    opacity 0.3s ease-out;
+}
+.spec-iconWhite {
+  opacity: 0;
+  transition: opacity 0.3s ease-out 0.05s;
+}
+
+/* Border sweep: a conic arc rotating inside a ring-shaped mask (the mask itself never moves). */
+.spec-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+.spec-sweep {
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 62%,
+    var(--logo-ring-right-3) 74%,
+    var(--logo-ring-end) 82%,
+    var(--logo-ring-left-1) 89%,
+    transparent 93%
+  );
+}
+
+.spec-tile:is(:hover, :focus-visible, :focus-within) .spec-shadow {
+  opacity: 1;
+}
+.spec-tile:is(:hover, :focus-visible, :focus-within) .spec-iconFill {
+  scale: 1;
+  opacity: 1;
+}
+.spec-tile:is(:hover, :focus-visible, :focus-within) .spec-iconWhite {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spec-tile {
+    transition: translate 0.45s var(--ease-out-expo);
+  }
+  .spec-tile:is(:hover, :focus-within) {
+    translate: 0 -4px;
+  }
+  .spec-photo {
+    transition: scale 0.8s var(--ease-out-expo);
+  }
+  .spec-tile:is(:hover, :focus-within) .spec-photo {
+    scale: 1.04;
+  }
+  /* Once per hover: the ring fades in, the arc goes round, the ring fades out. */
+  .spec-tile:is(:hover, :focus-within) .spec-ring {
+    animation: spec-ring 1.3s ease-in-out both;
+  }
+  .spec-tile:is(:hover, :focus-within) .spec-sweep {
+    animation: spec-sweep 1.3s cubic-bezier(0.45, 0, 0.25, 1) both;
+  }
+}
+
+@keyframes spec-ring {
+  0% {
+    opacity: 0;
+  }
+  12%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes spec-sweep {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}

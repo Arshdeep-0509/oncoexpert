@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/content/site";
-import type { HeaderVariant } from "@/content/types";
+import type { HeaderVariant, HeroTone } from "@/content/types";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
@@ -15,11 +15,16 @@ import { HeaderActions } from "@/components/layout/header/HeaderActions";
 
 type SiteHeaderProps = {
   /**
-   * "dark": floats over a dark hero with white text (robotic page).
-   * "light": floats over a light hero with ink text (breast page).
-   * Either way the bar turns solid once the hero has scrolled away.
+   * Bar sizes and layout (header-variants.ts): "dark" = the robotic page's original bar,
+   * "light" = the shared bar (breast, home).
    */
   variant?: HeaderVariant;
+  /**
+   * Tone of the hero the transparent bar floats over: "dark" → white text (robotic, home),
+   * "light" → ink text (breast). Defaults to `variant`. Either way the bar turns solid (ink
+   * text) once the hero has scrolled away.
+   */
+  heroTone?: HeroTone;
   /** Where "For Appointment" points: "#appointment" on pages with the form. */
   appointmentHref?: string;
   /** Nav item to mark as current. Defaults to the URL. */
@@ -33,6 +38,7 @@ type SiteHeaderProps = {
 
 export function SiteHeader({
   variant = "dark",
+  heroTone = variant,
   appointmentHref = site.appointmentCta.href,
   activeHref,
   heroId = "hero",
@@ -45,7 +51,7 @@ export function SiteHeader({
 
   // Transparent while over the hero; white text only when that hero is dark.
   const transparent = overlay && overHero;
-  const onDark = variant === "dark" && transparent;
+  const onDark = heroTone === "dark" && transparent;
 
   return (
     <>

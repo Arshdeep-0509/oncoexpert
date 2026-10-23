@@ -16,10 +16,18 @@
 /* ------------------------------------------------------------------ */
 
 /** One file per theme in styles/themes/<name>.css. */
-export type ThemeName = "breast" | "robotic";
+export type ThemeName = "home" | "breast" | "robotic";
 
-/** "dark": the header floats over a dark hero (white text). "light": over a light hero. */
+/**
+ * Header bar sizes and layout (components/layout/header/header-variants.ts), named after the hero
+ * each was first built for. "dark": the robotic page's original bar (80 → 68px, CTA from md).
+ * "light": the shared bar (64px; 76 → 64px on desktop, CTA from lg). Text colour over the hero
+ * is a separate choice: HeroTone.
+ */
 export type HeaderVariant = "light" | "dark";
+
+/** Tone of the hero the transparent header floats over: "dark" → white text, "light" → ink text. */
+export type HeroTone = "light" | "dark";
 
 /** Background tone of a page band (components/ui/section.tsx). */
 export type SectionTone = "surface" | "alt" | "warm" | "plum" | "white" | "black" | "ink";
@@ -44,6 +52,8 @@ export type PageEntry = {
   theme: ThemeName;
   /** Mobile browser bar colour (generateViewport). */
   themeColor: string;
+  /** app/sitemap.ts priority. Default 0.8. */
+  sitemapPriority?: number;
   meta: PageMeta;
 };
 
@@ -52,7 +62,7 @@ export type PageEntry = {
 /* ------------------------------------------------------------------ */
 
 export type PageImage = {
-  /** File name in public/images/<page>/ */
+  /** File name; the folder is the one in `src` (public/images/<page>/, or brand/, robotic/ … for reused photos). */
   file: string;
   src: string;
   pexelsId?: number;

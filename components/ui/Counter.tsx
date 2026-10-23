@@ -14,6 +14,8 @@ type CounterProps = {
   locale?: string;
   /** Seconds to wait after coming into view before counting (e.g. for an entrance animation). */
   delay?: number;
+  /** Seconds the count-up takes. Default 1.6. */
+  duration?: number;
   /**
    * Reserve the final value's width while counting, so the suffix and anything beside the
    * number never move (no layout shift).
@@ -22,7 +24,7 @@ type CounterProps = {
 };
 
 /**
- * Counts up from 0 to `value` over 1.6s (ease-out) when scrolled into view.
+ * Counts up from 0 to `value` over 1.6s (ease-out; see `duration`) when scrolled into view.
  * The server renders the final value so the number is always in the HTML;
  * with prefers-reduced-motion it simply stays there.
  */
@@ -40,6 +42,7 @@ export function Counter({
   className,
   locale = "en-IN",
   delay = 0,
+  duration = 1.6,
   reserveWidth = false,
 }: CounterProps) {
   const ref = React.useRef<HTMLSpanElement>(null);
@@ -64,7 +67,7 @@ export function Counter({
       return;
     }
     const controls = animate(0, value, {
-      duration: 1.6,
+      duration,
       delay,
       ease: "easeOut",
       onUpdate: (n) => {
@@ -72,7 +75,7 @@ export function Counter({
       },
     });
     return () => controls.stop();
-  }, [inView, reduce, value, format, delay]);
+  }, [inView, reduce, value, format, delay, duration]);
 
   return (
     <span className={cn("tabular-nums", reserveWidth && "whitespace-nowrap", className)}>

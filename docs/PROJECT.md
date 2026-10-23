@@ -3,8 +3,8 @@
 Read this first. oncoxpert.in is a surgical oncology practice in Bengaluru led by Dr. Sunil Navalgund.
 The site is rebuilt page by page. Most visitors are on phones: design mobile-first.
 
-Pages so far: **Robotic Surgery** (`/robotic-surgery/`) and **Breast Cancer**
-(`/breast-cancer-treatment-bangalore/`). Both share one site shell and one set of section components;
+Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`) and **Breast Cancer**
+(`/breast-cancer-treatment-bangalore/`). They share one site shell and one set of section components;
 each page has its own theme.
 
 ## Stack
@@ -15,19 +15,19 @@ each page has its own theme.
 - `motion` (import from `"motion/react"`), lucide-react (stroke width 1.75), Embla (+ autoplay), Lenis
 - react-hook-form + zod, Resend (appointment form), clsx + tailwind-merge (`cn()`)
 - Prettier + prettier-plugin-tailwindcss (class order), ESLint (next config), knip (dead-code check)
-- sharp (dev): `npm run images` downloads and resizes the breast page photos
-- Fonts (next/font, loaded once in `app/layout.tsx`): Plus Jakarta Sans (UI/body), Fraunces (breast
-  display), Inter (robotic body)
+- sharp (dev): `npm run images [page]` downloads and resizes a page's stock photos and makes its og.jpg
+- Fonts (next/font, loaded once in `app/layout.tsx`): Plus Jakarta Sans (UI/body, home display), Fraunces
+  (breast display, emphasis words), Inter (robotic body)
 
-| Command             | Does                                      |
-| ------------------- | ----------------------------------------- |
-| `npm run dev`       | dev server on :3000                       |
-| `npm run build`     | production build (must pass)              |
-| `npm run lint`      | ESLint                                    |
-| `npm run typecheck` | `tsc --noEmit`                            |
-| `npm run format`    | Prettier (write); `format:check` to check |
-| `npm run images`    | fetch + resize the breast page photos     |
-| `npx knip`          | unused files, exports, types, packages    |
+| Command                 | Does                                                             |
+| ----------------------- | ---------------------------------------------------------------- |
+| `npm run dev`           | dev server on :3000                                              |
+| `npm run build`         | production build (must pass)                                     |
+| `npm run lint`          | ESLint                                                           |
+| `npm run typecheck`     | `tsc --noEmit`                                                   |
+| `npm run format`        | Prettier (write); `format:check` to check                        |
+| `npm run images [page]` | fetch + resize a page's photos, make its og.jpg (default breast) |
+| `npx knip`              | unused files, exports, types, packages                           |
 
 Before committing: `npm run typecheck && npm run lint && npm run format:check && npm run build`.
 
@@ -36,7 +36,7 @@ Before committing: `npm run typecheck && npm run lint && npm run format:check &&
 ```
 app/
   layout.tsx                 html, body, fonts, providers, Preloader (no header/footer)
-  page.tsx                   / → redirects to /breast-cancer-treatment-bangalore/
+  page.tsx                   / Home: renders its own <SiteShell theme="home" …> (see "Home route")
   globals.css                imports tokens + themes; @theme inline token → utility map; shared keyframes
   sitemap.ts, robots.ts      from content/pages/index.ts
   robotic-surgery/           layout.tsx = <SiteShell theme="robotic" …>; page.tsx = sections in order
@@ -54,6 +54,15 @@ components/
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, ProgressRing, Reveal,
                              ScrollFillLine, Section, SectionHeading, SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
+  pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
+                             Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
+                             HeroHeadline, HeroStats, HeroTrustStrip (server) and the islands HeroTicker,
+                             HeroCounter, HeroParallax, HeroMotionToggle, HeroParticles(Layer).
+                             SurgeonSection (+ SurgeonStats, JourneyTimeline + journey.css),
+                             RoboticSection (+ robotic-band.css), SpecialtiesSection (+ specialties.css,
+                             specialty-icons.tsx icon set), ServicesSection, ApproachSection (+ the island
+                             ApproachPillars), ValueSection (+ the island ValueRange, value-band.css);
+                             icon-draw.css: the shared "line art draws itself on reveal" for icons
   pages/breast-cancer/       sections used only by the breast page (+ hero.css, hero-styles.ts)
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
@@ -63,7 +72,7 @@ content/
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
   shared/                    reviews.ts (Google reviews, verbatim), videos.ts (YouTube IDs),
                              sections.ts (appointment / locations / final band copy), organization.ts (JSON-LD facts)
-  pages/index.ts             page registry: slug, path, title, theme, themeColor, meta
+  pages/index.ts             page registry: slug, path, title, theme, themeColor, sitemapPriority?, meta
   pages/<page>.ts            every word and number on that page
   pages/<page>.images.ts     image manifest (file, alt, credit, focal point, size)
 lib/
@@ -76,11 +85,12 @@ lib/
   analytics.ts, intro.ts, lenis.ts, motion.ts (EASE_OUT_EXPO), nav.ts, image-fade.ts, youtube.ts
 styles/
   tokens.css                 shared palette, third-party brand colours, neutral defaults for every token
-  themes/breast.css, themes/robotic.css   one theme per page
+  themes/home.css, themes/breast.css, themes/robotic.css   one theme per page
 scripts/
-  fetch-images.mjs           npm run images
+  fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
-public/images/               brand/ locations/ breast-cancer/ robotic/
+  make-portrait-cutout.mjs   one-off: Dr. Sunil's head cut out of the portrait (Home hero ring)
+public/images/               brand/ locations/ home/ breast-cancer/ robotic/
 ```
 
 ### Naming
@@ -98,7 +108,7 @@ public/images/               brand/ locations/ breast-cancer/ robotic/
 
 - Components never hardcode a colour or font (no hex, no font names). They use semantic utilities:
   `bg-surface` `bg-surface-alt` `bg-surface-warm` `text-ink` `text-text` `text-muted` `bg-accent`
-  `text-accent` `hover:bg-accent-hover` `bg-accent-soft` `text-accent-glow` `bg-petal` `text-gold`
+  `text-accent` `hover:bg-accent-hover` `bg-accent-soft` `text-accent-glow` `bg-highlight` `bg-petal` `text-gold`
   `border-line` `font-display` `font-serif` `rounded-sm|md|lg|xl|pill` `shadow-soft-sm|soft|soft-lg`
   `shadow-card` `py-(--section-y)` `bg-(image:--grad-hero)`. Fixed brand artwork colours (logo, Google
   mark, WhatsApp, the portrait backdrop) are tokens in `styles/tokens.css` too.
@@ -129,6 +139,7 @@ public/images/               brand/ locations/ breast-cancer/ robotic/
   --accent-hover: …;
   --accent-soft: …;
   --accent-glow: …;
+  --highlight: …; /* optional second brand colour, decoration only (home: logo orange) */
   --petal: …;
   --gold: …;
   --line: …;
@@ -141,7 +152,20 @@ public/images/               brand/ locations/ breast-cancer/ robotic/
 }
 ```
 
-Anything a theme leaves out falls back to the neutral defaults in `styles/tokens.css`.
+Anything a theme leaves out falls back to the neutral defaults in `styles/tokens.css`. List the
+contrast of every text/background pair in the theme file's header comment (see `themes/home.css`).
+
+### Header over the hero
+
+`SiteShell` takes two independent header props:
+
+- `headerVariant`: the bar's sizes and layout. `"dark"` = the robotic page's original bar (80 → 68px,
+  40px top bar from md, CTA from md, stacked mobile footer); `"light"` = the shared bar (64px; 76 → 64px
+  on desktop, 36px top bar from lg, CTA from lg, accordion mobile footer).
+- `heroTone`: the tone of the hero the transparent bar floats over; `"dark"` gives white text and the
+  white logo pill. Defaults to `headerVariant`.
+
+Robotic = `dark` + dark hero, breast = `light` + light hero, home = `light` sizes over a `dark` hero.
 
 ## Shared sections and looks
 
@@ -157,7 +181,7 @@ the same values as `variant`.
 
 | Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                 |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared)                                                                                                   |
+| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                              |
 | `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                  |
 | `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD) |
 | `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                |
@@ -168,7 +192,9 @@ the same values as `variant`.
 
 - The appointment form is one component. `useAppointment().openAppointment(service?, note?)` scrolls to
   `#appointment` below the header, preselects the service, stores the note and focuses Name; without
-  `#appointment` on the page it navigates to the booking page. The server action emails "New appointment
+  `#appointment` on the page it navigates to the booking page. Buttons that name no service (header, menu,
+  action bar) keep the last one chosen, else `SiteShell`'s `defaultService` (Home: "Consultation"; other
+  pages: none, so "- Select -" stays). The server action emails "New appointment
   request - <page> page". Needs `RESEND_API_KEY` (+ `APPOINTMENT_TO_EMAIL`, `APPOINTMENT_FROM_EMAIL`).
 - Every page with a hero gives it `id="hero"`; the form section is `id="appointment"`.
 
@@ -183,8 +209,9 @@ the same values as `variant`.
   `leadingIcon`, `href` → link, `cta` → analytics label. `buttonClasses()` for non-button elements.
 - `Reveal`: fade + rise by `--reveal-y` over 0.7s, once, when `--reveal-amount` of it is visible;
   `stagger` = 0.08s per child. CSS opacity/translate only; reduced motion shows the content at once.
-- `Counter` (counts up in view; `reserveWidth` keeps CLS at 0), `ProgressRing` (transform-only fill),
-  `Chip`, `ScrollFillLine`, `SwipeRow` (under 768px a scroll-snap row with peek, dots and hint; from md a
+- `Counter` (counts up in view over `duration`, default 1.6s; `reserveWidth` keeps CLS at 0), `ProgressRing` (transform-only fill),
+  `Chip`, `ScrollFillLine` (its scroll range is `SCROLL_FILL_OFFSET`, so a timeline can light stops in
+  step with the fill), `SwipeRow` (under 768px a scroll-snap row with peek, dots and hint; from md a
   grid), `textStyles` (shared text class strings).
 
 ## Content rules
@@ -209,14 +236,19 @@ the same values as `variant`.
    has photos (and a `pageName` / `pageSlug` export for the form and reviews).
 3. **Registry**: add the page to `content/pages/index.ts` (slug, path, title, theme, themeColor, meta);
    sitemap and robots pick it up.
-4. **Route**: `app/<slug>/layout.tsx` = `<SiteShell theme="<name>" headerVariant="light|dark">`;
+4. **Route**: `app/<slug>/layout.tsx` = `<SiteShell theme="<name>" headerVariant="light|dark">`
+   (+ `heroTone` when the hero's tone differs, see "Header over the hero");
    `app/<slug>/page.tsx` exports `metadata`, `generateViewport` (`pageViewport(pages[slug])`) and lists
    the sections. Give the hero `id="hero"`.
-5. **Sections**: reuse `components/shared/*` (Reviews, Videos, Faq, AppointmentSection, Locations,
-   FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
-   `components/pages/<name>/`.
-6. **Nav**: add the page to `site.nav` in `content/site.ts` if it should appear in the menus.
-7. **Check**: typecheck, lint, format, build; look at 375 / 768 / 1440; run Lighthouse (mobile).
+
+### Home route
+
+`/` is `app/page.tsx`, and a `layout.tsx` beside it would be the root layout, which wraps every route
+(the other pages would get two shells). So Home's page renders its own `<SiteShell theme="home"
+headerVariant="light" heroTone="dark">` around its sections. Home has no child routes, so a layout's only
+advantage (staying mounted across child navigations) does not apply: the rendered tree is the same. 5. **Sections**: reuse `components/shared/*` (Reviews, Videos, Faq, AppointmentSection, Locations,
+FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
+`components/pages/<name>/`. 6. **Nav**: add the page to `site.nav` in `content/site.ts` if it should appear in the menus. 7. **Check**: typecheck, lint, format, build; look at 375 / 768 / 1440; run Lighthouse (mobile).
 
 ## Page CSS
 
@@ -246,6 +278,14 @@ the same values as `variant`.
   per-page opt-out. It covers the page for ~3.3s, so anything that animates or auto-advances on load
   must wait for it: CSS via `--intro-delay`, JS via `introRemainingSeconds()` (`lib/intro.ts`).
   In-site navigation does not replay it (the root layout stays mounted).
+- Known issue: `--intro-delay` comes from `.preloader ~ [data-theme]`, so it drops to 0 when the
+  overlay unmounts (end of its fade, intro + 0.8s; earlier on slow loads, where the overlay's safety
+  timer, counted from navigation start, fires before the CSS fade ends). Every entrance animation
+  still running then jumps to its end. The Home hero pins its own `--intro` on hydration
+  (`HeroMotionToggle`); the breast hero does not yet, and the overlay timer is unchanged, so the
+  other pages keep their current behaviour.
+- Loops longer than 5s on Home stop on hover/focus or with a pause control; the hero's button
+  (`data-paused` on #hero) stops every hero loop, and leaving the screen does too (`data-offscreen`).
 - Never hide the hero LCP image behind clip-path / opacity at load; reveal it with a transform on a
   cover element.
 - Avoid `filter: blur()` / `backdrop-filter` on large or animated elements above the fold.
@@ -255,6 +295,18 @@ the same values as `variant`.
 
 ## Status
 
+- Home: foundation. Theme (`themes/home.css`), every word of the live homepage in
+  `content/pages/home.ts`, images (`home.images.ts`, `npm run images home`, og.jpg), registry, sitemap
+  (priority 1).
+  All 13 blocks built: #hero ("Orbit": gradient ring with the portrait, ticker, stat chips, trust
+  marquee), #surgeon (portrait, training-journey timeline, stats band), #robotic (dark band with the
+  da Vinci arms and the 8 features), #specialties (bento grid, swipe row on phones), #services
+  (icon cards that draw themselves), #approach (sticky heading, the pillar at mid-screen lit),
+  #value ("30–40%" counter, cards, drifting glow), then the shared sections in the soft look
+  (#reviews with a link to Google, #videos, #faq + FAQPage JSON-LD, #appointment, #locations,
+  #final-cta) and the mobile action bar.
+  Not built: the live page's "Join Our Newsletter" box (no backend; waiting on a decision).
+  Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's
   PENDING items in `content/pages/breast-cancer.ts`.

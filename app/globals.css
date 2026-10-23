@@ -4,6 +4,7 @@
 
 /* Design tokens: shared neutrals first, then one file per page theme. */
 @import "../styles/tokens.css";
+@import "../styles/themes/home.css";
 @import "../styles/themes/breast.css";
 @import "../styles/themes/robotic.css";
 
@@ -29,6 +30,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-glow: var(--accent-glow);
   --color-accent-bright: var(--accent-bright);
+  --color-highlight: var(--highlight);
   --color-petal: var(--petal);
   --color-gold: var(--gold);
   --color-line: var(--line);
@@ -533,4 +535,13 @@
   .cta-shine::after {
     animation: cta-shine 7s ease-in-out 1.5s infinite;
   }
+}
+
+/* Home: every loop longer than 5s stops while its control is hovered or focused. The shell's two
+   (WhatsApp pulse 8s, action-bar shine 7s) do so on Home only, so the other pages keep their
+   current behaviour. Removing the animation returns both to their resting state (ring hidden
+   under the button, shine parked off the pill). */
+[data-theme="home"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
+[data-theme="home"] .cta-shine:is(:hover, :focus-visible)::after {
+  animation: none;
 }

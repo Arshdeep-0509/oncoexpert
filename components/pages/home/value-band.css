@@ -1,0 +1,27 @@
+/* ==================================================================
+   Home #value: the one slow-drifting glow (ValueSection.tsx). Plain CSS, prefix vband-.
+   The glow drifts with the band's scroll position (a scroll-driven animation), not on a timer:
+   nothing loops, so there is nothing to pause. Transform only; static with reduced motion or
+   where scroll-driven animations are not supported.
+   ================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .vband-glow {
+      animation: vband-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+
+@keyframes vband-drift {
+  from {
+    translate: -6vw -40px;
+    scale: 0.92;
+  }
+  to {
+    translate: 6vw 60px;
+    scale: 1.08;
+  }
+}

@@ -3,6 +3,7 @@
 The rebuilt pages of [oncoxpert.in](https://oncoxpert.in), the surgical oncology practice of Dr. Sunil
 Navalgund in Bengaluru:
 
+- **Home**: `/`
 - **Robotic Surgery**: `/robotic-surgery/`
 - **Breast Cancer**: `/breast-cancer-treatment-bangalore/`
 
@@ -18,18 +19,18 @@ Requires Node.js 20 or newer.
 ```bash
 npm install
 cp .env.example .env.local     # then fill in RESEND_API_KEY (see "Appointment form")
-npm run dev                    # http://localhost:3000 → opens /breast-cancer-treatment-bangalore/
+npm run dev                    # http://localhost:3000 → Home
 ```
 
-| Command             | What it does                                                |
-| ------------------- | ----------------------------------------------------------- |
-| `npm run dev`       | Development server                                          |
-| `npm run build`     | Production build (must pass before deploying)               |
-| `npm run start`     | Serve the production build                                  |
-| `npm run lint`      | ESLint                                                      |
-| `npm run typecheck` | TypeScript check                                            |
-| `npm run format`    | Format all files with Prettier (`format:check` only checks) |
-| `npm run images`    | Download/resize the breast page stock photos                |
+| Command             | What it does                                                  |
+| ------------------- | ------------------------------------------------------------- |
+| `npm run dev`       | Development server                                            |
+| `npm run build`     | Production build (must pass before deploying)                 |
+| `npm run start`     | Serve the production build                                    |
+| `npm run lint`      | ESLint                                                        |
+| `npm run typecheck` | TypeScript check                                              |
+| `npm run format`    | Format all files with Prettier (`format:check` only checks)   |
+| `npm run images`    | Download/resize a page's stock photos (`npm run images home`) |
 
 ### Deploy (Vercel)
 
@@ -46,6 +47,8 @@ Components contain no text. Everything visitors read is in `content/`:
 
 | File                                    | Contains                                                        |
 | --------------------------------------- | --------------------------------------------------------------- |
+| `content/pages/home.ts`                 | Every section of the Home page: text and numbers                |
+| `content/pages/home.images.ts`          | The Home page photos: file, alt text, focal point, size         |
 | `content/pages/breast-cancer.ts`        | Every section of the breast page: text, prices, numbers         |
 | `content/pages/breast-cancer.images.ts` | The breast page photos: file, alt text, focal point, size       |
 | `content/pages/robotic-surgery.ts`      | Every section of the robotic page, its numbers and photos       |
@@ -113,8 +116,9 @@ first one is shown large. Titles and thumbnails come from YouTube automatically.
 
 ## Swap the stock photos for the doctor's real photos
 
-The breast page uses licensed Pexels stock photos. To replace one with a real photo of the clinic or
-team:
+The breast page and Home (the six cancer specialties and the final call band) use licensed Pexels stock
+photos. To replace one with a real photo of the clinic or team (the steps use the breast page; for Home
+it is `public/images/home/` and `content/pages/home.images.ts`):
 
 1. **Prepare the photo.** JPG, at most 2000 px on the long edge, about 80% quality. Any photo editor or
    [squoosh.app](https://squoosh.app) can do this. Use a new file name, e.g. `team-consultation.jpg`, so
@@ -124,20 +128,25 @@ team:
 3. **Update its entry** in `content/pages/breast-cancer.images.ts`. Find the photo by its key (e.g.
    `consultation`), then:
    - set `file` and `src` to the new name;
-   - set `width` and `height` to the file's real pixel size (`npm run images` lists the size of every
-     file);
+   - set `width` and `height` to the file's real pixel size (`npm run images` / `npm run images home`
+     lists the size of every file);
    - rewrite `alt` to describe the new photo;
    - set `focal` (CSS object-position, e.g. `"50% 30%"`) to the part that must stay visible when the
      photo is cropped;
    - delete `pexelsId` and `credit`.
 4. Run `npm run dev` and check the photo at phone and desktop widths. Then delete the old stock file.
 
-The share image (`og.jpg`) is made from `ribbon-minimal.jpg`. To use a real photo instead, replace
-`public/images/breast-cancer/og.jpg` with a 1200×630 JPG.
+The breast share image (`og.jpg`) is made from `ribbon-minimal.jpg`. Home's is a brand card (the logo
+and the portrait on the hero navy) made by `npm run images home`. To use another image, replace
+`public/images/<page>/og.jpg` with a 1200×630 JPG (or delete it and run the script again).
 
-The doctor's portrait is `public/images/brand/dr-sunil-navalgund.png`, used by both pages. Replace the
+The doctor's portrait is `public/images/brand/dr-sunil-navalgund.png`, used by every page. Replace the
 file with one of the same framing and update `width`/`height` in `surgeon.image`
-(`content/pages/breast-cancer.ts`) and `images.doctor` (`content/pages/robotic-surgery.ts`).
+(`content/pages/breast-cancer.ts`), `images.doctor` (`content/pages/robotic-surgery.ts`) and `doctor`
+(`content/pages/home.images.ts`), then delete `public/images/home/og.jpg` and run `npm run images home`.
+The Home hero also shows his head cut out of the photo (it breaks out of the ring): run
+`node scripts/make-portrait-cutout.mjs` to remake `dr-sunil-navalgund-head.png` from the new portrait
+and check it at 390 and 1440 px (the cut works on a plain studio backdrop like the current one).
 
 Robotic page photos live in `public/images/robotic/` and `images` / `robotPhotos` in
 `content/pages/robotic-surgery.ts`. The hero slider shows `robotPhotos`. It is on pure black, so use

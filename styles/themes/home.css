@@ -1,0 +1,73 @@
+/* ==================================================================
+   Home theme: /
+   Premium, calm and trustworthy. Colours come from the logo: deep navy
+   ink for the hero and dark bands, logo blue as the accent, logo orange
+   as a highlight only (glows, underlines, small dots), cool ice surfaces.
+   Plus Jakarta Sans for display and body; Fraunces italic only for the
+   emphasis words (SectionHeading `emphasis`).
+
+   Contrast (WCAG 2.x; "/75" = white at 75% over that background).
+   Text needs 4.5:1, CTAs included; non-text marks need 3:1.
+
+   Text on light surfaces       surface  surface-alt  surface-warm  accent-soft
+     --ink        #0a1633        17.87      16.50        16.95          -
+     --text       #1b2440        15.30      14.13        14.51          -
+     --muted      #55607a         6.29       5.81         5.96         5.40
+     --accent     #0b40b2         8.78       8.12         8.33         7.55
+
+   CTAs
+     white on --accent (primary button)                       8.78
+     white on --accent-hover (hover)                         11.06
+     white on --grad-cta stops (action bar: hover, accent,
+       accent/accent-bright mix #1852c6)               11.06 · 8.78 · 6.90
+     ink on white (onDark button on navy)                    17.87
+
+   Text on dark                 ink #0a1633   plum end #10224d   hero blue glow   hero orange glow
+     white                        17.87          15.46             12.13               -
+     white/80 (nav links)         11.62            -                8.28               -
+     white/75 (body on dark)      10.31           9.21              7.45              8.52
+     --accent-glow  #9dbbff        9.35           8.09              6.35               -
+     --accent-glow on white/10 pill over ink (eyebrow)      7.13
+     hero H1 gradient words (large text, measured on #0b1838): blue end #5688e4 (logo-ring blue
+       lifted 22% to white; the raw token is 3.22) 5.01 · teal 5.63 · orange 5.13
+   (hero glows = the centre of each radial over the navy base: #0b2f7f blue, #3d252f orange)
+
+   Decoration only (non-text, 3:1)
+     --highlight (logo orange) on white 3.37 · on ink 5.30. Never small text on white.
+     --accent on ink 2.03: on navy the main CTA is the white onDark pill, not a blue one.
+   ================================================================== */
+
+[data-theme="home"] {
+  --ink: #0a1633; /* deep navy: hero, headings, dark bands */
+  --text: #1b2440; /* body text */
+  --muted: #55607a; /* secondary text */
+  --surface: #ffffff;
+  --surface-alt: #f3f6fc; /* cool ice bands */
+  --surface-warm: #fdf8f5; /* a breath of the logo orange, used sparingly */
+  --accent: var(--logo-blue); /* buttons, links, icons */
+  --accent-hover: #08348f;
+  --accent-soft: #e8eefb; /* chips, icon tiles, eyebrow pills */
+  --accent-glow: #9dbbff; /* accent text and focus rings on navy */
+  --accent-bright: var(--logo-ring-right-3); /* lighter logo blue: last stop of --grad-cta */
+  --highlight: var(--logo-orange); /* glows, underlines, small dots only */
+  --petal: #d7e3fb; /* soft blue decoration on light bands */
+  --line: #e2e8f3; /* borders */
+
+  /* Navy with two soft glows: logo blue top-right, logo orange bottom-left. */
+  --grad-hero:
+    radial-gradient(60% 55% at 88% 6%, color-mix(in srgb, var(--logo-blue) 60%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 6% 96%, color-mix(in srgb, var(--logo-orange) 22%, transparent), transparent 70%),
+    linear-gradient(180deg, #0a1633, #0c1b3f);
+  /* Decorative line / ring: the logo ring's blue → teal → orange. */
+  --grad-accent: linear-gradient(120deg, var(--logo-ring-right-3), var(--logo-ring-end) 55%, var(--logo-ring-left-1));
+  /* Dark bands (Section tone="plum"). */
+  --grad-plum: linear-gradient(160deg, #0a1633, #10224d);
+
+  /* Type: Plus Jakarta Sans display and body */
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --display-weight: 700;
+  --display-tracking: -0.03em;
+
+  /* Shadows tinted with navy */
+  --shadow-rgb: 10 22 51;
+}

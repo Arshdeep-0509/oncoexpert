@@ -1,0 +1,64 @@
+/* ==================================================================
+   Home #robotic: the dark band that hands off to the robotic page (RoboticSection.tsx).
+   Plain CSS, prefix rband- (see docs/PROJECT.md, "Page CSS").
+   - The feature tiles reveal in turn (Reveal, data-revealed); then each icon draws itself
+     (icon-draw.css) and one soft glow passes over the tiles, left to right, once.
+   - The arms photo drifts 40px as the band scrolls past (scroll-driven, transform only).
+   - The default styles are the final state; all motion is in prefers-reduced-motion: no-preference.
+   ================================================================== */
+
+/* The tile's column (2 per row on phones, 4 from lg) times the glow pass; set on the card. */
+.rband-card {
+  --col: var(--col-sm, 0);
+}
+@media (min-width: 1024px) {
+  .rband-card {
+    --col: var(--col-lg, 0);
+  }
+}
+/* The tile's glow: a soft band of light, parked off the tile at rest. */
+.rband-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 25%,
+    color-mix(in srgb, var(--accent-glow) 16%, transparent) 50%,
+    transparent 75%
+  );
+  translate: -120% 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* One pass of light across the grid: column by column, after every tile is in. */
+  .rband-tile[data-revealed] .rband-sheen {
+    animation: rband-sheen 1.2s ease-in-out both;
+    animation-delay: calc(1.25s + var(--col) * 0.14s);
+  }
+
+  @supports (animation-timeline: view()) {
+    .rband-drift {
+      animation: rband-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+
+@keyframes rband-sheen {
+  from {
+    translate: -120% 0;
+  }
+  to {
+    translate: 120% 0;
+  }
+}
+@keyframes rband-drift {
+  from {
+    translate: 0 -20px;
+  }
+  to {
+    translate: 0 20px;
+  }
+}

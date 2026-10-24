@@ -15,7 +15,7 @@ const BASE = "/images/about-us";
 
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
-const aboutImages = {
+export const aboutImages = {
   /* Own photos, reused ---------------------------------------------- */
 
   // The live page shows this portrait twice (hero card and the "10+" block).

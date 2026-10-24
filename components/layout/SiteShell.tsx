@@ -30,6 +30,11 @@ type SiteShellProps = {
   footerArt?: FooterArt;
   /** Fixed Call · WhatsApp · Book bar on phones (the floating WhatsApp button then shows from md). */
   mobileActionBar?: boolean;
+  /**
+   * Hide the floating WhatsApp button under 768px. Default: when the action bar is on (it has its
+   * own WhatsApp action). The booking page turns both off: its form's sticky step buttons sit there.
+   */
+  hideWhatsAppOnMobile?: boolean;
   children: React.ReactNode;
 };
 
@@ -48,6 +53,7 @@ export function SiteShell({
   defaultService,
   footerArt,
   mobileActionBar = true,
+  hideWhatsAppOnMobile = mobileActionBar,
   children,
 }: SiteShellProps) {
   return (
@@ -69,7 +75,7 @@ export function SiteShell({
           reserveActionBar={mobileActionBar}
         />
         {mobileActionBar ? <MobileActionBar /> : null}
-        <WhatsAppButton hideOnMobile={mobileActionBar} />
+        <WhatsAppButton hideOnMobile={hideWhatsAppOnMobile} />
       </AppointmentProvider>
     </div>
   );

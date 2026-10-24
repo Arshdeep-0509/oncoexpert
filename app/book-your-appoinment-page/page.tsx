@@ -1,16 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { emergency, hero, howItWorks, pageSlug, trust } from "@/content/pages/book-appointment";
-import {
-  appointmentSection,
-  finalCtaSection,
-  locationsSection,
-  reviewsSection,
-  videosSection,
-} from "@/content/shared/sections";
+import { pageSlug } from "@/content/pages/book-appointment";
+import { bookImages } from "@/content/pages/book-appointment.images";
+import { reviewsFor } from "@/content/shared/reviews";
+import { reviewsSection, videosSection } from "@/content/shared/sections";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
-import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
+import { BookingHero } from "@/components/pages/book-appointment/BookingHero";
+import { HowItWorks } from "@/components/pages/book-appointment/HowItWorks";
+import { TrustSection } from "@/components/pages/book-appointment/TrustSection";
+import { Reviews } from "@/components/shared/Reviews";
+import { Videos } from "@/components/shared/Videos";
+import { Locations } from "@/components/shared/Locations";
+import { FinalCta } from "@/components/shared/FinalCta";
 
 const page = pages[pageSlug];
 
@@ -21,50 +23,32 @@ export function generateViewport(): Viewport {
   return pageViewport(page);
 }
 
-// Header, footer and mobile action bar come from ./layout.tsx (SiteShell, care theme).
-// Foundation: every section is a placeholder with its final id, in its final order.
+const finalImage = bookImages.consultationReport;
+
+// Header and footer come from ./layout.tsx (SiteShell, care theme; no phone dock: the form is
+// always close). One job: a worried patient books in under 30 seconds and feels reassured.
 export default function BookAppointmentPage() {
   return (
     <>
-      {/* 1 #hero: form first (the form block is #appointment, so every "Book" button scrolls to it) */}
-      <SectionPlaceholder
-        id="hero"
-        as="h1"
-        hero
-        title={hero.title}
-        className="bg-(image:--grad-hero)"
-        blocks={[{ id: "appointment", label: appointmentSection.form.title, wide: true }, { label: hero.eyebrow }]}
-      />
-      {/* 2 #emergency  warm */}
-      <SectionPlaceholder
-        id="emergency"
-        tone="warm"
-        title={emergency.label}
-        blocks={[{ label: `${emergency.lead} ${emergency.phone.display}`, wide: true }]}
-      />
-      {/* 3 #trust  surface */}
-      <SectionPlaceholder
-        id="trust"
-        title={trust.a11y.list}
-        blocks={trust.items.map((item) => ({ label: item.title }))}
-      />
-      {/* 4 #how-it-works  alt */}
-      <SectionPlaceholder
-        id="how-it-works"
+      <BookingHero /> {/* 1  #hero (the form, #appointment) + #emergency   ivory gradient */}
+      <HowItWorks /> {/* 2  #how-it-works   ice */}
+      <TrustSection /> {/* 3  #trust          white */}
+      {/* 4–7: shared sections (soft look), re-themed by the care theme */}
+      <Reviews
         tone="alt"
-        title={howItWorks.title}
-        blocks={howItWorks.steps.map((step) => ({ label: step.title }))}
+        title={reviewsSection.title}
+        reviews={reviewsFor(pageSlug, reviewsSection.order)}
+        link={reviewsSection.link}
       />
-      {/* 5–8: the shared sections */}
-      <SectionPlaceholder id="reviews" title={reviewsSection.title} />
-      <SectionPlaceholder id="videos" tone="alt" title={videosSection.title} />
-      <SectionPlaceholder
-        id="locations"
-        tone="warm"
-        title={locationsSection.heading}
-        blocks={locationsSection.items.map((clinic) => ({ label: clinic.name }))}
+      <Videos
+        tone="surface"
+        eyebrow={videosSection.eyebrow}
+        title={videosSection.title}
+        ids={videosSection.ids}
+        labels={videosSection.a11y}
       />
-      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} />
+      <Locations tone="warm" />
+      <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} /> {/* navy, photo */}
     </>
   );
 }

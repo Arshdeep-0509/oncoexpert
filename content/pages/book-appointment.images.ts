@@ -15,7 +15,7 @@ const BASE = "/images/book-appointment";
 
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
-const bookImages = {
+export const bookImages = {
   /* Own photos, reused ---------------------------------------------- */
 
   // Transparent PNG: sits on the theme's portrait backdrop (components/shared/DoctorPortrait).

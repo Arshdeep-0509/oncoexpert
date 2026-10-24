@@ -237,6 +237,12 @@ checklist in [docs/PROJECT.md](docs/PROJECT.md#add-a-page).
 - Without `RESEND_API_KEY` the form shows its error message and asks people to call. It never pretends
   a request was sent.
 - Spam: a hidden honeypot field. Filled-in submissions are dropped silently.
+- The booking page (`/book-your-appoinment-page/`) asks the same questions in three steps (service →
+  date/time → name and phone). It also works with JavaScript turned off (one plain form). Link to it
+  with a service already chosen: `/book-your-appoinment-page/?service=second-opinion` (also
+  `consultation`, `consultation-for-surgery`, `follow-up`).
+- The booking page's words (step titles, the reassurance rows, the emergency band, how it works,
+  the statistics) are in `content/pages/book-appointment.ts`.
 
 ## Analytics
 

@@ -27,6 +27,41 @@ export async function submitAppointment(input: AppointmentInput): Promise<Appoin
   return { ok: true };
 }
 
+/** What the booking form's useActionState holds: the result, plus the values to refill on an error. */
+export type AppointmentFormState = {
+  result: AppointmentResult | null;
+  values: Partial<Pick<AppointmentInput, "name" | "phone" | "service" | "dateTime">>;
+};
+
+/**
+ * The same submission as `submitAppointment`, for a <form action>: the booking page's form posts
+ * here, so it also works with JavaScript off (a plain POST; the page re-renders with the state).
+ * Echoes the visitor's own values back so a no-JS form can refill its fields after an error.
+ */
+export async function submitAppointmentForm(
+  _prev: AppointmentFormState,
+  formData: FormData,
+): Promise<AppointmentFormState> {
+  const field = (name: keyof AppointmentInput) => {
+    const value = formData.get(name);
+    return typeof value === "string" ? value : "";
+  };
+  const input = {
+    name: field("name"),
+    phone: field("phone"),
+    service: field("service") as AppointmentInput["service"],
+    dateTime: field("dateTime"),
+    page: field("page"),
+    note: field("note"),
+    company: field("company"),
+  };
+  const result = await submitAppointment(input);
+  const values = result.ok
+    ? {}
+    : { name: input.name, phone: input.phone, service: input.service, dateTime: input.dateTime };
+  return { result, values };
+}
+
 type DeliveryResult = { delivered: true } | { delivered: false; reason: "unavailable" | "failed" };
 
 /**

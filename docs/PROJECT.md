@@ -70,6 +70,10 @@ components/
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
                              comparing-modalities/ hold the parts of its bigger sections
+  pages/book-appointment/    the booking page: BookingHero (+ booking.css, prefix `bk-`, booking-styles.ts),
+                             EmergencyBanner, HeroMotionToggle, HowItWorks (+ InView), TrustSection, icons.ts;
+                             booking-form/ = the guided 3-step form (BookingForm, ServiceStep, SuccessPanel,
+                             use-keyboard-inset)
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -79,11 +83,12 @@ content/
   pages/<page>.ts            every word and number on that page
   pages/<page>.images.ts     image manifest (file, alt, credit, focal point, size)
 lib/
-  appointment.ts             Server Action + email delivery (Resend)
+  appointment.ts             Server Actions + email delivery (Resend): submitAppointment (object) and
+                             submitAppointmentForm (FormData, for <form action>: works without JS)
   appointment-schema.ts      zod schema shared by the form and the server
   seo.ts                     metadata / viewport helpers
   jsonld.ts                  JSON-LD nodes every page shares (Physician, MedicalClinic, FAQ questions)
-  format.ts                  formatRupees, initials
+  format.ts                  formatRupees, initials, localNow (datetime-local min)
   utils.ts                   cn, focusRing, sumBy
   hooks/                     use-media, use-element-by-id, use-element-size, use-autoplay-carousel
   analytics.ts, intro.ts, lenis.ts, motion.ts (EASE_OUT_EXPO), nav.ts, image-fade.ts, youtube.ts
@@ -201,7 +206,14 @@ the same values as `variant`.
   action bar) keep the last one chosen, else `SiteShell`'s `defaultService` (Home: "Consultation"; other
   pages: none, so "- Select -" stays). The server action emails "New appointment
   request - <page> page". Needs `RESEND_API_KEY` (+ `APPOINTMENT_TO_EMAIL`, `APPOINTMENT_FROM_EMAIL`).
-- Every page with a hero gives it `id="hero"`; the form section is `id="appointment"`.
+- The booking page has its own form (`components/pages/book-appointment/booking-form/`): the same
+  fields, schema, Server Action, email and analytics as three steps (service tiles → date/time → name
+  and phone). Its fields are plain inputs in one `<form action={submitAppointmentForm}>`, so with
+  JavaScript off it is the shared form's single step (booking.css, `@media (scripting: none)`) and
+  posts as a normal form. `?service=<slug>` (e.g. `second-opinion`) preselects a service: link other
+  pages' CTAs to `/book-your-appoinment-page/?service=…`.
+- Every page with a hero gives it `id="hero"`; the form section is `id="appointment"` (on the
+  booking page: the form card inside the hero).
 
 ## Primitives (components/ui)
 
@@ -275,7 +287,8 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   bottom edge. It appears once the hero has scrolled away and stays visible while scrolling in either
   direction; it hides only over #appointment and while the keyboard is open. The Book pill sizes to its label (fits from 320px); its colours are
   the `--grad-cta` / `--cta-glow` tokens. The footer reserves room for it and `SiteShell` hides the
-  floating WhatsApp button under 768px.
+  floating WhatsApp button under 768px. The booking page has neither (`mobileActionBar={false}`,
+  `hideWhatsAppOnMobile`): its form's step buttons stick to the bottom of the screen instead.
 
 ## Performance notes
 
@@ -327,13 +340,14 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's
   PENDING items in `content/pages/breast-cancer.ts`.
-- Book Appointment + About Us: foundation. One `care` theme (`themes/care.css`: navy, logo blue, logo
-  orange as a highlight only; contrast table in its header). Every line of both live pages in
-  `content/pages/book-appointment.ts` / `about-us.ts` (shared copy from `content/shared/sections.ts`:
-  form, reviews, videos, locations, final band), image manifests (`npm run images book|about`: 3 Pexels
-  photos in all, an og.jpg each), registry + sitemap. Sections are `SectionPlaceholder`s with their
-  final ids, in order. Booking: #hero (form first; its form block is #appointment), #emergency,
-  #trust, #how-it-works, #reviews, #videos, #locations, #final-cta. About: #hero, #credentials,
-  #journey, #quote, #expertise, #experience, #why-trust, #reviews, #videos, #appointment, #locations,
-  #final-cta. The shell's long loops stop on hover/focus here as on Home. Waiting on the doctor's
-  PENDING items in both content files.
+- Book Appointment + About Us share one `care` theme (`themes/care.css`: navy, logo blue, logo orange
+  as a highlight only; contrast table in its header), image manifests (`npm run images book|about`),
+  registry + sitemap. The shell's long loops stop on hover/focus there as on Home.
+- Book Appointment: built. #hero is the form (desktop: headline, body, three reassurance rows and the
+  doctor left, the guided form card right; phones: compact headline, form, then the rest) with
+  #emergency inside it (phones: right after the form), then #how-it-works, #trust (EXISTING facts
+  only), and the shared #reviews, #videos, #locations, #final-cta. No phone dock. Waiting on the
+  doctor's PENDING items in `content/pages/book-appointment.ts`.
+- About Us: foundation (every live line in `content/pages/about-us.ts`); its sections are still
+  `SectionPlaceholder`s with their final ids: #hero, #credentials, #journey, #quote, #expertise,
+  #experience, #why-trust, #reviews, #videos, #appointment, #locations, #final-cta.

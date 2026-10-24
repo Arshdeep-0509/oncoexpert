@@ -17,6 +17,7 @@ import type { PageMeta, Stat } from "@/content/types";
 import type { AboutImageKey } from "@/content/pages/about-us.images";
 import { aboutOgImage } from "@/content/pages/about-us.images";
 import type { AppointmentService } from "@/content/site";
+import { bookingHref } from "@/lib/booking";
 
 // SOURCE: EXISTING (the hero intro; also the meta description)
 // PENDING DOCTOR: "over a decade" here and "10+" (experience), "Over 25 years" on the booking
@@ -49,10 +50,11 @@ export const pageSlug = "about-us";
 /* Section content types                                               */
 /* ------------------------------------------------------------------ */
 
-type AppointmentCta = { label: string; service: AppointmentService };
+/** A button that opens the booking page's form with `service` preselected (`href`). */
+type BookingCta = { label: string; service: AppointmentService; href: string };
 
-/** Icon keys, to be mapped to lucide icons in components/pages/about-us. */
-type CredentialIcon = "graduation" | "hospital" | "robot";
+/** Icon keys, mapped to lucide icons in components/pages/about-us (later sections: to be mapped). */
+export type CredentialIcon = "graduation" | "hospital" | "robot";
 type ExpertiseIcon = "breast" | "gi" | "uro" | "robotic";
 type TrustPointIcon = "shield" | "globe" | "message";
 
@@ -63,13 +65,18 @@ export type AboutHeroContent = {
   emphasis?: string;
   subtitle: string;
   body: string;
-  ctas: { primary: AppointmentCta; secondary: AppointmentCta };
+  ctas: { primary: BookingCta; secondary: BookingCta };
   /** The caption on the portrait card. */
   card: { name: string; role: string };
+  /** The credential chips floating around the portrait. */
+  chips: readonly string[];
   image: AboutImageKey;
+  a11y: { chips: string; pause: string; play: string };
 };
 
 export type CredentialsContent = {
+  /** "Dr. Sunil Navalgund · Surgical Oncologist & Founder" above the title. */
+  byline: { name: string; role: string };
   title: string;
   items: readonly { icon: CredentialIcon; title: string; body: string }[];
 };
@@ -109,15 +116,20 @@ export const hero = {
   title: "Meet Dr. Sunil Navalgund",
   subtitle: "MCh Surgical Oncology | Specialist in Robotic, Laparoscopic & Organ Preservation Surgery",
   body: intro,
-  // SOURCE: EXISTING (labels). Both link to the booking page on the live site; here they open the
-  // form on this page (#appointment) with the matching service preselected.
+  // SOURCE: EXISTING (labels). Both link to the booking page, as on the live site, now with the
+  // matching service preselected in its form (?service=…).
   ctas: {
-    primary: { label: "Book Consultation", service: "Consultation" },
-    secondary: { label: "Get Second Opinion", service: "Second Opinion" },
+    primary: { label: "Book Consultation", service: "Consultation", href: bookingHref("Consultation") },
+    secondary: { label: "Get Second Opinion", service: "Second Opinion", href: bookingHref("Second Opinion") },
   },
   // SOURCE: EXISTING
   card: { name: "Dr. Sunil Navalgund", role: "Surgical Oncologist & Founder" },
+  // SOURCE: EXISTING (words from this page: the credential "MCh Surgical Oncology", the intro's
+  // "Tata Memorial", the credential "Robotic Specialist")
+  chips: ["MCh Surgical Oncology", "Tata Memorial", "Robotic Specialist"],
   image: "doctor",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: { chips: "Credentials", pause: "Pause animation", play: "Play animation" },
 } as const satisfies AboutHeroContent;
 
 /* ------------------------------------------------------------------ */
@@ -125,6 +137,8 @@ export const hero = {
 /* ------------------------------------------------------------------ */
 
 export const credentials = {
+  // SOURCE: EXISTING (the portrait card's caption, shown above the title)
+  byline: hero.card,
   // SOURCE: EXISTING
   title: "Academic Excellence & Training",
   items: [

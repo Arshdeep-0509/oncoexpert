@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { credentials, experience, expertise, hero, journey, pageSlug, quote, whyTrust } from "@/content/pages/about-us";
+import { experience, expertise, pageSlug, whyTrust } from "@/content/pages/about-us";
 import {
   appointmentSection,
   finalCtaSection,
@@ -11,6 +11,10 @@ import {
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
+import { AboutHero } from "@/components/pages/about-us/AboutHero";
+import { Credentials } from "@/components/pages/about-us/Credentials";
+import { Journey } from "@/components/pages/about-us/Journey";
+import { QuoteSection } from "@/components/pages/about-us/QuoteSection";
 
 const page = pages[pageSlug];
 
@@ -22,39 +26,15 @@ export function generateViewport(): Viewport {
 }
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, care theme).
-// Foundation: every section is a placeholder with its final id, in its final order.
+// Built: #hero, #credentials, #journey, #quote. The rest are placeholders with their final ids.
 export default function AboutUsPage() {
   return (
     <>
-      {/* 1 #hero  hero gradient */}
-      <SectionPlaceholder
-        id="hero"
-        as="h1"
-        hero
-        title={hero.title}
-        className="bg-(image:--grad-hero)"
-        blocks={[
-          { label: hero.subtitle, wide: true },
-          { label: hero.card.name },
-          { label: hero.ctas.primary.label },
-          { label: hero.ctas.secondary.label },
-        ]}
-      />
-      {/* 2 #credentials  surface */}
-      <SectionPlaceholder
-        id="credentials"
-        title={credentials.title}
-        blocks={credentials.items.map((item) => ({ label: item.title }))}
-      />
-      {/* 3 #journey  warm */}
-      <SectionPlaceholder
-        id="journey"
-        tone="warm"
-        title={journey.title}
-        blocks={journey.stages.map((stage) => ({ label: stage.title }))}
-      />
-      {/* 4 #quote  navy band */}
-      <SectionPlaceholder id="quote" tone="plum" title={quote.text} blocks={[{ label: quote.attribution }]} />
+      <AboutHero /> {/* 1 #hero         navy → logo-blue gradient */}
+      <Credentials /> {/* 2 #credentials  white */}
+      <Journey /> {/* 3 #journey      ice, pinned on desktop */}
+      <QuoteSection /> {/* 4 #quote        soft ivory gradient */}
+      {/* 5–13: still placeholders (next step) */}
       {/* 5 #expertise  surface */}
       <SectionPlaceholder
         id="expertise"

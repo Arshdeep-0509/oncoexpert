@@ -52,9 +52,10 @@ components/
     AppointmentButton, Breadcrumb, LiteYouTube
     appointment/             the form (lazy-loaded), its placeholder, Field, FormStyles type
     reviews/                 ReviewsCarousel, ReviewCard, Stars, GoogleMark
-  ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, ProgressRing, Reveal,
-                             ScrollFillLine, Section, SectionHeading, SectionPlaceholder (a foundation-step
-                             stand-in: final id, tone and heading), SwipeRow, text-styles.ts,
+  ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, InView, MotionToggle,
+                             ProgressRing, Reveal, ScrollFillLine, ScrollVar, Section, SectionHeading,
+                             SectionPlaceholder (a foundation-step stand-in: final id, tone and heading),
+                             SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
   pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
                              Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
@@ -71,9 +72,11 @@ components/
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
                              comparing-modalities/ hold the parts of its bigger sections
   pages/book-appointment/    the booking page: BookingHero (+ booking.css, prefix `bk-`, booking-styles.ts),
-                             EmergencyBanner, HeroMotionToggle, HowItWorks (+ InView), TrustSection, icons.ts;
-                             booking-form/ = the guided 3-step form (BookingForm, ServiceStep, SuccessPanel,
-                             use-keyboard-inset)
+                             EmergencyBanner, HowItWorks, TrustSection, icons.ts; booking-form/ = the guided
+                             3-step form (BookingForm, ServiceStep, SuccessPanel, use-keyboard-inset)
+  pages/about-us/            the about page: AboutHero (+ AboutHeadline, ProfilePortrait), Credentials,
+                             Journey (pinned on desktop), QuoteSection; about.css (prefix `ab-`),
+                             about-styles.ts
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -89,6 +92,8 @@ lib/
   seo.ts                     metadata / viewport helpers
   jsonld.ts                  JSON-LD nodes every page shares (Physician, MedicalClinic, FAQ questions)
   format.ts                  formatRupees, initials, localNow (datetime-local min)
+  booking.ts                 serviceSlug, bookingHref(service): the booking page with ?service= preselected
+  portrait.ts                the doctor portrait's edge mask (DoctorPortrait, About hero)
   utils.ts                   cn, focusRing, sumBy
   hooks/                     use-media, use-element-by-id, use-element-size, use-autoplay-carousel
   analytics.ts, intro.ts, lenis.ts, motion.ts (EASE_OUT_EXPO), nav.ts, image-fade.ts, youtube.ts
@@ -230,6 +235,17 @@ the same values as `variant`.
   `Chip`, `ScrollFillLine` (its scroll range is `SCROLL_FILL_OFFSET`, so a timeline can light stops in
   step with the fill), `SwipeRow` (under 768px a scroll-snap row with peek, dots and hint; from md a
   grid), `textStyles` (shared text class strings).
+- `ScrollVar` (island, ~1 KB): writes the scroll progress of its box to its own style as `--p` (0–1)
+  and, with `steps`, `data-step`; page CSS turns that into transform/opacity. `range`: `"view"`
+  (through the screen), `"top"` (a hero scrolling away: 0 at the top of the page, so nothing jumps on
+  hydration) or `"pin"` (a tall box with a sticky child: progress through the pinned scroll).
+  `media` limits it to a layout. Listens only near the screen; never re-renders React.
+- `InView`: sets `data-inview` once a share of it is visible, for one-time CSS entrances.
+- `MotionToggle`: a hero's pause button (`data-paused` on its section; also `data-offscreen`, and it
+  pins `--intro`). `onDark` for dark heroes.
+- A CSS file imported by two pages is split into a chunk of its own, which changes the first page's
+  stylesheets. To keep a finished page byte-identical, give the new page its own copy of the rules
+  (about.css repeats Home's icon-draw technique for this reason).
 
 ## Content rules
 
@@ -348,6 +364,13 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   #emergency inside it (phones: right after the form), then #how-it-works, #trust (EXISTING facts
   only), and the shared #reviews, #videos, #locations, #final-cta. No phone dock. Waiting on the
   doctor's PENDING items in `content/pages/book-appointment.ts`.
-- About Us: foundation (every live line in `content/pages/about-us.ts`); its sections are still
-  `SectionPlaceholder`s with their final ids: #hero, #credentials, #journey, #quote, #expertise,
-  #experience, #why-trust, #reviews, #videos, #appointment, #locations, #final-cta.
+- About Us: top half built. #hero (navy → logo-blue `--grad-profile`; the portrait in an arch that
+  draws its outline, then rises in behind a cover; scroll parallax; credential chips that pop in and
+  drift, pausable; the H1's words rise in masks with his name in the `--name-1..3` gradient; both
+  buttons open the booking form preselected via `bookingHref`), #credentials (tall cards, icons
+  draw in, a gradient light runs once around each border, hover lift + glow), #journey (desktop:
+  pinned for 2.5 screens, line fills, cards flip up, the active number scales; phones: vertical with
+  ScrollFillLine, cards slide in from alternating sides; reduced motion: a static list), #quote (the
+  mark draws, words fade in one by one, then the attribution). Still `SectionPlaceholder`s: #expertise,
+  #experience, #why-trust, #reviews, #videos, #appointment, #locations, #final-cta. Every live line
+  is in `content/pages/about-us.ts`.

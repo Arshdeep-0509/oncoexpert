@@ -1,0 +1,532 @@
+/* ==================================================================
+   About Us (/about-us/): hero, credentials, journey and quote. Plain CSS with ab- prefixes (CSS
+   modules are not available: see docs/PROJECT.md "Page CSS"). Class names: about-styles.ts.
+
+   - The default styles are the final state. Every animation lives inside
+     prefers-reduced-motion: no-preference, so reduced motion shows the finished page (and the
+     journey is a static vertical list).
+   - Hero entrances wait for the intro preloader: delay = --intro + --d (seconds after it);
+     MotionToggle pins --intro on hydration.
+   - Transform and opacity only, except small SVG stroke draws (the arch outline, the icons, the
+     quote mark).
+   - Scroll-linked motion reads --p (0–1) and data-step, written by the ScrollVar island.
+   - Loops (.ab-loop: the chips' drift) stop with the pause button (data-paused on #hero), off
+     screen (data-offscreen) and while a chip is hovered.
+   ================================================================== */
+
+.ab-hero {
+  --intro: var(--intro-delay, 0s);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------------------------------------------- */
+/* Hero layout. Phones: portrait (~70vw), chips in a row, then text. */
+/* Desktop: text left, portrait right with the chips around it.      */
+/* ---------------------------------------------------------------- */
+
+.ab-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "portrait" "text";
+  row-gap: 36px;
+}
+.ab-areaPortrait {
+  grid-area: portrait;
+}
+.ab-areaText {
+  grid-area: text;
+}
+@media (min-width: 1024px) {
+  .ab-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+    grid-template-areas: "text portrait";
+    column-gap: clamp(48px, 6vw, 96px);
+    align-items: center;
+  }
+}
+
+/* The arch: a semicircle on a 4:5 box. Phones ~70vw, desktop 440px. */
+.ab-arch {
+  position: relative;
+  width: min(70vw, 340px);
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
+}
+@media (min-width: 768px) {
+  .ab-arch {
+    width: 360px;
+  }
+}
+@media (min-width: 1024px) {
+  .ab-arch {
+    width: 100%;
+    max-width: 440px;
+  }
+}
+.ab-archFrame {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  border-radius: 999px 999px 28px 28px;
+}
+/* The cover that slides up to reveal the portrait. Its resting (final) state is out of the arch,
+   so with reduced motion or no animation it is never seen. */
+.ab-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform: translateY(-101%);
+}
+.ab-outline {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Chips: a centred row under the arch on phones; floating around it on desktop. */
+.ab-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+@media (min-width: 1024px) {
+  .ab-chips {
+    display: contents;
+  }
+  .ab-chip {
+    position: absolute;
+    z-index: 2;
+  }
+  .ab-chip:nth-child(1) {
+    top: 14%;
+    left: -18%;
+  }
+  .ab-chip:nth-child(2) {
+    top: 50%;
+    right: -8%;
+  }
+  .ab-chip:nth-child(3) {
+    bottom: 10%;
+    left: -10%;
+  }
+}
+
+/* Each headline word rises inside its own mask. */
+.ab-wordMask {
+  display: inline-block;
+  overflow: clip;
+  padding: 0 0.06em 0.12em;
+  margin: 0 -0.06em -0.12em;
+  vertical-align: bottom;
+}
+.ab-word {
+  display: inline-block;
+}
+.ab-gradWord {
+  background: linear-gradient(90deg, var(--from), var(--to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------------------------------------------------------------- */
+/* Credentials: tall cards; the border sweep ring and the hover glow */
+/* ---------------------------------------------------------------- */
+
+/* The wrapper holds the hover glow behind the card: on the card itself (which becomes its own
+   stacking context while lifted) a z-index -1 glow would paint over its white background. */
+.ab-cardWrap {
+  position: relative;
+  isolation: isolate;
+  height: 100%;
+}
+.ab-card {
+  position: relative;
+  transition:
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo);
+}
+/* Glow under the card, shown on hover (opacity). */
+.ab-glow {
+  position: absolute;
+  inset: 18% 8% -6%;
+  z-index: -1;
+  border-radius: 32px;
+  background: radial-gradient(60% 60% at 50% 60%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 75%);
+  filter: blur(28px);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out-expo);
+  pointer-events: none;
+}
+/* The sweep: a thin gradient ring (a masked border) whose conic light turns once on reveal. */
+.ab-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  overflow: hidden;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0;
+}
+.ab-sweep::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 250deg,
+    var(--logo-ring-right-3) 300deg,
+    var(--logo-ring-end) 330deg,
+    var(--highlight) 360deg
+  );
+}
+
+/* Icons that draw themselves on reveal: Home's icon-draw.css technique, repeated here on
+   purpose (a CSS file shared by two pages is split into its own chunk, which would change Home's
+   stylesheets). .ab-iconDraw on the lucide <svg>, inside a Reveal item (data-revealed). */
+
+/* ---------------------------------------------------------------- */
+/* Journey                                                           */
+/* Default (phones, tablets, reduced motion): a vertical timeline,   */
+/* the line on the left. The pinned horizontal version: below.       */
+/* ---------------------------------------------------------------- */
+
+.ab-stages {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  padding-left: 56px;
+}
+/* Vertical: the number sits in the gutter left of its card, centred on the line (left 23px). */
+.ab-num {
+  position: absolute;
+  top: 0;
+  left: -56px;
+  transition:
+    transform 0.6s var(--ease-out-expo),
+    background-color 0.4s,
+    color 0.4s;
+}
+.ab-hLine {
+  display: none;
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  /* 2.5 screens of pinned scroll: the section is a screen taller than that, its stage sticks. */
+  .ab-pin {
+    height: 350svh;
+  }
+  .ab-pinStage {
+    position: sticky;
+    top: 0;
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: var(--header-h);
+  }
+  .ab-vLine {
+    display: none;
+  }
+  .ab-hLine {
+    display: block;
+  }
+  .ab-hLineFill {
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
+  }
+  .ab-stages {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    padding-left: 0;
+    padding-top: 72px;
+    perspective: 1200px;
+  }
+  .ab-num {
+    top: 0;
+    left: 0;
+  }
+  /* The cards lie back until their stage is reached, then flip up and stay. */
+  .ab-pin[data-step] .ab-stageCard {
+    transform-origin: 50% 100%;
+    transform: rotateX(62deg) translateY(24px);
+    opacity: 0.25;
+    transition:
+      transform 0.8s var(--ease-out-expo),
+      opacity 0.6s var(--ease-out-expo);
+  }
+  .ab-pin[data-step="0"] .ab-stage:nth-child(-n + 1) .ab-stageCard,
+  .ab-pin[data-step="1"] .ab-stage:nth-child(-n + 2) .ab-stageCard,
+  .ab-pin[data-step="2"] .ab-stage:nth-child(-n + 3) .ab-stageCard,
+  .ab-pin[data-step="3"] .ab-stage:nth-child(-n + 4) .ab-stageCard {
+    transform: none;
+    opacity: 1;
+  }
+  /* The active stage's number scales up. */
+  .ab-pin[data-step="0"] .ab-stage:nth-child(1) .ab-num,
+  .ab-pin[data-step="1"] .ab-stage:nth-child(2) .ab-num,
+  .ab-pin[data-step="2"] .ab-stage:nth-child(3) .ab-num,
+  .ab-pin[data-step="3"] .ab-stage:nth-child(4) .ab-num {
+    transform: scale(1.3);
+    background-color: var(--accent);
+    color: var(--white);
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Quote                                                             */
+/* ---------------------------------------------------------------- */
+
+.ab-qword {
+  display: inline-block;
+}
+
+/* ================================================================== */
+/* Motion                                                              */
+/* ================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .ab-step {
+    animation-delay: calc(var(--intro) + var(--d, 0s));
+    animation-duration: 0.8s;
+    animation-fill-mode: both;
+    animation-timing-function: var(--ease);
+  }
+  .ab-fadeDown {
+    animation-name: ab-fadeDown;
+  }
+  .ab-fadeUp {
+    animation-name: ab-fadeUp;
+  }
+  .ab-wordRise {
+    animation-name: ab-wordRise;
+    animation-duration: 0.95s;
+  }
+  .ab-pop {
+    animation-name: ab-pop;
+    animation-duration: 0.7s;
+  }
+  /* The arch outline draws itself; then the cover slides up and the portrait rises behind it
+     (the photo is painted from the start: the cover moves, not the photo's opacity). */
+  .ab-outlinePath {
+    stroke-dasharray: 1;
+    animation: ab-draw 1.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + var(--d, 0s));
+  }
+  .ab-cover {
+    animation: ab-coverUp 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + var(--d, 0s));
+  }
+  .ab-rise {
+    animation: ab-rise 1.4s var(--ease) both;
+    animation-delay: calc(var(--intro) + var(--d, 0s));
+  }
+
+  /* Parallax (--p: 0 at the top of the page → 1 once the hero has scrolled away). */
+  .ab-parallax {
+    transform: translateY(calc(var(--p, 0) * 36px));
+  }
+  .ab-parallaxSlow {
+    transform: translateY(calc(var(--p, 0) * 40px));
+  }
+
+  /* Chips drift (desktop: around the arch). Different lengths so they never sync. */
+  .ab-drift {
+    animation: ab-drift var(--drift, 8s) ease-in-out calc(var(--intro) + 2.8s) infinite;
+  }
+  .ab-hero:is([data-paused], [data-offscreen]) .ab-loop,
+  .ab-chip:hover .ab-loop {
+    animation-play-state: paused;
+  }
+
+  /* Credentials: lift and glow on hover; the sweep turns once on reveal, then fades. */
+  .ab-cardWrap:hover .ab-card {
+    transform: translateY(-6px);
+  }
+  .ab-cardWrap:hover .ab-glow {
+    opacity: 1;
+  }
+  .reveal:not([data-revealed]) .ab-iconDraw :is(path, circle, line, rect, polyline, polygon, ellipse) {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+  }
+  [data-revealed] .ab-iconDraw :is(path, circle, line, rect, polyline, polygon, ellipse) {
+    animation: ab-iconDraw 1.1s cubic-bezier(0.65, 0, 0.35, 1) backwards;
+    animation-delay: calc(var(--reveal-delay, 0s) + 0.25s);
+  }
+  [data-revealed] .ab-sweep {
+    animation: ab-sweepFade 1.9s ease-out both;
+    animation-delay: calc(var(--reveal-delay, 0s) + 0.35s);
+  }
+  [data-revealed] .ab-sweep::before {
+    animation: ab-spin 1.6s cubic-bezier(0.45, 0, 0.25, 1) both;
+    animation-delay: calc(var(--reveal-delay, 0s) + 0.35s);
+  }
+
+  /* Journey, vertical: the cards slide in from alternating sides. */
+  .ab-slide {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition:
+      opacity 0.7s var(--ease-out-expo),
+      transform 0.7s var(--ease-out-expo);
+  }
+  .ab-stage:nth-child(even) .ab-slide {
+    transform: translateX(40px);
+  }
+  .ab-slide[data-inview] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Quote: the mark draws, the words fade in one by one, then the attribution. */
+  .ab-qword {
+    opacity: 0;
+    transform: translateY(0.35em);
+    transition:
+      opacity 0.6s var(--ease-out-expo),
+      transform 0.6s var(--ease-out-expo);
+    transition-delay: calc(0.35s + var(--i) * 0.06s);
+  }
+  [data-inview] .ab-qword {
+    opacity: 1;
+    transform: none;
+  }
+  .ab-qmark path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  [data-inview] .ab-qmark path {
+    animation: ab-draw 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+  [data-inview] .ab-qmark path + path {
+    animation-delay: 0.25s;
+  }
+  /* Once drawn, the marks fill in (opacity), so they read as a quotation mark. */
+  .ab-qmark circle {
+    opacity: 0;
+  }
+  [data-inview] .ab-qmark circle {
+    opacity: 1;
+    transition: opacity 0.6s var(--ease-out-expo) 1.1s;
+  }
+  .ab-attribution {
+    opacity: 0;
+    transition: opacity 0.8s var(--ease-out-expo);
+    transition-delay: var(--after, 1.5s);
+  }
+  [data-inview] .ab-attribution {
+    opacity: 1;
+  }
+}
+/* In the pinned desktop journey the step drives the cards, not the slide-in. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .ab-slide,
+  .ab-stage:nth-child(even) .ab-slide {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@keyframes ab-fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes ab-fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+@keyframes ab-wordRise {
+  from {
+    transform: translateY(105%);
+  }
+}
+@keyframes ab-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+@keyframes ab-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ab-iconDraw {
+  from {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+  }
+  to {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ab-coverUp {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-101%);
+  }
+}
+@keyframes ab-rise {
+  from {
+    transform: translateY(14%);
+  }
+}
+@keyframes ab-drift {
+  0%,
+  100% {
+    transform: none;
+  }
+  33% {
+    transform: translate(4px, -7px);
+  }
+  66% {
+    transform: translate(-5px, 4px);
+  }
+}
+@keyframes ab-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ab-sweepFade {
+  0% {
+    opacity: 0;
+  }
+  15%,
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

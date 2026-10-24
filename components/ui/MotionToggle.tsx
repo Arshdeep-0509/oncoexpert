@@ -2,15 +2,16 @@
 
 import * as React from "react";
 import { Pause, Play } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 /**
- * Pause / play for the hero's loops (the portrait float and the emergency ring): sets
- * data-paused on #hero, which booking.css reads. It also marks the hero data-offscreen while it
- * is scrolled away, and pins its --intro for this page load (see the known issue in
- * docs/PROJECT.md: --intro-delay drops to 0 when the preloader unmounts). Hidden with reduced
- * motion (nothing moves).
+ * Pause / play for a hero's loops: sets data-paused on the enclosing <section>, which the page's
+ * CSS reads. It also marks the section data-offscreen while it is scrolled away, and pins its
+ * --intro for this page load (see the known issue in docs/PROJECT.md: --intro-delay drops to 0
+ * when the preloader unmounts). Hidden with reduced motion (nothing moves). Used by the booking
+ * and about heroes.
  */
-export function HeroMotionToggle({ pause, play }: { pause: string; play: string }) {
+export function MotionToggle({ pause, play, onDark = false }: { pause: string; play: string; onDark?: boolean }) {
   const [paused, setPaused] = React.useState(false);
   const ref = React.useRef<HTMLButtonElement>(null);
 
@@ -38,7 +39,12 @@ export function HeroMotionToggle({ pause, play }: { pause: string; play: string 
       type="button"
       onClick={() => setPaused((p) => !p)}
       aria-label={paused ? play : pause}
-      className="grid size-11 shrink-0 place-items-center rounded-full text-muted ring-1 ring-line transition-colors hover:bg-accent-soft hover:text-accent motion-reduce:hidden"
+      className={cn(
+        "grid size-11 shrink-0 place-items-center rounded-full ring-1 transition-colors motion-reduce:hidden",
+        onDark
+          ? "text-white/80 ring-white/25 hover:bg-white/10 hover:text-white"
+          : "text-muted ring-line hover:bg-accent-soft hover:text-accent",
+      )}
     >
       {paused ? (
         <Play className="size-4 translate-x-px" strokeWidth={1.75} aria-hidden="true" />

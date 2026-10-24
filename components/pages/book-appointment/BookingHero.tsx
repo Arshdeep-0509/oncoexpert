@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { reassuranceIcons } from "@/components/pages/book-appointment/icons";
 import { at, styles } from "@/components/pages/book-appointment/booking-styles";
 import { EmergencyBanner } from "@/components/pages/book-appointment/EmergencyBanner";
-import { HeroMotionToggle } from "@/components/pages/book-appointment/HeroMotionToggle";
+import { MotionToggle } from "@/components/ui/MotionToggle";
 import { BookingForm } from "@/components/pages/book-appointment/booking-form/BookingForm";
 import "@/components/pages/book-appointment/booking.css";
 
@@ -158,7 +158,7 @@ export function BookingHero() {
                 <span className="block text-sm text-muted">{hero.doctor.role}</span>
               </span>
             </div>
-            <HeroMotionToggle pause={hero.a11y.pause} play={hero.a11y.play} />
+            <MotionToggle pause={hero.a11y.pause} play={hero.a11y.play} />
           </div>
         </div>
       </Container>

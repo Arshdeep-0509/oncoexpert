@@ -8,6 +8,7 @@ import { appointmentSchema, type AppointmentInput } from "@/lib/appointment-sche
 import { submitAppointmentForm, type AppointmentFormState } from "@/lib/appointment";
 import { track } from "@/lib/analytics";
 import { localNow } from "@/lib/format";
+import { serviceSlug } from "@/lib/booking";
 import { cn } from "@/lib/utils";
 import { buttonClasses } from "@/components/ui/Button";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
@@ -32,8 +33,8 @@ const stepSchemas = [
 ];
 
 /** ?service=second-opinion → "Second Opinion" (also accepts the live site's "consulation"). */
-const slug = (s: string) => s.toLowerCase().replace("consulation", "consultation").replace(/\s+/g, "-");
-const serviceFromSlug = (value: string | null) => (value ? f.services.find((s) => slug(s) === slug(value)) : undefined);
+const serviceFromSlug = (value: string | null) =>
+  value ? f.services.find((s) => serviceSlug(s) === serviceSlug(value)) : undefined;
 
 const inputClass =
   "h-[52px] w-full rounded-[14px] border border-line bg-surface px-4 text-base text-ink transition-colors hover:border-accent/30 focus-visible:border-accent aria-[invalid=true]:border-destructive";

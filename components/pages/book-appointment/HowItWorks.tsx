@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { InView } from "@/components/pages/book-appointment/InView";
+import { InView } from "@/components/ui/InView";
 import { at, styles } from "@/components/pages/book-appointment/booking-styles";
 import "@/components/pages/book-appointment/booking.css";
 

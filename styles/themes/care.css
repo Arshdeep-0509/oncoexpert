@@ -34,6 +34,16 @@
      white/70                                    9.10           7.72
      --accent-glow #9dbbff                       9.35           7.51
 
+   Text on the About hero (--grad-profile: navy #0a1633 → #0d2a6e → logo blue #0b40b2)
+                                navy     mid      logo blue (worst case)
+     white                      17.87    13.35     8.78
+     white/80                   11.58     9.00     6.19
+     white/75 (intro)           10.34     8.13     5.62
+     --accent-glow  #9dbbff      9.35     6.98     4.60
+     --name-1 · --name-2 · --name-3: #9dbbff · #7fe0d8 · #ffb28c (his name in the H1, large text)
+                       on navy  9.35 · 11.53 · 10.21   on logo blue  4.60 · 5.67 · 5.02
+     ink on white (onDark button, chips at white/90 over logo blue: 15.09)   17.87
+
    Decoration only (non-text, 3:1)
      --highlight (logo orange) on white 3.37 · on surface-warm 3.14 · on ink 5.30. Never text.
      --accent on ink 2.03: on navy the CTA is the white onDark pill, not a blue one.
@@ -63,8 +73,17 @@
     linear-gradient(180deg, #fbf8f4, #ffffff);
   /* Decorative line / ring: the logo ring's blue → teal → orange. */
   --grad-accent: linear-gradient(120deg, var(--logo-ring-right-3), var(--logo-ring-end) 55%, var(--logo-ring-left-1));
-  /* The one dark band (Section tone="plum"): the quote. */
+  /* Dark bands (Section tone="plum"): the final call band. */
   --grad-plum: linear-gradient(160deg, #0a1633, #12275a);
+  /* The About hero: deep navy into logo blue, with a soft blue light behind the portrait. */
+  --grad-profile:
+    radial-gradient(40% 55% at 76% 42%, color-mix(in srgb, var(--logo-ring-right-3) 38%, transparent), transparent 72%),
+    linear-gradient(135deg, #0a1633 0%, #0d2a6e 55%, var(--logo-blue) 100%);
+  /* His name in the About H1: glow blue → teal → peach (all ≥ 4.5:1 on the hero, see above).
+     Each word takes its slice of the three stops (components/pages/about-us/AboutHeadline). */
+  --name-1: #9dbbff;
+  --name-2: #7fe0d8;
+  --name-3: #ffb28c;
 
   /* Type: Plus Jakarta Sans display and body */
   --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;

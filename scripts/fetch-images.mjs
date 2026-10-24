@@ -3,6 +3,8 @@
  *
  *   npm run images              the breast page (content/pages/breast-cancer.images.ts)
  *   npm run images home         content/pages/home.images.ts
+ *   npm run images book         content/pages/book-appointment.images.ts
+ *   npm run images about        content/pages/about-us.images.ts
  *   npm run images breast       a unique prefix of a manifest name works too
  *
  * Reads `file`, `src` and `pexelsId` from content/pages/<page>.images.ts (the single source of
@@ -172,9 +174,71 @@ const brandCard = async (dest) => {
     .toFile(dest);
 };
 
+/**
+ * Care card (booking and about pages): the light sibling of the brand card. The care hero's ivory
+ * with its two mists (styles/themes/care.css --grad-hero), the logo on a white card with a hairline,
+ * and a photo in a rounded frame with the logo ring's edge. `photo` is a path under public/;
+ * `position` is sharp's crop position. No rendered text: the logo carries the name.
+ */
+const careCard = (photo, position) => async (dest) => {
+  const { width: W, height: H } = OG;
+  const svg = (body) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${body}</svg>`);
+  const frame = { x: 760, y: 56, w: 372, h: 518, r: 36 };
+  const card = { x: 72, y: 222, w: 584, h: 186, r: 28 };
+
+  const background = svg(`
+    <defs>
+      <linearGradient id="base" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf8f4"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+      <radialGradient id="blue" cx="0.92" cy="0" r="0.6"><stop offset="0" stop-color="#0b40b2" stop-opacity="0.12"/><stop offset="0.7" stop-color="#0b40b2" stop-opacity="0"/></radialGradient>
+      <radialGradient id="orange" cx="0" cy="1" r="0.5"><stop offset="0" stop-color="#f15a22" stop-opacity="0.1"/><stop offset="0.7" stop-color="#f15a22" stop-opacity="0"/></radialGradient>
+      <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563d9"/><stop offset="0.55" stop-color="#0fa3a0"/><stop offset="1" stop-color="#f0592a"/></linearGradient>
+    </defs>
+    <rect width="${W}" height="${H}" fill="url(#base)"/>
+    <rect width="${W}" height="${H}" fill="url(#blue)"/>
+    <rect width="${W}" height="${H}" fill="url(#orange)"/>
+    <rect x="${frame.x - 3}" y="${frame.y - 3}" width="${frame.w + 6}" height="${frame.h + 6}" rx="${frame.r + 3}" fill="url(#ring)"/>
+    <rect x="${card.x}" y="${card.y}" width="${card.w}" height="${card.h}" rx="${card.r}" fill="#ffffff" stroke="#e3e8f0" stroke-width="2"/>
+    <rect x="${card.x + 48}" y="${card.y + card.h + 36}" width="120" height="4" rx="2" fill="url(#ring)"/>
+    <circle cx="${card.x + 186}" cy="${card.y + card.h + 38}" r="4" fill="#f15a22"/>`);
+
+  const framed = await sharp(path.join(publicDir, photo))
+    .resize(frame.w, frame.h, { fit: "cover", position })
+    .flatten({ background: "#ffffff" })
+    .composite([
+      {
+        input: Buffer.from(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="${frame.w}" height="${frame.h}"><rect width="${frame.w}" height="${frame.h}" rx="${frame.r}"/></svg>`,
+        ),
+        blend: "dest-in",
+      },
+    ])
+    .png()
+    .toBuffer();
+
+  const logoWidth = card.w - 96;
+  const logo = await sharp(path.join(publicDir, "images/brand/oncoxpert-logo-transparent.png"))
+    .resize({ width: logoWidth })
+    .toBuffer({ resolveWithObject: true });
+
+  await sharp(background)
+    .composite([
+      { input: framed, left: frame.x, top: frame.y },
+      {
+        input: logo.data,
+        left: card.x + 48,
+        top: card.y + Math.round((card.h - logo.info.height) / 2),
+      },
+    ])
+    .flatten({ background: "#fbf8f4" })
+    .jpeg({ quality: 86, mozjpeg: true })
+    .toFile(dest);
+};
+
 const ogRecipes = {
   "breast-cancer": coverFrom("ribbon-minimal.jpg"),
   home: brandCard,
+  "about-us": careCard("images/brand/dr-sunil-navalgund.png", "top"),
+  "book-appointment": careCard("images/book-appointment/consultation-report.jpg", "attention"),
 };
 
 const ogDest = path.join(outDir, "og.jpg");

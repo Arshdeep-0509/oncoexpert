@@ -5,6 +5,8 @@
  * SOURCE tags: see content/types.ts.
  */
 import { site } from "@/content/site";
+import type { ReviewId } from "@/content/shared/reviews";
+import { youtubeVideos } from "@/content/shared/videos";
 
 /* ------------------------------------------------------------------ */
 /* #appointment                                                        */
@@ -39,6 +41,43 @@ export const appointmentSection = {
     // SOURCE: NEW (hidden spam trap label, never visible)
     honeypot: "Leave this field empty",
   },
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* #reviews and #videos (the booking and about pages; Home and the     */
+/* breast page still keep their own copies of the same strings)        */
+/* ------------------------------------------------------------------ */
+
+export const reviewsSection = {
+  // SOURCE: EXISTING (as displayed: the live markup is sentence case, capitalised by CSS)
+  title: "Every Patient Story Reflects Our Commitment To Clinical Excellence.",
+  // SOURCE: NEW (label; replaces the live "Verified by Trustindex" badge). The link is EXISTING:
+  // the live site's "Main Clinic Location" Google profile (site.mainClinic).
+  // PENDING DOCTOR: the doctor has three Google profiles (one per clinic); confirm which one
+  // these reviews are on.
+  link: { label: "Read all reviews on Google", href: site.mainClinic.mapHref },
+  // The live order (identical on Home, the booking page and the about page).
+  order: [
+    "muralidharan-chinnusamy",
+    "veena-iyer",
+    "shwetha-jayaraj",
+    "padmavathi-p",
+    "jayashree-ajith",
+    "friendly-work",
+    "narasimhamurthy-sm",
+    "vasudeva-murthy",
+    "mangala-music",
+  ],
+} as const satisfies { title: string; link: { label: string; href: string }; order: readonly ReviewId[] };
+
+export const videosSection = {
+  // SOURCE: NEW (the live pages show their videos without a heading; same words as Home)
+  eyebrow: "Watch & learn",
+  title: "Hear from our experts",
+  // SOURCE: EXISTING (video IDs, content/shared/videos.ts)
+  ids: youtubeVideos,
+  // SOURCE: NEW (screen-reader labels)
+  a11y: { play: "Play video", frame: "YouTube video", list: "Videos" },
 } as const;
 
 /* ------------------------------------------------------------------ */

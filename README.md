@@ -6,6 +6,8 @@ Navalgund in Bengaluru:
 - **Home**: `/`
 - **Robotic Surgery**: `/robotic-surgery/`
 - **Breast Cancer**: `/breast-cancer-treatment-bangalore/`
+- **Book Appointment**: `/book-your-appoinment-page/` (the live address, misspelling included)
+- **About Us**: `/about-us/`
 
 Next.js 16 · TypeScript · Tailwind CSS 4 · Motion · Embla. Developers: read
 **[docs/PROJECT.md](docs/PROJECT.md)** (folder map, theme system, components, rules).
@@ -55,6 +57,8 @@ Components contain no text. Everything visitors read is in `content/`:
 | `content/shared/reviews.ts`             | Google reviews (shared by every page)                           |
 | `content/shared/videos.ts`              | YouTube video IDs (shared by every page)                        |
 | `content/shared/sections.ts`            | Appointment form, clinic locations and final call band text     |
+| `content/pages/book-appointment.ts`     | Every section of the Book Appointment page                      |
+| `content/pages/about-us.ts`             | Every section of the About Us page                              |
 | `content/site.ts`                       | Menu, phone, email, address, clinics, socials, footer, WhatsApp |
 
 Every block is tagged with where it came from. Keep the tags when you edit:

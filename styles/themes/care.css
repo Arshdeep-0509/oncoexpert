@@ -1,0 +1,76 @@
+/* ==================================================================
+   Care theme: /book-your-appoinment-page/ and /about-us/
+   One theme for both pages: the palette is the same. Calm, clinical and
+   warm. Colours come from the logo: deep navy ink for headings and the one
+   dark band (the quote), logo blue as the accent, logo orange as a
+   highlight only (dots, underlines, the emergency marker, soft mists).
+   Surfaces are white and a warm ivory, with cool ice bands between them;
+   the hero is light (ivory with a blue mist top-right, a peach mist
+   bottom-left). Plus Jakarta Sans for display and body; Fraunces italic
+   only for the emphasis words (SectionHeading `emphasis`). No new fonts.
+
+   Contrast (WCAG 2.x; "/80" = white at 80% over that background).
+   Text needs 4.5:1, CTAs included; non-text marks need 3:1.
+
+   Text on light        surface  surface-alt  surface-warm  accent-soft  petal  hero base  hero blue  hero peach
+     --ink    #0a1633    17.87      16.46        16.63         15.36     15.16    16.87      14.26      15.41
+     --text   #1f2a44    14.26      13.14        13.27         12.26     12.10    13.47      11.38      12.29
+     --muted  #556079     6.30       5.80         5.86          5.41      5.34     5.95       5.03       5.43
+     --accent #0b40b2     8.78       8.10         8.18          7.55      7.46     8.30       7.01       7.58
+   (hero base #fbf8f4; mists at their centres: blue #e3e6ed, peach #faebe3)
+
+   CTAs
+     white on --accent (primary button)                         8.78
+     white on --accent-hover (hover)                           11.06
+     white on --grad-cta stops (action bar: hover, accent,
+       accent/accent-bright mix #1852c6)                 11.06 · 8.78 · 6.90
+     --accent on white (secondary / outline button)             8.78
+     --accent on --accent-soft (chips, eyebrow pill)            7.55
+     ink on white (onDark button on the quote band)            17.87
+
+   Text on dark (quote band, --grad-plum)   ink #0a1633   plum end #12275a
+     white                                      17.87          14.35
+     white/80                                   11.62           9.65
+     white/70                                    9.10           7.72
+     --accent-glow #9dbbff                       9.35           7.51
+
+   Decoration only (non-text, 3:1)
+     --highlight (logo orange) on white 3.37 · on surface-warm 3.14 · on ink 5.30. Never text.
+     --accent on ink 2.03: on navy the CTA is the white onDark pill, not a blue one.
+     --line on white 1.23: hairlines only, never the only edge of a control.
+   ================================================================== */
+
+[data-theme="care"] {
+  --ink: #0a1633; /* deep navy: headings, the quote band */
+  --text: #1f2a44; /* body text */
+  --muted: #556079; /* secondary text */
+  --surface: #ffffff;
+  --surface-alt: #f2f6fb; /* cool ice bands */
+  --surface-warm: #fbf6f0; /* warm ivory bands */
+  --accent: var(--logo-blue); /* buttons, links, icons */
+  --accent-hover: #08348f;
+  --accent-soft: #e8eefb; /* chips, icon tiles, eyebrow pills */
+  --accent-glow: #9dbbff; /* accent text and focus rings on navy */
+  --accent-bright: var(--logo-ring-right-3); /* lighter logo blue: last stop of --grad-cta */
+  --highlight: var(--logo-orange); /* dots, underlines, the emergency marker only */
+  --petal: #fbe9df; /* warm peach decoration on light bands */
+  --line: #e3e8f0; /* borders */
+
+  /* Ivory with two soft mists: logo blue top-right, logo orange bottom-left. */
+  --grad-hero:
+    radial-gradient(55% 60% at 92% 0%, color-mix(in srgb, var(--logo-blue) 10%, transparent), transparent 70%),
+    radial-gradient(45% 50% at 0% 100%, color-mix(in srgb, var(--logo-orange) 8%, transparent), transparent 70%),
+    linear-gradient(180deg, #fbf8f4, #ffffff);
+  /* Decorative line / ring: the logo ring's blue → teal → orange. */
+  --grad-accent: linear-gradient(120deg, var(--logo-ring-right-3), var(--logo-ring-end) 55%, var(--logo-ring-left-1));
+  /* The one dark band (Section tone="plum"): the quote. */
+  --grad-plum: linear-gradient(160deg, #0a1633, #12275a);
+
+  /* Type: Plus Jakarta Sans display and body */
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --display-weight: 700;
+  --display-tracking: -0.03em;
+
+  /* Shadows tinted with navy */
+  --shadow-rgb: 10 22 51;
+}

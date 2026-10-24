@@ -56,14 +56,24 @@ export function HeroRing() {
       <div data-depth="8" className={styles.portrait}>
         <div className={styles.circle}>
           <div className={cn(styles.photo, styles.step, styles.rise)} style={at(0.3)}>
-            <Image src={photo.src} alt={photo.alt} fill preload sizes={SIZES} className="object-cover" />
+            {/* The LCP element: preloaded and fetched first */}
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              preload
+              fetchPriority="high"
+              sizes={SIZES}
+              className="object-cover"
+            />
           </div>
           <span aria-hidden="true" className={styles.iris} />
         </div>
         {/* The crown, over the ring: appears as the circle finishes opening. */}
         <div aria-hidden="true" className={cn(styles.head, styles.step, styles.crownIn)} style={at(0.55)}>
           <div className={cn(styles.fill, styles.step, styles.rise)} style={at(0.3)}>
-            <Image src={head.src} alt="" fill sizes={SIZES} className="object-cover" />
+            {/* Above the fold, so not lazy (Next's default) */}
+            <Image src={head.src} alt="" fill loading="eager" sizes={SIZES} className="object-cover" />
           </div>
         </div>
       </div>

@@ -64,6 +64,7 @@ function PhotoTile({ item }: { item: Specialty }) {
     <Link
       href={item.href}
       prefetch={false}
+      data-cta={item.name}
       className={cn(
         styles.tile,
         "group/tile flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-2xl bg-ink text-white shadow-soft md:min-h-[20rem] lg:min-h-[30rem]",
@@ -105,6 +106,7 @@ function IconTile({ item }: { item: Specialty }) {
     <Link
       href={item.href}
       prefetch={false}
+      data-cta={item.name}
       className={cn(
         styles.tile,
         "group/tile flex h-full flex-col gap-5 rounded-2xl bg-surface p-6 ring-1 shadow-soft-sm ring-line md:p-7",

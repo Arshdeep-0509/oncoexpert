@@ -110,6 +110,8 @@ export function HomeHero() {
       </Container>
 
       <HeroTrustStrip />
+      {/* Parse marker: the grid paints once the whole hero has arrived (hero.css, .orbit-end) */}
+      <span aria-hidden="true" className={styles.end} />
     </section>
   );
 }

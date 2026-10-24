@@ -15,12 +15,13 @@ import {
 } from "lucide-react";
 import type { Cta, FaqIcon, FaqItem, Location, SectionTone } from "@/content/types";
 import { site } from "@/content/site";
+import { faqQuestions, jsonLdHtml } from "@/lib/jsonld";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
 
-export type FaqEntryProps = FaqItem & { link?: Cta; showLocations?: boolean };
+type FaqEntryProps = FaqItem & { link?: Cta; showLocations?: boolean };
 
 type FaqProps = {
   id?: string;
@@ -30,6 +31,8 @@ type FaqProps = {
   items: readonly FaqEntryProps[];
   /** Listed under answers with showLocations. */
   locations: readonly Location[];
+  /** Emit FAQPage JSON-LD here. false when the page puts the FAQPage in its own @graph (Home). */
+  structuredData?: boolean;
 };
 
 const icons: Record<FaqIcon, LucideIcon> = {
@@ -56,30 +59,32 @@ const iconPop =
 const lineDraw =
   "origin-left scale-x-0 transition-transform delay-300 duration-700 ease-out-expo group-data-revealed/reveal:scale-x-100 motion-reduce:scale-x-100 motion-reduce:transition-none";
 
-/** Plain-text answer (for FAQPage structured data). */
-const answerText = (item: FaqEntryProps, locations: readonly Location[]) =>
-  [...item.answer, ...(item.showLocations ? locations.map((l) => `${l.name}, ${l.area}`) : [])].join(" ");
-
 /**
  * #faq: every question with its answer, as cards in a masonry flow (1 column on phones,
  * 2 from md, 3 from xl). Each card rises in as it scrolls into view, its icon pops and a
  * rose line draws under the question; the last tile is the "Still have a question?" card.
- * Adds FAQPage JSON-LD built from the same data.
+ * Adds FAQPage JSON-LD built from the same data (unless structuredData is false).
  */
-export function Faq({ id = "faq", tone = "surface", title, contactTitle, items, locations }: FaqProps) {
+export function Faq({
+  id = "faq",
+  tone = "surface",
+  title,
+  contactTitle,
+  items,
+  locations,
+  structuredData = true,
+}: FaqProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: items.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: { "@type": "Answer", text: answerText(item, locations) },
-    })),
+    mainEntity: faqQuestions(items, locations),
   };
 
   return (
     <Section id={id} tone={tone} aria-labelledby={`${id}-title`}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {structuredData ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
+      ) : null}
       <Reveal>
         <SectionHeading id={`${id}-title`} title={title} />
       </Reveal>
@@ -90,12 +95,12 @@ export function Faq({ id = "faq", tone = "surface", title, contactTitle, items, 
           return (
             <Reveal key={item.question} className={tile} delay={(i % 3) * 0.07}>
               <article className="group relative overflow-hidden rounded-lg border border-line bg-surface p-6 shadow-soft-sm transition-[translate,border-color,box-shadow] duration-300 ease-out-expo hover:-translate-y-1 hover:border-accent/40 hover:shadow-soft md:p-7">
+                {/* Decorative number, drawn by CSS so contrast checkers don't read it as text */}
                 <span
                   aria-hidden="true"
-                  className="absolute top-5 right-6 font-display text-[2.25rem] leading-none text-accent/10 tabular-nums select-none"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+                  data-n={String(i + 1).padStart(2, "0")}
+                  className="absolute top-5 right-6 font-display text-[2.25rem] leading-none text-accent/10 tabular-nums select-none before:content-[attr(data-n)]"
+                />
                 <span
                   className={`${iconPop} grid size-11 place-items-center rounded-[14px] bg-accent-soft text-accent group-hover:bg-accent group-hover:text-white`}
                 >

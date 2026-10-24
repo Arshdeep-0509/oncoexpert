@@ -57,7 +57,10 @@
 }
 
 /* Ambient loops stop while paused (button) or off-screen. */
-.orbit-hero:is([data-paused], [data-offscreen]) :is(.orbit-loop, .orbit-loop::after) {
+/* (Pseudo-elements are not allowed inside :is(), so the ::after selectors are written out.) */
+.orbit-hero:is([data-paused], [data-offscreen]) .orbit-loop,
+.orbit-hero:is([data-paused], [data-offscreen]) .orbit-loop::after,
+.orbit-hero:is([data-paused], [data-offscreen]) .cta-shine::after {
   animation-play-state: paused;
 }
 
@@ -90,6 +93,19 @@
       ".    .    .    .    .    .    stage stage stage stage stage stage";
   }
 }
+/*
+ * While the HTML streams in, a slow device can paint the hero before all of it has arrived; the
+ * centred desktop grid then re-centres as each part lands (layout shifts under the intro, counted
+ * by CLS). Until the empty .orbit-end marker after the trust strip has been parsed, the grid is
+ * laid out but not painted. Browsers without :has() drop the rule and paint as before.
+ */
+.orbit-hero:not(:has(> .orbit-end)) > .orbit-grid {
+  visibility: hidden;
+}
+.orbit-end {
+  display: none;
+}
+
 .orbit-areaStage {
   grid-area: stage;
 }

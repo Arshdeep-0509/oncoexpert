@@ -72,6 +72,7 @@ export function Reviews({ id = "reviews", tone = "surface", look = "soft", title
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
+            data-cta={link.label}
             className="group/link inline-flex min-h-11 items-center gap-2.5 font-semibold text-accent hover:text-accent-hover"
           >
             <GoogleMark />

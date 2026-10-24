@@ -13,6 +13,8 @@ type AppointmentButtonProps = {
   service?: AppointmentService;
   /** Stored with the request, e.g. "Package request". */
   note?: string;
+  /** Analytics label (cta_click) when the visible label repeats within a section. Default: `label`. */
+  cta?: string;
   variant?: ButtonVariant;
   /** Bare link with these classes instead of a Button (label + optional arrow). */
   look?: LinkLook;
@@ -26,7 +28,15 @@ type AppointmentButtonProps = {
  * Opens the appointment form (scroll + preselected service + Name focused).
  * A real link to #appointment, so it still works before JS has loaded.
  */
-export function AppointmentButton({ label, service, note, arrow = false, look, ...props }: AppointmentButtonProps) {
+export function AppointmentButton({
+  label,
+  service,
+  note,
+  cta = label,
+  arrow = false,
+  look,
+  ...props
+}: AppointmentButtonProps) {
   const { openAppointment } = useAppointment();
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -35,7 +45,7 @@ export function AppointmentButton({ label, service, note, arrow = false, look, .
 
   if (look) {
     return (
-      <a href={`#${APPOINTMENT_ID}`} data-cta={label} className={look.className} onClick={onClick}>
+      <a href={`#${APPOINTMENT_ID}`} data-cta={cta} className={look.className} onClick={onClick}>
         {label}
         {arrow ? <ArrowRight className={look.arrowClassName} strokeWidth={1.75} aria-hidden="true" /> : null}
       </a>
@@ -43,7 +53,7 @@ export function AppointmentButton({ label, service, note, arrow = false, look, .
   }
 
   return (
-    <Button href={`#${APPOINTMENT_ID}`} cta={label} icon={arrow ? ArrowRight : undefined} onClick={onClick} {...props}>
+    <Button href={`#${APPOINTMENT_ID}`} cta={cta} icon={arrow ? ArrowRight : undefined} onClick={onClick} {...props}>
       {label}
     </Button>
   );

@@ -62,7 +62,8 @@ components/
                              RoboticSection (+ robotic-band.css), SpecialtiesSection (+ specialties.css,
                              specialty-icons.tsx icon set), ServicesSection, ApproachSection (+ the island
                              ApproachPillars), ValueSection (+ the island ValueRange, value-band.css);
-                             icon-draw.css: the shared "line art draws itself on reveal" for icons
+                             icon-draw.css: the shared "line art draws itself on reveal" for icons;
+                             HomeJsonLd: Home's one JSON-LD @graph
   pages/breast-cancer/       sections used only by the breast page (+ hero.css, hero-styles.ts)
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
@@ -79,6 +80,7 @@ lib/
   appointment.ts             Server Action + email delivery (Resend)
   appointment-schema.ts      zod schema shared by the form and the server
   seo.ts                     metadata / viewport helpers
+  jsonld.ts                  JSON-LD nodes every page shares (Physician, MedicalClinic, FAQ questions)
   format.ts                  formatRupees, initials
   utils.ts                   cn, focusRing, sumBy
   hooks/                     use-media, use-element-by-id, use-element-size, use-autoplay-carousel
@@ -179,16 +181,16 @@ Each component keeps its looks in a class map at the top of the file (`const loo
 A new page normally uses `soft` and re-themes it with its theme file. `Eyebrow` and `SectionHeading` take
 the same values as `variant`.
 
-| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                 |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                              |
-| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                  |
-| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD) |
-| `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                |
-| `Locations`          | none (clinics from content)                                                                                                                                          |
-| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                      |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image`                                                        |
-| `AppointmentButton`  | `label`, `service?`, `note?`, `variant?` or `look?` (a page's own link classes)                                                                                      |
+| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                                                                                                          |
+| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                              |
+| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home) |
+| `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                                                                                            |
+| `Locations`          | none (clinics from content)                                                                                                                                                                                                                      |
+| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                  |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image`                                                                                                                                    |
+| `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                     |
 
 - The appointment form is one component. `useAppointment().openAppointment(service?, note?)` scrolls to
   `#appointment` below the header, preselects the service, stores the note and focuses Name; without
@@ -285,7 +287,16 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   (`HeroMotionToggle`); the breast hero does not yet, and the overlay timer is unchanged, so the
   other pages keep their current behaviour.
 - Loops longer than 5s on Home stop on hover/focus or with a pause control; the hero's button
-  (`data-paused` on #hero) stops every hero loop, and leaving the screen does too (`data-offscreen`).
+  (`data-paused` on #hero) stops every hero loop (the primary button's shine included), and leaving
+  the screen does too (`data-offscreen`). Pseudo-elements are not allowed inside `:is()`: write
+  `… .x::after` selectors out in full or the browser drops them silently.
+- Home hero: the centred desktop grid would re-centre while the HTML streams in on slow devices
+  (CLS). It is not painted until the `.orbit-end` marker after the trust strip has been parsed
+  (`:has()`, hero.css). Keep that marker the hero's last child.
+- The hero portrait is the LCP element: `preload` + `fetchPriority="high"`; the head cut-out over the
+  ring is `loading="eager"`. Everything below the fold stays lazy.
+- Scroll-linked effects animate transform/opacity only. Known exception in the shared header: it
+  animates `height` when it compacts past a scroll threshold (fixed element, so nothing reflows).
 - Never hide the hero LCP image behind clip-path / opacity at load; reveal it with a transform on a
   cover element.
 - Avoid `filter: blur()` / `backdrop-filter` on large or animated elements above the fold.
@@ -305,6 +316,9 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   #value ("30–40%" counter, cards, drifting glow), then the shared sections in the soft look
   (#reviews with a link to Google, #videos, #faq + FAQPage JSON-LD, #appointment, #locations,
   #final-cta) and the mobile action bar.
+  Hardened: title, description, H1 and canonical as on the live page; OG/Twitter with og.jpg; one
+  JSON-LD @graph (WebSite, FAQPage, MedicalClinic, Physician); every CTA labelled for analytics;
+  Lighthouse mobile 84 (breast 79–80), TBT ~120ms, CLS 0, accessibility 100; motion audited.
   Not built: the live page's "Join Our Newsletter" box (no backend; waiting on a decision).
   Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.

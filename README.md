@@ -114,6 +114,50 @@ first one is shown large. Titles and thumbnails come from YouTube automatically.
 
 ---
 
+## Edit the Home page
+
+Everything on `/` is in `content/pages/home.ts`, one block per section, in page order (`hero`,
+`surgeon`, `robotic`, `specialties`, `services`, `approach`, `value`, then the shared sections'
+settings). Photos are in `content/pages/home.images.ts`.
+
+**Statistics** (15+ years, 3,000+ patients…): `surgeon.stats`. The same list feeds the hero's floating
+chips and the band under _Meet Dr. Sunil Navalgund_, so change it once.
+
+```ts
+{ value: 3000, suffix: "+", label: "PATIENTS TREATED" },
+```
+
+- `value` is a plain number (no commas); the page formats it ("3,000+") and counts up to it.
+- Keep four entries: the hero places one chip per corner of the ring.
+
+The **"30–40%" cost saving** is `value.items` (`range: { from: 30, to: 40, suffix: "%" }`), marked
+`PENDING DOCTOR` until he confirms it.
+
+**Specialty list.** One entry per cancer in `specialties.items`, in display order: `key`, `name`,
+`body` (the one-liner), `href` (its page) and `image` (only the first, large tile shows a photo).
+
+- The first entry is the large tile on desktop. Breast is first because it has the rebuilt page.
+- When a specialty gets its rebuilt page, change its `href` to the new path, e.g.
+  `"/colon-cancer-treatment-bangalore/"`.
+- The hero line "Expert care for ___ cancer" cycles through `hero.specialties` (the same keys, in the
+  order the ticker shows them).
+- **Adding a cancer**: add its key to `SpecialtyKey` at the top of `home.ts`, an entry to
+  `specialties.items`, its key to `hero.specialties`, and a line icon in
+  `components/pages/home/specialty-icons.tsx` (24px grid, stroke 1.75, like lucide). The bento grid
+  is designed for six tiles; with more, ask a developer to check the layout.
+
+**Services**: `services.items`. `action` is either a link (`kind: "link"`, `href`) or opens the form
+(`kind: "appointment"`, with the `service` to preselect and a `note` that arrives in the email).
+
+**Reviews on Home**: the ids in `reviews.order`, in the order shown; the link under them is
+`reviews.link`. **FAQ**: `faq.items` (each answer is a list of paragraphs; `icon` is one of the icons
+in `FaqIcon`, `content/types.ts`). The FAQ's structured data for Google is built from the same items.
+
+**Buttons that name no service** (header, menu, phone bar, FAQ card) preselect
+`defaultAppointmentService` ("Consultation").
+
+---
+
 ## Swap the stock photos for the doctor's real photos
 
 The breast page and Home (the six cancer specialties and the final call band) use licensed Pexels stock
@@ -201,3 +245,7 @@ or after 12 s, so it never delays the first paint. `dataLayer` events:
 | `whatsapp_click` | any WhatsApp link       | `location`              |
 | `cta_click`      | any CTA button          | `label`, `location`     |
 | `form_submit`    | appointment form submit | `status`, `service`     |
+
+`label` is the button's text. Where the same text repeats in one section, the label names the item:
+on Home the service cards send "Chemotherapy: Book a Consultation" and so on, and the specialty tiles
+send the cancer's name.

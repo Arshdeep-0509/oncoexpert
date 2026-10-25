@@ -368,7 +368,7 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   drift, pausable; the H1's words rise in masks with his name in the `--name-1..3` gradient; both
   buttons open the booking form preselected via `bookingHref`), #credentials (tall cards, icons
   draw in, a gradient light runs once around each border, hover lift + glow), #journey (desktop:
-  pinned for 2.5 screens, line fills, cards flip up, the active number scales; phones: vertical with
+  pinned for 2.5 screens: a stepper left whose line fills and whose active number scales, a card deck right where each stage flips up in front of the earlier ones; phones: vertical with
   ScrollFillLine, cards slide in from alternating sides; reduced motion: a static list), #quote (the
   mark draws, words fade in one by one, then the attribution), #expertise (bento: Robotic large with
   the arms photo, Breast with its photo, GI and Uro icon tiles; a swipe row on phones; hover lifts,

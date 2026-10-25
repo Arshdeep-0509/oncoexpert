@@ -199,7 +199,11 @@
 /* ---------------------------------------------------------------- */
 /* Journey                                                           */
 /* Default (phones, tablets, reduced motion): a vertical timeline,   */
-/* the line on the left. The pinned horizontal version: below.       */
+/* the line on the left, a number badge on it for each card.         */
+/* Pinned desktop: a stepper on the left (the four stages, the line  */
+/* filling down them, the active number scaled up) and a deck on the */
+/* right: the active stage's card in front, earlier ones stacked     */
+/* behind it, the next one lying back until it flips up.             */
 /* ---------------------------------------------------------------- */
 
 .ab-stages {
@@ -213,12 +217,8 @@
   position: absolute;
   top: 0;
   left: -56px;
-  transition:
-    transform 0.6s var(--ease-out-expo),
-    background-color 0.4s,
-    color 0.4s;
 }
-.ab-hLine {
+.ab-stepper {
   display: none;
 }
 
@@ -236,51 +236,104 @@
     justify-content: center;
     padding-top: var(--header-h);
   }
-  .ab-vLine {
+  .ab-vLine,
+  .ab-num {
     display: none;
   }
-  .ab-hLine {
+
+  /* Stepper */
+  .ab-stepper {
+    position: relative;
     display: block;
   }
-  .ab-hLineFill {
-    transform-origin: left center;
-    transform: scaleX(var(--p, 0));
+  .ab-stepFill {
+    transform-origin: center top;
+    transform: scaleY(var(--p, 0));
   }
-  .ab-stages {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
-    padding-left: 0;
-    padding-top: 72px;
-    perspective: 1200px;
-  }
-  .ab-num {
-    top: 0;
-    left: 0;
-  }
-  /* The cards lie back until their stage is reached, then flip up and stay. */
-  .ab-pin[data-step] .ab-stageCard {
-    transform-origin: 50% 100%;
-    transform: rotateX(62deg) translateY(24px);
-    opacity: 0.25;
+  .ab-stepNum {
     transition:
-      transform 0.8s var(--ease-out-expo),
-      opacity 0.6s var(--ease-out-expo);
+      transform 0.6s var(--ease-out-expo),
+      background-color 0.4s,
+      color 0.4s,
+      box-shadow 0.4s;
   }
-  .ab-pin[data-step="0"] .ab-stage:nth-child(-n + 1) .ab-stageCard,
-  .ab-pin[data-step="1"] .ab-stage:nth-child(-n + 2) .ab-stageCard,
-  .ab-pin[data-step="2"] .ab-stage:nth-child(-n + 3) .ab-stageCard,
-  .ab-pin[data-step="3"] .ab-stage:nth-child(-n + 4) .ab-stageCard {
-    transform: none;
+  .ab-stepText {
+    opacity: 0.55;
+    transition: opacity 0.5s var(--ease-out-expo);
+  }
+  /* Reached stages: full strength; the active one's number scales up. */
+  :is(.ab-pin:not([data-step]), .ab-pin[data-step="0"]) .ab-stepRow:nth-child(-n + 1) .ab-stepText,
+  .ab-pin[data-step="1"] .ab-stepRow:nth-child(-n + 2) .ab-stepText,
+  .ab-pin[data-step="2"] .ab-stepRow:nth-child(-n + 3) .ab-stepText,
+  .ab-pin[data-step="3"] .ab-stepRow:nth-child(-n + 4) .ab-stepText {
     opacity: 1;
   }
-  /* The active stage's number scales up. */
-  .ab-pin[data-step="0"] .ab-stage:nth-child(1) .ab-num,
-  .ab-pin[data-step="1"] .ab-stage:nth-child(2) .ab-num,
-  .ab-pin[data-step="2"] .ab-stage:nth-child(3) .ab-num,
-  .ab-pin[data-step="3"] .ab-stage:nth-child(4) .ab-num {
+  :is(.ab-pin:not([data-step]), .ab-pin[data-step="0"]) .ab-stepRow:nth-child(1) .ab-stepNum,
+  .ab-pin[data-step="1"] .ab-stepRow:nth-child(2) .ab-stepNum,
+  .ab-pin[data-step="2"] .ab-stepRow:nth-child(3) .ab-stepNum,
+  .ab-pin[data-step="3"] .ab-stepRow:nth-child(4) .ab-stepNum {
     transform: scale(1.3);
     background-color: var(--accent);
     color: var(--white);
+    box-shadow: var(--accent-shadow);
+  }
+
+  /* Deck: the four cards share one spot; later cards sit on top. */
+  .ab-stages {
+    display: block;
+    min-height: 26rem;
+    padding: 84px 0 0;
+    perspective: 1400px;
+  }
+  .ab-stage {
+    position: absolute;
+    inset: 84px 0 0;
+  }
+  .ab-stage:nth-child(2) {
+    z-index: 2;
+  }
+  .ab-stage:nth-child(3) {
+    z-index: 3;
+  }
+  .ab-stage:nth-child(4) {
+    z-index: 4;
+  }
+  .ab-stageCard {
+    height: 100%;
+    transform-origin: 50% 100%;
+    transition:
+      transform 0.85s var(--ease-out-expo),
+      opacity 0.6s var(--ease-out-expo);
+  }
+  /* Not reached yet: lying back, out of sight; it flips up when its stage becomes active. */
+  .ab-stage .ab-stageCard {
+    transform: translateY(48px) rotateX(64deg);
+    opacity: 0;
+  }
+  /* The active card: upright, in front. */
+  :is(.ab-pin:not([data-step]), .ab-pin[data-step="0"]) .ab-stage:nth-child(1) .ab-stageCard,
+  .ab-pin[data-step="1"] .ab-stage:nth-child(2) .ab-stageCard,
+  .ab-pin[data-step="2"] .ab-stage:nth-child(3) .ab-stageCard,
+  .ab-pin[data-step="3"] .ab-stage:nth-child(4) .ab-stageCard {
+    transform: none;
+    opacity: 1;
+  }
+  /* Earlier cards stay, stacked behind it, each step back 5% smaller and peeking ~24px higher
+     (they scale from their bottom edge, so the lift covers the shrink as well). */
+  .ab-pin[data-step="1"] .ab-stage:nth-child(1) .ab-stageCard,
+  .ab-pin[data-step="2"] .ab-stage:nth-child(2) .ab-stageCard,
+  .ab-pin[data-step="3"] .ab-stage:nth-child(3) .ab-stageCard {
+    transform: translateY(-42px) scale(0.95);
+    opacity: 0.7;
+  }
+  .ab-pin[data-step="2"] .ab-stage:nth-child(1) .ab-stageCard,
+  .ab-pin[data-step="3"] .ab-stage:nth-child(2) .ab-stageCard {
+    transform: translateY(-82px) scale(0.9);
+    opacity: 0.45;
+  }
+  .ab-pin[data-step="3"] .ab-stage:nth-child(1) .ab-stageCard {
+    transform: translateY(-120px) scale(0.85);
+    opacity: 0.25;
   }
 }
 

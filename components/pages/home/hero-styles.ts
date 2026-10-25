@@ -6,6 +6,7 @@ export const styles = {
   step: "orbit-step",
   loop: "orbit-loop",
   grid: "orbit-grid",
+  end: "orbit-end",
   areaStage: "orbit-areaStage",
   areaHead: "orbit-areaHead",
   areaBody: "orbit-areaBody",

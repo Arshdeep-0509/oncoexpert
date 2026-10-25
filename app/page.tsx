@@ -8,6 +8,7 @@ import { site } from "@/content/site";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SiteShell } from "@/components/layout/SiteShell";
+import { HomeJsonLd } from "@/components/pages/home/HomeJsonLd";
 import { HomeHero } from "@/components/pages/home/HomeHero";
 import { SurgeonSection } from "@/components/pages/home/SurgeonSection";
 import { RoboticSection } from "@/components/pages/home/RoboticSection";
@@ -53,6 +54,7 @@ export default function HomePage() {
       activeHref={page.path}
       defaultService={defaultAppointmentService}
     >
+      <HomeJsonLd /> {/* WebSite, FAQPage, MedicalClinic, Physician in one @graph */}
       <HomeHero /> {/* 1  #hero         navy hero gradient */}
       <SurgeonSection /> {/* 2  #surgeon      warm */}
       <RoboticSection /> {/* 3  #robotic      navy band */}
@@ -63,7 +65,14 @@ export default function HomePage() {
       {/* 8–13: shared sections (soft look), driven by this page's content */}
       <Reviews tone="alt" title={reviews.title} reviews={reviewsFor(pageSlug, reviews.order)} link={reviews.link} />
       <Videos tone="surface" eyebrow={videos.eyebrow} title={videos.title} ids={youtubeVideos} labels={videos.a11y} />
-      <Faq tone="alt" title={faq.title} contactTitle={faq.contactTitle} items={faq.items} locations={site.locations} />
+      <Faq
+        tone="alt"
+        title={faq.title}
+        contactTitle={faq.contactTitle}
+        items={faq.items}
+        locations={site.locations}
+        structuredData={false}
+      />
       <AppointmentSection tone="surface" page={pageName} />
       <Locations tone="warm" />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} /> {/* 13 navy, photo */}

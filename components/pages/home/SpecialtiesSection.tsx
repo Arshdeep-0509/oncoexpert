@@ -64,6 +64,7 @@ function PhotoTile({ item }: { item: Specialty }) {
     <Link
       href={item.href}
       prefetch={false}
+      data-cta={item.name}
       className={cn(
         styles.tile,
         "group/tile flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-2xl bg-ink text-white shadow-soft md:min-h-[20rem] lg:min-h-[30rem]",
@@ -99,37 +100,51 @@ function PhotoTile({ item }: { item: Specialty }) {
   );
 }
 
-/** The other five: icon, name, one-liner and an arrow. */
-function IconTile({ item }: { item: Specialty }) {
+/**
+ * The other five: the same photo treatment at tile size (each cancer's own photo, a navy fade
+ * under the text), with the icon, name, one-liner and the arrow.
+ */
+function SmallPhotoTile({ item }: { item: Specialty }) {
+  const photo = homeImages[item.image];
   return (
     <Link
       href={item.href}
       prefetch={false}
+      data-cta={item.name}
       className={cn(
         styles.tile,
-        "group/tile flex h-full flex-col gap-5 rounded-2xl bg-surface p-6 ring-1 shadow-soft-sm ring-line md:p-7",
+        "group/tile flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-2xl bg-ink text-white shadow-soft-sm md:min-h-[17rem]",
       )}
     >
+      <Image
+        src={photo.src}
+        alt=""
+        aria-hidden="true"
+        fill
+        sizes="(min-width: 1024px) 400px, (min-width: 768px) 350px, 82vw"
+        className={cn(styles.photo, "-z-10 object-cover")}
+        style={{ objectPosition: photo.focal }}
+      />
+      <span aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/75 to-ink/0" />
       <TileChrome />
-      <span className="flex items-start justify-between gap-4">
-        <TileIcon item={item} />
-        <ArrowUpRight
-          className={cn(arrow, "text-muted group-hover/tile:text-accent")}
-          strokeWidth={1.75}
-          aria-hidden="true"
-        />
-      </span>
-      <span>
-        <span className="block font-display text-lg leading-snug font-bold text-ink md:text-xl">{item.name}</span>
-        <span className="mt-2 block text-[15px] leading-relaxed text-muted">{item.body}</span>
+      <span className="relative flex flex-col gap-4 p-6 md:p-7">
+        <TileIcon item={item} onPhoto />
+        <span className="flex items-end justify-between gap-4">
+          <span>
+            <span className="block font-display text-lg leading-snug font-bold md:text-xl">{item.name}</span>
+            <span className="mt-2 block text-[15px] leading-relaxed text-white/85">{item.body}</span>
+          </span>
+          <ArrowUpRight className={arrow} strokeWidth={1.75} aria-hidden="true" />
+        </span>
       </span>
     </Link>
   );
 }
 
 /**
- * 4 · #specialties. Desktop: a bento grid, Breast as the large photo tile (2×2) and the other
- * five as icon tiles. Tablet: Breast across the top, the rest two by two. Phones: a swipe row.
+ * 4 · #specialties. Desktop: a bento grid of photo tiles, each cancer with its own photo: Breast
+ * large (2×2), the other five smaller. Tablet: Breast across the top, the rest two by two.
+ * Phones: a swipe row.
  * Every tile links to its page (Breast: ours; the others: the live site's, from site.nav).
  */
 export function SpecialtiesSection() {
@@ -148,7 +163,7 @@ export function SpecialtiesSection() {
           )}
         >
           {specialties.items.map((item, i) =>
-            i === 0 ? <PhotoTile key={item.key} item={item} /> : <IconTile key={item.key} item={item} />,
+            i === 0 ? <PhotoTile key={item.key} item={item} /> : <SmallPhotoTile key={item.key} item={item} />,
           )}
         </SwipeRow>
       </Reveal>

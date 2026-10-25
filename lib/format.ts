@@ -12,3 +12,10 @@ export function initials(name: string): string {
     .map((w) => w[0]!.toUpperCase())
     .join("");
 }
+
+/** "YYYY-MM-DDTHH:mm" in the visitor's local time, for datetime-local min. Browser only. */
+export const localNow = () => {
+  const d = new Date();
+  d.setSeconds(0, 0);
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
+};

@@ -56,8 +56,14 @@ export function ServicesSection() {
               </span>
               <h3 className="mt-6 font-display text-xl leading-snug font-bold text-ink">{item.name}</h3>
               <p className="mt-2 text-[15px] leading-relaxed text-muted">{item.body}</p>
+              {/* Analytics: the action labels repeat across cards, so the label names the service. */}
               {item.action.kind === "link" ? (
-                <Link href={item.action.href} prefetch={false} className={action.className}>
+                <Link
+                  href={item.action.href}
+                  prefetch={false}
+                  data-cta={`${item.name}: ${item.action.label}`}
+                  className={action.className}
+                >
                   {item.action.label}
                   <ArrowRight className={action.arrowClassName} strokeWidth={1.75} aria-hidden="true" />
                 </Link>
@@ -66,6 +72,7 @@ export function ServicesSection() {
                   label={item.action.label}
                   service={item.action.service}
                   note={item.action.note}
+                  cta={`${item.name}: ${item.action.label}`}
                   look={action}
                   arrow
                 />

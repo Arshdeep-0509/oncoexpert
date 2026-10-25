@@ -8,19 +8,13 @@ import { appointmentSchema, type AppointmentInput } from "@/lib/appointment-sche
 import { submitAppointment } from "@/lib/appointment";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { localNow } from "@/lib/format";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
 import { Field } from "@/components/shared/appointment/Field";
 import { formCopy as f, type FormStyles } from "@/components/shared/appointment/form";
 
 type Status = "idle" | "success" | "error";
-
-/** "YYYY-MM-DDTHH:mm" in the visitor's local time, for datetime-local min. */
-const localNow = () => {
-  const d = new Date();
-  d.setSeconds(0, 0);
-  return new Date(d.getTime() - d.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
-};
 
 type AppointmentFormProps = {
   /** Sent as a hidden field and in the email subject, e.g. "Breast Cancer". */

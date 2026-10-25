@@ -3,9 +3,10 @@
 Read this first. oncoxpert.in is a surgical oncology practice in Bengaluru led by Dr. Sunil Navalgund.
 The site is rebuilt page by page. Most visitors are on phones: design mobile-first.
 
-Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`) and **Breast Cancer**
-(`/breast-cancer-treatment-bangalore/`). They share one site shell and one set of section components;
-each page has its own theme.
+Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`), **Breast Cancer**
+(`/breast-cancer-treatment-bangalore/`), **Book Appointment** (`/book-your-appoinment-page/`, the live
+URL's spelling, kept for SEO) and **About Us** (`/about-us/`). They share one site shell and one set of
+section components; each page has its own theme, except booking and about, which share the `care` theme.
 
 ## Stack
 
@@ -51,8 +52,9 @@ components/
     AppointmentButton, Breadcrumb, LiteYouTube
     appointment/             the form (lazy-loaded), its placeholder, Field, FormStyles type
     reviews/                 ReviewsCarousel, ReviewCard, Stars, GoogleMark
-  ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, ProgressRing, Reveal,
-                             ScrollFillLine, Section, SectionHeading, SwipeRow, text-styles.ts,
+  ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, InView, MotionToggle,
+                             ProgressRing, Reveal, ScrollFillLine, ScrollVar, Section, SectionHeading,
+                             SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
   pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
                              Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
@@ -62,11 +64,18 @@ components/
                              RoboticSection (+ robotic-band.css), SpecialtiesSection (+ specialties.css,
                              specialty-icons.tsx icon set), ServicesSection, ApproachSection (+ the island
                              ApproachPillars), ValueSection (+ the island ValueRange, value-band.css);
-                             icon-draw.css: the shared "line art draws itself on reveal" for icons
+                             icon-draw.css: the shared "line art draws itself on reveal" for icons;
+                             HomeJsonLd: Home's one JSON-LD @graph
   pages/breast-cancer/       sections used only by the breast page (+ hero.css, hero-styles.ts)
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
                              comparing-modalities/ hold the parts of its bigger sections
+  pages/book-appointment/    the booking page: BookingHero (+ booking.css, prefix `bk-`, booking-styles.ts),
+                             EmergencyBanner, HowItWorks, TrustSection, icons.ts; booking-form/ = the guided
+                             3-step form (BookingForm, ServiceStep, SuccessPanel, use-keyboard-inset)
+  pages/about-us/            the about page: AboutHero (+ AboutHeadline, ProfilePortrait), Credentials,
+                             Journey (pinned on desktop), QuoteSection; about.css (prefix `ab-`),
+                             about-styles.ts
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -76,21 +85,26 @@ content/
   pages/<page>.ts            every word and number on that page
   pages/<page>.images.ts     image manifest (file, alt, credit, focal point, size)
 lib/
-  appointment.ts             Server Action + email delivery (Resend)
+  appointment.ts             Server Actions + email delivery (Resend): submitAppointment (object) and
+                             submitAppointmentForm (FormData, for <form action>: works without JS)
   appointment-schema.ts      zod schema shared by the form and the server
   seo.ts                     metadata / viewport helpers
-  format.ts                  formatRupees, initials
+  jsonld.ts                  JSON-LD nodes every page shares (Physician, MedicalClinic, FAQ questions)
+  format.ts                  formatRupees, initials, localNow (datetime-local min)
+  booking.ts                 serviceSlug, bookingHref(service): the booking page with ?service= preselected
+  portrait.ts                the doctor portrait's edge mask (DoctorPortrait, About hero)
   utils.ts                   cn, focusRing, sumBy
   hooks/                     use-media, use-element-by-id, use-element-size, use-autoplay-carousel
   analytics.ts, intro.ts, lenis.ts, motion.ts (EASE_OUT_EXPO), nav.ts, image-fade.ts, youtube.ts
 styles/
   tokens.css                 shared palette, third-party brand colours, neutral defaults for every token
   themes/home.css, themes/breast.css, themes/robotic.css   one theme per page
+  themes/care.css            booking + about (one theme: same palette)
 scripts/
   fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
   make-portrait-cutout.mjs   one-off: Dr. Sunil's head cut out of the portrait (Home hero ring)
-public/images/               brand/ locations/ home/ breast-cancer/ robotic/
+public/images/               brand/ locations/ home/ breast-cancer/ robotic/ book-appointment/ about-us/
 ```
 
 ### Naming
@@ -179,16 +193,16 @@ Each component keeps its looks in a class map at the top of the file (`const loo
 A new page normally uses `soft` and re-themes it with its theme file. `Eyebrow` and `SectionHeading` take
 the same values as `variant`.
 
-| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                 |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                              |
-| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                  |
-| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD) |
-| `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                |
-| `Locations`          | none (clinics from content)                                                                                                                                          |
-| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                      |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image`                                                        |
-| `AppointmentButton`  | `label`, `service?`, `note?`, `variant?` or `look?` (a page's own link classes)                                                                                      |
+| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                                                                                                          |
+| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                              |
+| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home) |
+| `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                                                                                            |
+| `Locations`          | none (clinics from content)                                                                                                                                                                                                                      |
+| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                  |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image`                                                                                                                                    |
+| `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                     |
 
 - The appointment form is one component. `useAppointment().openAppointment(service?, note?)` scrolls to
   `#appointment` below the header, preselects the service, stores the note and focuses Name; without
@@ -196,7 +210,14 @@ the same values as `variant`.
   action bar) keep the last one chosen, else `SiteShell`'s `defaultService` (Home: "Consultation"; other
   pages: none, so "- Select -" stays). The server action emails "New appointment
   request - <page> page". Needs `RESEND_API_KEY` (+ `APPOINTMENT_TO_EMAIL`, `APPOINTMENT_FROM_EMAIL`).
-- Every page with a hero gives it `id="hero"`; the form section is `id="appointment"`.
+- The booking page has its own form (`components/pages/book-appointment/booking-form/`): the same
+  fields, schema, Server Action, email and analytics as three steps (service tiles → date/time → name
+  and phone). Its fields are plain inputs in one `<form action={submitAppointmentForm}>`, so with
+  JavaScript off it is the shared form's single step (booking.css, `@media (scripting: none)`) and
+  posts as a normal form. `?service=<slug>` (e.g. `second-opinion`) preselects a service: link other
+  pages' CTAs to `/book-your-appoinment-page/?service=…`.
+- Every page with a hero gives it `id="hero"`; the form section is `id="appointment"` (on the
+  booking page: the form card inside the hero).
 
 ## Primitives (components/ui)
 
@@ -213,6 +234,17 @@ the same values as `variant`.
   `Chip`, `ScrollFillLine` (its scroll range is `SCROLL_FILL_OFFSET`, so a timeline can light stops in
   step with the fill), `SwipeRow` (under 768px a scroll-snap row with peek, dots and hint; from md a
   grid), `textStyles` (shared text class strings).
+- `ScrollVar` (island, ~1 KB): writes the scroll progress of its box to its own style as `--p` (0–1)
+  and, with `steps`, `data-step`; page CSS turns that into transform/opacity. `range`: `"view"`
+  (through the screen), `"top"` (a hero scrolling away: 0 at the top of the page, so nothing jumps on
+  hydration) or `"pin"` (a tall box with a sticky child: progress through the pinned scroll).
+  `media` limits it to a layout. Listens only near the screen; never re-renders React.
+- `InView`: sets `data-inview` once a share of it is visible, for one-time CSS entrances.
+- `MotionToggle`: a hero's pause button (`data-paused` on its section; also `data-offscreen`, and it
+  pins `--intro`). `onDark` for dark heroes.
+- A CSS file imported by two pages is split into a chunk of its own, which changes the first page's
+  stylesheets. To keep a finished page byte-identical, give the new page its own copy of the rules
+  (about.css repeats Home's icon-draw technique for this reason).
 
 ## Content rules
 
@@ -270,7 +302,8 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   bottom edge. It appears once the hero has scrolled away and stays visible while scrolling in either
   direction; it hides only over #appointment and while the keyboard is open. The Book pill sizes to its label (fits from 320px); its colours are
   the `--grad-cta` / `--cta-glow` tokens. The footer reserves room for it and `SiteShell` hides the
-  floating WhatsApp button under 768px.
+  floating WhatsApp button under 768px. The booking page has neither (`mobileActionBar={false}`,
+  `hideWhatsAppOnMobile`): its form's step buttons stick to the bottom of the screen instead.
 
 ## Performance notes
 
@@ -285,7 +318,16 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   (`HeroMotionToggle`); the breast hero does not yet, and the overlay timer is unchanged, so the
   other pages keep their current behaviour.
 - Loops longer than 5s on Home stop on hover/focus or with a pause control; the hero's button
-  (`data-paused` on #hero) stops every hero loop, and leaving the screen does too (`data-offscreen`).
+  (`data-paused` on #hero) stops every hero loop (the primary button's shine included), and leaving
+  the screen does too (`data-offscreen`). Pseudo-elements are not allowed inside `:is()`: write
+  `… .x::after` selectors out in full or the browser drops them silently.
+- Home hero: the centred desktop grid would re-centre while the HTML streams in on slow devices
+  (CLS). It is not painted until the `.orbit-end` marker after the trust strip has been parsed
+  (`:has()`, hero.css). Keep that marker the hero's last child.
+- The hero portrait is the LCP element: `preload` + `fetchPriority="high"`; the head cut-out over the
+  ring is `loading="eager"`. Everything below the fold stays lazy.
+- Scroll-linked effects animate transform/opacity only. Known exception in the shared header: it
+  animates `height` when it compacts past a scroll threshold (fixed element, so nothing reflows).
 - Never hide the hero LCP image behind clip-path / opacity at load; reveal it with a transform on a
   cover element.
 - Avoid `filter: blur()` / `backdrop-filter` on large or animated elements above the fold.
@@ -300,13 +342,37 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   (priority 1).
   All 13 blocks built: #hero ("Orbit": gradient ring with the portrait, ticker, stat chips, trust
   marquee), #surgeon (portrait, training-journey timeline, stats band), #robotic (dark band with the
-  da Vinci arms and the 8 features), #specialties (bento grid, swipe row on phones), #services
+  da Vinci arms and the 8 features), #specialties (bento grid of photo tiles, one photo per cancer; swipe row on phones), #services
   (icon cards that draw themselves), #approach (sticky heading, the pillar at mid-screen lit),
   #value ("30–40%" counter, cards, drifting glow), then the shared sections in the soft look
   (#reviews with a link to Google, #videos, #faq + FAQPage JSON-LD, #appointment, #locations,
   #final-cta) and the mobile action bar.
+  Hardened: title, description, H1 and canonical as on the live page; OG/Twitter with og.jpg; one
+  JSON-LD @graph (WebSite, FAQPage, MedicalClinic, Physician); every CTA labelled for analytics;
+  Lighthouse mobile 84 (breast 79–80), TBT ~120ms, CLS 0, accessibility 100; motion audited.
   Not built: the live page's "Join Our Newsletter" box (no backend; waiting on a decision).
   Waiting on the doctor's PENDING items in `content/pages/home.ts`.
 - Robotic Surgery: live design, rebuilt on the shared components (`classic` look), pixel-identical.
 - Breast Cancer: all 17 sections, SEO (JSON-LD, sitemap, robots), analytics. Waiting on the doctor's
   PENDING items in `content/pages/breast-cancer.ts`.
+- Book Appointment + About Us share one `care` theme (`themes/care.css`: navy, logo blue, logo orange
+  as a highlight only; contrast table in its header), image manifests (`npm run images book|about`),
+  registry + sitemap. The shell's long loops stop on hover/focus there as on Home.
+- Book Appointment: built. #hero is the form (desktop: headline, body, three reassurance rows and the
+  doctor left, the guided form card right; phones: compact headline, form, then the rest) with
+  #emergency inside it (phones: right after the form), then #how-it-works, #trust (EXISTING facts
+  only), and the shared #reviews, #videos, #locations, #final-cta. No phone dock. Waiting on the
+  doctor's PENDING items in `content/pages/book-appointment.ts`.
+- About Us: all 13 sections. #hero (navy → logo-blue `--grad-profile`; the portrait in an arch that
+  draws its outline, then rises in behind a cover; scroll parallax; credential chips that pop in and
+  drift, pausable; the H1's words rise in masks with his name in the `--name-1..3` gradient; both
+  buttons open the booking form preselected via `bookingHref`), #credentials (tall cards, icons
+  draw in, a gradient light runs once around each border, hover lift + glow), #journey (desktop:
+  pinned for 2.5 screens: a stepper left whose line fills and whose active number scales, a card deck right where each stage flips up in front of the earlier ones; phones: vertical with
+  ScrollFillLine, cards slide in from alternating sides; reduced motion: a static list), #quote (the
+  mark draws, words fade in one by one, then the attribution), #expertise (photo cards in a
+  checkerboard bento, Robotic and Uro wide, each with its own photo; a swipe row on phones; hover
+  lifts, zooms the photo, slides the arrow), #experience (the "10+" counts up on a navy band, two logo
+  rings turn behind it, pausable), #why-trust (sticky heading, the card at mid-screen active, as in
+  Home's ApproachPillars), then the shared #reviews, #videos, #appointment (page "About Us"),
+  #locations, #final-cta. Waiting on the doctor's PENDING items in `content/pages/about-us.ts`.

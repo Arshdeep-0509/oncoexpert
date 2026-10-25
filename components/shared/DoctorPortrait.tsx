@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
+import { portraitMaskStyle } from "@/lib/portrait";
 
 type DoctorPortraitProps = {
   image: { src: string; alt: string };
@@ -49,16 +50,7 @@ export function DoctorPortrait({
             fill
             sizes={sizes}
             className="object-contain object-bottom"
-            style={{
-              // sides fade  ∩  (long top fade  ∪  short fade around the head, which reaches the photo's top edge)
-              maskImage: [
-                "linear-gradient(to right, transparent, black 9%, black 91%, transparent)",
-                "linear-gradient(to bottom, transparent 1.5%, black 24%)",
-                "radial-gradient(ellipse 24% 18% at 50% 0%, black 55%, transparent 100%)",
-              ].join(", "),
-              maskComposite: "intersect, add, add",
-              WebkitMaskComposite: "source-in, source-over, source-over",
-            }}
+            style={portraitMaskStyle}
           />
         </motion.div>
       </div>

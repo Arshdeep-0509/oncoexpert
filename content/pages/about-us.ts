@@ -53,10 +53,10 @@ export const pageSlug = "about-us";
 /** A button that opens the booking page's form with `service` preselected (`href`). */
 type BookingCta = { label: string; service: AppointmentService; href: string };
 
-/** Icon keys, mapped to lucide icons in components/pages/about-us (later sections: to be mapped). */
+/** Icon keys, mapped to lucide icons in components/pages/about-us. */
 export type CredentialIcon = "graduation" | "hospital" | "robot";
-type ExpertiseIcon = "breast" | "gi" | "uro" | "robotic";
-type TrustPointIcon = "shield" | "globe" | "message";
+export type ExpertiseIcon = "breast" | "gi" | "uro" | "robotic";
+export type TrustPointIcon = "shield" | "globe" | "message";
 
 export type AboutHeroContent = {
   eyebrow: string;
@@ -94,11 +94,19 @@ export type ExpertiseContent = {
   title: string;
   intro: string;
   all: { label: string; href: string };
-  cards: readonly { icon: ExpertiseIcon; title: string; body: string; link: { label: string; href: string } }[];
-  image: AboutImageKey;
+  /** Cards with an `image` are photo tiles (Robotic: the large one); the others are icon tiles. */
+  cards: readonly {
+    icon: ExpertiseIcon;
+    title: string;
+    body: string;
+    link: { label: string; href: string };
+    /** Photo tiles only. */
+    image?: AboutImageKey;
+  }[];
+  a11y: { list: string };
 };
 
-export type ExperienceContent = { stat: Stat; image: AboutImageKey };
+export type ExperienceContent = { stat: Stat; a11y: { pause: string; play: string } };
 
 export type WhyTrustContent = {
   title: string;
@@ -224,6 +232,7 @@ export const expertise = {
       title: "Breast Cancer",
       body: "Specializing in breast conserving surgeries and sentinel lymph node biopsies.",
       link: { label: "Learn more", href: "/breast-cancer-treatment-bangalore/" },
+      image: "specialtyBreast",
     },
     {
       icon: "gi",
@@ -242,10 +251,11 @@ export const expertise = {
       title: "Robotic Surgery",
       body: "Minimally invasive approach for complex abdominal and pelvic cancers.",
       link: { label: "Learn more", href: "/robotic-surgery/" },
+      image: "roboticArms",
     },
   ],
-  // The Robotic Surgery card's photo (own photo, reused from the robotic page).
-  image: "roboticArms",
+  // SOURCE: NEW (screen-reader label of the phone swipe row)
+  a11y: { list: "Surgical expertise" },
 } as const satisfies ExpertiseContent;
 
 /* ------------------------------------------------------------------ */
@@ -256,7 +266,8 @@ export const experience = {
   // SOURCE: EXISTING (shown as "10+")
   // PENDING DOCTOR: the years mismatch (see intro).
   stat: { value: 10, suffix: "+", label: "Years of Specialized Oncological Experience" },
-  image: "doctor",
+  // SOURCE: NEW (screen-reader labels of the ring's pause button)
+  a11y: { pause: "Pause animation", play: "Play animation" },
 } as const satisfies ExperienceContent;
 
 /* ------------------------------------------------------------------ */

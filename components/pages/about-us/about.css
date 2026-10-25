@@ -530,3 +530,124 @@
     opacity: 0;
   }
 }
+
+/* ==================================================================
+   Second half: expertise, experience, why-trust
+   ================================================================== */
+
+/* ---------------------------------------------------------------- */
+/* Expertise tiles (Home's specialty-tile technique, repeated here   */
+/* on purpose: see "Icons that draw themselves" above).              */
+/* Hover / focus: the tile lifts (its shadow layer fades in), a photo */
+/* zooms slightly, the arrow slides.                                  */
+/* ---------------------------------------------------------------- */
+
+.ab-tile {
+  position: relative;
+  isolation: isolate;
+}
+.ab-tileShadow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+  pointer-events: none;
+}
+.ab-tile:is(:hover, :focus-visible) .ab-tileShadow {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------- */
+/* Experience: the logo-ring motif behind the number                 */
+/* ---------------------------------------------------------------- */
+
+.ab-ring {
+  position: absolute;
+  border-radius: 999px;
+  background: conic-gradient(
+    from 0deg,
+    var(--logo-ring-right-1),
+    var(--logo-ring-right-2) 72deg,
+    var(--logo-ring-right-3) 135deg,
+    var(--logo-ring-end) 180deg,
+    var(--logo-ring-left-3) 216deg,
+    var(--logo-ring-left-2) 279deg,
+    var(--logo-ring-left-1) 360deg
+  );
+  /* A thin ring: only the outer 3px of the disc. */
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Why trust: the active card (desktop focus mode)                   */
+/* ---------------------------------------------------------------- */
+
+.ab-point {
+  transition:
+    border-color 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo),
+    background-color 0.5s var(--ease-out-expo);
+}
+.ab-pointIcon {
+  transition:
+    background-color 0.5s var(--ease-out-expo),
+    color 0.5s var(--ease-out-expo);
+}
+[data-active] > .ab-point {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: var(--shadow-lg);
+}
+[data-active] > .ab-point .ab-pointIcon {
+  background-color: var(--accent);
+  color: var(--white);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ab-tile {
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  .ab-tile:is(:hover, :focus-visible) {
+    transform: translateY(-4px);
+  }
+  .ab-tilePhoto {
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .ab-tile:is(:hover, :focus-visible) .ab-tilePhoto {
+    transform: scale(1.05);
+  }
+  .ab-tileArrow {
+    transition: transform 0.35s var(--ease-out-expo);
+  }
+  .ab-tile:is(:hover, :focus-visible) .ab-tileArrow {
+    transform: translateX(6px);
+  }
+
+  /* The rings turn slowly (opposite ways), transform only; the band's pause button, leaving the
+     screen and hovering the number stop them. */
+  .ab-ringSpin {
+    animation: ab-spin 60s linear infinite;
+  }
+  .ab-ringSpin.ab-ringReverse {
+    animation-duration: 90s;
+    animation-direction: reverse;
+  }
+  .ab-band:is([data-paused], [data-offscreen]) .ab-ringSpin,
+  .ab-bandNumber:hover ~ .ab-ringSpin {
+    animation-play-state: paused;
+  }
+
+  /* The active trust card lifts a little. */
+  .ab-point {
+    transition:
+      border-color 0.5s var(--ease-out-expo),
+      box-shadow 0.5s var(--ease-out-expo),
+      transform 0.5s var(--ease-out-expo);
+  }
+  [data-active] > .ab-point {
+    transform: translateX(-8px);
+  }
+}

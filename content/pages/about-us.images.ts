@@ -36,6 +36,17 @@ export const aboutImages = {
     width: 1200,
     height: 839,
   },
+  // Surgical Expertise → Breast Cancer tile: the breast page's licensed photo (Home reuses it too).
+  specialtyBreast: {
+    file: "ribbon-hands.jpg",
+    src: "/images/breast-cancer/ribbon-hands.jpg",
+    pexelsId: 8385468,
+    alt: "Hands holding a pink breast cancer awareness ribbon",
+    credit: { photographer: "Tara Winstead", url: pexels(8385468) },
+    focal: "50% 50%",
+    width: 2000,
+    height: 1333,
+  },
   clinicSouthEnd: {
     file: "south-end-clinics.webp",
     src: "/images/locations/south-end-clinics.webp",

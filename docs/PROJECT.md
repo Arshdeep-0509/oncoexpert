@@ -54,7 +54,6 @@ components/
     reviews/                 ReviewsCarousel, ReviewCard, Stars, GoogleMark
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, InView, MotionToggle,
                              ProgressRing, Reveal, ScrollFillLine, ScrollVar, Section, SectionHeading,
-                             SectionPlaceholder (a foundation-step stand-in: final id, tone and heading),
                              SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
   pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
@@ -364,13 +363,16 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   #emergency inside it (phones: right after the form), then #how-it-works, #trust (EXISTING facts
   only), and the shared #reviews, #videos, #locations, #final-cta. No phone dock. Waiting on the
   doctor's PENDING items in `content/pages/book-appointment.ts`.
-- About Us: top half built. #hero (navy → logo-blue `--grad-profile`; the portrait in an arch that
+- About Us: all 13 sections. #hero (navy → logo-blue `--grad-profile`; the portrait in an arch that
   draws its outline, then rises in behind a cover; scroll parallax; credential chips that pop in and
   drift, pausable; the H1's words rise in masks with his name in the `--name-1..3` gradient; both
   buttons open the booking form preselected via `bookingHref`), #credentials (tall cards, icons
   draw in, a gradient light runs once around each border, hover lift + glow), #journey (desktop:
   pinned for 2.5 screens, line fills, cards flip up, the active number scales; phones: vertical with
   ScrollFillLine, cards slide in from alternating sides; reduced motion: a static list), #quote (the
-  mark draws, words fade in one by one, then the attribution). Still `SectionPlaceholder`s: #expertise,
-  #experience, #why-trust, #reviews, #videos, #appointment, #locations, #final-cta. Every live line
-  is in `content/pages/about-us.ts`.
+  mark draws, words fade in one by one, then the attribution), #expertise (bento: Robotic large with
+  the arms photo, Breast with its photo, GI and Uro icon tiles; a swipe row on phones; hover lifts,
+  zooms the photo, slides the arrow), #experience (the "10+" counts up on a navy band, two logo
+  rings turn behind it, pausable), #why-trust (sticky heading, the card at mid-screen active, as in
+  Home's ApproachPillars), then the shared #reviews, #videos, #appointment (page "About Us"),
+  #locations, #final-cta. Waiting on the doctor's PENDING items in `content/pages/about-us.ts`.

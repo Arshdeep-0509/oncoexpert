@@ -22,42 +22,34 @@ const icons: Record<ExpertiseIcon, LucideIcon> = {
 
 type Card = ExpertiseContent["cards"][number];
 
-/** Bento order: Robotic (large photo), Breast (photo), then the two icon tiles. */
+/**
+ * Bento order: a checkerboard. Row 1: Robotic (wide) + Breast; row 2: GI + Uro (wide).
+ * Tablet: Robotic across, Breast and GI side by side, Uro across. Phones: a swipe row.
+ */
 const ORDER = ["robotic", "breast", "gi", "uro"] as const satisfies readonly ExpertiseIcon[];
 const cards: readonly Card[] = ORDER.map((icon) => expertise.cards.find((card) => card.icon === icon)!);
+const WIDE: ReadonlySet<ExpertiseIcon> = new Set(["robotic", "uro"]);
 
-function LearnMore({ card, onPhoto }: { card: Card; onPhoto: boolean }) {
-  return (
-    <span
-      className={cn(
-        "mt-5 inline-flex items-center gap-2 text-[15px] font-semibold",
-        onPhoto ? "text-white" : "text-accent",
-      )}
-    >
-      {card.link.label}
-      <ArrowRight className={cn(styles.tileArrow, "size-[18px]")} strokeWidth={1.75} aria-hidden="true" />
-    </span>
-  );
-}
-
-function TileIcon({ icon, onPhoto }: { icon: ExpertiseIcon; onPhoto: boolean }) {
+function TileIcon({ icon }: { icon: ExpertiseIcon }) {
   const Icon = icons[icon];
   return (
     <span
       aria-hidden="true"
-      className={cn(
-        "grid size-12 shrink-0 place-items-center rounded-xl",
-        onPhoto ? "bg-white/90 text-accent" : "bg-accent-soft text-accent",
-      )}
+      className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/10 text-white ring-1 ring-white/20"
     >
-      <Icon className="size-6" strokeWidth={1.75} />
+      <Icon className="size-[22px]" strokeWidth={1.75} />
     </span>
   );
 }
 
-/** A photo tile: Robotic (large; the black-background arms blend into the navy) and Breast. */
-function PhotoTile({ card, large }: { card: Card; large: boolean }) {
-  const photo = aboutImages[card.image!];
+/**
+ * A photo card: the photo on top (it grows to fill the tile, so the whole subject stays in
+ * view, never under the text), the text on the navy panel below. The robotic arms are a
+ * black-background shot: they blend into the navy.
+ */
+function PhotoTile({ card }: { card: Card }) {
+  const photo = aboutImages[card.image];
+  const wide = WIDE.has(card.icon);
   return (
     <Link
       href={card.link.href}
@@ -65,69 +57,49 @@ function PhotoTile({ card, large }: { card: Card; large: boolean }) {
       data-cta={`${card.title}: ${card.link.label}`}
       className={cn(
         styles.tile,
-        "group/tile flex h-full flex-col justify-end overflow-hidden rounded-2xl bg-ink text-white shadow-soft",
-        large ? "min-h-[24rem] lg:min-h-[34rem]" : "min-h-[24rem]",
+        "group/tile flex h-full min-h-[30rem] flex-col overflow-hidden rounded-2xl bg-ink text-white shadow-soft md:min-h-[28rem]",
       )}
     >
       <span aria-hidden="true" className={styles.tileShadow} />
-      <span aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
+      <span aria-hidden="true" className="relative isolate block min-h-[12rem] flex-1 overflow-hidden bg-ink">
         <Image
           src={photo.src}
           alt=""
           fill
           sizes={
-            large
-              ? "(min-width: 1024px) 620px, (min-width: 768px) 700px, 82vw"
-              : "(min-width: 1024px) 300px, (min-width: 768px) 350px, 82vw"
+            wide
+              ? "(min-width: 1024px) 800px, (min-width: 768px) 700px, 82vw"
+              : "(min-width: 1024px) 400px, (min-width: 768px) 350px, 82vw"
           }
-          className={cn(styles.tilePhoto, "object-cover", large && "blend-on-dark")}
+          className={cn(styles.tilePhoto, "object-cover", card.icon === "robotic" && "blend-on-dark")}
           style={{ objectPosition: photo.focal }}
         />
+        {/* A soft fade into the panel below */}
+        <span className="absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-ink to-ink/0" />
       </span>
-      <span aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/70 to-ink/0" />
-      <span className="relative p-6 md:p-8">
-        <TileIcon icon={card.icon} onPhoto />
-        <span
-          className={cn("mt-5 block font-display leading-tight font-bold", large ? "text-3xl md:text-4xl" : "text-2xl")}
-        >
-          {card.title}
+      <span className="relative block p-6 md:p-7">
+        <span className="flex items-center gap-3">
+          <TileIcon icon={card.icon} />
+          <span className="font-display text-xl leading-tight font-bold md:text-2xl">{card.title}</span>
         </span>
-        <span className="mt-2 block max-w-[44ch] text-[15px] leading-relaxed text-white/80 md:text-base">
+        <span
+          className={cn("mt-3 block text-[15px] leading-relaxed text-white/80 md:text-base", wide && "max-w-[56ch]")}
+        >
           {card.body}
         </span>
-        <LearnMore card={card} onPhoto />
-      </span>
-    </Link>
-  );
-}
-
-function IconTile({ card }: { card: Card }) {
-  return (
-    <Link
-      href={card.link.href}
-      prefetch={false}
-      data-cta={`${card.title}: ${card.link.label}`}
-      className={cn(
-        styles.tile,
-        "group/tile flex h-full flex-col rounded-2xl bg-surface p-6 ring-1 shadow-soft-sm ring-line md:p-7",
-      )}
-    >
-      <span aria-hidden="true" className={styles.tileShadow} />
-      <TileIcon icon={card.icon} onPhoto={false} />
-      <span className="mt-5 block font-display text-xl leading-snug font-bold text-ink">{card.title}</span>
-      <span className="mt-2 block text-[15px] leading-relaxed text-muted">{card.body}</span>
-      <span className="mt-auto">
-        <LearnMore card={card} onPhoto={false} />
+        <span className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-white">
+          {card.link.label}
+          <ArrowRight className={cn(styles.tileArrow, "size-[18px]")} strokeWidth={1.75} aria-hidden="true" />
+        </span>
       </span>
     </Link>
   );
 }
 
 /**
- * #expertise "Surgical Expertise": the four cards as a bento grid. Desktop: Robotic large with
- * the arms photo (2×2), Breast tall with its photo, GI and Uro as icon tiles. Tablet: Robotic
- * across the top, Breast tall on the left, the two icon tiles stacked beside it. Phones: a swipe
- * row. Hover / focus: the tile lifts, its photo zooms a little, the arrow slides.
+ * #expertise "Surgical Expertise": the four cards as photo cards in a checkerboard bento (see
+ * ORDER), each with its own photo: the robotic arms, the breast ribbon, the digestive organs,
+ * the kidneys. Hover / focus: the tile lifts, its photo zooms a little, the arrow slides.
  */
 export function Expertise() {
   return (
@@ -151,16 +123,12 @@ export function Expertise() {
       <Reveal className="mt-10 md:mt-12">
         <SwipeRow
           label={expertise.a11y.list}
-          gridClassName="md:grid-cols-2 lg:grid-cols-4"
-          itemClassName={["md:col-span-2 lg:row-span-2", "md:row-span-2 lg:col-span-1", undefined, undefined]}
+          gridClassName="md:grid-cols-2 lg:grid-cols-3"
+          itemClassName={cards.map((card) => (WIDE.has(card.icon) ? "md:col-span-2" : undefined))}
         >
-          {cards.map((card, i) =>
-            card.image ? (
-              <PhotoTile key={card.icon} card={card} large={i === 0} />
-            ) : (
-              <IconTile key={card.icon} card={card} />
-            ),
-          )}
+          {cards.map((card) => (
+            <PhotoTile key={card.icon} card={card} />
+          ))}
         </SwipeRow>
       </Reveal>
     </Section>

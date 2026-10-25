@@ -88,7 +88,8 @@ export const homeImages = {
     height: 655,
   },
 
-  /* Specialties: Breast reuses the breast page's licensed photo; five new stock photos ---- */
+  /* Specialties: one photo per cancer, matched to the type (Breast reuses the breast page's
+     licensed photo; the other five are stock photos). Every tile shows its photo. ---------- */
 
   specialtyBreast: {
     file: "ribbon-hands.jpg",
@@ -101,14 +102,14 @@ export const homeImages = {
     height: 1333,
   },
   specialtyColorectal: {
-    file: "specialty-colorectal.jpg",
-    src: `${BASE}/specialty-colorectal.jpg`,
-    pexelsId: 39192354,
-    alt: "Senior man in a consultation with his doctor",
-    credit: { photographer: "Vitaly Gariev", url: pexels(39192354) },
-    focal: "45% 45%",
+    file: "specialty-colorectal-model.jpg",
+    src: `${BASE}/specialty-colorectal-model.jpg`,
+    pexelsId: 8471918,
+    alt: "Anatomical model of the abdomen showing the intestines",
+    credit: { photographer: "MART PRODUCTION", url: pexels(8471918) },
+    focal: "50% 60%",
     width: 2000,
-    height: 1125,
+    height: 1333,
   },
   specialtyEndometrial: {
     file: "specialty-endometrial.jpg",
@@ -141,14 +142,14 @@ export const homeImages = {
     height: 1333,
   },
   specialtyOvarian: {
-    file: "specialty-ovarian.jpg",
-    src: `${BASE}/specialty-ovarian.jpg`,
-    pexelsId: 39192333,
-    alt: "Doctor in a consultation with a woman patient",
-    credit: { photographer: "Vitaly Gariev", url: pexels(39192333) },
-    focal: "60% 40%",
+    file: "specialty-ovarian-diagram.jpg",
+    src: `${BASE}/specialty-ovarian-diagram.jpg`,
+    pexelsId: 7467100,
+    alt: "Illustration of the female reproductive system: the uterus and both ovaries",
+    credit: { photographer: "Nadezhda Moryak", url: pexels(7467100) },
+    focal: "50% 50%",
     width: 2000,
-    height: 1125,
+    height: 1333,
   },
 
   /* Final call band ----------------------------------------------- */

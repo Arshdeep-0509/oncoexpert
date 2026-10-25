@@ -47,6 +47,30 @@ export const aboutImages = {
     width: 2000,
     height: 1333,
   },
+  /* GI and Uro-Oncology tiles (Surgical Expertise) ------------------------------------------- */
+
+  // GI Oncology: the stomach and intestines on an anatomical model (Home's Colorectal photo, reused).
+  expertiseGi: {
+    file: "specialty-colorectal-model.jpg",
+    src: "/images/home/specialty-colorectal-model.jpg",
+    pexelsId: 8471918,
+    alt: "Anatomical model of the abdomen showing the stomach and intestines",
+    credit: { photographer: "MART PRODUCTION", url: pexels(8471918) },
+    focal: "50% 60%",
+    width: 2000,
+    height: 1333,
+  },
+  // Uro-Oncology: a pair of kidney models with their ureters, in the middle of the photo.
+  expertiseUro: {
+    file: "uro-oncology-kidneys.jpg",
+    src: `${BASE}/uro-oncology-kidneys.jpg`,
+    pexelsId: 7269618,
+    alt: "Anatomical models of a pair of kidneys with their ureters, among other organ models",
+    credit: { photographer: "Kaboompics", url: pexels(7269618) },
+    focal: "45% 78%",
+    width: 2000,
+    height: 1333,
+  },
   clinicSouthEnd: {
     file: "south-end-clinics.webp",
     src: "/images/locations/south-end-clinics.webp",

@@ -94,14 +94,13 @@ export type ExpertiseContent = {
   title: string;
   intro: string;
   all: { label: string; href: string };
-  /** Cards with an `image` are photo tiles (Robotic: the large one); the others are icon tiles. */
+  /** Each card's photo (Robotic: the large tile). */
   cards: readonly {
     icon: ExpertiseIcon;
     title: string;
     body: string;
     link: { label: string; href: string };
-    /** Photo tiles only. */
-    image?: AboutImageKey;
+    image: AboutImageKey;
   }[];
   a11y: { list: string };
 };
@@ -239,12 +238,14 @@ export const expertise = {
       title: "GI Oncology",
       body: "Expertise in esophageal,stomach, and colorectal cancer resections.",
       link: { label: "Learn more", href: "/colon-cancer-treatment-bangalore/" },
+      image: "expertiseGi",
     },
     {
       icon: "uro",
       title: "Uro-Oncology",
       body: "Advanced management of prostate, bladder, and kidney malignancies.",
       link: { label: "Learn more", href: "/urology/" },
+      image: "expertiseUro",
     },
     {
       icon: "robotic",

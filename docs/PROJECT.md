@@ -342,7 +342,7 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   (priority 1).
   All 13 blocks built: #hero ("Orbit": gradient ring with the portrait, ticker, stat chips, trust
   marquee), #surgeon (portrait, training-journey timeline, stats band), #robotic (dark band with the
-  da Vinci arms and the 8 features), #specialties (bento grid, swipe row on phones), #services
+  da Vinci arms and the 8 features), #specialties (bento grid of photo tiles, one photo per cancer; swipe row on phones), #services
   (icon cards that draw themselves), #approach (sticky heading, the pillar at mid-screen lit),
   #value ("30–40%" counter, cards, drifting glow), then the shared sections in the soft look
   (#reviews with a link to Google, #videos, #faq + FAQPage JSON-LD, #appointment, #locations,
@@ -370,9 +370,9 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   draw in, a gradient light runs once around each border, hover lift + glow), #journey (desktop:
   pinned for 2.5 screens: a stepper left whose line fills and whose active number scales, a card deck right where each stage flips up in front of the earlier ones; phones: vertical with
   ScrollFillLine, cards slide in from alternating sides; reduced motion: a static list), #quote (the
-  mark draws, words fade in one by one, then the attribution), #expertise (bento: Robotic large with
-  the arms photo, Breast with its photo, GI and Uro icon tiles; a swipe row on phones; hover lifts,
-  zooms the photo, slides the arrow), #experience (the "10+" counts up on a navy band, two logo
+  mark draws, words fade in one by one, then the attribution), #expertise (photo cards in a
+  checkerboard bento, Robotic and Uro wide, each with its own photo; a swipe row on phones; hover
+  lifts, zooms the photo, slides the arrow), #experience (the "10+" counts up on a navy band, two logo
   rings turn behind it, pausable), #why-trust (sticky heading, the card at mid-screen active, as in
   Home's ApproachPillars), then the shared #reviews, #videos, #appointment (page "About Us"),
   #locations, #final-cta. Waiting on the doctor's PENDING items in `content/pages/about-us.ts`.

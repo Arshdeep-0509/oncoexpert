@@ -138,7 +138,7 @@ The **"30–40%" cost saving** is `value.items` (`range: { from: 30, to: 40, suf
 `PENDING DOCTOR` until he confirms it.
 
 **Specialty list.** One entry per cancer in `specialties.items`, in display order: `key`, `name`,
-`body` (the one-liner), `href` (its page) and `image` (only the first, large tile shows a photo).
+`body` (the one-liner), `href` (its page) and `image` (its photo, in `content/pages/home.images.ts`; the first tile is the large one).
 
 - The first entry is the large tile on desktop. Breast is first because it has the rebuilt page.
 - When a specialty gets its rebuilt page, change its `href` to the new path, e.g.

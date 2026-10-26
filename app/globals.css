@@ -8,6 +8,8 @@
 @import "../styles/themes/breast.css";
 @import "../styles/themes/robotic.css";
 @import "../styles/themes/care.css";
+@import "../styles/themes/colorectal.css";
+@import "../styles/themes/endometrial.css";
 
 /* ------------------------------------------------------------------
    Token → utility map. `inline`: each utility reads the CSS variable
@@ -538,16 +540,25 @@
   }
 }
 
-/* Home and the care pages (booking, about): every loop longer than 5s stops while its control is
-   hovered or focused. The shell's two (WhatsApp pulse 8s, action-bar shine 7s) do so on these
-   pages only, so the robotic and breast pages keep their current behaviour. Removing the
-   animation returns both to their resting state (ring hidden under the button, shine parked off
-   the pill). The care selectors are separate rules so Home's stay byte-identical. */
+/* Home, the care pages (booking, about) and the colorectal and endometrial pages: every loop
+   longer than 5s stops while its control is hovered or focused. The shell's two (WhatsApp pulse
+   8s, action-bar shine 7s) do so on these pages only, so the robotic and breast pages keep their
+   current behaviour. Removing the animation returns both to their resting state (ring hidden
+   under the button, shine parked off the pill). Each page's selectors are separate rules so the
+   earlier ones stay byte-identical. */
 [data-theme="home"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
 [data-theme="home"] .cta-shine:is(:hover, :focus-visible)::after {
   animation: none;
 }
 [data-theme="care"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
 [data-theme="care"] .cta-shine:is(:hover, :focus-visible)::after {
+  animation: none;
+}
+[data-theme="colorectal"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
+[data-theme="colorectal"] .cta-shine:is(:hover, :focus-visible)::after {
+  animation: none;
+}
+[data-theme="endometrial"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
+[data-theme="endometrial"] .cta-shine:is(:hover, :focus-visible)::after {
   animation: none;
 }

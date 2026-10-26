@@ -16,7 +16,7 @@
 /* ------------------------------------------------------------------ */
 
 /** One file per theme in styles/themes/<name>.css. */
-export type ThemeName = "home" | "breast" | "robotic" | "care";
+export type ThemeName = "home" | "breast" | "robotic" | "care" | "colorectal" | "endometrial";
 
 /**
  * Header bar sizes and layout (components/layout/header/header-variants.ts), named after the hero

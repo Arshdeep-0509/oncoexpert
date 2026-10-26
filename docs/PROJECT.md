@@ -5,8 +5,10 @@ The site is rebuilt page by page. Most visitors are on phones: design mobile-fir
 
 Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`), **Breast Cancer**
 (`/breast-cancer-treatment-bangalore/`), **Book Appointment** (`/book-your-appoinment-page/`, the live
-URL's spelling, kept for SEO) and **About Us** (`/about-us/`). They share one site shell and one set of
-section components; each page has its own theme, except booking and about, which share the `care` theme.
+URL's spelling, kept for SEO), **About Us** (`/about-us/`), **Colorectal Cancer**
+(`/colon-cancer-treatment-bangalore/`) and **Endometrial Cancer** (`/endometrial-cancer-treatment-bangalore/`).
+They share one site shell and one set of section components; each page has its own theme, except booking
+and about, which share the `care` theme.
 
 ## Stack
 
@@ -54,6 +56,7 @@ components/
     reviews/                 ReviewsCarousel, ReviewCard, Stars, GoogleMark
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, InView, MotionToggle,
                              ProgressRing, Reveal, ScrollFillLine, ScrollVar, Section, SectionHeading,
+                             SectionPlaceholder (a foundation-step stand-in: final id, tone and heading),
                              SwipeRow, text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
   pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
@@ -100,11 +103,13 @@ styles/
   tokens.css                 shared palette, third-party brand colours, neutral defaults for every token
   themes/home.css, themes/breast.css, themes/robotic.css   one theme per page
   themes/care.css            booking + about (one theme: same palette)
+  themes/colorectal.css, themes/endometrial.css   one theme each
 scripts/
   fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
   make-portrait-cutout.mjs   one-off: Dr. Sunil's head cut out of the portrait (Home hero ring)
 public/images/               brand/ locations/ home/ breast-cancer/ robotic/ book-appointment/ about-us/
+                             colorectal-cancer/ endometrial-cancer/
 ```
 
 ### Naming
@@ -376,3 +381,17 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   rings turn behind it, pausable), #why-trust (sticky heading, the card at mid-screen active, as in
   Home's ApproachPillars), then the shared #reviews, #videos, #appointment (page "About Us"),
   #locations, #final-cta. Waiting on the doctor's PENDING items in `content/pages/about-us.ts`.
+- Colorectal + Endometrial: foundation. Routes on the live URLs (`/colon-cancer-treatment-bangalore/`,
+  `/endometrial-cancer-treatment-bangalore/`) in the registry and sitemap; the Services menu already
+  pointed there. Every line of both live pages, verbatim and SOURCE-tagged, in
+  `content/pages/colorectal-cancer.ts` / `endometrial-cancer.ts` (the colorectal "Your Path to Recovery"
+  is in the live markup but hidden on every device; it is kept). The dashboard total is computed
+  (`totalCases`, 93; the live page says 78: PENDING DOCTOR). Themes: `colorectal` (awareness blue, teal
+  accent) and `endometrial` (peach and coral, plum ink), Fraunces display as on the breast page, contrast
+  tables in their headers. Image manifests (`npm run images colorectal|endometrial`: 7 Pexels photos, an
+  og.jpg each; the portrait, robotic photos and Home's specialty photos reused). Sections are
+  `SectionPlaceholder`s with their final ids, in order. Colorectal: #hero, #approach, #path,
+  #techniques, #quality-of-life, #outcomes, #advanced-cases, #surgeon, #reviews, #videos, #appointment,
+  #locations, #final-cta. Endometrial: #hero, #clinical, #symptoms, #precision, #sentinel-node,
+  #packages, #surgeon, #reviews, #videos, #appointment, #locations, #final-cta. The shell's long loops
+  stop on hover/focus here as on Home. Waiting on the doctor's PENDING items in both content files.

@@ -5,6 +5,8 @@
  *   npm run images home         content/pages/home.images.ts
  *   npm run images book         content/pages/book-appointment.images.ts
  *   npm run images about        content/pages/about-us.images.ts
+ *   npm run images colorectal   content/pages/colorectal-cancer.images.ts
+ *   npm run images endometrial  content/pages/endometrial-cancer.images.ts
  *   npm run images breast       a unique prefix of a manifest name works too
  *
  * Reads `file`, `src` and `pexelsId` from content/pages/<page>.images.ts (the single source of
@@ -239,6 +241,8 @@ const ogRecipes = {
   home: brandCard,
   "about-us": careCard("images/brand/dr-sunil-navalgund.png", "top"),
   "book-appointment": careCard("images/book-appointment/consultation-report.jpg", "attention"),
+  "colorectal-cancer": coverFrom("consultation.jpg"),
+  "endometrial-cancer": coverFrom("woman-smiling.jpg"),
 };
 
 const ogDest = path.join(outDir, "og.jpg");

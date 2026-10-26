@@ -50,7 +50,7 @@ export const colorectalImages = {
     pexelsId: 8471918,
     alt: "Anatomical model of the abdomen showing the intestines",
     credit: { photographer: "MART PRODUCTION", url: pexels(8471918) },
-    focal: "50% 60%",
+    focal: "80% 55%",
     width: 2000,
     height: 1333,
   },

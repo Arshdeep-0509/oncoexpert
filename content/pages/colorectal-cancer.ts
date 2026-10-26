@@ -64,15 +64,35 @@ export type HeroContent = {
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   /** "78+ Complex Surgeries" with its caption. */
   stat: Stat & { caption: string };
-  /** The round badge beside the stat. */
+  /** The round badge beside the stat (not shown until the doctor confirms it). */
   badge: Stat;
+  /** Short labels under the buttons. */
+  trust: readonly { icon: TrustIcon; label: string }[];
+  /** The photo card in front of the colon line art. */
   image: ColorectalImageKey;
+  a11y: { pause: string; play: string; trust: string };
 };
+
+export type TrustIcon = "robotic" | "laparoscopic" | "preservation";
 
 export type ApproachContent = {
   title: string;
+  /** Words of `title` set in the serif italic accent. */
+  emphasis: string;
   intro: string;
-  cards: readonly { icon: ApproachIcon; title: string; tagline?: string; body: string }[];
+  cards: readonly {
+    icon: ApproachIcon;
+    title: string;
+    tagline?: string;
+    body: string;
+    /** Short line that expands on hover / tap: key words of `body`. */
+    detail: string;
+    /** Large bento tile (desktop: a tall tile with a photo). */
+    image?: ColorectalImageKey;
+  }[];
+  /** The small ISR diagram on "Low Stoma Rates" (three frames). */
+  isrDiagram: string;
+  a11y: { cards: string; swipeHint: string };
 };
 
 export type PathContent = {
@@ -171,7 +191,16 @@ export const hero = {
   // SOURCE: EXISTING
   // PENDING DOCTOR: "5k+" has no label on the live page. 5,000+ what (patients? consultations?)
   badge: { value: 5, suffix: "k+", label: "" },
-  image: "anatomyModel",
+  // SOURCE: NEW (labels taken from the page's own text: "Da Vinci Excellence", "Laparoscopic
+  // Surgery", "Organ Preservation")
+  trust: [
+    { icon: "robotic", label: "Da Vinci robotic" },
+    { icon: "laparoscopic", label: "Laparoscopic" },
+    { icon: "preservation", label: "Organ preservation" },
+  ],
+  image: "consultation",
+  // SOURCE: NEW (control and screen-reader labels)
+  a11y: { pause: "Pause animation", play: "Play animation", trust: "Surgical approaches" },
 } as const satisfies HeroContent;
 
 // SOURCE: NEW (breadcrumb; also published as BreadcrumbList JSON-LD)
@@ -191,41 +220,58 @@ export const breadcrumb = {
 export const approach = {
   // SOURCE: EXISTING
   title: "Precision Surgery, Compassionate Care",
+  // SOURCE: NEW (styling only: these words in the serif italic accent)
+  emphasis: "Compassionate Care",
   intro: "Our multi-disciplinary approach focuses on the intersection of medical excellence and patient lifestyle.",
-  // SOURCE: EXISTING (titles, taglines, text); NEW (icon keys)
+  // SOURCE: EXISTING (titles, taglines, text); NEW (icon keys, photos, and `detail`: key words
+  // lifted from each card's own text, shown on hover / tap)
   cards: [
     {
       icon: "plans",
       title: "Personalized Plans",
       body: "Every tumor is unique. We tailor treatment based on genetic profiling and specific patient needs.",
+      detail: "Genetic profiling · Specific patient needs",
     },
     {
       icon: "robotic",
       title: "Robotic Surgery",
       tagline: "Da Vinci Excellence",
       body: "Unmatched precision in narrow pelvic spaces, leading to better nerve preservation and faster recovery.",
+      detail: "Nerve preservation · Faster recovery",
+      image: "roboticArms",
     },
     {
       icon: "preservation",
       title: "Organ Preservation",
       body: "Our goal is to treat the cancer while maintaining natural bowel and sexual function wherever possible.",
+      detail: "Bowel function · Sexual function",
+      image: "anatomyModel",
     },
     {
       icon: "stoma",
       title: "Low Stoma Rates",
       body: "Advanced Inter-Sphincteric Resection (ISR) techniques significantly reduce the need for permanent bags.",
+      detail: "Inter-Sphincteric Resection (ISR)",
     },
     {
       icon: "advanced",
       title: "Advanced Care",
       body: "Access to the latest chemotherapy protocols and targeted immunotherapies integrated with surgery.",
+      detail: "Chemotherapy · Targeted immunotherapies",
     },
     {
       icon: "stage-four",
       title: "Stage IV Options",
       body: "Curative intents for metastatic cases through liver-first or synchronous resection strategies.",
+      detail: "Liver-first · Synchronous resection",
     },
   ],
+  // SOURCE: NEW (screen-reader label of the diagram)
+  // PENDING DOCTOR: check the three-frame ISR diagram on "Low Stoma Rates" and this description.
+  isrDiagram:
+    "Diagram: the low rectum and the inner sphincter muscle are removed, then the bowel is joined just above the outer sphincter, so no permanent bag is needed",
+  // SOURCE: NEW (swipe hint + screen-reader label)
+  a11y: { cards: "Our approach", swipeHint: "Swipe" },
 } as const satisfies ApproachContent;
 
 /* ------------------------------------------------------------------ */

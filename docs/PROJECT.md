@@ -79,6 +79,10 @@ components/
   pages/about-us/            the about page: AboutHero (+ AboutHeadline, ProfilePortrait), Credentials,
                              Journey (pinned on desktop), QuoteSection; about.css (prefix `ab-`),
                              about-styles.ts
+  pages/colorectal-cancer/   the colorectal page: Hero (+ HeroHeadline, HeroVisual, the islands HeroCounter
+                             and HeroMotion; hero.css, prefix `cx-`, hero-styles.ts; Home's HeroParallax),
+                             Approach (+ ApproachCard, IsrDiagram, the island ApproachTap; approach.css,
+                             prefix `cxa-`, approach-styles.ts)
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -395,3 +399,16 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   #locations, #final-cta. Endometrial: #hero, #clinical, #symptoms, #precision, #sentinel-node,
   #packages, #surgeon, #reviews, #videos, #appointment, #locations, #final-cta. The shell's long loops
   stop on hover/focus here as on Home. Waiting on the doctor's PENDING items in both content files.
+- Colorectal: #hero and #approach built. #hero: desktop text left, visual right; tablet text, then
+  the visual at 70%; phones the compact visual first. The visual is one SVG line (the colon, in the
+  blue → teal gradient) that draws in ~2s after the intro, with the photo card inside its frame; a
+  glowing dot then travels it every 12s (SVG `animateMotion`, begun and paused by HeroMotion; from
+  768px only). H1 words rise in masks, "Organ Preservation" in the gradient with a drawn underline;
+  the glass stat card counts to "78+" and floats; NEW trust chips; primary button shine; pointer
+  parallax ≤ 12px (desktop). The pause button stops the dot, float and shine (also off-screen).
+  #approach: a bento (desktop 4 columns, Robotic and Organ Preservation the tall photo tiles; tablet
+  2 columns; phones a swipe row). On reveal icons draw, cards stagger in, a gradient light runs once
+  around each border; hover / tap (ApproachTap) lifts the card, fills its icon and shows a NEW detail
+  line; "Low Stoma Rates" plays a three-frame ISR diagram (PENDING DOCTOR). Using shared client
+  components on a new page regroups the shared JavaScript chunks: every other page now lists one more
+  script chunk (same code, ~150 bytes of chunk overhead); their markup and pixels are otherwise unchanged.

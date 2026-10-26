@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
 import {
   advancedCases,
-  approach,
-  hero,
   outcomes,
   pageSlug,
   qualityOfLife,
@@ -21,6 +19,8 @@ import {
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
+import { Hero } from "@/components/pages/colorectal-cancer/Hero";
+import { Approach } from "@/components/pages/colorectal-cancer/Approach";
 
 const page = pages[pageSlug];
 
@@ -32,31 +32,12 @@ export function generateViewport(): Viewport {
 }
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, colorectal theme).
-// Foundation: every section is a placeholder with its final id, in its final order.
+// Built: #hero, #approach. The rest are placeholders with their final ids, in their final order.
 export default function ColorectalCancerPage() {
   return (
     <>
-      {/* 1 #hero  hero gradient */}
-      <SectionPlaceholder
-        id="hero"
-        as="h1"
-        hero
-        title={hero.title}
-        className="bg-(image:--grad-hero)"
-        blocks={[
-          { label: hero.eyebrow, wide: true },
-          { label: `${hero.stat.value}${hero.stat.suffix} ${hero.stat.label}` },
-          { label: hero.ctas.primary.label },
-          { label: hero.ctas.secondary.label },
-        ]}
-      />
-      {/* 2 #approach  alt */}
-      <SectionPlaceholder
-        id="approach"
-        tone="alt"
-        title={approach.title}
-        blocks={approach.cards.map((card) => ({ label: card.title }))}
-      />
+      <Hero /> {/* 1 #hero      hero gradient */}
+      <Approach /> {/* 2 #approach  alt */}
       {/* 3 #path  surface */}
       <SectionPlaceholder
         id="path"

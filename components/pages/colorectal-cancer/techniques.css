@@ -1,0 +1,116 @@
+/* ==================================================================
+   Colorectal #techniques "Minimally Invasive Excellence". Plain CSS, prefix cxt-
+   (techniques-styles.ts).
+   - Below 1024px: the Robotic | Laparoscopic switch (TechniqueSwitch). The thumb slides under the
+     selected tab; the panel's photo and letter crossfade; the badge, title, "Ideal for" pill and
+     the features re-enter (the content is keyed by the selection), features one by one.
+   - Desktop: both sides at once. Hovering or focusing one dims the other; the robotic side's arms
+     photo drifts slowly (stops on hover / focus).
+   Transform and opacity only; with reduced motion everything simply swaps.
+   ================================================================== */
+
+.cxt-thumb {
+  transition: transform 0.45s var(--ease-out-expo);
+}
+.cxt-tabs[data-selected="laparoscopic"] .cxt-thumb {
+  transform: translateX(100%);
+}
+.cxt-tab {
+  transition: opacity 0.3s;
+}
+.cxt-tab[aria-selected="false"] {
+  opacity: 0.75;
+}
+/* The selected tab's label is white on the thumb: a white copy fades in over the ink one. */
+/* Same box as the button (padding included), so a wrapped label wraps the same way. */
+.cxt-tabOn {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-inline: 0.75rem;
+  text-align: center;
+  color: var(--white);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cxt-tabBase {
+  transition: opacity 0.3s;
+}
+.cxt-tab[aria-selected="true"] .cxt-tabOn {
+  opacity: 1;
+}
+.cxt-tab[aria-selected="true"] .cxt-tabBase {
+  opacity: 0;
+}
+
+.cxt-layer {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out-expo);
+}
+.cxt-layer[data-active] {
+  opacity: 1;
+}
+
+/* Desktop pair */
+.cxt-side {
+  transition:
+    opacity 0.45s var(--ease-out-expo),
+    transform 0.5s var(--ease-out-expo);
+}
+@media (hover: hover) {
+  .cxt-pair:has(.cxt-side:hover) .cxt-side:not(:hover) {
+    opacity: 0.5;
+  }
+  .cxt-side:hover {
+    transform: translateY(-4px);
+  }
+}
+.cxt-pair:has(.cxt-side:focus-within) .cxt-side:not(:focus-within) {
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cxt-in {
+    animation: cxt-in 0.55s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 0.07s);
+  }
+  .cxt-pop {
+    animation: cxt-pop 0.5s var(--ease-out-expo) both;
+    animation-delay: 0.3s;
+  }
+  .cxt-drift {
+    animation: cxt-drift 18s ease-in-out infinite alternate;
+  }
+  .cxt-side:is(:hover, :focus-within) .cxt-drift {
+    animation-play-state: paused;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cxt-thumb,
+  .cxt-layer,
+  .cxt-side {
+    transition: none;
+  }
+}
+
+@keyframes cxt-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes cxt-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+@keyframes cxt-drift {
+  from {
+    transform: translate(0, 0) scale(1.02);
+  }
+  to {
+    transform: translate(-24px, 14px) scale(1.08);
+  }
+}

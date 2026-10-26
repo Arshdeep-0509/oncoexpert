@@ -1,14 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import {
-  advancedCases,
-  outcomes,
-  pageSlug,
-  qualityOfLife,
-  recoveryPath,
-  surgeon,
-  techniques,
-} from "@/content/pages/colorectal-cancer";
+import { advancedCases, outcomes, pageSlug, surgeon } from "@/content/pages/colorectal-cancer";
 import {
   appointmentSection,
   finalCtaSection,
@@ -21,6 +13,9 @@ import { pageMetadata, pageViewport } from "@/lib/seo";
 import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
 import { Hero } from "@/components/pages/colorectal-cancer/Hero";
 import { Approach } from "@/components/pages/colorectal-cancer/Approach";
+import { RecoveryPath } from "@/components/pages/colorectal-cancer/RecoveryPath";
+import { Techniques } from "@/components/pages/colorectal-cancer/Techniques";
+import { QualityOfLife } from "@/components/pages/colorectal-cancer/QualityOfLife";
 
 const page = pages[pageSlug];
 
@@ -32,32 +27,15 @@ export function generateViewport(): Viewport {
 }
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, colorectal theme).
-// Built: #hero, #approach. The rest are placeholders with their final ids, in their final order.
+// Built: #hero, #approach, #path, #techniques, #quality-of-life. The rest are placeholders with their final ids, in their final order.
 export default function ColorectalCancerPage() {
   return (
     <>
       <Hero /> {/* 1 #hero      hero gradient */}
       <Approach /> {/* 2 #approach  alt */}
-      {/* 3 #path  surface */}
-      <SectionPlaceholder
-        id="path"
-        title={recoveryPath.title}
-        blocks={recoveryPath.steps.map((step) => ({ label: step.title }))}
-      />
-      {/* 4 #techniques  warm */}
-      <SectionPlaceholder
-        id="techniques"
-        tone="warm"
-        title={techniques.title}
-        blocks={[{ label: techniques.robotic.title }, { label: techniques.laparoscopic.title }]}
-      />
-      {/* 5 #quality-of-life  blue band */}
-      <SectionPlaceholder
-        id="quality-of-life"
-        tone="plum"
-        title={qualityOfLife.title}
-        blocks={qualityOfLife.stoma.map((stat) => ({ label: `${stat.value}${stat.suffix} ${stat.label}` }))}
-      />
+      <RecoveryPath /> {/* 3 #path      surface, pinned on desktop */}
+      <Techniques /> {/* 4 #techniques  warm */}
+      <QualityOfLife /> {/* 5 #quality-of-life  blue band */}
       {/* 6 #outcomes  surface */}
       <SectionPlaceholder
         id="outcomes"

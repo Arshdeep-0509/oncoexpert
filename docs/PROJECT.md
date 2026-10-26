@@ -82,7 +82,9 @@ components/
   pages/colorectal-cancer/   the colorectal page: Hero (+ HeroHeadline, HeroVisual, the islands HeroCounter
                              and HeroMotion; hero.css, prefix `cx-`, hero-styles.ts; Home's HeroParallax),
                              Approach (+ ApproachCard, IsrDiagram, the island ApproachTap; approach.css,
-                             prefix `cxa-`, approach-styles.ts)
+                             prefix `cxa-`, approach-styles.ts), RecoveryPath (+ the island PathTimeline,
+                             path-road.ts; path.css, prefix `cxp-`), Techniques (+ TechniqueDetails, the island
+                             TechniqueSwitch; techniques.css, prefix `cxt-`), QualityOfLife (+ the island StomaChart)
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -412,3 +414,15 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   line; "Low Stoma Rates" plays a three-frame ISR diagram (PENDING DOCTOR). Using shared client
   components on a new page regroups the shared JavaScript chunks: every other page now lists one more
   script chunk (same code, ~150 bytes of chunk overhead); their markup and pixels are otherwise unchanged.
+- Colorectal: #path, #techniques and #quality-of-life built (the anchors from the foundation are kept).
+  #path: desktop pins for 2 screens (a tall box, sticky stage): a curved road draws with the scroll
+  (path-road.ts: six milestones, a Catmull-Rom curve through them), the milestone buttons on it light up,
+  the active card rises into the deck and the step photo crossfades. Tablets (and desktops with reduced
+  motion): a snap row with a progress bar and a milestone row. Phones: a vertical ScrollFillLine
+  timeline, cards sliding in from alternating sides. Milestone buttons jump to a step (page scroll
+  through Lenis when pinned, the row otherwise; aria-current="step"). #techniques: below lg an ARIA
+  tab switch Robotic | Laparoscopic (arrow keys, roving tab stop) whose panel morphs (photo and letter
+  crossfade, details re-enter with a stagger); desktop shows both sides, hovering or focusing one dims
+  the other, the robotic arms photo drifts (stops on hover / focus); link to /robotic-surgery/.
+  #quality-of-life: the 60 / 36 / 4 donut (SurgeryNumbers technique) draws segment by segment, the
+  legend counts up, hover (mouse) or tap highlights a pair; a screen-reader table carries the figures.

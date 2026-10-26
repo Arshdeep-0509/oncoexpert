@@ -98,9 +98,12 @@ export type ApproachContent = {
 export type PathContent = {
   title: string;
   intro: string;
-  /** Rendered "01" … "06" from the order (the live numbers). */
-  steps: readonly { icon: PathIcon; title: string; body: string }[];
-  a11y: { steps: string };
+  /** Words of `title` set in the serif italic accent. */
+  emphasis: string;
+  /** Rendered "01" … "06" from the order (the live numbers). Each step's photo crossfades in (desktop). */
+  steps: readonly { icon: PathIcon; title: string; body: string; image: ColorectalImageKey }[];
+  /** `step`: the milestone buttons' label, "Step 3: Staging". */
+  a11y: { steps: string; milestones: string; step: string; progress: string };
 };
 
 type Technique = {
@@ -115,9 +118,14 @@ type Technique = {
 
 export type TechniquesContent = {
   title: string;
+  /** Words of `title` set in the serif italic accent. */
+  emphasis: string;
   idealForLabel: string;
   robotic: Technique;
   laparoscopic: Technique;
+  /** Under the robotic side: to the robotic surgery page. */
+  link: { label: string; href: string };
+  a11y: { tabs: string };
 };
 
 export type QualityOfLifeContent = {
@@ -126,7 +134,7 @@ export type QualityOfLifeContent = {
   body: string;
   /** Share of ultra-low rectal cancer patients, %. The three add up to 100. */
   stoma: readonly Stat[];
-  a11y: { chart: string };
+  a11y: { chart: string; outcome: string; share: string };
 };
 
 export type OutcomesContent = {
@@ -282,18 +290,25 @@ export const recoveryPath = {
   // SOURCE: EXISTING. On the live page this block is in the markup but hidden on every device
   // (desktop, tablet and phone), so no visitor sees it there today.
   title: "Your Path to Recovery",
+  // SOURCE: NEW (styling only)
+  emphasis: "Recovery",
   intro: "A structured 6-step journey from diagnosis to long-term health.",
-  // SOURCE: EXISTING (titles, text); NEW (icon keys)
+  // SOURCE: EXISTING (titles, text); NEW (icon keys, photos)
   steps: [
-    { icon: "colonoscopy", title: "Colonoscopy", body: "Initial biopsy & imaging" },
-    { icon: "scan", title: "PET-CT Scan", body: "Full body mapping" },
-    { icon: "staging", title: "Staging", body: "MDT Review & Planning" },
-    { icon: "planning", title: "Planning", body: "Pre-op optimization" },
-    { icon: "surgery", title: "Surgery", body: "Robotic/Laparoscopic" },
-    { icon: "recovery", title: "Recovery", body: "ERAS Protocol Support" },
+    { icon: "colonoscopy", title: "Colonoscopy", body: "Initial biopsy & imaging", image: "anatomyModel" },
+    { icon: "scan", title: "PET-CT Scan", body: "Full body mapping", image: "imagingScan" },
+    { icon: "staging", title: "Staging", body: "MDT Review & Planning", image: "consultationReport" },
+    { icon: "planning", title: "Planning", body: "Pre-op optimization", image: "doctor" },
+    { icon: "surgery", title: "Surgery", body: "Robotic/Laparoscopic", image: "laparoscopy" },
+    { icon: "recovery", title: "Recovery", body: "ERAS Protocol Support", image: "recoveryWalk" },
   ],
-  // SOURCE: NEW (screen-reader label)
-  a11y: { steps: "Your path to recovery, step by step" },
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    steps: "Your path to recovery, step by step",
+    milestones: "Go to a step",
+    step: "Step",
+    progress: "Progress through the steps",
+  },
 } as const satisfies PathContent;
 
 /* ------------------------------------------------------------------ */
@@ -303,6 +318,9 @@ export const recoveryPath = {
 export const techniques = {
   // SOURCE: EXISTING
   title: "Minimally Invasive Excellence",
+  // SOURCE: NEW (styling only)
+  emphasis: "Excellence",
+  // SOURCE: EXISTING
   idealForLabel: "Ideal for:",
   robotic: {
     letter: "R",
@@ -330,6 +348,10 @@ export const techniques = {
     idealFor: "Most Colon and upper Rectal cancers.",
     image: "laparoscopy",
   },
+  // SOURCE: NEW (link label, as on the breast page)
+  link: { label: "Explore robotic surgery", href: "/robotic-surgery/" },
+  // SOURCE: NEW (screen-reader label of the Robotic | Laparoscopic switch)
+  a11y: { tabs: "Compare surgical approaches" },
 } as const satisfies TechniquesContent;
 
 /* ------------------------------------------------------------------ */
@@ -347,8 +369,8 @@ export const qualityOfLife = {
     { value: 36, suffix: "%", label: "Temporary Stoma" },
     { value: 4, suffix: "%", label: "Permanent Stoma" },
   ],
-  // SOURCE: NEW (screen-reader label)
-  a11y: { chart: "Stoma outcomes after rectal cancer surgery" },
+  // SOURCE: NEW (screen-reader table: caption and column headings)
+  a11y: { chart: "Stoma outcomes after rectal cancer surgery", outcome: "Outcome", share: "Share of patients" },
 } as const satisfies QualityOfLifeContent;
 
 /* ------------------------------------------------------------------ */

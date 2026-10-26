@@ -54,6 +54,28 @@ export const colorectalImages = {
     width: 2000,
     height: 1333,
   },
+  // #path, PET-CT step: the breast page's licensed photo (Pexels).
+  imagingScan: {
+    file: "imaging-scan.jpg",
+    src: "/images/breast-cancer/imaging-scan.jpg",
+    pexelsId: 15277954,
+    alt: "Patient being prepared for an advanced imaging scan",
+    credit: { photographer: "Charlss GonzHu", url: pexels(15277954) },
+    focal: "60% 50%",
+    width: 2000,
+    height: 1333,
+  },
+  // #path, Staging step: the booking page's licensed photo (Pexels).
+  consultationReport: {
+    file: "consultation-report.jpg",
+    src: "/images/book-appointment/consultation-report.jpg",
+    pexelsId: 39192334,
+    alt: "A doctor going through a medical report with a patient at the desk",
+    credit: { photographer: "Vitaly Gariev", url: pexels(39192334) },
+    focal: "60% 55%",
+    width: 2000,
+    height: 1125,
+  },
 
   /* New stock photos ------------------------------------------------- */
 

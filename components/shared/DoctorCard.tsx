@@ -37,7 +37,7 @@ type DoctorCardProps = {
   emphasis?: string;
   /** Chips under the name (soft look). */
   badges?: readonly { icon: DoctorIcon; label: string }[];
-  /** Label / value cards under the bio (classic look). */
+  /** Label / value cards under the bio (both looks; soft: smaller, with the theme accent). */
   credentials?: readonly { icon: DoctorIcon; label: string; value: string }[];
   /** The appointment button (optional: a page may show only `link`). */
   cta?: { label: string; service: AppointmentService };
@@ -99,7 +99,7 @@ export function DoctorCard(props: DoctorCardProps) {
 
 type TextProps = DoctorCardProps & { titleId: string };
 
-function SoftText({ label, name, title, bio, emphasis, badges, stats, cta, link, titleId }: TextProps) {
+function SoftText({ label, name, title, bio, emphasis, badges, stats, credentials, cta, link, titleId }: TextProps) {
   return (
     <Reveal className="lg:col-span-7" delay={0.08}>
       <Eyebrow>{label}</Eyebrow>
@@ -129,6 +129,27 @@ function SoftText({ label, name, title, bio, emphasis, badges, stats, cta, link,
         </ul>
       ) : null}
       <p className="mt-6 measure text-[1.0625rem] leading-[1.8] text-text md:text-lg">{renderBio(bio, emphasis)}</p>
+      {credentials?.length ? (
+        <dl className="mt-6 grid gap-3 sm:grid-cols-2">
+          {credentials.map((c) => {
+            const Icon = icons[c.icon];
+            return (
+              <div
+                key={c.label}
+                className="flex items-start gap-3 rounded-xl bg-surface p-4 ring-1 shadow-soft-sm ring-line"
+              >
+                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+                  <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">{c.label}</dt>
+                  <dd className="mt-1 font-semibold text-ink">{c.value}</dd>
+                </div>
+              </div>
+            );
+          })}
+        </dl>
+      ) : null}
       {link ? (
         <div className="mt-8 flex flex-col gap-3 md:flex-row md:flex-wrap">
           {cta ? <AppointmentButton {...cta} arrow fullWidthOnMobile /> : null}

@@ -47,6 +47,18 @@ export const endometrialImages = {
     height: 1335,
   },
 
+  // #precision, Advanced Laparoscopy: the colorectal page's licensed photo (Pexels).
+  laparoscopy: {
+    file: "laparoscopy.jpg",
+    src: "/images/colorectal-cancer/laparoscopy.jpg",
+    pexelsId: 26212702,
+    alt: "Surgical team performing keyhole surgery, the camera view on the monitor",
+    credit: { photographer: "shirin olyaei", url: pexels(26212702) },
+    focal: "50% 50%",
+    width: 2000,
+    height: 1333,
+  },
+
   /* New stock photos ------------------------------------------------- */
 
   consultation: {

@@ -56,8 +56,7 @@ components/
     reviews/                 ReviewsCarousel, ReviewCard, Stars, GoogleMark
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, InView, MotionToggle,
                              ProgressRing, Reveal, ScrollFillLine, ScrollVar, Section, SectionHeading,
-                             SectionPlaceholder (a foundation-step stand-in: final id, tone and heading),
-                             SwipeRow, text-styles.ts,
+                             SwipeRow (`initialIndex?`: phones start on that card), text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
   pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
                              Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
@@ -88,7 +87,10 @@ components/
                              Outcomes (outcomes.css, prefix `cxo-`), HopeBand (hope.css, prefix `cxh-`)
   pages/endometrial-cancer/  the endometrial page: Hero (+ HeroVisual, the islands HeroToggle and HeroBloom →
                              lazy HeroBloomLayer, desktop only; hero.css, prefix `ex-`, hero-styles.ts),
-                             ClinicalExcellence, Symptoms (+ the island SymptomCard; symptoms.css, prefix `exs-`)
+                             ClinicalExcellence, Symptoms (+ the island SymptomCard; symptoms.css, prefix `exs-`),
+                             Precision (+ PrecisionDetails, the island PrecisionSwitch; precision.css, prefix
+                             `exp-`), SentinelNode (+ the island SentinelDiagram; sentinel.css, prefix `exn-`),
+                             Packages (+ PackageCard; packages.css, prefix `epk-`)
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -453,3 +455,19 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   description is revealed in place (it keeps its space: transform and opacity only, no height
   animation), in the FAQ cards' language; on phones every card is open. Then a NEW reassurance line
   (PENDING DOCTOR) and "Book Consultation".
+- Endometrial: complete (all 12 sections). #precision: the colorectal comparison pattern, page-specific
+  (features are icon + title + text, the switches have their own labels): below lg an ARIA tab
+  switch "Robotic Expertise" | "Minimally Invasive" whose panel re-enters; desktop both cards, hover /
+  focus dims the other; the robotic card's round "lens" zooms slowly (the 10x magnification idea;
+  stops on hover / focus). #sentinel-node: an SVG explainer (sentinel.css): the lymph paths draw, a
+  green ICG tracer (`--tracer`, endometrial theme) travels to the first node, which lights up as the
+  sentinel node; plays once in view, with a Replay button; the three benefits stagger in. #packages:
+  three cards, prices from numbers counting up (en-IN grouping), checks drawing in turn; Robotic is
+  featured (gradient border, "Premium" ribbon, raised); each button opens the form with its package
+  as the note; tablets one wide card per row, featured in the middle; phones a swipe row starting on
+  the featured card (SwipeRow `initialIndex`); a NEW pricing note (PENDING DOCTOR). #surgeon: the
+  shared DoctorCard (soft) with the EXISTING role, heading, "15+ YEARS EXPERIENCE" counting up, the
+  Education / Expertise facts (soft `credentials`) and "Book Appointment with Dr. Sunil". Then the
+  shared #reviews (the colon cancer review hidden here by default, `showColonReview`, PENDING DOCTOR),
+  #videos, #appointment (page "Endometrial Cancer"), #locations, #final-cta. Waiting on the doctor's
+  PENDING items in `content/pages/endometrial-cancer.ts`.

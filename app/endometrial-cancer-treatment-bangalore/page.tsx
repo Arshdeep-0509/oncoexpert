@@ -1,20 +1,24 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { packages, pageSlug, precision, sentinel, surgeon } from "@/content/pages/endometrial-cancer";
-import {
-  appointmentSection,
-  finalCtaSection,
-  locationsSection,
-  reviewsSection,
-  videosSection,
-} from "@/content/shared/sections";
-import { formatRupees } from "@/lib/format";
+import { pageName, pageSlug, shared, surgeon } from "@/content/pages/endometrial-cancer";
+import { endometrialImages } from "@/content/pages/endometrial-cancer.images";
+import { reviewsFor } from "@/content/shared/reviews";
+import { reviewsSection, videosSection } from "@/content/shared/sections";
+import { keepLastWords } from "@/lib/format";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
-import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
 import { Hero } from "@/components/pages/endometrial-cancer/Hero";
 import { ClinicalExcellence } from "@/components/pages/endometrial-cancer/ClinicalExcellence";
 import { Symptoms } from "@/components/pages/endometrial-cancer/Symptoms";
+import { Precision } from "@/components/pages/endometrial-cancer/Precision";
+import { SentinelNode } from "@/components/pages/endometrial-cancer/SentinelNode";
+import { Packages } from "@/components/pages/endometrial-cancer/Packages";
+import { DoctorCard } from "@/components/shared/DoctorCard";
+import { Reviews } from "@/components/shared/Reviews";
+import { Videos } from "@/components/shared/Videos";
+import { AppointmentSection } from "@/components/shared/AppointmentSection";
+import { Locations } from "@/components/shared/Locations";
+import { FinalCta } from "@/components/shared/FinalCta";
 
 const page = pages[pageSlug];
 
@@ -25,54 +29,51 @@ export function generateViewport(): Viewport {
   return pageViewport(page);
 }
 
+const portrait = endometrialImages[surgeon.image];
+const finalImage = endometrialImages[shared.finalImage];
+const factIcons = { Education: "graduation-cap", Expertise: "stethoscope" } as const;
+
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, endometrial theme).
-// Built: #hero, #clinical, #symptoms. The rest are placeholders with their final ids, in their final order.
+// Tones alternate so no two tints touch: peach and apricot bands between white ones, the plum
+// final band last.
 export default function EndometrialCancerPage() {
   return (
     <>
-      <Hero /> {/* 1 #hero      peach gradient */}
-      <ClinicalExcellence /> {/* 2 #clinical  warm band */}
-      <Symptoms /> {/* 3 #symptoms  surface */}
-      {/* 4 #precision  alt */}
-      <SectionPlaceholder
-        id="precision"
-        tone="alt"
-        title={precision.title}
-        blocks={[{ label: precision.robotic.title }, { label: precision.laparoscopic.title }]}
-      />
-      {/* 5 #sentinel-node  surface */}
-      <SectionPlaceholder
-        id="sentinel-node"
-        title={sentinel.title}
-        blocks={sentinel.benefits.map((benefit) => ({ label: benefit.title }))}
-      />
-      {/* 6 #packages  warm */}
-      <SectionPlaceholder
-        id="packages"
-        tone="warm"
-        title={packages.title}
-        blocks={packages.packages.map((pkg) => ({ label: `${pkg.name} · ${formatRupees(pkg.amount)}` }))}
-      />
-      {/* 7 #surgeon  surface */}
-      <SectionPlaceholder
+      <Hero /> {/* 1  #hero           peach gradient */}
+      <ClinicalExcellence /> {/* 2  #clinical       warm band */}
+      <Symptoms /> {/* 3  #symptoms       surface */}
+      <Precision /> {/* 4  #precision      alt */}
+      <SentinelNode /> {/* 5  #sentinel-node  surface */}
+      <Packages /> {/* 6  #packages       warm */}
+      {/* 7  #surgeon: the shared DoctorCard; the live block's two paragraphs as one bio */}
+      <DoctorCard
         id="surgeon"
-        title={surgeon.title}
-        blocks={[
-          { label: `${surgeon.experience.value}${surgeon.experience.suffix} ${surgeon.experience.label}` },
-          { label: surgeon.cta.label },
-        ]}
+        tone="surface"
+        label={surgeon.role}
+        name={surgeon.title}
+        bio={surgeon.paragraphs.join(" ")}
+        stats={[surgeon.experience]}
+        credentials={surgeon.facts.map((f) => ({ ...f, icon: factIcons[f.label] }))}
+        cta={surgeon.cta}
+        image={{ src: portrait.src, alt: portrait.alt }}
       />
-      {/* 8–12: the shared sections */}
-      <SectionPlaceholder id="reviews" tone="alt" title={reviewsSection.title} />
-      <SectionPlaceholder id="videos" title={videosSection.title} />
-      <SectionPlaceholder id="appointment" tone="alt" title={appointmentSection.heading} />
-      <SectionPlaceholder
-        id="locations"
-        tone="warm"
-        title={locationsSection.heading}
-        blocks={locationsSection.items.map((clinic) => ({ label: clinic.name }))}
+      {/* 8–12: shared sections (soft look), re-themed by the endometrial theme */}
+      <Reviews
+        tone="alt"
+        title={reviewsSection.title}
+        reviews={reviewsFor(pageSlug, shared.reviewOrder)}
+        link={reviewsSection.link}
       />
-      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} />
+      <Videos
+        tone="surface"
+        eyebrow={videosSection.eyebrow}
+        title={keepLastWords(videosSection.title)}
+        ids={videosSection.ids}
+        labels={videosSection.a11y}
+      />
+      <AppointmentSection tone="alt" page={pageName} />
+      <Locations tone="warm" />
+      <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );
 }

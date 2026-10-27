@@ -18,6 +18,8 @@ import type { PageMeta, Stat } from "@/content/types";
 import type { EndometrialImageKey } from "@/content/pages/endometrial-cancer.images";
 import { endometrialOgImage } from "@/content/pages/endometrial-cancer.images";
 import type { AppointmentService } from "@/content/site";
+import type { ReviewId } from "@/content/shared/reviews";
+import { reviewsSection } from "@/content/shared/sections";
 
 /* ------------------------------------------------------------------ */
 /* Metadata                                                            */
@@ -100,13 +102,15 @@ export type PrecisionContent = {
   tabs: { robotic: string; laparoscopic: string };
   robotic: Approach;
   laparoscopic: Approach;
+  a11y: { tabs: string };
 };
 
 export type SentinelContent = {
   title: string;
   body: string;
   benefits: readonly { icon: SentinelIcon; title: string; body: string }[];
-  image: EndometrialImageKey;
+  /** Small labels inside the animated diagram, and its controls. */
+  diagram: { tracer: string; sentinel: string; label: string; replay: string };
 };
 
 export type PackagesContent = {
@@ -120,9 +124,14 @@ export type PackagesContent = {
     amount: number;
     features: readonly string[];
     cta: AppointmentCta;
-    /** The middle card is raised on the live page. */
+    /** The highlighted card: gradient border, ribbon, raised; phones start their swipe row on it. */
     featured?: boolean;
   }[];
+  /** The featured card's ribbon. */
+  ribbon: string;
+  disclaimer: string;
+  pendingApproval: string;
+  a11y: { list: string; swipeHint: string };
 };
 
 export type SurgeonContent = {
@@ -271,7 +280,10 @@ export const precision = {
         body: "Most patients return home within 24-48 hours post-surgery.",
       },
     ],
+    image: "laparoscopy",
   },
+  // SOURCE: NEW (screen-reader label of the switch)
+  a11y: { tabs: "Compare surgical approaches" },
 } as const satisfies PrecisionContent;
 
 /* ------------------------------------------------------------------ */
@@ -304,7 +316,15 @@ export const sentinel = {
       body: "Reduces long-term surgical morbidity and chronic discomfort.",
     },
   ],
-  image: "consultation",
+  // SOURCE: NEW (labels in the diagram, its screen-reader description, the replay button)
+  // PENDING DOCTOR: check the diagram (tracer from the uterus along the lymph paths to the first node).
+  diagram: {
+    tracer: "ICG tracer",
+    sentinel: "Sentinel node",
+    label:
+      "Diagram: a green tracer travels from the uterus along the lymph paths and lights up the first node it reaches, the sentinel node",
+    replay: "Replay",
+  },
 } as const satisfies SentinelContent;
 
 /* ------------------------------------------------------------------ */
@@ -335,7 +355,6 @@ export const packages = {
       amount: 190000,
       features: ["Faster Hospital Discharge", "Minimal Scarring", "Sentinel Biopsy Capable"],
       cta: { label: "Select Package", service: "Consultation For Surgery", note: "Package: Laparoscopic" },
-      featured: true,
     },
     {
       name: "Robotic Surgery",
@@ -343,8 +362,19 @@ export const packages = {
       amount: 390000,
       features: ["Highest Precision Level", "Superior Visualization", "3D AI Mapping"],
       cta: { label: "Book Premium", service: "Consultation For Surgery", note: "Package: Robotic Surgery" },
+      // NEW (choice): the highlighted card (the live page raises the middle one).
+      featured: true,
     },
   ],
+  // SOURCE: NEW
+  ribbon: "Premium",
+  // SOURCE: NEW (the breast page's pattern: a plain line under the prices)
+  disclaimer:
+    "Starting prices. Your final cost depends on your diagnosis, the hospital and the length of stay; you receive a clear estimate before treatment.",
+  // PENDING DOCTOR: confirm the prices and approve this line.
+  pendingApproval: "Doctor to confirm the three starting prices and approve the pricing note",
+  // SOURCE: NEW (swipe hint + screen-reader label)
+  a11y: { list: "Care packages", swipeHint: "Swipe" },
 } as const satisfies PackagesContent;
 
 /* ------------------------------------------------------------------ */
@@ -375,8 +405,15 @@ export const surgeon = {
 /* 8–12 · shared sections                                              */
 /* (reviews, videos, appointment, locations, final band:               */
 /*  content/shared/sections.ts, in the live order)                     */
-/* PENDING DOCTOR: the shared reviews include Vasudeva Murthy's, which */
-/* is about colon cancer surgery. Hide it here? (add                   */
-/* excludeOn: ["endometrial-cancer-treatment-bangalore"] to it in      */
-/* content/shared/reviews.ts)                                          */
 /* ------------------------------------------------------------------ */
+
+// PENDING DOCTOR: Vasudeva Murthy's review is about colon cancer surgery. Hidden on this page by
+// default; set showColonReview to true to show it.
+const showColonReview = false as boolean;
+
+export const shared = {
+  // SOURCE: NEW (order): the live order, without the colon cancer review unless the doctor wants it.
+  reviewOrder: reviewsSection.order.filter((id) => showColonReview || id !== "vasudeva-murthy"),
+  // The final call band's photo.
+  finalImage: "motherDaughter",
+} as const satisfies { reviewOrder: readonly ReviewId[]; finalImage: EndometrialImageKey };

@@ -16,6 +16,8 @@ type SwipeRowProps = {
   dots?: boolean;
   /** Small "Swipe" hint shown on phones until the first swipe (text from /content). */
   hint?: string;
+  /** Phones: start the row on this card (e.g. a highlighted one) instead of the first. */
+  initialIndex?: number;
   className?: string;
 };
 
@@ -33,6 +35,7 @@ export function SwipeRow({
   itemClassName,
   dots = true,
   hint,
+  initialIndex,
   className,
 }: SwipeRowProps) {
   const items = React.Children.toArray(children);
@@ -70,6 +73,15 @@ export function SwipeRow({
       scroller.removeEventListener("scroll", onScroll);
     };
   }, [items.length]);
+
+  // Start on a given card (phones only: while the row scrolls), without animating.
+  React.useEffect(() => {
+    const scroller = scrollerRef.current;
+    const card = listRef.current?.children[initialIndex ?? 0] as HTMLElement | undefined;
+    if (!initialIndex || !scroller || !card || scroller.scrollWidth <= scroller.clientWidth) return;
+    scroller.scrollLeft = card.offsetLeft - parseFloat(getComputedStyle(listRef.current!).paddingLeft);
+    setActive(initialIndex);
+  }, [initialIndex]);
 
   const itemClass = (i: number) => (typeof itemClassName === "string" ? itemClassName : itemClassName?.[i]);
 

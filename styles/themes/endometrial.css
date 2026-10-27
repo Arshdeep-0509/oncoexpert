@@ -79,3 +79,23 @@
 [data-theme="endometrial"] :is(h1, h2, h3) {
   text-wrap: balance;
 }
+
+/* The sentinel-node diagram's ICG tracer (fluorescence green). Decoration only, never text:
+   on white 2.6:1, so it always comes with its label in --text. */
+[data-theme="endometrial"] {
+  --tracer: #22b573;
+}
+
+/* Two shared headings, fitted on this page only (as on the colorectal page): the reviews title's
+   wrapper (26ch of the body font) is widened so the title is not six lines on desktop, and "Our
+   Clinical Locations" fits one line on the smallest phones. */
+@media (min-width: 768px) {
+  [data-theme="endometrial"] #reviews div:has(> #reviews-title) {
+    max-width: 34rem;
+  }
+}
+@media (max-width: 389px) {
+  [data-theme="endometrial"] #locations h2 {
+    font-size: 1.75rem;
+  }
+}

@@ -1,0 +1,26 @@
+/* ==================================================================
+   Endometrial #packages: on reveal (the Reveal wrapper's data-revealed + --reveal-delay) each card's
+   feature checkmarks draw in sequence; the prices count up (Counter). Stroke draw only; default =
+   drawn, and reduced motion shows them so. Plain CSS, prefix epk-.
+   ================================================================== */
+
+.epk-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal:not([data-revealed]) .epk-check path {
+    stroke-dashoffset: 1;
+  }
+  [data-revealed] .epk-check path {
+    animation: epk-draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--reveal-delay, 0s) + 0.5s + var(--i, 0) * 0.18s);
+  }
+}
+
+@keyframes epk-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}

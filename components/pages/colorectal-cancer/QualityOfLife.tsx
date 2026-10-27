@@ -1,4 +1,5 @@
 import { qualityOfLife } from "@/content/pages/colorectal-cancer";
+import { keepLastWords } from "@/lib/format";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { StomaChart } from "@/components/pages/colorectal-cancer/StomaChart";
@@ -24,7 +25,7 @@ export function QualityOfLife() {
       <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
         <Reveal className="lg:col-span-5">
           <h2 id="quality-title" className="heading-2 text-white">
-            {qualityOfLife.title}
+            {keepLastWords(qualityOfLife.title)}
           </h2>
           <p className="mt-4 font-display text-xl text-accent-glow md:text-2xl">{qualityOfLife.subtitle}</p>
           <p className="mt-5 measure text-base text-white/80 md:text-lg">{qualityOfLife.body}</p>

@@ -212,7 +212,7 @@ the same values as `variant`.
 | `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                                                                                            |
 | `Locations`          | none (clinics from content)                                                                                                                                                                                                                      |
 | `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                  |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image`                                                                                                                                    |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `stats?` (soft: figures that count up), `image`                                  |
 | `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                     |
 
 - The appointment form is one component. `useAppointment().openAppointment(service?, note?)` scrolls to
@@ -426,3 +426,14 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   the other, the robotic arms photo drifts (stops on hover / focus); link to /robotic-surgery/.
   #quality-of-life: the 60 / 36 / 4 donut (SurgeryNumbers technique) draws segment by segment, the
   legend counts up, hover (mouse) or tap highlights a pair; a screen-reader table carries the figures.
+- Colorectal: complete (all 13 sections). #outcomes: the dashboard's stage counts as bars that grow
+  in turn while their numbers count up, then the total: computed (`totalCases`, 93) unless the doctor
+  switches `totalSource` to "live" (78, the live figure); 5-year survival as ProgressRings; two
+  screen-reader tables and a NEW disclaimer (PENDING DOCTOR). #advanced-cases: a dark band, the photo
+  under a veil, the title rising line by line, the 60% counting up in a breathing glow (stops on hover
+  / focus); "Discuss Curative Strategy" opens the form on "Second Opinion" with the note "Curative
+  strategy". #surgeon: the shared DoctorCard with the EXISTING credentials, "15+ Years" and "95%"
+  counting up, "View Full Profile" → /about-us/. Then the shared #reviews (the colon cancer review
+  first), #videos, #appointment (page "Colorectal Cancer"), #locations, #final-cta. Headings use
+  `text-wrap: pretty` (colorectal theme only) so none ends on one orphaned word. Waiting on the
+  doctor's PENDING items in `content/pages/colorectal-cancer.ts`.

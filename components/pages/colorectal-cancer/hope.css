@@ -1,0 +1,44 @@
+/* ==================================================================
+   Colorectal #advanced-cases "Hope for Advanced Cases": the dark band. The title rises line by
+   line in masks once in view (InView's data-inview); the glow behind the 60% breathes slowly
+   (8s, stops while the band is hovered or focused). Transform and opacity only; reduced motion
+   shows the final state and no breathing. Plain CSS, prefix cxh-.
+   ================================================================== */
+
+.cxh-lineMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.cxh-line {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cxh-title:not([data-inview]) .cxh-line {
+    transform: translateY(110%);
+  }
+  .cxh-title[data-inview] .cxh-line {
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(0.1s + var(--i, 0) * 0.16s);
+  }
+  .cxh-glow {
+    animation: cxh-breathe 8s ease-in-out infinite;
+  }
+  .cxh-band:is(:hover, :focus-within) .cxh-glow {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes cxh-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}

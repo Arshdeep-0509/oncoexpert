@@ -1,12 +1,14 @@
 import * as React from "react";
-import { Award, BadgeCheck, GraduationCap, Stethoscope, type LucideIcon } from "lucide-react";
+import { ArrowRight, Award, BadgeCheck, GraduationCap, Stethoscope, type LucideIcon } from "lucide-react";
 import type { AppointmentService } from "@/content/site";
-import type { SectionLook, SectionTone } from "@/content/types";
+import type { SectionLook, SectionTone, Stat } from "@/content/types";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Chip } from "@/components/ui/Chip";
 import { Reveal } from "@/components/ui/Reveal";
+import { Button } from "@/components/ui/Button";
+import { Counter } from "@/components/ui/Counter";
 import { textStyles } from "@/components/ui/text-styles";
 import { AppointmentButton, type LinkLook } from "@/components/shared/AppointmentButton";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
@@ -37,7 +39,12 @@ type DoctorCardProps = {
   badges?: readonly { icon: DoctorIcon; label: string }[];
   /** Label / value cards under the bio (classic look). */
   credentials?: readonly { icon: DoctorIcon; label: string; value: string }[];
-  cta: { label: string; service: AppointmentService };
+  /** The appointment button (optional: a page may show only `link`). */
+  cta?: { label: string; service: AppointmentService };
+  /** A plain link button after (or instead of) the appointment button, e.g. "View Full Profile". */
+  link?: { label: string; href: string };
+  /** Figures under the title that count up, e.g. "15+ Years · Clinical Experience" (soft look). */
+  stats?: readonly Stat[];
   /** The page's own button styling instead of the Button (classic look). */
   ctaLook?: LinkLook;
   image: { src: string; alt: string };
@@ -92,7 +99,7 @@ export function DoctorCard(props: DoctorCardProps) {
 
 type TextProps = DoctorCardProps & { titleId: string };
 
-function SoftText({ label, name, title, bio, emphasis, badges, cta, titleId }: TextProps) {
+function SoftText({ label, name, title, bio, emphasis, badges, stats, cta, link, titleId }: TextProps) {
   return (
     <Reveal className="lg:col-span-7" delay={0.08}>
       <Eyebrow>{label}</Eyebrow>
@@ -109,10 +116,38 @@ function SoftText({ label, name, title, bio, emphasis, badges, cta, titleId }: T
           ))}
         </ul>
       ) : null}
+      {stats?.length ? (
+        <ul className="mt-6 grid max-w-md grid-cols-2 gap-3">
+          {stats.map((s, i) => (
+            <li key={s.label} className="rounded-xl bg-surface p-4 ring-1 shadow-soft-sm ring-line md:p-5">
+              <p className="font-display text-[1.75rem] leading-none font-semibold text-accent md:text-[2rem]">
+                <Counter value={s.value} prefix={s.prefix} suffix={s.suffix} delay={0.3 + i * 0.15} reserveWidth />
+              </p>
+              <p className="mt-2 text-sm leading-snug text-muted">{s.label}</p>
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <p className="mt-6 measure text-[1.0625rem] leading-[1.8] text-text md:text-lg">{renderBio(bio, emphasis)}</p>
-      <div className="mt-8">
-        <AppointmentButton {...cta} arrow fullWidthOnMobile />
-      </div>
+      {link ? (
+        <div className="mt-8 flex flex-col gap-3 md:flex-row md:flex-wrap">
+          {cta ? <AppointmentButton {...cta} arrow fullWidthOnMobile /> : null}
+          <Button
+            href={link.href}
+            cta={link.label}
+            variant={cta ? "secondary" : "primary"}
+            icon={ArrowRight}
+            fullWidthOnMobile
+          >
+            {link.label}
+          </Button>
+        </div>
+      ) : cta ? (
+        // Pages without a link keep exactly this markup.
+        <div className="mt-8">
+          <AppointmentButton {...cta} arrow fullWidthOnMobile />
+        </div>
+      ) : null}
     </Reveal>
   );
 }
@@ -144,9 +179,11 @@ function ClassicText({ label, name, lead, bio, credentials, cta, ctaLook, titleI
           })}
         </dl>
       ) : null}
-      <div className="mt-9">
-        <AppointmentButton {...cta} look={ctaLook} arrow />
-      </div>
+      {cta ? (
+        <div className="mt-9">
+          <AppointmentButton {...cta} look={ctaLook} arrow />
+        </div>
+      ) : null}
     </Reveal>
   );
 }

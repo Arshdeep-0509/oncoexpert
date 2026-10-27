@@ -18,6 +18,7 @@ import type { PageMeta, Stat } from "@/content/types";
 import type { ColorectalImageKey } from "@/content/pages/colorectal-cancer.images";
 import { colorectalOgImage } from "@/content/pages/colorectal-cancer.images";
 import type { AppointmentService } from "@/content/site";
+import type { ReviewId } from "@/content/shared/reviews";
 import { sumBy } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
@@ -146,6 +147,12 @@ export type OutcomesContent = {
     totalLabel: string;
     /** "78 Total" */
     totalUnit: string;
+    /**
+     * Which total the dashboard shows (PENDING DOCTOR): "stages" = the sum of the four stage counts
+     * (computed, 93), "live" = the figure the live page shows (`liveTotal`, 78).
+     */
+    totalSource: "stages" | "live";
+    liveTotal: number;
   };
   survival: {
     title: string;
@@ -153,18 +160,24 @@ export type OutcomesContent = {
     items: readonly { stage: string; rate: number; body: string }[];
     rateUnit: string;
   };
-  table: { caption: string; stage: string; cases: string };
+  disclaimer: string;
+  pendingApproval: string;
+  table: { caption: string; stage: string; cases: string; survivalCaption: string; survival: string };
 };
 
 export type AdvancedCasesContent = {
   eyebrow: string;
   title: string;
   body: string;
-  cta: AppointmentCta;
+  /** The 60% in `body`, shown large in its glow. */
+  stat: Stat;
+  cta: AppointmentCta & { note: string };
   image: ColorectalImageKey;
 };
 
 export type SurgeonContent = {
+  /** Small label above the name. */
+  label: string;
   credentials: string;
   bio: string;
   name: string;
@@ -393,6 +406,11 @@ export const outcomes = {
     // (7 + 23 + 42 + 21). Which stage counts, or which total, is right?
     totalLabel: "Total Complex Surgeries",
     totalUnit: "Total",
+    // PENDING DOCTOR: switch to "live" to show the live page's 78 instead of the computed sum
+    // (or correct the stage counts above, and the sum follows).
+    totalSource: "stages" as OutcomesContent["dashboard"]["totalSource"],
+    // SOURCE: EXISTING (the total the live page shows; used only with totalSource "live")
+    liveTotal: 78,
   },
   survival: {
     // SOURCE: EXISTING
@@ -404,12 +422,27 @@ export const outcomes = {
     ],
     rateUnit: "Survival",
   },
-  // SOURCE: NEW (screen-reader table)
-  table: { caption: "Colorectal surgeries by stage", stage: "Stage", cases: "Cases" },
+  // SOURCE: NEW (the breast page's wording)
+  disclaimer:
+    "Figures are from OncoXpert's own patient records. Individual outcomes vary with stage, tumour biology and overall health.",
+  // PENDING DOCTOR: approve the disclaimer, and choose the total (see totalSource).
+  pendingApproval:
+    "Doctor to approve the outcomes disclaimer and confirm the total (stages add up to 93; the live page says 78)",
+  // SOURCE: NEW (screen-reader tables)
+  table: {
+    caption: "Colorectal surgeries by stage",
+    stage: "Stage",
+    cases: "Cases",
+    survivalCaption: "5-year survival rates by stage",
+    survival: "5-year survival",
+  },
 } as const satisfies OutcomesContent;
 
 /** Sum of the dashboard's stage cases (93 with the live numbers). */
 export const totalCases = sumBy(outcomes.dashboard.stages, (stage) => stage.cases);
+
+/** The total the dashboard shows: the computed sum, unless the doctor picks the live figure. */
+export const dashboardTotal = outcomes.dashboard.totalSource === "live" ? outcomes.dashboard.liveTotal : totalCases;
 
 /* ------------------------------------------------------------------ */
 /* 7 · #advanced-cases                                                 */
@@ -420,8 +453,10 @@ export const advancedCases = {
   eyebrow: "Hope for Advanced Cases",
   title: "Metastatic Rectal Cancer is Curable",
   body: "Stage IV is no longer a terminal diagnosis. With modern chemo-immunotherapy and Dr. Sunil’s expertise in synchronous resections of primary and metastatic lesions, we offer a 60% survival chance for selected cases.",
-  // SOURCE: EXISTING (label); NEW (the service it preselects)
-  cta: { label: "Discuss Curative Strategy", service: "Consultation For Surgery" },
+  // SOURCE: EXISTING (the 60% in the text above); NEW (its label, words from the same sentence)
+  stat: { value: 60, suffix: "%", label: "survival chance for selected cases" },
+  // SOURCE: EXISTING (label); NEW (the service it preselects and the note sent with the form)
+  cta: { label: "Discuss Curative Strategy", service: "Second Opinion", note: "Curative strategy" },
   image: "hopeSmile",
 } as const satisfies AdvancedCasesContent;
 
@@ -430,6 +465,8 @@ export const advancedCases = {
 /* ------------------------------------------------------------------ */
 
 export const surgeon = {
+  // SOURCE: NEW (the breast page's label; the live colorectal block has none)
+  label: "Lead Surgeon",
   // SOURCE: EXISTING
   credentials: "MBBS, MS, MCh (Surgical Oncology)",
   bio: "A pioneer in Robotic and Laparoscopic Colorectal Surgery in Bangalore. Dr. Sunil is dedicated to the philosophy of organ preservation and minimally invasive recovery, having performed over 78+ highly complex rectal cancer resections with industry-leading outcomes.",
@@ -449,6 +486,22 @@ export const surgeon = {
 
 /* ------------------------------------------------------------------ */
 /* 9–13 · shared sections                                              */
-/* (reviews, videos, appointment, locations, final band:               */
-/*  content/shared/sections.ts, in the live order)                     */
+/* (copy: content/shared/sections.ts; reviews in this page's order)    */
 /* ------------------------------------------------------------------ */
+
+export const shared = {
+  // SOURCE: NEW (order). The colon cancer review (Vasudeva Murthy) first, then the live order.
+  reviewOrder: [
+    "vasudeva-murthy",
+    "muralidharan-chinnusamy",
+    "veena-iyer",
+    "shwetha-jayaraj",
+    "padmavathi-p",
+    "jayashree-ajith",
+    "friendly-work",
+    "narasimhamurthy-sm",
+    "mangala-music",
+  ],
+  // The final call band's photo.
+  finalImage: "recoveryWalk",
+} as const satisfies { reviewOrder: readonly ReviewId[]; finalImage: ColorectalImageKey };

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { techniques } from "@/content/pages/colorectal-cancer";
 import { colorectalImages } from "@/content/pages/colorectal-cancer.images";
+import { keepLastWords } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -25,7 +26,12 @@ export function Techniques() {
   return (
     <Section id="techniques" tone="warm" aria-labelledby="techniques-title">
       <Reveal>
-        <SectionHeading id="techniques-title" title={techniques.title} emphasis={techniques.emphasis} align="center" />
+        <SectionHeading
+          id="techniques-title"
+          title={keepLastWords(techniques.title)}
+          emphasis={techniques.emphasis}
+          align="center"
+        />
       </Reveal>
 
       <Reveal className="mt-10 md:mt-12 lg:hidden">

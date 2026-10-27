@@ -19,3 +19,9 @@ export const localNow = () => {
   d.setSeconds(0, 0);
   return new Date(d.getTime() - d.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
 };
+
+/**
+ * Joins the last two words with a no-break space, so a heading never ends on one orphaned word.
+ * Display only: the words are unchanged.
+ */
+export const keepLastWords = (text: string) => text.replace(/ (\S+)$/, "\u00a0$1");

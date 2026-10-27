@@ -1,5 +1,6 @@
 import { recoveryPath } from "@/content/pages/colorectal-cancer";
 import { colorectalImages } from "@/content/pages/colorectal-cancer.images";
+import { keepLastWords } from "@/lib/format";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PathTimeline } from "@/components/pages/colorectal-cancer/PathTimeline";
 import "@/components/pages/colorectal-cancer/path.css";
@@ -27,7 +28,7 @@ export function RecoveryPath() {
         heading={
           <SectionHeading
             id="path-title"
-            title={recoveryPath.title}
+            title={keepLastWords(recoveryPath.title)}
             emphasis={recoveryPath.emphasis}
             intro={recoveryPath.intro}
           />

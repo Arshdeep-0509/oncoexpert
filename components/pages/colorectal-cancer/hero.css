@@ -33,7 +33,7 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Headline: one mask per word; the emphasis phrase never wraps        */
+/* Headline: one mask per word; each emphasis word with its underline     */
 /* ------------------------------------------------------------------ */
 
 .cx-wordMask {
@@ -149,7 +149,7 @@
   }
   .cx-underline path {
     animation: cx-draw calc(0.8s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
-    animation-delay: calc(var(--intro) + 1.15s * var(--pace));
+    animation-delay: calc(var(--intro) + (1.15s + var(--u, 0s)) * var(--pace));
   }
 
   .cx-float {

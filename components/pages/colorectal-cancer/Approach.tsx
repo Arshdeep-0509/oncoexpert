@@ -1,4 +1,5 @@
 import { approach } from "@/content/pages/colorectal-cancer";
+import { keepLastWords } from "@/lib/format";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -22,8 +23,8 @@ export function Approach() {
       <Reveal>
         <SectionHeading
           id="approach-title"
-          title={approach.title}
-          emphasis={approach.emphasis}
+          title={keepLastWords(approach.title)}
+          emphasis={keepLastWords(approach.emphasis)}
           intro={approach.intro}
           align="center"
         />

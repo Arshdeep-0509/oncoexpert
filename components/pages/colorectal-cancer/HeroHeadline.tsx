@@ -31,22 +31,23 @@ function Word({ word, index, slice }: { word: string; index: number; slice?: { f
 
 /**
  * Breadcrumb (from md), eyebrow and the H1. Each word rises inside its own mask, 0.06s apart, in
- * reading order. The emphasis phrase ("Organ Preservation") stays on one line, painted with the
- * blue → teal gradient (each word its slice), and its underline draws once the words have landed.
+ * reading order. The emphasis words ("Organ Preservation") are painted with the blue → teal
+ * gradient (each word its slice) and each draws its own underline once the words have landed, so
+ * the phrase may wrap like any other words (the heading never ends on one orphaned word).
  */
 export function HeroHeadline() {
   const words = hero.title.split(" ");
   const emphasis = hero.emphasis.split(" ");
   const from = words.findIndex((_, i) => emphasis.every((w, j) => words[i + j] === w));
-  const before = from >= 0 ? words.slice(0, from) : words;
-  const after = from >= 0 ? words.slice(from + emphasis.length) : [];
 
   // Each emphasis word's share of the phrase, by characters (spaces count), for its gradient slice.
   const length = hero.emphasis.length;
-  const slices = emphasis.map((w, j) => {
+  const sliceOf = (i: number) => {
+    const j = i - from;
+    if (from < 0 || j < 0 || j >= emphasis.length) return undefined;
     const start = j === 0 ? 0 : emphasis.slice(0, j).join(" ").length + 1;
-    return { from: start / length, to: (start + w.length) / length };
-  });
+    return { j, from: start / length, to: (start + emphasis[j].length) / length };
+  };
 
   return (
     <>
@@ -60,44 +61,40 @@ export function HeroHeadline() {
 
       <h1
         id="hero-title"
-        className="mt-4 font-display text-[clamp(1.95rem,8.4vw,2.45rem)] leading-[1.08] tracking-(--display-tracking) text-balance text-ink md:mt-6 md:text-[3.15rem] lg:text-[clamp(2.6rem,3.7vw,3.5rem)]"
+        className="mt-4 font-display text-[clamp(1.95rem,8.4vw,2.45rem)] leading-[1.08] tracking-(--display-tracking) text-ink md:mt-6 md:text-[3.15rem] lg:text-[clamp(2.6rem,3.7vw,3.5rem)]"
       >
-        {before.map((word, i) => (
-          <span key={i}>
-            {i > 0 ? " " : null}
-            <Word word={word} index={i} />
-          </span>
-        ))}
-        {from >= 0 ? (
-          <>
-            {" "}
-            <span className={styles.phrase}>
-              {emphasis.map((word, j) => (
-                <span key={j}>
-                  {j > 0 ? " " : null}
-                  <Word word={word} index={from + j} slice={slices[j]} />
+        {words.map((word, i) => {
+          const slice = sliceOf(i);
+          return (
+            <span key={i}>
+              {i > 0 ? " " : null}
+              {slice ? (
+                <span className={styles.phrase}>
+                  <Word word={word} index={i} slice={slice} />
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 300 20"
+                    preserveAspectRatio="none"
+                    className={styles.underline}
+                    style={{ "--u": `${slice.j * 0.15}s` } as React.CSSProperties}
+                  >
+                    <path
+                      d="M4 13 C 60 6, 128 4, 188 8 S 268 15, 296 7"
+                      pathLength={1}
+                      fill="none"
+                      style={{ stroke: "var(--highlight)" }}
+                      strokeOpacity={0.7}
+                      strokeWidth={5}
+                      strokeLinecap="round"
+                    />
+                  </svg>
                 </span>
-              ))}
-              <svg aria-hidden="true" viewBox="0 0 300 20" preserveAspectRatio="none" className={styles.underline}>
-                <path
-                  d="M4 13 C 60 6, 128 4, 188 8 S 268 15, 296 7"
-                  pathLength={1}
-                  fill="none"
-                  style={{ stroke: "var(--highlight)" }}
-                  strokeOpacity={0.7}
-                  strokeWidth={5}
-                  strokeLinecap="round"
-                />
-              </svg>
+              ) : (
+                <Word word={word} index={i} />
+              )}
             </span>
-          </>
-        ) : null}
-        {after.map((word, i) => (
-          <span key={i}>
-            {" "}
-            <Word word={word} index={from + emphasis.length + i} />
-          </span>
-        ))}
+          );
+        })}
       </h1>
     </>
   );

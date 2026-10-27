@@ -65,8 +65,9 @@ export type HeroContent = {
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   /** The four feature icons under the buttons. */
   features: readonly { icon: FeatureIcon; label: string }[];
+  /** The photo card in front of the line art. */
   image: EndometrialImageKey;
-  a11y: { features: string };
+  a11y: { features: string; pause: string; play: string };
 };
 
 export type ClinicalContent = {
@@ -80,6 +81,9 @@ export type SymptomsContent = {
   title: string;
   intro: string;
   items: readonly { icon: SymptomIcon; title: string; body: string }[];
+  /** A calm line under the cards, then the button. */
+  reassurance: string;
+  cta: AppointmentCta;
 };
 
 type Approach = {
@@ -139,7 +143,8 @@ export const hero = {
   // SOURCE: EXISTING
   eyebrow: "Advanced Gynecologic Oncology Care",
   title: "Advanced Endometrial Cancer Treatment with Robotic & Minimally Invasive Surgery",
-  emphasis: "Robotic & Minimally Invasive Surgery",
+  // SOURCE: NEW (styling: the gradient words; the live page sets "… Surgery" in blue too)
+  emphasis: "Robotic & Minimally Invasive",
   body: "Personalized oncological care led by world-class specialists. Experience faster recovery, minimal scarring, and precision surgical outcomes for uterine cancer.",
   // SOURCE: EXISTING (button labels); NEW (the service each one preselects)
   ctas: {
@@ -153,9 +158,9 @@ export const hero = {
     { icon: "recovery", label: "FASTER RECOVERY" },
     { icon: "standards", label: "INT'L STANDARDS" },
   ],
-  image: "ultrasound",
-  // SOURCE: NEW (screen-reader label)
-  a11y: { features: "What we offer" },
+  image: "womanSmiling",
+  // SOURCE: NEW (screen-reader and control labels)
+  a11y: { features: "What we offer", pause: "Pause animation", play: "Play animation" },
 } as const satisfies HeroContent;
 
 // SOURCE: NEW (breadcrumb; also published as BreadcrumbList JSON-LD)
@@ -209,6 +214,12 @@ export const symptoms = {
       body: "Persistent pain, pressure, or cramping in the lower abdomen.",
     },
   ],
+  // SOURCE: NEW
+  // PENDING DOCTOR: approve this reassurance line (wording and medical tone).
+  reassurance:
+    "Noticing one of these signs is a reason to get checked, not a diagnosis. An early consultation brings clarity and peace of mind.",
+  // SOURCE: EXISTING (the hero's button label); NEW (the service it preselects)
+  cta: { label: "Book Consultation", service: "Consultation" },
 } as const satisfies SymptomsContent;
 
 /* ------------------------------------------------------------------ */

@@ -1,0 +1,91 @@
+/* ==================================================================
+   Endometrial #symptoms: the four warning-sign cards. Plain CSS, prefix exs-.
+   - Phones: every card is open, always (warning signs are never hidden behind a tap).
+   - From 768px: a card shows its icon and title; hover (mouse), a tap / click or the keyboard
+     (its button, aria-expanded) opens it: the title block slides up, the description rises and
+     fades in, the accent rule draws across and the card lifts. The description keeps its space
+     all along, so nothing changes height (transform and opacity only), in the FAQ cards'
+     animation language (icon pop, rule scaleX, lift).
+   - Reduced motion: no movement; open and closed simply swap.
+   ================================================================== */
+
+.exs-card {
+  transition:
+    transform 0.45s var(--ease-out-expo),
+    box-shadow 0.45s var(--ease-out-expo);
+}
+.exs-card:has(button:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.exs-rule {
+  transform-origin: 0 50%;
+}
+
+@media (min-width: 768px) {
+  .exs-head,
+  .exs-body,
+  .exs-rule,
+  .exs-chev {
+    transition:
+      transform 0.5s var(--ease-out-expo),
+      opacity 0.4s var(--ease-out-expo);
+  }
+  /* Closed */
+  .exs-card:not([data-open]) .exs-head {
+    transform: translateY(2.5rem);
+  }
+  .exs-card:not([data-open]) .exs-body {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .exs-card:not([data-open]) .exs-rule {
+    transform: scaleX(0);
+  }
+  /* Open: data-open (click, tap, keyboard) or a mouse hovering. */
+  .exs-card[data-open] {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .exs-card[data-open] .exs-chev {
+    transform: rotate(180deg);
+  }
+}
+@media (min-width: 768px) and (hover: hover) {
+  .exs-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .exs-card:hover .exs-head,
+  .exs-card:hover .exs-body,
+  .exs-card:hover .exs-rule {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal:not([data-revealed]) .exs-icon {
+    opacity: 0;
+    scale: 0.75;
+  }
+  [data-revealed] .exs-icon {
+    transition:
+      opacity 0.5s var(--ease-out-expo),
+      scale 0.5s var(--ease-out-expo);
+    transition-delay: calc(var(--reveal-delay, 0s) + 0.15s);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exs-card,
+  .exs-head,
+  .exs-body,
+  .exs-rule,
+  .exs-chev {
+    transition: none;
+  }
+  .exs-card[data-open],
+  .exs-card:hover {
+    transform: none;
+  }
+}

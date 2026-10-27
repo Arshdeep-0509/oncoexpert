@@ -1,15 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import {
-  clinical,
-  hero,
-  packages,
-  pageSlug,
-  precision,
-  sentinel,
-  surgeon,
-  symptoms,
-} from "@/content/pages/endometrial-cancer";
+import { packages, pageSlug, precision, sentinel, surgeon } from "@/content/pages/endometrial-cancer";
 import {
   appointmentSection,
   finalCtaSection,
@@ -21,6 +12,9 @@ import { formatRupees } from "@/lib/format";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
+import { Hero } from "@/components/pages/endometrial-cancer/Hero";
+import { ClinicalExcellence } from "@/components/pages/endometrial-cancer/ClinicalExcellence";
+import { Symptoms } from "@/components/pages/endometrial-cancer/Symptoms";
 
 const page = pages[pageSlug];
 
@@ -32,36 +26,13 @@ export function generateViewport(): Viewport {
 }
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, endometrial theme).
-// Foundation: every section is a placeholder with its final id, in its final order.
+// Built: #hero, #clinical, #symptoms. The rest are placeholders with their final ids, in their final order.
 export default function EndometrialCancerPage() {
   return (
     <>
-      {/* 1 #hero  hero gradient */}
-      <SectionPlaceholder
-        id="hero"
-        as="h1"
-        hero
-        title={hero.title}
-        className="bg-(image:--grad-hero)"
-        blocks={[
-          { label: hero.eyebrow, wide: true },
-          ...hero.features.map((feature) => ({ label: feature.label })),
-          { label: hero.ctas.primary.label },
-        ]}
-      />
-      {/* 2 #clinical  plum band */}
-      <SectionPlaceholder
-        id="clinical"
-        tone="plum"
-        title={clinical.title}
-        blocks={clinical.stats.map((stat) => ({ label: `${stat.value}${stat.suffix} ${stat.label}` }))}
-      />
-      {/* 3 #symptoms  surface */}
-      <SectionPlaceholder
-        id="symptoms"
-        title={symptoms.title}
-        blocks={symptoms.items.map((item) => ({ label: item.title }))}
-      />
+      <Hero /> {/* 1 #hero      peach gradient */}
+      <ClinicalExcellence /> {/* 2 #clinical  warm band */}
+      <Symptoms /> {/* 3 #symptoms  surface */}
       {/* 4 #precision  alt */}
       <SectionPlaceholder
         id="precision"

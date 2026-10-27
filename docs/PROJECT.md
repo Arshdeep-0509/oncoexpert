@@ -84,7 +84,11 @@ components/
                              Approach (+ ApproachCard, IsrDiagram, the island ApproachTap; approach.css,
                              prefix `cxa-`, approach-styles.ts), RecoveryPath (+ the island PathTimeline,
                              path-road.ts; path.css, prefix `cxp-`), Techniques (+ TechniqueDetails, the island
-                             TechniqueSwitch; techniques.css, prefix `cxt-`), QualityOfLife (+ the island StomaChart)
+                             TechniqueSwitch; techniques.css, prefix `cxt-`), QualityOfLife (+ the island StomaChart),
+                             Outcomes (outcomes.css, prefix `cxo-`), HopeBand (hope.css, prefix `cxh-`)
+  pages/endometrial-cancer/  the endometrial page: Hero (+ HeroVisual, the islands HeroToggle and HeroBloom →
+                             lazy HeroBloomLayer, desktop only; hero.css, prefix `ex-`, hero-styles.ts),
+                             ClinicalExcellence, Symptoms (+ the island SymptomCard; symptoms.css, prefix `exs-`)
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -434,6 +438,18 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   / focus); "Discuss Curative Strategy" opens the form on "Second Opinion" with the note "Curative
   strategy". #surgeon: the shared DoctorCard with the EXISTING credentials, "15+ Years" and "95%"
   counting up, "View Full Profile" → /about-us/. Then the shared #reviews (the colon cancer review
-  first), #videos, #appointment (page "Colorectal Cancer"), #locations, #final-cta. Headings use
-  `text-wrap: pretty` (colorectal theme only) so none ends on one orphaned word. Waiting on the
-  doctor's PENDING items in `content/pages/colorectal-cancer.ts`.
+  first), #videos, #appointment (page "Colorectal Cancer"), #locations, #final-cta. No heading ends
+  on one orphaned word: `text-wrap: balance` (colorectal theme only), `keepLastWords` (lib/format.ts)
+  on short headings, and two shared headings fitted on this page only. Waiting on the doctor's
+  PENDING items in `content/pages/colorectal-cancer.ts`.
+- Endometrial: #hero, #clinical and #symptoms built (the foundation anchors are kept). #hero: the
+  peach hero; abstract coral line art of a uterus drawing in stroke by stroke, a petal bloom turning
+  once every 90s behind it (desktop only, lazy-loaded like the breast petals), the photo card of a
+  woman in front; H1 words rise in masks, "Robotic & Minimally Invasive" in the coral gradient; the
+  four feature chips pop in, then float (a row of four under both columns on desktop, 2 × 2 on tablets, a swipe row on
+  phones); a 48px pause button stops the bloom and the float (also off-screen). #clinical: the 100%
+  and 82% as large ProgressRings that draw in and count up, with the live captions, on the warm band.
+  #symptoms: four disclosure cards (button + aria-expanded; hover, tap or keyboard): from 768px the
+  description is revealed in place (it keeps its space: transform and opacity only, no height
+  animation), in the FAQ cards' language; on phones every card is open. Then a NEW reassurance line
+  (PENDING DOCTOR) and "Book Consultation".

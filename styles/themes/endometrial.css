@@ -74,3 +74,8 @@
   /* Shadows tinted with plum */
   --shadow-rgb: 74 29 63;
 }
+
+/* Headings on this page wrap in balanced lines (no single orphaned word). */
+[data-theme="endometrial"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}

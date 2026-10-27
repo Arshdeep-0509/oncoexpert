@@ -1,0 +1,160 @@
+/* ==================================================================
+   Endometrial hero: entrance choreography and ambient loops.
+   Plain CSS with ex- prefixes (CSS modules are not available: the Turbopack rule in
+   next.config.ts turns every .css file into plain CSS). Class names: hero-styles.ts.
+   - Every entrance waits for the intro (--intro) and is scaled by --pace (faster on phones).
+   - Transform and opacity only, plus the line art's stroke draw.
+   - All motion lives inside prefers-reduced-motion: no-preference. Without it everything
+     renders in its final state: lines drawn, words in place, chips still, no bloom.
+   - Loops: the petal bloom (90s turn, desktop only) and the chips' float (6–7s). The pause button
+     (data-paused) and leaving the screen (data-offscreen) stop both; hover / focus stops a chip.
+   ================================================================== */
+
+.ex-hero {
+  /* --intro-delay (globals.css); HeroToggle pins it on hydration (docs/PROJECT.md, known issue). */
+  --intro: var(--intro-delay, 0s);
+  --pace: 0.75;
+  --rise: 16px;
+}
+@media (min-width: 768px) {
+  .ex-hero {
+    --pace: 1;
+    --rise: 24px;
+  }
+}
+
+/* Delay helper: --d is the step's time in the desktop choreography. */
+.ex-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Headline: one mask per word. */
+.ex-wordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.06em 0.14em 0;
+  margin: 0 -0.06em -0.14em 0;
+}
+.ex-word {
+  display: inline-block;
+}
+.ex-gradWord {
+  background-image: linear-gradient(90deg, var(--from), var(--to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Line art: each stroke draws in turn (--d per stroke). */
+.ex-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* Cover panel over the photo card while its entrance runs (the photo under it is painted from the
+   start, so it can be the LCP image). */
+.ex-photoCover {
+  transform-origin: 50% 0;
+  scale: 1 0;
+}
+
+/* Phones: the chips are a swipe row. */
+.ex-chips {
+  scrollbar-width: none;
+}
+.ex-chips::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ex-fadeDown {
+    animation-name: ex-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .ex-fadeUp {
+    animation-name: ex-fadeUp;
+    animation-duration: 0.7s;
+  }
+  .ex-pop {
+    animation-name: ex-pop;
+    animation-duration: 0.6s;
+  }
+  .ex-wordRise {
+    animation-name: ex-rise;
+    animation-duration: calc(0.85s * var(--pace));
+  }
+  .ex-photoCover {
+    animation: ex-cover calc(1s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + 0.55s * var(--pace));
+  }
+  .ex-line {
+    animation: ex-draw calc(1.4s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + var(--d, 0.3s) * var(--pace));
+  }
+
+  .ex-float {
+    animation: ex-float var(--float, 6s) ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 2s + var(--phase, 0s));
+  }
+  .ex-bloom {
+    animation: ex-turn 90s linear infinite;
+  }
+  .ex-hero:is([data-paused], [data-offscreen]) :is(.ex-float, .ex-bloom),
+  .ex-float:is(:hover, :focus-within) {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes ex-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes ex-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise);
+  }
+}
+@keyframes ex-pop {
+  from {
+    opacity: 0;
+    scale: 0.85;
+  }
+}
+@keyframes ex-rise {
+  from {
+    translate: 0 110%;
+  }
+}
+@keyframes ex-cover {
+  from {
+    scale: 1 1;
+  }
+  to {
+    scale: 1 0;
+  }
+}
+@keyframes ex-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes ex-float {
+  0%,
+  100% {
+    translate: 0 -3px;
+  }
+  50% {
+    translate: 0 3px;
+  }
+}
+@keyframes ex-turn {
+  to {
+    rotate: 360deg;
+  }
+}

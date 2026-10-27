@@ -10,6 +10,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SwipeRow } from "@/components/ui/SwipeRow";
 import { Reveal } from "@/components/ui/Reveal";
 import { styles } from "@/components/pages/about-us/about-styles";
+import { prefetchFor } from "@/lib/nav";
 import "@/components/pages/about-us/about.css";
 
 /** The menu's icons (so About matches the services menu); Robotic: the chip. */
@@ -53,7 +54,7 @@ function PhotoTile({ card }: { card: Card }) {
   return (
     <Link
       href={card.link.href}
-      prefetch={false}
+      prefetch={prefetchFor(card.link.href)}
       data-cta={`${card.title}: ${card.link.label}`}
       className={cn(
         styles.tile,
@@ -108,7 +109,7 @@ export function Expertise() {
         <SectionHeading id="expertise-title" title={expertise.title} intro={expertise.intro} />
         <Link
           href={expertise.all.href}
-          prefetch={false}
+          prefetch={prefetchFor(expertise.all.href)}
           data-cta={expertise.all.label}
           className="group/all inline-flex min-h-12 shrink-0 items-center gap-2 self-start font-semibold text-accent md:self-auto"
         >

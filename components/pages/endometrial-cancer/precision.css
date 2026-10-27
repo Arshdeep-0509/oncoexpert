@@ -1,0 +1,89 @@
+/* ==================================================================
+   Endometrial #precision "Advanced Surgical Precision". Plain CSS, prefix exp-
+   (precision-styles.ts). The colorectal comparison pattern, for this page's content:
+   - Below 1024px: the Robotic Expertise | Minimally Invasive switch (PrecisionSwitch). The thumb
+     slides under the selected tab; the panel's details re-enter one by one (keyed by selection).
+   - Desktop: both cards at once; hovering or focusing one dims the other.
+   - The robotic card's lens: the instruments photo in a circle, slowly zooming in and out (the
+     "10x magnification" idea); it stops on hover / focus of its card. Transform only.
+   Reduced motion: no movement; everything simply swaps.
+   ================================================================== */
+
+.exp-thumb {
+  transition: transform 0.45s var(--ease-out-expo);
+}
+.exp-tabs[data-selected="laparoscopic"] .exp-thumb {
+  transform: translateX(100%);
+}
+.exp-tabBase {
+  transition: opacity 0.3s;
+}
+/* Same box as the button, so a wrapped label wraps the same way. */
+.exp-tabOn {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-inline: 0.75rem;
+  text-align: center;
+  color: var(--white);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.exp-tab[aria-selected="true"] .exp-tabOn {
+  opacity: 1;
+}
+.exp-tab[aria-selected="true"] .exp-tabBase {
+  opacity: 0;
+}
+
+.exp-side {
+  transition:
+    opacity 0.45s var(--ease-out-expo),
+    transform 0.5s var(--ease-out-expo);
+}
+@media (hover: hover) {
+  .exp-pair:has(.exp-side:hover) .exp-side:not(:hover) {
+    opacity: 0.55;
+  }
+  .exp-side:hover {
+    transform: translateY(-4px);
+  }
+}
+.exp-pair:has(.exp-side:focus-within) .exp-side:not(:focus-within) {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .exp-in {
+    animation: exp-in 0.55s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 0.08s);
+  }
+  .exp-zoom {
+    animation: exp-zoom 14s ease-in-out infinite alternate;
+  }
+  :is(.exp-side, .exp-panel):is(:hover, :focus-within) .exp-zoom {
+    animation-play-state: paused;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exp-thumb,
+  .exp-side {
+    transition: none;
+  }
+}
+
+@keyframes exp-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes exp-zoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.6);
+  }
+}

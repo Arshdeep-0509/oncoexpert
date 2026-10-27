@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { site } from "@/content/site";
 import type { HeaderVariant } from "@/content/types";
-import { isActivePath } from "@/lib/nav";
+import { isActivePath, prefetchFor } from "@/lib/nav";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { MegaMenu } from "@/components/layout/MegaMenu";
 import { ActiveDot } from "@/components/layout/ActiveDot";
@@ -43,7 +43,7 @@ export function DesktopNav({
             <NavigationMenuItem key={item.href}>
               <Link
                 href={item.href}
-                prefetch={false}
+                prefetch={prefetchFor(item.href)}
                 data-active={active}
                 aria-current={active ? "page" : undefined}
                 className={navLinkClass(onDark)}

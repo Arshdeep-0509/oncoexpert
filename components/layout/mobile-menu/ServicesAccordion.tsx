@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { site, type NavItem } from "@/content/site";
 import type { HeaderVariant } from "@/content/types";
 import { cn, focusRing } from "@/lib/utils";
-import { isActivePath } from "@/lib/nav";
+import { isActivePath, prefetchFor } from "@/lib/nav";
 import { SheetClose } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { serviceIcons, ICON_STROKE } from "@/components/layout/nav-icons";
@@ -44,7 +44,7 @@ export function ServicesAccordion({ navItem, pathname, variant, rowLink }: Servi
                   <SheetClose asChild>
                     <Link
                       href={child.href}
-                      prefetch={false}
+                      prefetch={prefetchFor(child.href)}
                       aria-current={current ? "page" : undefined}
                       className="flex min-h-12 items-center gap-3 rounded-xl px-1.5 text-base font-medium text-ink transition-colors hover:bg-surface-alt"
                     >
@@ -67,7 +67,7 @@ export function ServicesAccordion({ navItem, pathname, variant, rowLink }: Servi
               <SheetClose asChild>
                 <Link
                   href={navItem.href}
-                  prefetch={false}
+                  prefetch={prefetchFor(navItem.href)}
                   className="flex min-h-12 items-center justify-between rounded-xl px-1.5 text-base font-semibold text-accent transition-colors hover:bg-surface-alt"
                 >
                   {navItem.label}

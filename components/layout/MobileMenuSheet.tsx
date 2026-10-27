@@ -8,7 +8,7 @@ import { ArrowRight, Phone } from "lucide-react";
 import { site } from "@/content/site";
 import type { HeaderVariant } from "@/content/types";
 import { cn, focusRing } from "@/lib/utils";
-import { isActivePath } from "@/lib/nav";
+import { isActivePath, prefetchFor } from "@/lib/nav";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { socialIcons } from "@/components/ui/brand-icons";
 import { ICON_STROKE } from "@/components/layout/nav-icons";
@@ -42,13 +42,9 @@ export function MobileMenuSheet({
   const { openAppointment } = useAppointment();
   const s = menuStyles[variant];
 
-  // "For Appointment" on a page with the form: close first (Radix then unlocks scrolling),
-  // then scroll to the form from onCloseAutoFocus.
+  // "For Appointment": close first (Radix then unlocks scrolling), then openAppointment from
+  // onCloseAutoFocus (the booking page, or on the booking page a scroll to its form).
   const onAppointmentClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!appointmentHref.startsWith("#")) {
-      setOpen(false);
-      return;
-    }
     e.preventDefault();
     pendingAppointment.current = true;
     setOpen(false);
@@ -127,7 +123,7 @@ export function MobileMenuSheet({
                   <SheetClose asChild>
                     <Link
                       href={navItem.href}
-                      prefetch={false}
+                      prefetch={prefetchFor(navItem.href)}
                       aria-current={current ? "page" : undefined}
                       className={cn(rowLink, current && "text-accent")}
                     >
@@ -144,7 +140,7 @@ export function MobileMenuSheet({
             <StaggerItem i={site.nav.length + 0} step={s.stagger} reduce={reduce}>
               <Link
                 href={appointmentHref}
-                prefetch={false}
+                prefetch={prefetchFor(appointmentHref)}
                 onClick={onAppointmentClick}
                 data-cta="menu-appointment"
                 className={cn(

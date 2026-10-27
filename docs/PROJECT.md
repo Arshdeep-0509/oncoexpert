@@ -5,8 +5,10 @@ The site is rebuilt page by page. Most visitors are on phones: design mobile-fir
 
 Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`), **Breast Cancer**
 (`/breast-cancer-treatment-bangalore/`), **Book Appointment** (`/book-your-appoinment-page/`, the live
-URL's spelling, kept for SEO) and **About Us** (`/about-us/`). They share one site shell and one set of
-section components; each page has its own theme, except booking and about, which share the `care` theme.
+URL's spelling, kept for SEO), **About Us** (`/about-us/`), **Colorectal Cancer**
+(`/colon-cancer-treatment-bangalore/`) and **Endometrial Cancer** (`/endometrial-cancer-treatment-bangalore/`).
+They share one site shell and one set of section components; each page has its own theme, except booking
+and about, which share the `care` theme.
 
 ## Stack
 
@@ -54,7 +56,7 @@ components/
     reviews/                 ReviewsCarousel, ReviewCard, Stars, GoogleMark
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, InView, MotionToggle,
                              ProgressRing, Reveal, ScrollFillLine, ScrollVar, Section, SectionHeading,
-                             SwipeRow, text-styles.ts,
+                             SwipeRow (`initialIndex?`: phones start on that card), text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
   pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
                              Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
@@ -70,12 +72,22 @@ components/
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
                              comparing-modalities/ hold the parts of its bigger sections
-  pages/book-appointment/    the booking page: BookingHero (+ booking.css, prefix `bk-`, booking-styles.ts),
-                             EmergencyBanner, HowItWorks, TrustSection, icons.ts; booking-form/ = the guided
-                             3-step form (BookingForm, ServiceStep, SuccessPanel, use-keyboard-inset)
   pages/about-us/            the about page: AboutHero (+ AboutHeadline, ProfilePortrait), Credentials,
                              Journey (pinned on desktop), QuoteSection; about.css (prefix `ab-`),
                              about-styles.ts
+  pages/colorectal-cancer/   the colorectal page: Hero (+ HeroHeadline, HeroVisual, the islands HeroCounter
+                             and HeroMotion; hero.css, prefix `cx-`, hero-styles.ts; Home's HeroParallax),
+                             Approach (+ ApproachCard, IsrDiagram, the island ApproachTap; approach.css,
+                             prefix `cxa-`, approach-styles.ts), RecoveryPath (+ the island PathTimeline,
+                             path-road.ts; path.css, prefix `cxp-`), Techniques (+ TechniqueDetails, the island
+                             TechniqueSwitch; techniques.css, prefix `cxt-`), QualityOfLife (+ the island StomaChart),
+                             Outcomes (outcomes.css, prefix `cxo-`), HopeBand (hope.css, prefix `cxh-`)
+  pages/endometrial-cancer/  the endometrial page: Hero (+ HeroVisual, the islands HeroToggle and HeroBloom →
+                             lazy HeroBloomLayer, desktop only; hero.css, prefix `ex-`, hero-styles.ts),
+                             ClinicalExcellence, Symptoms (+ the island SymptomCard; symptoms.css, prefix `exs-`),
+                             Precision (+ PrecisionDetails, the island PrecisionSwitch; precision.css, prefix
+                             `exp-`), SentinelNode (+ the island SentinelDiagram; sentinel.css, prefix `exn-`),
+                             Packages (+ PackageCard; packages.css, prefix `epk-`)
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -85,13 +97,13 @@ content/
   pages/<page>.ts            every word and number on that page
   pages/<page>.images.ts     image manifest (file, alt, credit, focal point, size)
 lib/
-  appointment.ts             Server Actions + email delivery (Resend): submitAppointment (object) and
-                             submitAppointmentForm (FormData, for <form action>: works without JS)
+  appointment.ts             Server Action + email delivery (Resend): submitAppointment
   appointment-schema.ts      zod schema shared by the form and the server
   seo.ts                     metadata / viewport helpers
   jsonld.ts                  JSON-LD nodes every page shares (Physician, MedicalClinic, FAQ questions)
   format.ts                  formatRupees, initials, localNow (datetime-local min)
-  booking.ts                 serviceSlug, bookingHref(service): the booking page with ?service= preselected
+  booking.ts                 bookingHref(service?, note?, from?): the booking page URL every appointment
+                             button links to; serviceFromSlug (the form reads ?service=)
   portrait.ts                the doctor portrait's edge mask (DoctorPortrait, About hero)
   utils.ts                   cn, focusRing, sumBy
   hooks/                     use-media, use-element-by-id, use-element-size, use-autoplay-carousel
@@ -100,11 +112,13 @@ styles/
   tokens.css                 shared palette, third-party brand colours, neutral defaults for every token
   themes/home.css, themes/breast.css, themes/robotic.css   one theme per page
   themes/care.css            booking + about (one theme: same palette)
+  themes/colorectal.css, themes/endometrial.css   one theme each
 scripts/
   fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
   make-portrait-cutout.mjs   one-off: Dr. Sunil's head cut out of the portrait (Home hero ring)
 public/images/               brand/ locations/ home/ breast-cancer/ robotic/ book-appointment/ about-us/
+                             colorectal-cancer/ endometrial-cancer/
 ```
 
 ### Naming
@@ -198,26 +212,27 @@ the same values as `variant`.
 | `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                                                                                                          |
 | `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                              |
 | `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home) |
-| `AppointmentSection` | `page` (email subject), `formStyles?`                                                                                                                                                                                                            |
+| `AppointmentSection` | `page` (email subject), `formStyles?`, `heading?` ("h1" on the booking page), `className?`                                                                                                                                                       |
 | `Locations`          | none (clinics from content)                                                                                                                                                                                                                      |
 | `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                  |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta`, `ctaLook?`, `image`                                                                                                                                    |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `stats?` (soft: figures that count up), `image`                                  |
 | `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                     |
 
-- The appointment form is one component. `useAppointment().openAppointment(service?, note?)` scrolls to
-  `#appointment` below the header, preselects the service, stores the note and focuses Name; without
-  `#appointment` on the page it navigates to the booking page. Buttons that name no service (header, menu,
-  action bar) keep the last one chosen, else `SiteShell`'s `defaultService` (Home: "Consultation"; other
-  pages: none, so "- Select -" stays). The server action emails "New appointment
-  request - <page> page". Needs `RESEND_API_KEY` (+ `APPOINTMENT_TO_EMAIL`, `APPOINTMENT_FROM_EMAIL`).
-- The booking page has its own form (`components/pages/book-appointment/booking-form/`): the same
-  fields, schema, Server Action, email and analytics as three steps (service tiles → date/time → name
-  and phone). Its fields are plain inputs in one `<form action={submitAppointmentForm}>`, so with
-  JavaScript off it is the shared form's single step (booking.css, `@media (scripting: none)`) and
-  posts as a normal form. `?service=<slug>` (e.g. `second-opinion`) preselects a service: link other
-  pages' CTAs to `/book-your-appoinment-page/?service=…`.
-- Every page with a hero gives it `id="hero"`; the form section is `id="appointment"` (on the
-  booking page: the form card inside the hero).
+- One appointment form, on one page: `/book-your-appoinment-page/` is the shared `AppointmentSection`
+  alone ("GET IN TOUCH", "Need Clarity?" as its H1, the phone and email cards, the form: Name, Contact
+  Number, Service Required, Date). No other page has a form section.
+- Every appointment button (`AppointmentButton`, the header's and the menu's "For Appointment", the
+  phone dock) goes there: `useAppointment().openAppointment(service?, note?)` navigates to
+  `bookingHref(service, note, from)` (lib/booking.ts), e.g.
+  `/book-your-appoinment-page/?service=consultation-for-surgery&note=Package%3A%20Laparoscopic&from=%2F…`.
+  The links' own `href` is the same URL, so they work without JavaScript and in a new tab. Buttons that
+  name no service use `SiteShell`'s `defaultService` (most pages: "Consultation"). On the booking page
+  itself the header's button scrolls to the form instead.
+- The form reads `?service=` (preselects), `?note=` (hidden note) and `?from=` (the page the visitor
+  came from: the hidden page field becomes "Book Appointment via /colon-…/"). The server action emails
+  "New appointment request - <page> page". Needs `RESEND_API_KEY` (+ `APPOINTMENT_TO_EMAIL`,
+  `APPOINTMENT_FROM_EMAIL`). The form needs JavaScript (react-hook-form, Radix Select).
+- Every page with a hero gives it `id="hero"`; the booking page's form section is `id="appointment"`.
 
 ## Primitives (components/ui)
 
@@ -302,8 +317,8 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   bottom edge. It appears once the hero has scrolled away and stays visible while scrolling in either
   direction; it hides only over #appointment and while the keyboard is open. The Book pill sizes to its label (fits from 320px); its colours are
   the `--grad-cta` / `--cta-glow` tokens. The footer reserves room for it and `SiteShell` hides the
-  floating WhatsApp button under 768px. The booking page has neither (`mobileActionBar={false}`,
-  `hideWhatsAppOnMobile`): its form's step buttons stick to the bottom of the screen instead.
+  floating WhatsApp button under 768px. The booking page has no dock (`mobileActionBar={false}`: the
+  page is the form) and keeps the floating WhatsApp button.
 
 ## Performance notes
 
@@ -345,7 +360,7 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   da Vinci arms and the 8 features), #specialties (bento grid of photo tiles, one photo per cancer; swipe row on phones), #services
   (icon cards that draw themselves), #approach (sticky heading, the pillar at mid-screen lit),
   #value ("30–40%" counter, cards, drifting glow), then the shared sections in the soft look
-  (#reviews with a link to Google, #videos, #faq + FAQPage JSON-LD, #appointment, #locations,
+  (#reviews with a link to Google, #videos, #faq + FAQPage JSON-LD, #locations,
   #final-cta) and the mobile action bar.
   Hardened: title, description, H1 and canonical as on the live page; OG/Twitter with og.jpg; one
   JSON-LD @graph (WebSite, FAQPage, MedicalClinic, Physician); every CTA labelled for analytics;
@@ -358,11 +373,10 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 - Book Appointment + About Us share one `care` theme (`themes/care.css`: navy, logo blue, logo orange
   as a highlight only; contrast table in its header), image manifests (`npm run images book|about`),
   registry + sitemap. The shell's long loops stop on hover/focus there as on Home.
-- Book Appointment: built. #hero is the form (desktop: headline, body, three reassurance rows and the
-  doctor left, the guided form card right; phones: compact headline, form, then the rest) with
-  #emergency inside it (phones: right after the form), then #how-it-works, #trust (EXISTING facts
-  only), and the shared #reviews, #videos, #locations, #final-cta. No phone dock. Waiting on the
-  doctor's PENDING items in `content/pages/book-appointment.ts`.
+- Book Appointment: the site's one appointment form. The page is the shared `AppointmentSection`
+  (H1 "Need Clarity?") with the simple form (date only, no time). Every appointment button on every
+  page links here with the service, note and source page in the URL. The earlier guided 3-step form,
+  its hero, emergency band, how-it-works, trust, reviews, videos, locations and final band are gone.
 - About Us: all 13 sections. #hero (navy → logo-blue `--grad-profile`; the portrait in an arch that
   draws its outline, then rises in behind a cover; scroll parallax; credential chips that pop in and
   drift, pausable; the H1's words rise in masks with his name in the `--name-1..3` gradient; both
@@ -374,5 +388,98 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   checkerboard bento, Robotic and Uro wide, each with its own photo; a swipe row on phones; hover
   lifts, zooms the photo, slides the arrow), #experience (the "10+" counts up on a navy band, two logo
   rings turn behind it, pausable), #why-trust (sticky heading, the card at mid-screen active, as in
-  Home's ApproachPillars), then the shared #reviews, #videos, #appointment (page "About Us"),
+  Home's ApproachPillars), then the shared #reviews, #videos,
   #locations, #final-cta. Waiting on the doctor's PENDING items in `content/pages/about-us.ts`.
+- Colorectal + Endometrial: foundation. Routes on the live URLs (`/colon-cancer-treatment-bangalore/`,
+  `/endometrial-cancer-treatment-bangalore/`) in the registry and sitemap; the Services menu already
+  pointed there. Every line of both live pages, verbatim and SOURCE-tagged, in
+  `content/pages/colorectal-cancer.ts` / `endometrial-cancer.ts` (the colorectal "Your Path to Recovery"
+  is in the live markup but hidden on every device; it is kept). The dashboard total is computed
+  (`totalCases`, 93; the live page says 78: PENDING DOCTOR). Themes: `colorectal` (awareness blue, teal
+  accent) and `endometrial` (peach and coral, plum ink), Fraunces display as on the breast page, contrast
+  tables in their headers. Image manifests (`npm run images colorectal|endometrial`: 7 Pexels photos, an
+  og.jpg each; the portrait, robotic photos and Home's specialty photos reused). Sections are
+  `SectionPlaceholder`s with their final ids, in order. Colorectal: #hero, #approach, #path,
+  #techniques, #quality-of-life, #outcomes, #advanced-cases, #surgeon, #reviews, #videos, #locations,
+  #final-cta. Endometrial: #hero, #clinical, #symptoms, #precision, #sentinel-node,
+  #packages, #surgeon, #reviews, #videos, #locations, #final-cta. The shell's long loops
+  stop on hover/focus here as on Home. Waiting on the doctor's PENDING items in both content files.
+- Colorectal: #hero and #approach built. #hero: desktop text left, visual right; tablet text, then
+  the visual at 70%; phones text first, then the visual. The visual is one SVG line (the colon, in the
+  blue → teal gradient) that draws in ~2s after the intro, with the photo card inside its frame; a
+  glowing dot then travels it every 12s (SVG `animateMotion`, begun and paused by HeroMotion; from
+  768px only). H1 words rise in masks, "Organ Preservation" in the gradient with a drawn underline;
+  the glass stat card counts to "78+" and floats; NEW trust chips; primary button shine; pointer
+  parallax ≤ 12px (desktop). The pause button stops the dot, float and shine (also off-screen).
+  #approach: a bento (desktop 4 columns, Robotic and Organ Preservation the tall photo tiles; tablet
+  2 columns; phones a swipe row). On reveal icons draw, cards stagger in, a gradient light runs once
+  around each border; hover / tap (ApproachTap) lifts the card, fills its icon and shows a NEW detail
+  line; "Low Stoma Rates" plays a three-frame ISR diagram (PENDING DOCTOR). Using shared client
+  components on a new page regroups the shared JavaScript chunks: every other page now lists one more
+  script chunk (same code, ~150 bytes of chunk overhead); their markup and pixels are otherwise unchanged.
+- Colorectal: #path, #techniques and #quality-of-life built (the anchors from the foundation are kept).
+  #path: desktop pins for 2 screens (a tall box, sticky stage): a curved road draws with the scroll
+  (path-road.ts: six milestones, a Catmull-Rom curve through them), the milestone buttons on it light up,
+  the active card rises into the deck and the step photo crossfades. Tablets (and desktops with reduced
+  motion): a snap row with a progress bar and a milestone row. Phones: a vertical ScrollFillLine
+  timeline, cards sliding in from alternating sides. Milestone buttons jump to a step (page scroll
+  through Lenis when pinned, the row otherwise; aria-current="step"). #techniques: below lg an ARIA
+  tab switch Robotic | Laparoscopic (arrow keys, roving tab stop) whose panel morphs (photo and letter
+  crossfade, details re-enter with a stagger); desktop shows both sides, hovering or focusing one dims
+  the other, the robotic arms photo drifts (stops on hover / focus); link to /robotic-surgery/.
+  #quality-of-life: the 60 / 36 / 4 donut (SurgeryNumbers technique) draws segment by segment, the
+  legend counts up, hover (mouse) or tap highlights a pair; a screen-reader table carries the figures.
+- Colorectal: complete (all 13 sections). #outcomes: the dashboard's stage counts as bars that grow
+  in turn while their numbers count up, then the total: computed (`totalCases`, 93) unless the doctor
+  switches `totalSource` to "live" (78, the live figure); 5-year survival as ProgressRings; two
+  screen-reader tables and a NEW disclaimer (PENDING DOCTOR). #advanced-cases: a dark band, the photo
+  under a veil, the title rising line by line, the 60% counting up in a breathing glow (stops on hover
+  / focus); "Discuss Curative Strategy" opens the form on "Second Opinion" with the note "Curative
+  strategy". #surgeon: the shared DoctorCard with the EXISTING credentials, "15+ Years" and "95%"
+  counting up, "View Full Profile" → /about-us/. Then the shared #reviews (the colon cancer review
+  first), #videos, #locations, #final-cta. No heading ends
+  on one orphaned word: `text-wrap: balance` (colorectal theme only), `keepLastWords` (lib/format.ts)
+  on short headings, and two shared headings fitted on this page only. Waiting on the doctor's
+  PENDING items in `content/pages/colorectal-cancer.ts`.
+- Endometrial: #hero, #clinical and #symptoms built (the foundation anchors are kept). #hero: the
+  peach hero; abstract coral line art of a uterus drawing in stroke by stroke, a petal bloom turning
+  once every 90s behind it (desktop only, lazy-loaded like the breast petals), the photo card of a
+  woman in front; H1 words rise in masks, "Robotic & Minimally Invasive" in the coral gradient; the
+  four feature chips pop in, then float (a row of four under both columns on desktop, 2 × 2 on tablets, a swipe row on
+  phones); a 48px pause button stops the bloom and the float (also off-screen). #clinical: the 100%
+  and 82% as large ProgressRings that draw in and count up, with the live captions, on the warm band.
+  #symptoms: four disclosure cards (button + aria-expanded; hover, tap or keyboard): from 768px the
+  description is revealed in place (it keeps its space: transform and opacity only, no height
+  animation), in the FAQ cards' language; on phones every card is open. Then a NEW reassurance line
+  (PENDING DOCTOR) and "Book Consultation".
+- Endometrial: complete (all 12 sections). #precision: the colorectal comparison pattern, page-specific
+  (features are icon + title + text, the switches have their own labels): below lg an ARIA tab
+  switch "Robotic Expertise" | "Minimally Invasive" whose panel re-enters; desktop both cards, hover /
+  focus dims the other; the robotic card's round "lens" zooms slowly (the 10x magnification idea;
+  stops on hover / focus). #sentinel-node: an SVG explainer (sentinel.css): the lymph paths draw, a
+  green ICG tracer (`--tracer`, endometrial theme) travels to the first node, which lights up as the
+  sentinel node; plays once in view, with a Replay button; the three benefits stagger in. #packages:
+  three cards, prices from numbers counting up (en-IN grouping), checks drawing in turn; Robotic is
+  featured (gradient border, "Premium" ribbon, raised); each button opens the form with its package
+  as the note; tablets one wide card per row, featured in the middle; phones a swipe row starting on
+  the featured card (SwipeRow `initialIndex`); a NEW pricing note (PENDING DOCTOR). #surgeon: the
+  shared DoctorCard (soft) with the EXISTING role, heading, "15+ YEARS EXPERIENCE" counting up, the
+  Education / Expertise facts (soft `credentials`) and "Book Appointment with Dr. Sunil". Then the
+  shared #reviews (the colon cancer review hidden here by default, `showColonReview`, PENDING DOCTOR),
+  #videos, #locations, #final-cta. Waiting on the doctor's
+  PENDING items in `content/pages/endometrial-cancer.ts`.
+- Appointments, site-wide: the in-page appointment sections are gone from Home, Robotic, Breast, About,
+  Colorectal and Endometrial; every appointment button links to the booking page (see "Shared sections
+  and looks"). The form asks for a date only. The breast page's "Contact Us" (pricing) links there too.
+- Navigation: links to the pages this app builds (`prefetchFor(href)` in lib/nav.ts, the registry's
+  paths) use next/link's default prefetch, so a click shows the page at once (measured 130–240ms on a
+  slow-4G profile, from 280–735ms); links to the live site's other pages keep `prefetch={false}`.
+  Add a new page's path to `builtPaths` there. (`npm run dev` compiles each page on first visit, so
+  judge speed with `npm run build && npm start`.)
+- Colorectal #approach: every card is its photo (cover) under an ink shade with white text and the icon
+  on frosted glass; `large: true` marks the two tall / full-width tiles. Photos: pathologyLab (breast
+  page's), roboticArms, anatomyModel, activeCouple and infusion (NEW Pexels), imagingScan.
+- Colorectal #hero, phones: text, buttons and chips first, then the colon (photo larger inside its
+  frame) with the stat card as a strip under it; the counter starts when the strip is seen.
+- Endometrial #symptoms: each card has a photo on top with the icon badge on its edge (ultrasound;
+  periodCalendar, cycleTracker, abdominalPain: NEW Pexels); the photo zooms slightly when a card opens.

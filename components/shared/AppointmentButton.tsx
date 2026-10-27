@@ -3,7 +3,8 @@
 import { ArrowRight } from "lucide-react";
 import type { AppointmentService } from "@/content/site";
 import { Button, type ButtonVariant } from "@/components/ui/Button";
-import { APPOINTMENT_ID, useAppointment } from "@/components/layout/AppointmentProvider";
+import { bookingHref } from "@/lib/booking";
+import { useAppointment } from "@/components/layout/AppointmentProvider";
 
 /** A page's own link styling, used instead of the Button styles (e.g. the robotic pills). */
 export type LinkLook = { className: string; arrowClassName: string };
@@ -25,8 +26,9 @@ type AppointmentButtonProps = {
 };
 
 /**
- * Opens the appointment form (scroll + preselected service + Name focused).
- * A real link to #appointment, so it still works before JS has loaded.
+ * Opens the booking page with this button's service preselected and its note (openAppointment;
+ * on the booking page itself it scrolls to the form instead). A real link to the booking page URL,
+ * so it also works before JavaScript has loaded or when opened in a new tab.
  */
 export function AppointmentButton({
   label,
@@ -38,6 +40,7 @@ export function AppointmentButton({
   ...props
 }: AppointmentButtonProps) {
   const { openAppointment } = useAppointment();
+  const href = bookingHref(service, note);
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     openAppointment(service, note);
@@ -45,7 +48,7 @@ export function AppointmentButton({
 
   if (look) {
     return (
-      <a href={`#${APPOINTMENT_ID}`} data-cta={cta} className={look.className} onClick={onClick}>
+      <a href={href} data-cta={cta} className={look.className} onClick={onClick}>
         {label}
         {arrow ? <ArrowRight className={look.arrowClassName} strokeWidth={1.75} aria-hidden="true" /> : null}
       </a>
@@ -53,7 +56,7 @@ export function AppointmentButton({
   }
 
   return (
-    <Button href={`#${APPOINTMENT_ID}`} cta={cta} icon={arrow ? ArrowRight : undefined} onClick={onClick} {...props}>
+    <Button href={href} cta={cta} icon={arrow ? ArrowRight : undefined} onClick={onClick} {...props}>
       {label}
     </Button>
   );

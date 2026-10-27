@@ -12,6 +12,7 @@ import {
 import { FooterMobileLinks } from "@/components/layout/footer/FooterMobileLinks";
 import { FooterContact } from "@/components/layout/footer/FooterContact";
 import { CopyrightLine } from "@/components/layout/footer/CopyrightLine";
+import { prefetchFor } from "@/lib/nav";
 
 /** Optional faint photo in the corner, screen-blended (use a photo on a black background). */
 export type FooterArt = { src: string; width: number; height: number };
@@ -81,14 +82,18 @@ export function SiteFooter({ art, mobileLayout = "stacked", reserveActionBar = f
         {/* 2 · Services */}
         <nav aria-label={site.a11y.footerServices} className={cn(accordion && "max-md:hidden")}>
           <p className={headingClass}>
-            <Link href={services.href} prefetch={false} className="transition-colors hover:text-white">
+            <Link
+              href={services.href}
+              prefetch={prefetchFor(services.href)}
+              className="transition-colors hover:text-white"
+            >
               {services.label}
             </Link>
           </p>
           <ul>
             {services.children?.map((s) => (
               <li key={s.href}>
-                <Link href={s.href} prefetch={false} className={linkClass}>
+                <Link href={s.href} prefetch={prefetchFor(s.href)} className={linkClass}>
                   {s.label}
                 </Link>
               </li>
@@ -105,7 +110,7 @@ export function SiteFooter({ art, mobileLayout = "stacked", reserveActionBar = f
           <ul>
             {quickLinks.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} prefetch={false} className={linkClass}>
+                <Link href={l.href} prefetch={prefetchFor(l.href)} className={linkClass}>
                   {l.label}
                 </Link>
               </li>

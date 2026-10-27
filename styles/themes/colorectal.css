@@ -1,0 +1,94 @@
+/* ==================================================================
+   Colorectal Cancer theme: /colon-cancer-treatment-bangalore/
+   Calm, clinical and steady. Deep blue (the colorectal awareness colour)
+   for ink, buttons and the dark bands; teal as the second colour, for
+   decoration and the second stop of gradients. Cool mist and sea-glass
+   surfaces. Fraunces display, Plus Jakarta Sans body, as on the breast
+   page: same family, different palette. No new fonts.
+
+   Contrast (WCAG 2.x; "/80" = white at 80% over that background).
+   Text needs 4.5:1, CTAs included; non-text marks need 3:1.
+
+   Text on light        surface  surface-alt  surface-warm  accent-soft  petal  hero base
+     --ink    #0b2545    15.39      13.90        14.30         12.89     12.73    14.42
+     --text   #1b2a40    14.46      13.07        13.44         12.11     11.96    13.55
+     --muted  #4f5f78     6.48       5.85         6.02          5.43      5.36     6.07
+     --accent #1a4f9c     7.95       7.18         7.38          6.66      6.57     7.45
+   (hero base #f4f8fc)
+
+   CTAs
+     white on --accent (primary button)                          7.95
+     white on --accent-hover (hover)                            10.63
+     white on --grad-cta stops (action bar: hover, accent,
+       accent/accent-bright mix #156d94)                 10.63 · 7.95 · 5.79
+     --accent on white (secondary / outline button)              7.95
+     --accent on --accent-soft (chips, eyebrow pill)             6.66
+     ink on white (onDark button on the blue bands)             15.39
+
+   Text on dark (--grad-plum)   ink #0b2545   end #123a6b
+     white                         15.39        11.39
+     white/80                      10.26         7.89
+     white/70                       8.16         6.43
+     --accent-glow #8fd9d4          9.56         7.08
+     --gold #f2b84b                 8.60          -
+
+   Decoration only (non-text, 3:1)
+     --highlight (teal) on white 3.66 · on surface-alt 3.31 · on ink 4.20. Never small text.
+     --accent-bright (teal) on white 4.17: gradient stop and large marks only, never body text.
+     --accent on ink 1.94: on the blue bands the CTA is the white onDark pill.
+     --line on white 1.27: hairlines only, never the only edge of a control.
+   ================================================================== */
+
+[data-theme="colorectal"] {
+  --ink: #0b2545; /* deep blue: headings, dark bands */
+  --text: #1b2a40; /* body text */
+  --muted: #4f5f78; /* secondary text */
+  --surface: #ffffff;
+  --surface-alt: #eef4fb; /* cool mist bands */
+  --surface-warm: #f1f8f7; /* sea-glass bands */
+  --accent: #1a4f9c; /* awareness blue: buttons, links, icons */
+  --accent-hover: #133d7a;
+  --accent-soft: #e2ecf8; /* chips, icon tiles, eyebrow pills */
+  --accent-glow: #8fd9d4; /* accent text and focus rings on the blue bands */
+  --accent-bright: #0f8a8c; /* teal: second stop of --grad-accent and --grad-cta */
+  --highlight: #0e9592; /* teal: dots, underlines, glows only */
+  --petal: #d4efed; /* teal tint decoration on light bands */
+  --gold: #f2b84b; /* tiny highlights on the blue bands only */
+  --line: #dbe5f0; /* borders */
+
+  /* Mist with two soft lights: blue top-right, teal bottom-left. */
+  --grad-hero:
+    radial-gradient(55% 60% at 90% 5%, color-mix(in srgb, #1a4f9c 12%, transparent), transparent 70%),
+    radial-gradient(45% 50% at 5% 95%, color-mix(in srgb, #0e9592 12%, transparent), transparent 70%),
+    linear-gradient(180deg, #f4f8fc, #ffffff);
+  --grad-accent: linear-gradient(120deg, var(--accent), var(--accent-bright));
+  /* Dark bands (Section tone="plum"). */
+  --grad-plum: linear-gradient(160deg, #0b2545, #123a6b);
+
+  /* Type: Plus Jakarta Sans body, Fraunces display (as on the breast page) */
+  --font-display: var(--font-serif);
+  --display-weight: 600;
+  --display-tracking: -0.02em;
+
+  /* Shadows tinted with the deep blue */
+  --shadow-rgb: 11 37 69;
+}
+
+/* Headings on this page wrap in balanced lines. Short ones also keep their last two words together
+   (keepLastWords, lib/format.ts), so none ends on one orphaned word. */
+[data-theme="colorectal"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+/* Two shared headings, fitted on this page only. The reviews title's wrapper is 26ch of the body
+   font (~324px), which runs the title to six lines on desktop, more than balance handles: widen
+   it. "Our Clinical Locations" fits one line on the smallest phones. */
+@media (min-width: 768px) {
+  [data-theme="colorectal"] #reviews div:has(> #reviews-title) {
+    max-width: 34rem;
+  }
+}
+@media (max-width: 389px) {
+  [data-theme="colorectal"] #locations h2 {
+    font-size: 1.75rem;
+  }
+}

@@ -1,0 +1,101 @@
+/* ==================================================================
+   Endometrial Cancer theme: /endometrial-cancer-treatment-bangalore/
+   Soft, warm and reassuring. Peach and coral (the uterine cancer awareness
+   colours) on light bands, warm plum ink for headings and the dark bands.
+   Coral is deepened for buttons and links so white text stays readable;
+   bright peach is decoration only. Fraunces display, Plus Jakarta Sans
+   body, as on the breast page: a sibling palette, never pink. No new fonts.
+
+   Contrast (WCAG 2.x; "/80" = white at 80% over that background).
+   Text needs 4.5:1, CTAs included; non-text marks need 3:1.
+
+   Text on light        surface  surface-alt  surface-warm  accent-soft  petal  hero base
+     --ink    #4a1d3f    13.65      12.71        12.24         11.48     10.03    12.89
+     --text   #2f1f2a    15.55      14.49        13.94         13.08     11.43    14.69
+     --muted  #6b5462     6.84       6.37         6.13          5.75      5.03     6.46
+     --accent #ad3c2a     6.08       5.66         5.45          5.11      4.47     5.74
+   (hero base #fff7f2. --accent on --petal is 4.47: never accent text on petal.)
+
+   CTAs
+     white on --accent (primary button)                          6.08
+     white on --accent-hover (hover)                             8.26
+     white on --grad-cta stops (action bar: hover, accent,
+       accent/accent-bright mix #b94934)                  8.26 · 6.08 · 5.20
+     --accent on white (secondary / outline button)              6.08
+     --accent on --accent-soft (chips, eyebrow pill)             5.11
+     ink on white (onDark button on the plum bands)             13.65
+
+   Text on dark (--grad-plum)   ink #4a1d3f   end #6a2a57
+     white                         13.65        10.09
+     white/80                       9.23         7.07
+     white/70                       7.42         5.81
+     --accent-glow #ffb59f          8.03         5.94
+     --gold #f0b04f                 7.17          -
+
+   Decoration only
+     --highlight (peach) on ink 5.08; on white 2.69 and surface-alt 2.50: fills and glows on light
+       bands, never text and never the only edge of a control.
+     --accent-bright on white 4.45: gradient stop and large marks only, never body text.
+     --accent on ink 2.25: on the plum bands the CTA is the white onDark pill.
+     --line on white 1.29: hairlines only.
+   ================================================================== */
+
+[data-theme="endometrial"] {
+  --ink: #4a1d3f; /* warm plum: headings, dark bands */
+  --text: #2f1f2a; /* body text */
+  --muted: #6b5462; /* secondary text */
+  --surface: #ffffff;
+  --surface-alt: #fff5ef; /* peach bands */
+  --surface-warm: #fdf0ea; /* deeper apricot bands */
+  --accent: #ad3c2a; /* deep coral: buttons, links, icons */
+  --accent-hover: #8c2f20;
+  --accent-soft: #fde7de; /* chips, icon tiles, eyebrow pills */
+  --accent-glow: #ffb59f; /* accent text and focus rings on plum */
+  --accent-bright: #c4553e; /* coral: second stop of --grad-accent and --grad-cta */
+  --highlight: #e9825c; /* bright peach: glows, dots, underlines only */
+  --petal: #fbd5c6; /* decoration */
+  --gold: #f0b04f; /* tiny highlights on plum only */
+  --line: #f3dfd6; /* borders */
+
+  /* Peach base with a coral light top-right and an apricot one bottom-left. */
+  --grad-hero:
+    radial-gradient(60% 55% at 88% 10%, rgb(251 213 198 / 0.8), transparent 70%),
+    radial-gradient(50% 50% at 8% 90%, rgb(255 228 210 / 0.9), transparent 70%),
+    linear-gradient(180deg, #fff7f2, #ffffff);
+  --grad-accent: linear-gradient(120deg, var(--accent), var(--accent-bright));
+  /* Dark bands (Section tone="plum"). */
+  --grad-plum: linear-gradient(160deg, #4a1d3f, #6a2a57);
+
+  /* Type: Plus Jakarta Sans body, Fraunces display (as on the breast page) */
+  --font-display: var(--font-serif);
+  --display-weight: 560;
+  --display-tracking: -0.02em;
+
+  /* Shadows tinted with plum */
+  --shadow-rgb: 74 29 63;
+}
+
+/* Headings on this page wrap in balanced lines (no single orphaned word). */
+[data-theme="endometrial"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+/* The sentinel-node diagram's ICG tracer (fluorescence green). Decoration only, never text:
+   on white 2.6:1, so it always comes with its label in --text. */
+[data-theme="endometrial"] {
+  --tracer: #22b573;
+}
+
+/* Two shared headings, fitted on this page only (as on the colorectal page): the reviews title's
+   wrapper (26ch of the body font) is widened so the title is not six lines on desktop, and "Our
+   Clinical Locations" fits one line on the smallest phones. */
+@media (min-width: 768px) {
+  [data-theme="endometrial"] #reviews div:has(> #reviews-title) {
+    max-width: 34rem;
+  }
+}
+@media (max-width: 389px) {
+  [data-theme="endometrial"] #locations h2 {
+    font-size: 1.75rem;
+  }
+}

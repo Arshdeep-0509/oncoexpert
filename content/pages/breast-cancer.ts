@@ -19,6 +19,7 @@ import { breastOgImage } from "@/content/pages/breast-cancer.images";
 import type { AppointmentService } from "@/content/site";
 import type { ReviewId } from "@/content/shared/reviews";
 import { formatRupees } from "@/lib/format";
+import { bookingHref } from "@/lib/booking";
 
 /* ------------------------------------------------------------------ */
 /* Metadata                                                            */
@@ -593,7 +594,8 @@ export const pricing = {
     body: "Receive a customized treatment plan with clear pricing, insurance support, and dedicated patient assistance from our oncology team.",
     cta: { label: "Request Package", service: "Consultation", note: "Package request" },
     contactLine: "For Customized Package Kindly",
-    contactLink: { label: "Contact Us", href: "#appointment" },
+    // SOURCE: EXISTING (label); NEW (the booking page with Consultation preselected and a note)
+    contactLink: { label: "Contact Us", href: bookingHref("Consultation", "Customized package") },
     image: "ribbonMinimal",
   },
 } as const satisfies PricingContent;
@@ -642,8 +644,6 @@ export const surgeon = {
     appointment, locations, final band: content/shared/sections.ts)    */
 /* ------------------------------------------------------------------ */
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Breast Cancer";
 export const pageSlug = "breast-cancer-treatment-bangalore";
 
 /** Structured data (JSON-LD): the condition this page is about. Not visible on the page. */

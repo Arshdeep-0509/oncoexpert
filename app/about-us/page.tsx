@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageName, pageSlug } from "@/content/pages/about-us";
+import { pageSlug } from "@/content/pages/about-us";
 import { aboutImages } from "@/content/pages/about-us.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
@@ -15,7 +15,6 @@ import { Experience } from "@/components/pages/about-us/Experience";
 import { WhyTrust } from "@/components/pages/about-us/WhyTrust";
 import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
-import { AppointmentSection } from "@/components/shared/AppointmentSection";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
 
@@ -57,7 +56,6 @@ export default function AboutUsPage() {
         ids={videosSection.ids}
         labels={videosSection.a11y}
       />
-      <AppointmentSection tone="surface" page={pageName} />
       <Locations tone="warm" />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} /> {/* 13 navy, photo */}
     </>

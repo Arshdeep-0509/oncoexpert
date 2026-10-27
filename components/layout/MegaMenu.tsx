@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { site, type NavChild } from "@/content/site";
 import type { HeaderVariant } from "@/content/types";
 import { cn, focusRing } from "@/lib/utils";
-import { isActivePath } from "@/lib/nav";
+import { isActivePath, prefetchFor } from "@/lib/nav";
 import {
   NavigationMenuContent,
   NavigationMenuItem,
@@ -79,7 +79,11 @@ export function MegaMenu({ label, href, items, onDark, pathname, variant }: Mega
                     focusRing,
                   )}
                 >
-                  <Link href={child.href} prefetch={false} aria-current={current ? "page" : undefined}>
+                  <Link
+                    href={child.href}
+                    prefetch={prefetchFor(child.href)}
+                    aria-current={current ? "page" : undefined}
+                  >
                     <span
                       className={cn(
                         "grid size-10 shrink-0 place-items-center text-accent transition-colors duration-300",
@@ -110,7 +114,7 @@ export function MegaMenu({ label, href, items, onDark, pathname, variant }: Mega
               focusRing,
             )}
           >
-            <Link href={href} prefetch={false}>
+            <Link href={href} prefetch={prefetchFor(href)}>
               {label}
               <ArrowRight
                 className="size-4 text-accent transition-transform duration-300 ease-out-expo group-hover/all:translate-x-1"

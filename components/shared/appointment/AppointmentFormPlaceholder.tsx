@@ -23,8 +23,8 @@ export function AppointmentFormPlaceholder({ styles }: { styles: FormStyles }) {
           <ChevronDownIcon className="size-4 opacity-50" aria-hidden="true" />
         </div>
       </Field>
-      <Field id="appt-datetime" label={f.dateTime}>
-        <input id="appt-datetime" type="datetime-local" className={styles.input} readOnly />
+      <Field id="appt-date" label={f.date}>
+        <input id="appt-date" type="date" className={styles.input} readOnly />
       </Field>
       <button type="button" disabled className={styles.submit}>
         {f.submit}

@@ -8,6 +8,7 @@ import { cn, focusRing } from "@/lib/utils";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { headerVariants } from "@/components/layout/header/header-variants";
+import { prefetchFor } from "@/lib/nav";
 
 type HeaderActionsProps = {
   current: string | null;
@@ -22,8 +23,9 @@ export function HeaderActions({ current, onDark, variant, appointmentHref }: Hea
   const v = headerVariants[variant];
   const { openAppointment } = useAppointment();
 
+  // openAppointment: the booking page (with the page default service and where the visitor came
+  // from), or, on the booking page, a scroll to its form. The href serves no-JS and new tabs.
   const onAppointmentClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!appointmentHref.startsWith("#")) return;
     e.preventDefault();
     openAppointment();
   };
@@ -45,7 +47,7 @@ export function HeaderActions({ current, onDark, variant, appointmentHref }: Hea
       </a>
       <Link
         href={appointmentHref}
-        prefetch={false}
+        prefetch={prefetchFor(appointmentHref)}
         onClick={onAppointmentClick}
         data-cta="header-appointment"
         className={cn(

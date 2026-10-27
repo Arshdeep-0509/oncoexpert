@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { HeaderVariant, HeroTone, ThemeName } from "@/content/types";
 import type { AppointmentService } from "@/content/site";
+import { bookingHref } from "@/lib/booking";
 import { ThemeSync } from "@/components/layout/ThemeSync";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { TopBar } from "@/components/layout/TopBar";
@@ -20,11 +21,11 @@ type SiteShellProps = {
   /** Nav item to mark as current, e.g. "/breast-cancer-treatment-bangalore/". Defaults to the URL. */
   activeHref?: string;
   /**
-   * Where "For Appointment" points. "#appointment" (default) on pages with the form: the
-   * buttons then scroll to it. Elsewhere pass site.appointmentCta.href.
+   * Where "For Appointment" points. Default: the booking page, with `defaultService` preselected. The
+   * booking page passes "#appointment": its form is on the page, so the buttons scroll to it.
    */
   appointmentHref?: string;
-  /** Service the form preselects for buttons that name none (header, menu, action bar). Default: none. */
+  /** Service the booking form preselects for buttons that name none (menu, action bar). Default: none. */
   defaultService?: AppointmentService;
   /** Optional faint art in the footer corner. */
   footerArt?: FooterArt;
@@ -49,7 +50,7 @@ export function SiteShell({
   headerVariant,
   heroTone = headerVariant,
   activeHref,
-  appointmentHref = "#appointment",
+  appointmentHref,
   defaultService,
   footerArt,
   mobileActionBar = true,
@@ -65,7 +66,7 @@ export function SiteShell({
         <SiteHeader
           variant={headerVariant}
           heroTone={heroTone}
-          appointmentHref={appointmentHref}
+          appointmentHref={appointmentHref ?? bookingHref(defaultService)}
           activeHref={activeHref}
         />
         <main id="main">{children}</main>

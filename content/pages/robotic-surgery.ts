@@ -616,9 +616,6 @@ export const reviews = {
 /* (classic look). Copy: content/shared/sections.ts                    */
 /* ------------------------------------------------------------------ */
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Robotic Surgery";
-
 /* ------------------------------------------------------------------ */
 /* Structured data (JSON-LD). Not visible on the page.                 */
 /* ------------------------------------------------------------------ */

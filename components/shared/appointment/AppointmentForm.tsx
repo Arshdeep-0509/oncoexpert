@@ -8,7 +8,8 @@ import { appointmentSchema, type AppointmentInput } from "@/lib/appointment-sche
 import { submitAppointment } from "@/lib/appointment";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
-import { localNow } from "@/lib/format";
+import { localToday } from "@/lib/format";
+import { serviceFromSlug } from "@/lib/booking";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
 import { Field } from "@/components/shared/appointment/Field";
@@ -23,16 +24,16 @@ type AppointmentFormProps = {
 };
 
 /**
- * The appointment form of every page. react-hook-form + zod (shared schema with the
- * server action). Buttons anywhere on the page preselect the service and pass a note
- * through useAppointment(). Never reports success unless the request was delivered.
+ * The appointment form (the booking page's). react-hook-form + zod (shared schema with the
+ * server action). Buttons on any page link here with ?service= and ?note=, which preselect the
+ * service and carry the note. Never reports success unless the request was delivered.
  */
 export function AppointmentForm({ page, styles }: AppointmentFormProps) {
   const { service: requested, note, requestId } = useAppointment();
   const [status, setStatus] = React.useState<Status>("idle");
   const [minDate, setMinDate] = React.useState<string | undefined>(undefined);
 
-  const empty = { name: "", phone: "", dateTime: "", company: "", page, note: "" };
+  const empty = { name: "", phone: "", date: "", company: "", page, note: "" };
   const {
     register,
     control,
@@ -46,13 +47,26 @@ export function AppointmentForm({ page, styles }: AppointmentFormProps) {
     mode: "onTouched",
   });
 
-  // "Now" is only known in the browser (and must not be read during prerender).
+  // "Today" is only known in the browser (and must not be read during prerender).
   React.useEffect(() => {
-    const id = requestAnimationFrame(() => setMinDate(localNow()));
+    const id = requestAnimationFrame(() => setMinDate(localToday()));
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // A CTA anywhere on the page preselects its service (and passes its note) here.
+  // Arriving from another page's button: /book-your-appoinment-page/?service=…&note=… preselects
+  // the service and carries the note (lib/booking.ts bookingHref).
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = serviceFromSlug(params.get("service"));
+    if (fromUrl) setValue("service", fromUrl, { shouldDirty: true });
+    const noteFromUrl = params.get("note");
+    if (noteFromUrl) setValue("note", noteFromUrl.slice(0, 120));
+    // The page the visitor came from, for the email ("Book Appointment via /colon-…/").
+    const from = params.get("from");
+    if (from?.startsWith("/")) setValue("page", `${page} via ${from.slice(0, 80)}`);
+  }, [setValue, page]);
+
+  // A CTA on the same page (the header's, on the booking page) preselects its service here.
   React.useEffect(() => {
     if (requestId === 0) return;
     if (requested) setValue("service", requested, { shouldValidate: true, shouldDirty: true });
@@ -137,15 +151,15 @@ export function AppointmentForm({ page, styles }: AppointmentFormProps) {
         />
       </Field>
 
-      <Field id="appt-datetime" label={f.dateTime} error={errors.dateTime?.message}>
+      <Field id="appt-date" label={f.date} error={errors.date?.message}>
         <input
-          id="appt-datetime"
-          type="datetime-local"
+          id="appt-date"
+          type="date"
           min={minDate}
           className={cn(styles.input, "tabular-nums")}
-          aria-invalid={!!errors.dateTime}
-          aria-describedby={describedBy("dateTime")}
-          {...register("dateTime")}
+          aria-invalid={!!errors.date}
+          aria-describedby={describedBy("date")}
+          {...register("date")}
         />
       </Field>
 

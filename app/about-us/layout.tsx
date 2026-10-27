@@ -8,7 +8,6 @@ export default function AboutUsLayout({ children }: LayoutProps<"/about-us">) {
       headerVariant="light"
       heroTone="dark"
       activeHref="/about-us/"
-      appointmentHref="#appointment"
       defaultService={defaultAppointmentService}
     >
       {children}

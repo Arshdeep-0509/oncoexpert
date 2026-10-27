@@ -2,6 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { prefetchFor } from "@/lib/nav";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "onDark";
 
@@ -85,7 +86,7 @@ export function Button(props: ButtonProps) {
       );
     }
     return (
-      <Link href={href} prefetch={false} data-cta={cta} className={classes} {...anchorProps}>
+      <Link href={href} prefetch={prefetchFor(href)} data-cta={cta} className={classes} {...anchorProps}>
         {content}
       </Link>
     );

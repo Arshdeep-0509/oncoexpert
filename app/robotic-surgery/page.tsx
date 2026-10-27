@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import dynamic from "next/dynamic";
-import { doctor, images, media, meta, pageName, reviews } from "@/content/pages/robotic-surgery";
+import { doctor, images, media, meta, reviews } from "@/content/pages/robotic-surgery";
 import { pages } from "@/content/pages";
 import { pageViewport } from "@/lib/seo";
 
@@ -15,11 +15,9 @@ import { CancersWeTreat } from "@/components/pages/robotic-surgery/CancersWeTrea
 import { Benefits } from "@/components/pages/robotic-surgery/Benefits";
 import { RoboticJsonLd } from "@/components/pages/robotic-surgery/RoboticJsonLd";
 import { pillLook } from "@/components/pages/robotic-surgery/pills";
-import { roboticFormStyles } from "@/components/pages/robotic-surgery/form-styles";
 import { DoctorCard } from "@/components/shared/DoctorCard";
 import { Videos } from "@/components/shared/Videos";
 import { Reviews } from "@/components/shared/Reviews";
-import { AppointmentSection } from "@/components/shared/AppointmentSection";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
 
@@ -81,9 +79,7 @@ export default function RoboticSurgeryPage() {
       {/* 12 #media            white   */}
       <Reviews tone="surface" look="classic" title={reviews.heading} reviews={reviews.items} />{" "}
       {/* 13 #reviews          surface */}
-      <AppointmentSection tone="white" look="classic" page={pageName} formStyles={roboticFormStyles} />{" "}
-      {/* 14 #appointment      white   */}
-      <Locations tone="surface" look="classic" /> {/* 15 #locations        surface */}
+      <Locations tone="white" look="classic" /> {/* 15 #locations        white (the removed form's tone) */}
       <FinalCta look="classic" image={images.armsBlack} /> {/* 16 ink → teal band */}
     </>
   );

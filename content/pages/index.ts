@@ -9,6 +9,8 @@ import { meta as breastMeta } from "@/content/pages/breast-cancer";
 import { meta as roboticMeta } from "@/content/pages/robotic-surgery";
 import { meta as bookMeta } from "@/content/pages/book-appointment";
 import { meta as aboutMeta } from "@/content/pages/about-us";
+import { meta as colorectalMeta } from "@/content/pages/colorectal-cancer";
+import { meta as endometrialMeta } from "@/content/pages/endometrial-cancer";
 
 export const pages = {
   home: {
@@ -52,6 +54,23 @@ export const pages = {
     theme: "care",
     themeColor: "#FBF8F4",
     meta: aboutMeta,
+  },
+  // The live URL ("colon", while the page and the menu say "Colorectal"): kept for SEO.
+  "colon-cancer-treatment-bangalore": {
+    slug: "colon-cancer-treatment-bangalore",
+    path: "/colon-cancer-treatment-bangalore/",
+    title: colorectalMeta.title,
+    theme: "colorectal",
+    themeColor: "#F4F8FC",
+    meta: colorectalMeta,
+  },
+  "endometrial-cancer-treatment-bangalore": {
+    slug: "endometrial-cancer-treatment-bangalore",
+    path: "/endometrial-cancer-treatment-bangalore/",
+    title: endometrialMeta.title,
+    theme: "endometrial",
+    themeColor: "#FFF7F2",
+    meta: endometrialMeta,
   },
 } as const satisfies Record<string, PageEntry>;
 

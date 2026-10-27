@@ -25,7 +25,9 @@ export const appointmentSection = {
     service: "Service Required",
     servicePlaceholder: "- Select -",
     services: site.appointmentServices,
-    dateTime: "Date / Time",
+    // SOURCE: NEW (the live label is "Date / Time"; the form now asks for a date only)
+    date: "Date",
+    // SOURCE: EXISTING
     submit: "Submit Form",
     // SOURCE: NEW
     sending: "Sending…",
@@ -36,7 +38,7 @@ export const appointmentSection = {
       name: "Please enter your name.",
       phone: "Please enter a valid 10-digit Indian mobile number.",
       service: "Please choose a service.",
-      dateTime: "Please choose a future date and time.",
+      date: "Please choose today or a later date.",
     },
     // SOURCE: NEW (hidden spam trap label, never visible)
     honeypot: "Leave this field empty",

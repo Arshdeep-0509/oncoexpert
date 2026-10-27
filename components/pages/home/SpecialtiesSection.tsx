@@ -9,6 +9,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SwipeRow } from "@/components/ui/SwipeRow";
 import { Reveal } from "@/components/ui/Reveal";
 import { specialtyIcons } from "@/components/pages/home/specialty-icons";
+import { prefetchFor } from "@/lib/nav";
 import "@/components/pages/home/specialties.css";
 
 type Specialty = (typeof specialties.items)[number];
@@ -63,7 +64,7 @@ function PhotoTile({ item }: { item: Specialty }) {
   return (
     <Link
       href={item.href}
-      prefetch={false}
+      prefetch={prefetchFor(item.href)}
       data-cta={item.name}
       className={cn(
         styles.tile,
@@ -109,7 +110,7 @@ function SmallPhotoTile({ item }: { item: Specialty }) {
   return (
     <Link
       href={item.href}
-      prefetch={false}
+      prefetch={prefetchFor(item.href)}
       data-cta={item.name}
       className={cn(
         styles.tile,

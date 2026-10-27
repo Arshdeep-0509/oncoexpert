@@ -34,8 +34,6 @@ export const meta = {
   ogImage: colorectalOgImage,
 } as const satisfies PageMeta;
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Colorectal Cancer";
 export const pageSlug = "colon-cancer-treatment-bangalore";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
@@ -88,8 +86,10 @@ export type ApproachContent = {
     body: string;
     /** Short line that expands on hover / tap: key words of `body`. */
     detail: string;
-    /** Large bento tile (desktop: a tall tile with a photo). */
-    image?: ColorectalImageKey;
+    /** The card's background photo. */
+    image: ColorectalImageKey;
+    /** Large bento tile (desktop: a tall tile; tablet: a full-width one). */
+    large?: boolean;
   }[];
   /** The small ISR diagram on "Low Stoma Rates" (three frames). */
   isrDiagram: string;
@@ -252,6 +252,7 @@ export const approach = {
       title: "Personalized Plans",
       body: "Every tumor is unique. We tailor treatment based on genetic profiling and specific patient needs.",
       detail: "Genetic profiling · Specific patient needs",
+      image: "pathologyLab",
     },
     {
       icon: "robotic",
@@ -260,6 +261,7 @@ export const approach = {
       body: "Unmatched precision in narrow pelvic spaces, leading to better nerve preservation and faster recovery.",
       detail: "Nerve preservation · Faster recovery",
       image: "roboticArms",
+      large: true,
     },
     {
       icon: "preservation",
@@ -267,24 +269,28 @@ export const approach = {
       body: "Our goal is to treat the cancer while maintaining natural bowel and sexual function wherever possible.",
       detail: "Bowel function · Sexual function",
       image: "anatomyModel",
+      large: true,
     },
     {
       icon: "stoma",
       title: "Low Stoma Rates",
       body: "Advanced Inter-Sphincteric Resection (ISR) techniques significantly reduce the need for permanent bags.",
       detail: "Inter-Sphincteric Resection (ISR)",
+      image: "activeCouple",
     },
     {
       icon: "advanced",
       title: "Advanced Care",
       body: "Access to the latest chemotherapy protocols and targeted immunotherapies integrated with surgery.",
       detail: "Chemotherapy · Targeted immunotherapies",
+      image: "infusion",
     },
     {
       icon: "stage-four",
       title: "Stage IV Options",
       body: "Curative intents for metastatic cases through liver-first or synchronous resection strategies.",
       detail: "Liver-first · Synchronous resection",
+      image: "imagingScan",
     },
   ],
   // SOURCE: NEW (screen-reader label of the diagram)

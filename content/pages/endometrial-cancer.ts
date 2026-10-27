@@ -34,8 +34,6 @@ export const meta = {
   ogImage: endometrialOgImage,
 } as const satisfies PageMeta;
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Endometrial Cancer";
 export const pageSlug = "endometrial-cancer-treatment-bangalore";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
@@ -82,7 +80,7 @@ export type ClinicalContent = {
 export type SymptomsContent = {
   title: string;
   intro: string;
-  items: readonly { icon: SymptomIcon; title: string; body: string }[];
+  items: readonly { icon: SymptomIcon; title: string; body: string; image: EndometrialImageKey }[];
   /** A calm line under the cards, then the button. */
   reassurance: string;
   cta: AppointmentCta;
@@ -204,23 +202,31 @@ export const symptoms = {
   // SOURCE: EXISTING
   title: "When Should You See a Specialist?",
   intro: "Early detection of uterine cancer significantly improves treatment outcomes. Watch for these key indicators.",
-  // SOURCE: EXISTING (titles, text); NEW (icon keys)
+  // SOURCE: EXISTING (titles, text); NEW (icon keys, photos)
   items: [
     {
       icon: "drop",
       title: "Post-menopausal Bleeding",
       body: "Any spotting or bleeding after menopause should be investigated immediately.",
+      image: "ultrasound",
     },
     {
       icon: "calendar",
       title: "Heavy Periods",
       body: "Significant changes in flow or unusually heavy menstrual cycles.",
+      image: "periodCalendar",
     },
-    { icon: "alert", title: "Abnormal Bleeding", body: "Bleeding between cycles or prolonged watery discharge." },
+    {
+      icon: "alert",
+      title: "Abnormal Bleeding",
+      body: "Bleeding between cycles or prolonged watery discharge.",
+      image: "cycleTracker",
+    },
     {
       icon: "pelvic",
       title: "Pelvic Discomfort",
       body: "Persistent pain, pressure, or cramping in the lower abdomen.",
+      image: "abdominalPain",
     },
   ],
   // SOURCE: NEW

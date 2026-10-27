@@ -3,9 +3,10 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { site, type AppointmentService } from "@/content/site";
+import { bookingHref } from "@/lib/booking";
 import { getLenis } from "@/lib/lenis";
 
-/** Every page's appointment section uses this id. */
+/** The booking page's form section uses this id (no other page has it). */
 export const APPOINTMENT_ID = "appointment";
 
 /** The appointment form gives its Name input this name attribute. */
@@ -25,9 +26,10 @@ type AppointmentState = {
 
 type AppointmentContextValue = AppointmentState & {
   /**
-   * Smooth-scrolls to #appointment (below the sticky header), preselects `service`,
-   * stores `note` and focuses the Name field. Without #appointment on the page it
-   * navigates to the booking page instead.
+   * Every page but the booking page: navigates to the booking page, with `service` (or the
+   * page's default) and `note` in the URL for its form. On the booking page (the only page with
+   * #appointment): smooth-scrolls to the form, preselects `service`, stores `note` and focuses
+   * the Name field.
    */
   openAppointment: (service?: AppointmentService, note?: string) => void;
 };
@@ -90,7 +92,7 @@ export function AppointmentProvider({ defaultService, children }: AppointmentPro
     (service?: AppointmentService, note?: string) => {
       const target = document.getElementById(APPOINTMENT_ID);
       if (!target) {
-        router.push(site.appointmentCta.href);
+        router.push(bookingHref(service ?? defaultService, note, window.location.pathname));
         return;
       }
       setState((s) => ({

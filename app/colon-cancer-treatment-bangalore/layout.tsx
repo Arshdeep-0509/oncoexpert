@@ -8,7 +8,6 @@ export default function ColorectalCancerLayout({ children }: LayoutProps<"/colon
       theme="colorectal"
       headerVariant="light"
       activeHref="/colon-cancer-treatment-bangalore/"
-      appointmentHref="#appointment"
       defaultService={defaultAppointmentService}
     >
       {children}

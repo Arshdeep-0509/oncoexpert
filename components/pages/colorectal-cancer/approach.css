@@ -1,11 +1,15 @@
 /* ==================================================================
-   Colorectal #approach: the six bento cards. Plain CSS, prefix cxa- (approach-styles.ts).
+   Colorectal #approach: the six bento cards, each on its own photo. Plain CSS, prefix cxa-
+   (approach-styles.ts).
+   - The photo fills the card; .cxa-shade (ink, rising from the bottom) keeps the white text at
+     AA contrast over any part of any photo; the icon sits on frosted glass at the top.
    - On reveal (the Reveal wrapper's data-revealed + --reveal-delay): the icon's line art draws,
      a thin gradient light runs once around the card's border (About's credential-card sweep,
      repeated here on purpose: a CSS file shared by two pages becomes its own chunk and changes
      the first page's stylesheets), and the ISR diagram plays its three frames once.
-   - Hover (mouse) or tap (data-active, ApproachTap): the card lifts, the icon fills, the detail
-     line rises into place, and the ISR diagram plays again.
+   - Hover (mouse) or tap (data-active, ApproachTap): the card lifts, the photo zooms in slightly
+     and the shade deepens, the icon fills, the detail line rises into place, and the ISR diagram
+     plays again.
    - Transform and opacity only, plus the icon stroke draw. The defaults are the final state; with
      reduced motion the detail line and the diagram's last frame are simply shown.
    ================================================================== */
@@ -55,12 +59,40 @@
   );
 }
 
-/* Icon tile: the line icon (draws on reveal) with a solid copy above it; on hover an accent disc
-   scales up behind and the white copy fades in, so the icon "fills". */
+/* The shade over the photo: solid ink under the text, clear at the top. A second, deeper layer
+   fades in on hover / tap (opacity). */
+.cxa-shade,
+.cxa-shade::after {
+  position: absolute;
+  inset: 0;
+}
+.cxa-shade {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--ink) 94%, transparent) 0%,
+    color-mix(in srgb, var(--ink) 86%, transparent) 42%,
+    color-mix(in srgb, var(--ink) 35%, transparent) 72%,
+    color-mix(in srgb, var(--ink) 10%, transparent) 100%
+  );
+}
+.cxa-shade::after {
+  content: "";
+  background: linear-gradient(to top, color-mix(in srgb, var(--ink) 40%, transparent), transparent 85%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out-expo);
+}
+
+/* Icon tile: frosted glass over the photo. The line icon (draws on reveal) with a solid copy
+   above it; on hover an accent disc scales up behind and the solid copy fades in, so the icon
+   "fills". */
 .cxa-iconTile {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  background: color-mix(in srgb, var(--white) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--white) 30%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .cxa-iconFill {
   position: absolute;
@@ -121,7 +153,10 @@
     translate: none;
   }
   .cxa-card:hover .cxa-photo {
-    scale: 1.04;
+    scale: 1.06;
+  }
+  .cxa-card:hover .cxa-shade::after {
+    opacity: 1;
   }
 }
 .cxa-card[data-active] {
@@ -133,6 +168,12 @@
 .cxa-card[data-active] .cxa-iconFill {
   scale: 1;
 }
+.cxa-card[data-active] .cxa-photo {
+  scale: 1.06;
+}
+.cxa-card[data-active] .cxa-shade::after {
+  opacity: 1;
+}
 .cxa-card[data-active] .cxa-detail {
   opacity: 1;
   translate: none;
@@ -143,6 +184,11 @@
   .cxa-card:hover,
   .cxa-card[data-active] {
     transform: none;
+  }
+  .cxa-card .cxa-photo,
+  .cxa-card:is(:hover, [data-active]) .cxa-photo {
+    scale: none;
+    transition: none;
   }
   .cxa-detail {
     opacity: 1;

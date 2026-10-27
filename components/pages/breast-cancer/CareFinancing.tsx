@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { pricing } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
 import { Section } from "@/components/ui/Section";
@@ -53,12 +54,12 @@ export function CareFinancing() {
             />
             <p className="text-[15px] text-muted">
               {plan.contactLine}{" "}
-              <a
+              <Link
                 href={plan.contactLink.href}
                 className="-my-3 inline-block py-3 font-semibold text-accent underline decoration-accent/40 underline-offset-4 hover:text-accent-hover"
               >
                 {plan.contactLink.label}
-              </a>
+              </Link>
             </p>
           </div>
         </div>

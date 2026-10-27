@@ -35,7 +35,7 @@ export function Approach() {
         hint={approach.a11y.swipeHint}
         className="mt-10 md:mt-14"
         gridClassName="md:grid-flow-dense md:grid-cols-2 lg:grid-cols-4"
-        itemClassName={approach.cards.map((card) => span("image" in card))}
+        itemClassName={approach.cards.map((card) => span("large" in card && card.large))}
       >
         {approach.cards.map((card, i) => (
           <Reveal key={card.title} delay={i * 0.08} className="h-full">

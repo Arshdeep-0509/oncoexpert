@@ -57,8 +57,8 @@ export const site = {
   ] satisfies readonly NavItem[],
 
   // SOURCE: EXISTING
-  // `href` keeps the live URL spelling ("appoinment"). Pages can override the
-  // target via the Navbar `appointmentHref` prop, e.g. "#appointment".
+  // `href` keeps the live URL spelling ("appoinment"). Every appointment button on the site
+  // goes to this page (lib/booking.ts bookingHref); only the booking page itself has the form.
   appointmentCta: {
     label: "For Appointment",
     href: "/book-your-appoinment-page/",

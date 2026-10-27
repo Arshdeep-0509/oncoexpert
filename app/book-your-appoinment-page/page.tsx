@@ -1,18 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageSlug } from "@/content/pages/book-appointment";
-import { bookImages } from "@/content/pages/book-appointment.images";
-import { reviewsFor } from "@/content/shared/reviews";
-import { reviewsSection, videosSection } from "@/content/shared/sections";
+import { pageName, pageSlug } from "@/content/pages/book-appointment";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
-import { BookingHero } from "@/components/pages/book-appointment/BookingHero";
-import { HowItWorks } from "@/components/pages/book-appointment/HowItWorks";
-import { TrustSection } from "@/components/pages/book-appointment/TrustSection";
-import { Reviews } from "@/components/shared/Reviews";
-import { Videos } from "@/components/shared/Videos";
-import { Locations } from "@/components/shared/Locations";
-import { FinalCta } from "@/components/shared/FinalCta";
+import { AppointmentSection } from "@/components/shared/AppointmentSection";
 
 const page = pages[pageSlug];
 
@@ -23,32 +14,16 @@ export function generateViewport(): Viewport {
   return pageViewport(page);
 }
 
-const finalImage = bookImages.consultationReport;
-
-// Header and footer come from ./layout.tsx (SiteShell, care theme; no phone dock: the form is
-// always close). One job: a worried patient books in under 30 seconds and feels reassured.
+// Header and footer come from ./layout.tsx (SiteShell, care theme). The whole page is the
+// appointment form: every appointment button on the site links here, with ?service= and ?note=
+// preselecting the service and carrying the note (lib/booking.ts).
 export default function BookAppointmentPage() {
   return (
-    <>
-      <BookingHero /> {/* 1  #hero (the form, #appointment) + #emergency   ivory gradient */}
-      <HowItWorks /> {/* 2  #how-it-works   ice */}
-      <TrustSection /> {/* 3  #trust          white */}
-      {/* 4–7: shared sections (soft look), re-themed by the care theme */}
-      <Reviews
-        tone="alt"
-        title={reviewsSection.title}
-        reviews={reviewsFor(pageSlug, reviewsSection.order)}
-        link={reviewsSection.link}
-      />
-      <Videos
-        tone="surface"
-        eyebrow={videosSection.eyebrow}
-        title={videosSection.title}
-        ids={videosSection.ids}
-        labels={videosSection.a11y}
-      />
-      <Locations tone="warm" />
-      <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} /> {/* navy, photo */}
-    </>
+    <AppointmentSection
+      page={pageName}
+      tone="surface"
+      heading="h1"
+      className="pt-[calc(var(--header-h)+40px)] md:pt-[calc(var(--header-h)+64px)]"
+    />
   );
 }

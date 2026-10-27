@@ -31,8 +31,6 @@ export const meta = {
   ogImage: homeOgImage,
 } as const satisfies PageMeta;
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Home";
 export const pageSlug = "home";
 
 /* ------------------------------------------------------------------ */

@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
+import { prefetchFor } from "@/lib/nav";
 import "@/components/pages/home/icon-draw.css";
 
 const icons: Record<ServiceIcon, LucideIcon> = {
@@ -60,7 +61,7 @@ export function ServicesSection() {
               {item.action.kind === "link" ? (
                 <Link
                   href={item.action.href}
-                  prefetch={false}
+                  prefetch={prefetchFor(item.action.href)}
                   data-cta={`${item.name}: ${item.action.label}`}
                   className={action.className}
                 >

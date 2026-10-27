@@ -65,6 +65,17 @@ export const colorectalImages = {
     width: 2000,
     height: 1333,
   },
+  // #approach, Personalized Plans: the breast page's licensed photo (Pexels).
+  pathologyLab: {
+    file: "pathology-lab.jpg",
+    src: "/images/breast-cancer/pathology-lab.jpg",
+    pexelsId: 9574398,
+    alt: "Pathologist examining a sample under a microscope",
+    credit: { photographer: "Tima Miroshnichenko", url: pexels(9574398) },
+    focal: "60% 40%",
+    width: 2000,
+    height: 1333,
+  },
   // #path, Staging step: the booking page's licensed photo (Pexels).
   consultationReport: {
     file: "consultation-report.jpg",
@@ -118,6 +129,27 @@ export const colorectalImages = {
     focal: "50% 30%",
     width: 2000,
     height: 1663,
+  },
+  // #approach, Advanced Care and Low Stoma Rates.
+  infusion: {
+    file: "infusion.jpg",
+    src: `${BASE}/infusion.jpg`,
+    pexelsId: 6129691,
+    alt: "A nurse adjusting an IV infusion beside a patient monitor",
+    credit: { photographer: "RDNE Stock project", url: pexels(6129691) },
+    focal: "50% 40%",
+    width: 2000,
+    height: 1333,
+  },
+  activeCouple: {
+    file: "active-couple.jpg",
+    src: `${BASE}/active-couple.jpg`,
+    pexelsId: 8939890,
+    alt: "Senior couple walking in a park with yoga mats",
+    credit: { photographer: "Vlada Karpovich", url: pexels(8939890) },
+    focal: "50% 30%",
+    width: 1333,
+    height: 2000,
   },
 } as const satisfies Record<string, PageImage>;
 

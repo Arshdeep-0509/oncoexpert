@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageName, pageSlug, shared, surgeon } from "@/content/pages/colorectal-cancer";
+import { pageSlug, shared, surgeon } from "@/content/pages/colorectal-cancer";
 import { colorectalImages } from "@/content/pages/colorectal-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
@@ -17,7 +17,6 @@ import { HopeBand } from "@/components/pages/colorectal-cancer/HopeBand";
 import { DoctorCard } from "@/components/shared/DoctorCard";
 import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
-import { AppointmentSection } from "@/components/shared/AppointmentSection";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
 
@@ -72,7 +71,6 @@ export default function ColorectalCancerPage() {
         ids={videosSection.ids}
         labels={videosSection.a11y}
       />
-      <AppointmentSection tone="surface" page={pageName} />
       <Locations tone="warm" />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>

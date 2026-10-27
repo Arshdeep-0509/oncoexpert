@@ -9,6 +9,7 @@ import { textStyles } from "@/components/ui/text-styles";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
 import { pillLook } from "@/components/pages/robotic-surgery/pills";
 import { ContentIconView } from "@/components/pages/robotic-surgery/ContentIconView";
+import { prefetchFor } from "@/lib/nav";
 
 type Item = (typeof cancers.items)[number];
 
@@ -54,7 +55,12 @@ export function CancersWeTreat() {
       <Reveal stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {cancers.items.map((item) =>
           item.href ? (
-            <Link key={item.title} href={item.href} prefetch={false} className={cn(cardBase, cardHover)}>
+            <Link
+              key={item.title}
+              href={item.href}
+              prefetch={prefetchFor(item.href)}
+              className={cn(cardBase, cardHover)}
+            >
               <CardBody item={item} />
             </Link>
           ) : (

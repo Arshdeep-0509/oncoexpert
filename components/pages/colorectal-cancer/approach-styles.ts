@@ -8,6 +8,7 @@ export const styles = {
   iconDraw: "cxa-iconDraw",
   iconSolid: "cxa-iconSolid",
   photo: "cxa-photo",
+  shade: "cxa-shade",
   detail: "cxa-detail",
   isrBowel: "cxa-isrBowel",
   isrLower: "cxa-isrLower",

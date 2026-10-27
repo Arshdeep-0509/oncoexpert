@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { prefetchFor } from "@/lib/nav";
 
 type BreadcrumbProps = {
   label: string;
@@ -38,7 +39,7 @@ export function Breadcrumb({ label, items, className }: BreadcrumbProps) {
                 <>
                   <Link
                     href={item.href}
-                    prefetch={false}
+                    prefetch={prefetchFor(item.href)}
                     className={cn("inline-flex min-h-8 items-center transition-colors hover:text-accent")}
                   >
                     {item.label}

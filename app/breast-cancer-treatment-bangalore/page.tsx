@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { faq, pageName, pageSlug, reviews, videos } from "@/content/pages/breast-cancer";
+import { faq, pageSlug, reviews, videos } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { youtubeVideos } from "@/content/shared/videos";
@@ -22,7 +22,6 @@ import { LeadSurgeon } from "@/components/pages/breast-cancer/LeadSurgeon";
 import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Faq } from "@/components/shared/Faq";
-import { AppointmentSection } from "@/components/shared/AppointmentSection";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
 
@@ -57,8 +56,7 @@ export default function BreastCancerPage() {
       <Reviews title={reviews.title} reviews={reviewsFor(pageSlug, reviews.order)} />
       <Videos eyebrow={videos.eyebrow} title={videos.title} ids={youtubeVideos} labels={videos.a11y} />
       <Faq title={faq.title} contactTitle={faq.contactTitle} items={faq.items} locations={site.locations} />
-      <AppointmentSection page={pageName} />
-      <Locations />
+      <Locations tone="alt" />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );

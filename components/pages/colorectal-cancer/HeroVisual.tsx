@@ -21,122 +21,124 @@ const DOT = { dur: "12s", keyTimes: "0;0.86;1", opacity: "0;1;1;0;0", fadeTimes:
  * The hero's visual: the colon line drawing itself in the accent gradient (a soft halo under it),
  * the glowing dot that travels it (tablet and desktop), the photo card in front, the glass stat
  * card and the pause button. Layers carry data-depth for the pointer parallax (desktop, ≤ 12px).
- * Phones: a compact box; the stat card overlaps its bottom edge.
+ * Phones: the colon box with a larger photo; the stat card is a strip under it, overlapping its
+ * bottom edge, so it never covers the line.
  */
 export function HeroVisual() {
   const photo = colorectalImages[hero.image];
   return (
     // The box has the line art's own proportions (400 × 420), so the cards are placed in its
     // coordinates: the photo inside the colon's frame, the stat card in the free corner under the
-    // cecum (bottom-left), the pause button by the splenic flexure (top-right).
-    <div className="relative mx-auto aspect-[400/420] w-[80%] md:w-full lg:mr-0 lg:max-w-[560px]">
-      {/* Line art */}
-      <div data-depth="6" className="absolute inset-0">
-        <svg data-colon viewBox="0 0 400 420" aria-hidden="true" className="size-full overflow-visible">
-          <defs>
-            <linearGradient id="cx-colon-grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" style={{ stopColor: "var(--accent)" }} />
-              <stop offset="0.6" style={{ stopColor: "var(--accent-bright)" }} />
-              <stop offset="1" style={{ stopColor: "var(--highlight)" }} />
-            </linearGradient>
-            <radialGradient id="cx-colon-glow">
-              <stop offset="0" style={{ stopColor: "var(--petal)" }} stopOpacity="0.9" />
-              <stop offset="1" style={{ stopColor: "var(--petal)" }} stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          <circle cx="210" cy="220" r="190" fill="url(#cx-colon-glow)" />
-          <path
-            className={styles.colonHalo}
-            d={COLON}
-            pathLength={1}
-            fill="none"
-            stroke="url(#cx-colon-grad)"
-            strokeOpacity="0.16"
-            strokeWidth="34"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            id="cx-colon-path"
-            className={styles.colonLine}
-            d={COLON}
-            pathLength={1}
-            fill="none"
-            stroke="url(#cx-colon-grad)"
-            strokeWidth="11"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* The glowing dot: still and invisible until HeroMotion begins its two animations. */}
-          <g className={styles.dot} opacity="0">
-            <circle r="18" style={{ fill: "var(--accent-bright)" }} fillOpacity="0.2" />
-            <circle r="10" style={{ fill: "var(--accent-bright)" }} fillOpacity="0.28" />
-            <circle r="5.5" style={{ fill: "var(--white)", stroke: "var(--accent-bright)" }} strokeWidth="3" />
-            <animateMotion
-              data-dot-anim
-              begin="indefinite"
-              dur={DOT.dur}
-              repeatCount="indefinite"
-              calcMode="linear"
-              keyPoints="0;1;1"
-              keyTimes={DOT.keyTimes}
-            >
-              <mpath href="#cx-colon-path" />
-            </animateMotion>
-            <animate
-              data-dot-anim
-              attributeName="opacity"
-              begin="indefinite"
-              dur={DOT.dur}
-              repeatCount="indefinite"
-              values={DOT.opacity}
-              keyTimes={DOT.fadeTimes}
+    // cecum (bottom-left; phones: under the box), the pause button by the splenic flexure (top-right).
+    <div className="relative mx-auto w-full max-w-[340px] md:max-w-none lg:mr-0 lg:max-w-[560px]">
+      <div className="relative aspect-[400/420] max-md:mx-auto max-md:w-[92%]">
+        {/* Line art */}
+        <div data-depth="6" className="absolute inset-0">
+          <svg data-colon viewBox="0 0 400 420" aria-hidden="true" className="size-full overflow-visible">
+            <defs>
+              <linearGradient id="cx-colon-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" style={{ stopColor: "var(--accent)" }} />
+                <stop offset="0.6" style={{ stopColor: "var(--accent-bright)" }} />
+                <stop offset="1" style={{ stopColor: "var(--highlight)" }} />
+              </linearGradient>
+              <radialGradient id="cx-colon-glow">
+                <stop offset="0" style={{ stopColor: "var(--petal)" }} stopOpacity="0.9" />
+                <stop offset="1" style={{ stopColor: "var(--petal)" }} stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <circle cx="210" cy="220" r="190" fill="url(#cx-colon-glow)" />
+            <path
+              className={styles.colonHalo}
+              d={COLON}
+              pathLength={1}
+              fill="none"
+              stroke="url(#cx-colon-grad)"
+              strokeOpacity="0.16"
+              strokeWidth="34"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
-          </g>
-        </svg>
-      </div>
+            <path
+              id="cx-colon-path"
+              className={styles.colonLine}
+              d={COLON}
+              pathLength={1}
+              fill="none"
+              stroke="url(#cx-colon-grad)"
+              strokeWidth="11"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            {/* The glowing dot: still and invisible until HeroMotion begins its two animations. */}
+            <g className={styles.dot} opacity="0">
+              <circle r="18" style={{ fill: "var(--accent-bright)" }} fillOpacity="0.2" />
+              <circle r="10" style={{ fill: "var(--accent-bright)" }} fillOpacity="0.28" />
+              <circle r="5.5" style={{ fill: "var(--white)", stroke: "var(--accent-bright)" }} strokeWidth="3" />
+              <animateMotion
+                data-dot-anim
+                begin="indefinite"
+                dur={DOT.dur}
+                repeatCount="indefinite"
+                calcMode="linear"
+                keyPoints="0;1;1"
+                keyTimes={DOT.keyTimes}
+              >
+                <mpath href="#cx-colon-path" />
+              </animateMotion>
+              <animate
+                data-dot-anim
+                attributeName="opacity"
+                begin="indefinite"
+                dur={DOT.dur}
+                repeatCount="indefinite"
+                values={DOT.opacity}
+                keyTimes={DOT.fadeTimes}
+              />
+            </g>
+          </svg>
+        </div>
 
-      {/* Photo card */}
-      <div data-depth="8" className="absolute top-[33%] left-[29%] w-[48%]">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-[18px] border-4 border-white shadow-soft-lg md:rounded-[24px] md:border-[6px]">
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            fill
-            sizes="(min-width: 1024px) 270px, (min-width: 768px) 34vw, 39vw"
-            fetchPriority="high"
-            loading="eager"
-            className="object-cover"
-            style={{ objectPosition: photo.focal }}
-          />
-          <span aria-hidden="true" className={cn(styles.photoCover, "absolute inset-0 bg-surface-alt")} />
+        {/* Photo card */}
+        <div data-depth="8" className="absolute top-[31%] left-[27%] w-[51%] md:top-[33%] md:left-[29%] md:w-[48%]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[18px] border-4 border-white shadow-soft-lg md:rounded-[24px] md:border-[6px]">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              sizes="(min-width: 1024px) 270px, (min-width: 768px) 34vw, 46vw"
+              fetchPriority="high"
+              loading="eager"
+              className="object-cover"
+              style={{ objectPosition: photo.focal }}
+            />
+            <span aria-hidden="true" className={cn(styles.photoCover, "absolute inset-0 bg-surface-alt")} />
+          </div>
+        </div>
+
+        {/* Pause / play for the loops */}
+        <div className={cn(styles.step, styles.fadeUp, "absolute top-0 right-0 z-10")} style={at(1.6)}>
+          <HeroMotion pause={hero.a11y.pause} play={hero.a11y.play} />
         </div>
       </div>
 
-      {/* Glass stat card: overlaps the box's bottom edge on phones */}
-      <div
-        data-depth="12"
-        className="absolute bottom-0 -left-[12%] z-10 w-[72%] translate-y-1/2 md:-left-[6%] md:w-[46%] md:translate-y-0"
-      >
+      {/* Glass stat card: phones, a strip under the box (overlapping its edge) */}
+      <div data-depth="12" className="relative z-10 -mt-6 md:absolute md:bottom-0 md:-left-[6%] md:mt-0 md:w-[46%]">
         <div className={cn(styles.step, styles.pop)} style={at(1.4)}>
           <div
             className={cn(
               styles.float,
-              "rounded-[20px] bg-white/85 px-4 py-3 ring-1 shadow-soft-lg ring-white md:px-5 md:py-4",
+              "flex items-center gap-4 rounded-[20px] bg-white/85 px-5 py-4 ring-1 shadow-soft-lg ring-white md:block md:px-5 md:py-4",
             )}
           >
-            <p className="font-display text-[2rem] leading-none font-semibold text-ink md:text-[2.6rem]">
+            <p className="shrink-0 border-r border-line pr-4 font-display text-[2.4rem] leading-none font-semibold text-ink md:border-0 md:pr-0 md:text-[2.6rem]">
               <HeroCounter value={hero.stat.value} suffix={hero.stat.suffix} />
             </p>
-            <p className="mt-1.5 text-[15px] leading-tight font-semibold text-ink">{hero.stat.label}</p>
-            <p className="mt-1 text-[13px] leading-snug text-muted">{hero.stat.caption}</p>
+            <div>
+              <p className="text-[15px] leading-tight font-semibold text-ink md:mt-1.5">{hero.stat.label}</p>
+              <p className="mt-1 text-[13px] leading-snug text-muted">{hero.stat.caption}</p>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Pause / play for the loops */}
-      <div className={cn(styles.step, styles.fadeUp, "absolute top-0 right-0 z-10")} style={at(1.6)}>
-        <HeroMotion pause={hero.a11y.pause} play={hero.a11y.play} />
       </div>
     </div>
   );

@@ -59,7 +59,7 @@ Components contain no text. Everything visitors read is in `content/`:
 | `content/shared/reviews.ts`             | Google reviews (shared by every page)                           |
 | `content/shared/videos.ts`              | YouTube video IDs (shared by every page)                        |
 | `content/shared/sections.ts`            | Appointment form, clinic locations and final call band text     |
-| `content/pages/book-appointment.ts`     | Every section of the Book Appointment page                      |
+| `content/pages/book-appointment.ts`     | The Book Appointment page's title and description               |
 | `content/pages/about-us.ts`             | Every section of the About Us page                              |
 | `content/pages/colorectal-cancer.ts`    | Every section of the Colorectal Cancer page                     |
 | `content/pages/endometrial-cancer.ts`   | Every section of the Endometrial Cancer page                    |
@@ -241,12 +241,11 @@ checklist in [docs/PROJECT.md](docs/PROJECT.md#add-a-page).
 - Without `RESEND_API_KEY` the form shows its error message and asks people to call. It never pretends
   a request was sent.
 - Spam: a hidden honeypot field. Filled-in submissions are dropped silently.
-- The booking page (`/book-your-appoinment-page/`) asks the same questions in three steps (service →
-  date/time → name and phone). It also works with JavaScript turned off (one plain form). Link to it
-  with a service already chosen: `/book-your-appoinment-page/?service=second-opinion` (also
-  `consultation`, `consultation-for-surgery`, `follow-up`).
-- The booking page's words (step titles, the reassurance rows, the emergency band, how it works,
-  the statistics) are in `content/pages/book-appointment.ts`.
+- The form lives on one page, `/book-your-appoinment-page/`: Name, Contact Number, Service Required and
+  Date. Every appointment button on the site opens that page. Link to it with a service already chosen:
+  `/book-your-appoinment-page/?service=second-opinion` (also `consultation`, `consultation-for-surgery`,
+  `follow-up`); `&note=…` adds a note to the email.
+- Its words (heading, labels, messages) are in `content/shared/sections.ts` (`appointmentSection`).
 
 ## Analytics
 

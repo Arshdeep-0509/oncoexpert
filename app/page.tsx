@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { defaultAppointmentService, faq, pageName, pageSlug, reviews, videos } from "@/content/pages/home";
+import { defaultAppointmentService, faq, pageSlug, reviews, videos } from "@/content/pages/home";
 import { homeImages } from "@/content/pages/home.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { youtubeVideos } from "@/content/shared/videos";
@@ -19,7 +19,6 @@ import { ValueSection } from "@/components/pages/home/ValueSection";
 import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Faq } from "@/components/shared/Faq";
-import { AppointmentSection } from "@/components/shared/AppointmentSection";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
 
@@ -73,7 +72,6 @@ export default function HomePage() {
         locations={site.locations}
         structuredData={false}
       />
-      <AppointmentSection tone="surface" page={pageName} />
       <Locations tone="warm" />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} /> {/* 13 navy, photo */}
     </SiteShell>

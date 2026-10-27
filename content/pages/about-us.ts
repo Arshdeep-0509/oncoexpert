@@ -42,8 +42,6 @@ export const meta = {
   ogImage: aboutOgImage,
 } as const satisfies PageMeta;
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "About Us";
 export const pageSlug = "about-us";
 
 /* ------------------------------------------------------------------ */
@@ -126,8 +124,16 @@ export const hero = {
   // SOURCE: EXISTING (labels). Both link to the booking page, as on the live site, now with the
   // matching service preselected in its form (?service=…).
   ctas: {
-    primary: { label: "Book Consultation", service: "Consultation", href: bookingHref("Consultation") },
-    secondary: { label: "Get Second Opinion", service: "Second Opinion", href: bookingHref("Second Opinion") },
+    primary: {
+      label: "Book Consultation",
+      service: "Consultation",
+      href: bookingHref("Consultation", null, "/about-us/"),
+    },
+    secondary: {
+      label: "Get Second Opinion",
+      service: "Second Opinion",
+      href: bookingHref("Second Opinion", null, "/about-us/"),
+    },
   },
   // SOURCE: EXISTING
   card: { name: "Dr. Sunil Navalgund", role: "Surgical Oncologist & Founder" },

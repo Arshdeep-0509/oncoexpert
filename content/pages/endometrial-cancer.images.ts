@@ -35,7 +35,7 @@ export const endometrialImages = {
     width: 1717,
     height: 2576,
   },
-  // Home's licensed photo for the endometrial specialty tile (Pexels).
+  // Home's licensed photo for the endometrial specialty tile (Pexels). #symptoms: Post-menopausal Bleeding.
   ultrasound: {
     file: "specialty-endometrial.jpg",
     src: "/images/home/specialty-endometrial.jpg",
@@ -90,6 +90,38 @@ export const endometrialImages = {
     focal: "50% 30%",
     width: 2000,
     height: 1500,
+  },
+
+  // #symptoms: Heavy Periods, Abnormal Bleeding, Pelvic Discomfort.
+  periodCalendar: {
+    file: "period-calendar.jpg",
+    src: `${BASE}/period-calendar.jpg`,
+    pexelsId: 7467101,
+    alt: "A month's calendar with the days of a period circled",
+    credit: { photographer: "Nadezhda Moryak", url: pexels(7467101) },
+    focal: "40% 28%",
+    width: 1333,
+    height: 2000,
+  },
+  cycleTracker: {
+    file: "cycle-tracker.jpg",
+    src: `${BASE}/cycle-tracker.jpg`,
+    pexelsId: 6471428,
+    alt: "A hand marking a day in a cycle tracker with a red pencil",
+    credit: { photographer: "cottonbro studio", url: pexels(6471428) },
+    focal: "50% 30%",
+    width: 1333,
+    height: 2000,
+  },
+  abdominalPain: {
+    file: "abdominal-pain.jpg",
+    src: `${BASE}/abdominal-pain.jpg`,
+    pexelsId: 5938365,
+    alt: "Woman lying on a sofa, holding her lower abdomen in discomfort",
+    credit: { photographer: "Sora Shimazaki", url: pexels(5938365) },
+    focal: "75% 40%",
+    width: 2000,
+    height: 1333,
   },
 } as const satisfies Record<string, PageImage>;
 

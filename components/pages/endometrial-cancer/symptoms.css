@@ -1,9 +1,9 @@
 /* ==================================================================
-   Endometrial #symptoms: the four warning-sign cards. Plain CSS, prefix exs-.
+   Endometrial #symptoms: the four warning-sign cards (a photo on top). Plain CSS, prefix exs-.
    - Phones: every card is open, always (warning signs are never hidden behind a tap).
    - From 768px: a card shows its icon and title; hover (mouse), a tap / click or the keyboard
      (its button, aria-expanded) opens it: the title block slides up, the description rises and
-     fades in, the accent rule draws across and the card lifts. The description keeps its space
+     fades in, the accent rule draws across, the photo zooms in slightly and the card lifts. The description keeps its space
      all along, so nothing changes height (transform and opacity only), in the FAQ cards'
      animation language (icon pop, rule scaleX, lift).
    - Reduced motion: no movement; open and closed simply swap.
@@ -20,6 +20,9 @@
 }
 .exs-rule {
   transform-origin: 0 50%;
+}
+.exs-photo {
+  transition: transform 0.8s var(--ease-out-expo);
 }
 
 @media (min-width: 768px) {
@@ -50,6 +53,9 @@
   .exs-card[data-open] .exs-chev {
     transform: rotate(180deg);
   }
+  .exs-card[data-open] .exs-photo {
+    transform: scale(1.06);
+  }
 }
 @media (min-width: 768px) and (hover: hover) {
   .exs-card:hover {
@@ -61,6 +67,9 @@
   .exs-card:hover .exs-rule {
     opacity: 1;
     transform: none;
+  }
+  .exs-card:hover .exs-photo {
+    transform: scale(1.06);
   }
 }
 
@@ -81,11 +90,14 @@
   .exs-head,
   .exs-body,
   .exs-rule,
-  .exs-chev {
+  .exs-chev,
+  .exs-photo {
     transition: none;
   }
   .exs-card[data-open],
-  .exs-card:hover {
+  .exs-card:hover,
+  .exs-card[data-open] .exs-photo,
+  .exs-card:hover .exs-photo {
     transform: none;
   }
 }

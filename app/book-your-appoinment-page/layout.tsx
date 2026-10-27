@@ -1,8 +1,9 @@
 import { SiteShell } from "@/components/layout/SiteShell";
 
 // The live URL, misspelling included: /book-your-appoinment-page/ (site.appointmentCta.href).
-// No phone dock and no floating WhatsApp button under 768px: the form is always close, and its
-// sticky step buttons own the bottom of the screen. No default service: the form's first step asks.
+// The page is the form, so the header's "For Appointment" scrolls to it (#appointment) and there is
+// no phone dock (its Book button would only point at the page you are on). No default service:
+// the form keeps "- Select -" unless the link that opened it names one (?service=).
 export default function BookAppointmentLayout({ children }: LayoutProps<"/book-your-appoinment-page">) {
   return (
     <SiteShell
@@ -11,7 +12,7 @@ export default function BookAppointmentLayout({ children }: LayoutProps<"/book-y
       activeHref="/book-your-appoinment-page/"
       appointmentHref="#appointment"
       mobileActionBar={false}
-      hideWhatsAppOnMobile
+      hideWhatsAppOnMobile={false}
     >
       {children}
     </SiteShell>

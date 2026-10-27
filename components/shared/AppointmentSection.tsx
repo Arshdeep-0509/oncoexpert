@@ -60,10 +60,14 @@ type AppointmentSectionProps = {
   page: string;
   /** Field + submit styles; default: the soft look's. */
   formStyles?: FormStyles;
+  /** Level of "Need Clarity?": "h1" on the booking page (the page's heading), "h2" by default. */
+  heading?: "h1" | "h2";
+  className?: string;
 };
 
 /**
- * #appointment: heading + phone/email cards + the appointment form (lazy-loaded).
+ * #appointment: heading + phone/email cards + the appointment form (lazy-loaded). The booking
+ * page is this section alone (every appointment button on the site links there).
  * Phones: heading, the phone and email cards ABOVE the form, then the form full width.
  */
 export function AppointmentSection({
@@ -72,9 +76,14 @@ export function AppointmentSection({
   look = "soft",
   page,
   formStyles = softFormStyles,
+  heading = "h2",
+  className,
 }: AppointmentSectionProps) {
   const s = looks[look];
   const titleId = `${id}-title`;
+  const Heading = heading;
+  // The form's title sits one level below the section heading.
+  const FormTitle = heading === "h1" ? "h2" : "h3";
 
   const cards = (
     <ul className={s.list}>
@@ -102,27 +111,27 @@ export function AppointmentSection({
   );
 
   return (
-    <Section id={id} tone={tone} aria-labelledby={titleId}>
+    <Section id={id} tone={tone} aria-labelledby={titleId} className={className}>
       <div className={cn("grid lg:grid-cols-12 lg:gap-16", s.grid)}>
         {look === "classic" ? (
           <Reveal stagger className="lg:col-span-5">
             <Eyebrow variant="classic">{copy.eyebrow}</Eyebrow>
-            <h2 id={titleId} className={textStyles.title.classic}>
+            <Heading id={titleId} className={textStyles.title.classic}>
               {copy.heading}
-            </h2>
+            </Heading>
             <p className="mt-6 max-w-[46ch] type-body text-muted">{copy.body}</p>
             {cards}
           </Reveal>
         ) : (
           <Reveal className="lg:col-span-5">
-            <SectionHeading id={titleId} eyebrow={copy.eyebrow} title={copy.heading} intro={copy.body} />
+            <SectionHeading as={heading} id={titleId} eyebrow={copy.eyebrow} title={copy.heading} intro={copy.body} />
             {cards}
           </Reveal>
         )}
 
         <Reveal className="lg:col-span-7" delay={s.formDelay}>
           <div className={cn("border", s.panel)}>
-            <h3 className={cn("mb-6 text-ink", s.formTitle)}>{copy.form.title}</h3>
+            <FormTitle className={cn("mb-6 text-ink", s.formTitle)}>{copy.form.title}</FormTitle>
             <LazyAppointmentForm page={page} styles={formStyles} />
           </div>
         </Reveal>

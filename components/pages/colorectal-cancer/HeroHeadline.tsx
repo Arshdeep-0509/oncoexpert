@@ -53,7 +53,7 @@ export function HeroHeadline() {
     <>
       <div className={cn(styles.step, styles.fadeDown)} style={at(0.05)}>
         <Breadcrumb label={breadcrumb.label} items={breadcrumb.items} className="mb-5 max-md:sr-only" />
-        <p className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-accent-soft px-3.5 py-1.5 text-xs leading-tight font-semibold tracking-[0.14em] text-accent uppercase">
+        <p className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-accent-soft px-3.5 py-1.5 text-[11px] leading-tight font-semibold tracking-[0.1em] text-balance text-accent uppercase md:text-xs md:tracking-[0.14em]">
           <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-highlight" />
           {hero.eyebrow}
         </p>

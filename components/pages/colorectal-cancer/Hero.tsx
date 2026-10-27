@@ -19,7 +19,8 @@ const trustIcons: Record<TrustIcon, LucideIcon> = {
 /**
  * 1 · #hero. Server-rendered; only the counter, the pause button and the parallax are client code.
  * Desktop (lg): text left, visual right. Tablet: text, then the visual at 70% width.
- * Phones: the compact visual first (no travelling dot), then the H1, full-width buttons and chips.
+ * Phones: the H1, full-width buttons and chips first, then the visual (no travelling dot) with the
+ * stat card as a strip under it.
  */
 export function Hero() {
   return (
@@ -36,7 +37,7 @@ export function Hero() {
           "lg:min-h-[min(calc(100svh-36px),880px)] lg:grid-cols-12 lg:content-center lg:items-center lg:gap-x-8 lg:pb-12",
         )}
       >
-        <div className="max-md:order-2 lg:col-span-6">
+        <div className="lg:col-span-6">
           <HeroHeadline />
 
           <p
@@ -75,7 +76,7 @@ export function Hero() {
           </ul>
         </div>
 
-        <div className="max-md:order-1 max-md:mb-20 md:mx-auto md:mt-14 md:w-[70%] lg:col-span-6 lg:mt-0 lg:w-full">
+        <div className="max-md:mt-6 md:mx-auto md:mt-14 md:w-[70%] lg:col-span-6 lg:mt-0 lg:w-full">
           <HeroVisual />
         </div>
       </Container>

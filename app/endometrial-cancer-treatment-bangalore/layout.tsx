@@ -8,7 +8,6 @@ export default function EndometrialCancerLayout({ children }: LayoutProps<"/endo
       theme="endometrial"
       headerVariant="light"
       activeHref="/endometrial-cancer-treatment-bangalore/"
-      appointmentHref="#appointment"
       defaultService={defaultAppointmentService}
     >
       {children}

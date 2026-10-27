@@ -4,6 +4,7 @@ import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { quickLinks, services } from "@/components/layout/footer/footer-links";
+import { prefetchFor } from "@/lib/nav";
 
 /** Phones (accordion layout): the services and quick links as collapsible groups. */
 export function FooterMobileLinks() {
@@ -18,13 +19,17 @@ export function FooterMobileLinks() {
           <ul>
             {services.children?.map((s) => (
               <li key={s.href}>
-                <Link href={s.href} prefetch={false} className={link}>
+                <Link href={s.href} prefetch={prefetchFor(s.href)} className={link}>
                   {s.label}
                 </Link>
               </li>
             ))}
             <li>
-              <Link href={services.href} prefetch={false} className={cn(link, "gap-2 font-semibold text-accent-glow")}>
+              <Link
+                href={services.href}
+                prefetch={prefetchFor(services.href)}
+                className={cn(link, "gap-2 font-semibold text-accent-glow")}
+              >
                 {services.label}
                 <ArrowRight className="size-4" strokeWidth={1.75} aria-hidden="true" />
               </Link>
@@ -38,7 +43,7 @@ export function FooterMobileLinks() {
           <ul>
             {quickLinks.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} prefetch={false} className={link}>
+                <Link href={l.href} prefetch={prefetchFor(l.href)} className={link}>
                   {l.label}
                 </Link>
               </li>

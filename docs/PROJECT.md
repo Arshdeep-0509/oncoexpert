@@ -483,3 +483,9 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   frame) with the stat card as a strip under it; the counter starts when the strip is seen.
 - Endometrial #symptoms: each card has a photo on top with the icon badge on its edge (ultrasound;
   periodCalendar, cycleTracker, abdominalPain: NEW Pexels); the photo zooms slightly when a card opens.
+- Colorectal #outcomes: no bar chart. The Outcome Dashboard is the total on a dark band (--grad-plum,
+  large white figures), then a 2 × 2 grid of stage tiles, each count a large gradient figure
+  (`.cxo-num`); the tiles rise in turn as the counts count up.
+- Endometrial #hero: no photo. The uterus line art is centred on a highlighted backdrop (a warm glow,
+  the petal bloom on every screen size, two thin orbit rings); the bloom turns only on desktop.
+  HeroBloom (the lazy desktop-only loader) is gone; `womanSmiling` remains only as og.jpg's source.

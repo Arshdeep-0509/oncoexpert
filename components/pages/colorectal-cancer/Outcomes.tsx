@@ -9,12 +9,11 @@ import { ProgressRing } from "@/components/ui/ProgressRing";
 import "@/components/pages/colorectal-cancer/outcomes.css";
 
 const { dashboard, survival, table } = outcomes;
-const max = Math.max(...dashboard.stages.map((s) => s.cases));
-const BAR_DELAY = 0.18;
+const STEP = 0.12;
 
 /**
- * 6 · #outcomes: the Outcome Dashboard (stage case counts as bars that grow in turn while their
- * counts count up, then the total) and the 5-Year Survival Rates (progress rings with their
+ * 6 · #outcomes: the Outcome Dashboard (the total on a dark band, then one tile per stage with its
+ * count as a large gradient figure; the tiles rise in turn while the counts count up) and the 5-Year Survival Rates (progress rings with their
  * captions). Desktop: side by side; tablets and phones: one after the other. The total is the
  * computed sum of the stages unless the doctor picks the live figure (content: totalSource).
  * Screen readers get both as tables.
@@ -66,44 +65,42 @@ export function Outcomes() {
       <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
         {/* Dashboard */}
         <Reveal className="lg:col-span-7">
-          <div className="h-full rounded-xl border border-line bg-surface-alt p-6 md:p-10">
+          <div className="flex h-full flex-col rounded-xl border border-line bg-surface-alt p-6 md:p-10">
             <h2 id="outcomes-title" className="heading-3 text-ink">
               {keepLastWords(dashboard.title)}
             </h2>
             {/* Visual only: the tables above carry the figures for screen readers. */}
-            <div aria-hidden="true">
-              <InView className="cxo-chart mt-8 grid grid-cols-4 gap-3 md:gap-6" threshold={0.5}>
+            <div
+              aria-hidden="true"
+              className="mt-6 flex items-center justify-between gap-4 rounded-2xl bg-(image:--grad-plum) px-5 py-5 text-white md:mt-8 md:px-7 md:py-6"
+              data-pending-approval={outcomes.pendingApproval}
+            >
+              <p className="text-[15px] leading-snug font-semibold text-white/85 md:text-lg">{dashboard.totalLabel}</p>
+              <p className="shrink-0 font-display text-[3rem] leading-none font-semibold text-white tabular-nums md:text-[4.25rem]">
+                <Counter value={dashboardTotal} delay={0.1} duration={1.2} />{" "}
+                <span className="font-sans text-sm font-semibold text-accent-glow md:text-base">
+                  {dashboard.totalUnit}
+                </span>
+              </p>
+            </div>
+            <div aria-hidden="true" className="mt-3 flex flex-1 flex-col md:mt-4">
+              <InView className="cxo-tiles grid flex-1 auto-rows-fr grid-cols-2 gap-3 md:gap-4" threshold={0.4}>
                 {dashboard.stages.map((s, i) => (
-                  <div key={s.label} className="flex min-w-0 flex-col">
-                    <p className="font-display text-xl leading-none font-semibold text-ink tabular-nums md:text-[1.75rem]">
-                      <Counter value={s.cases} delay={0.15 + i * BAR_DELAY} duration={1} />
-                      <span className="ml-1 font-sans text-xs font-semibold text-muted md:text-sm">
-                        {dashboard.casesUnit}
-                      </span>
+                  <div
+                    key={s.label}
+                    className="cxo-tile flex flex-col rounded-2xl bg-surface p-4 ring-1 ring-line md:p-6"
+                    style={{ "--i": i } as React.CSSProperties}
+                  >
+                    <p className="text-[13px] leading-snug font-semibold text-text md:text-[15px]">{s.label}</p>
+                    <p className="cxo-num mt-auto pt-5 font-display text-[2.75rem] leading-none font-semibold tabular-nums md:text-[4rem]">
+                      <Counter value={s.cases} delay={0.25 + i * STEP} duration={1} />
                     </p>
-                    <div className="mt-3 flex h-40 items-end rounded-lg bg-surface md:h-56">
-                      <span
-                        className="cxo-bar block w-full rounded-lg bg-(image:--grad-accent)"
-                        style={{ height: `${(s.cases / max) * 100}%`, "--i": i } as React.CSSProperties}
-                      />
-                    </div>
-                    <p className="mt-3 text-[13px] leading-snug text-muted md:text-sm">{s.label}</p>
+                    <p className="mt-1.5 text-[11px] font-semibold tracking-[0.14em] text-muted uppercase md:text-xs">
+                      {dashboard.casesUnit}
+                    </p>
                   </div>
                 ))}
               </InView>
-            </div>
-            <div
-              aria-hidden="true"
-              className="mt-8 flex items-baseline justify-between gap-4 border-t border-line pt-6"
-            >
-              <p className="text-[15px] font-semibold text-text md:text-base">{dashboard.totalLabel}</p>
-              <p
-                className="font-display text-[2rem] leading-none font-semibold text-accent md:text-[2.5rem]"
-                data-pending-approval={outcomes.pendingApproval}
-              >
-                <Counter value={dashboardTotal} delay={0.15 + dashboard.stages.length * BAR_DELAY} duration={1.2} />{" "}
-                <span className="font-sans text-base font-semibold text-muted">{dashboard.totalUnit}</span>
-              </p>
             </div>
           </div>
         </Reveal>

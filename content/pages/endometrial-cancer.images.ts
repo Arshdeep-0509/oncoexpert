@@ -81,6 +81,7 @@ export const endometrialImages = {
     width: 2000,
     height: 1334,
   },
+  // Not on the page: the source of og.jpg (the social share image).
   womanSmiling: {
     file: "woman-smiling.jpg",
     src: `${BASE}/woman-smiling.jpg`,

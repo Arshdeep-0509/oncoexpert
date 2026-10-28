@@ -1,9 +1,7 @@
 import type * as React from "react";
-import Image from "next/image";
 import { hero } from "@/content/pages/endometrial-cancer";
-import { endometrialImages } from "@/content/pages/endometrial-cancer.images";
 import { cn } from "@/lib/utils";
-import { HeroBloom } from "@/components/pages/endometrial-cancer/HeroBloom";
+import { HeroBloomLayer } from "@/components/pages/endometrial-cancer/HeroBloomLayer";
 import { HeroToggle } from "@/components/pages/endometrial-cancer/HeroToggle";
 import { at, styles } from "@/components/pages/endometrial-cancer/hero-styles";
 
@@ -24,57 +22,65 @@ const STROKES = [
 ] as const;
 
 /**
- * The hero's visual: the coral line art drawing in, the petal bloom turning slowly behind it
- * (desktop only, lazy), the photo card in front and the pause button. Phones: a compact box.
+ * The hero's visual: the coral line art drawing in at the centre of a highlighted backdrop (a warm
+ * glow, a ring of petals turning slowly on desktop, two thin orbit rings) and the pause button.
+ * No photo: the drawing is the picture. Phones: the same, smaller.
  */
 export function HeroVisual() {
-  const photo = endometrialImages[hero.image];
   return (
-    <div className="relative mx-auto aspect-[400/330] w-[88%] md:w-full lg:mr-0 lg:max-w-[560px]">
-      {/* The line art and the photo card barely touch, so the drawing reads whole. */}
-      <div className="absolute top-[6%] left-0 w-[64%]">
-        <div className="relative aspect-[400/360]">
-          <HeroBloom />
-          <svg viewBox="0 0 400 360" aria-hidden="true" className="relative size-full overflow-visible">
-            <defs>
-              <linearGradient id="ex-line-grad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" style={{ stopColor: "var(--accent-bright)" }} />
-                <stop offset="1" style={{ stopColor: "var(--highlight)" }} />
-              </linearGradient>
-            </defs>
-            {STROKES.map((s) => (
-              <path
-                key={s.d}
-                className={styles.line}
-                style={{ "--d": `${s.at}s` } as React.CSSProperties}
-                d={s.d}
-                pathLength={1}
-                fill="none"
-                stroke="url(#ex-line-grad)"
-                strokeWidth={s.width}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            ))}
-          </svg>
-        </div>
+    <div className="relative mx-auto aspect-square w-[72%] md:w-full lg:mr-0 lg:max-w-[540px]">
+      {/* Backdrop: glow, petals, orbit rings */}
+      <div aria-hidden="true" className={cn(styles.step, styles.pop, "absolute inset-0")} style={at(0.1)}>
+        <div className="absolute inset-[4%] rounded-full bg-[radial-gradient(circle,var(--petal)_0%,color-mix(in_srgb,var(--petal)_55%,transparent)_45%,transparent_70%)]" />
+        <HeroBloomLayer />
+        <svg viewBox="0 0 400 400" className="absolute inset-0 size-full overflow-visible">
+          <circle
+            cx="200"
+            cy="200"
+            r="192"
+            fill="none"
+            style={{ stroke: "var(--highlight)" }}
+            strokeOpacity="0.35"
+            strokeWidth="1.5"
+            strokeDasharray="2 8"
+            strokeLinecap="round"
+          />
+          <circle
+            cx="200"
+            cy="200"
+            r="150"
+            fill="none"
+            style={{ stroke: "var(--accent-bright)" }}
+            strokeOpacity="0.18"
+            strokeWidth="1.5"
+          />
+        </svg>
       </div>
 
-      {/* Photo card, in front, bottom-right */}
-      <div className="absolute right-0 bottom-0 w-[40%]">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] border-4 border-white shadow-soft-lg md:rounded-[28px] md:border-[6px]">
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            fill
-            sizes="(min-width: 1024px) 230px, (min-width: 768px) 30vw, 36vw"
-            fetchPriority="high"
-            loading="eager"
-            className="object-cover"
-            style={{ objectPosition: photo.focal }}
-          />
-          <span aria-hidden="true" className={cn(styles.photoCover, "absolute inset-0 bg-surface-alt")} />
-        </div>
+      {/* Line art, centred */}
+      <div className="absolute inset-x-[10%] top-[7%]">
+        <svg viewBox="0 0 400 360" aria-hidden="true" className="relative size-full overflow-visible">
+          <defs>
+            <linearGradient id="ex-line-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" style={{ stopColor: "var(--accent)" }} />
+              <stop offset="1" style={{ stopColor: "var(--accent-bright)" }} />
+            </linearGradient>
+          </defs>
+          {STROKES.map((s) => (
+            <path
+              key={s.d}
+              className={styles.line}
+              style={{ "--d": `${s.at}s` } as React.CSSProperties}
+              d={s.d}
+              pathLength={1}
+              fill="none"
+              stroke="url(#ex-line-grad)"
+              strokeWidth={s.width}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          ))}
+        </svg>
       </div>
 
       <div className={cn(styles.step, styles.fadeUp, "absolute top-0 right-0 z-10")} style={at(1.6)}>

@@ -65,8 +65,6 @@ export type HeroContent = {
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   /** The four feature icons under the buttons. */
   features: readonly { icon: FeatureIcon; label: string }[];
-  /** The photo card in front of the line art. */
-  image: EndometrialImageKey;
   a11y: { features: string; pause: string; play: string };
 };
 
@@ -165,7 +163,6 @@ export const hero = {
     { icon: "recovery", label: "FASTER RECOVERY" },
     { icon: "standards", label: "INT'L STANDARDS" },
   ],
-  image: "womanSmiling",
   // SOURCE: NEW (screen-reader and control labels)
   a11y: { features: "What we offer", pause: "Pause animation", play: "Play animation" },
 } as const satisfies HeroContent;

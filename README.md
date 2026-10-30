@@ -93,7 +93,7 @@ fails, the error names the file and line.
 **Numbers.** Totals are always calculated. Never type a total in.
 
 - Breast page:
-  - `hero.stats`: the three floating cards.
+  - (The hero's three floating cards are words, not figures: `hero.highlights`.)
   - `outcomes.responses`: the two rings.
   - `outcomes.stages`: cases and 5-year survival per stage. The "Total cases treated" figure is their sum.
   - `surgery.stat`.
@@ -125,18 +125,25 @@ first one is shown large. Titles and thumbnails come from YouTube automatically.
 ## Edit the Home page
 
 Everything on `/` is in `content/pages/home.ts`, one block per section, in page order (`hero`,
-`surgeon`, `robotic`, `specialties`, `services`, `approach`, `value`, then the shared sections'
-settings). Photos are in `content/pages/home.images.ts`.
+`surgeon`, `robotic`, `specialties`, `services`, `value`, `approach`, then the shared sections'
+settings; the reviews, a shared section, show between `value` and `approach`). Photos are in
+`content/pages/home.images.ts`.
 
-**Statistics** (15+ years, 3,000+ patients…): `surgeon.stats`. The same list feeds the hero's floating
-chips and the band under _Meet Dr. Sunil Navalgund_, so change it once.
+**Hero photos** (the background slider): `heroSlides` in `content/pages/home.images.ts`, in slide
+order. Every photo is shown whole (as on the live homepage): on desktop at the hero's full height on
+the right, on phones and tablets full width above the text. Use 3:2 landscape JPGs of 2400×1600
+(crop a portrait photo to 3:2 first), so every slide fills the same frame, and set `width` /
+`height` to the file's real size.
+
+**Statistics** (15+ years, 3,000+ patients…): `surgeon.stats`, the four cards around Dr. Sunil's ring
+in _Meet Dr. Sunil Navalgund_ and in the About Us hero (same list, so change it once).
 
 ```ts
 { value: 3000, suffix: "+", label: "PATIENTS TREATED" },
 ```
 
 - `value` is a plain number (no commas); the page formats it ("3,000+") and counts up to it.
-- Keep four entries: the hero places one chip per corner of the ring.
+- Keep four entries: the ring has one card per corner (desktop).
 
 The **"30–40%" cost saving** is `value.items` (`range: { from: 30, to: 40, suffix: "%" }`), marked
 `PENDING DOCTOR` until he confirms it.
@@ -196,7 +203,7 @@ The doctor's portrait is `public/images/brand/dr-sunil-navalgund.png`, used by e
 file with one of the same framing and update `width`/`height` in `surgeon.image`
 (`content/pages/breast-cancer.ts`), `images.doctor` (`content/pages/robotic-surgery.ts`) and `doctor`
 (`content/pages/home.images.ts`), then delete `public/images/home/og.jpg` and run `npm run images home`.
-The Home hero also shows his head cut out of the photo (it breaks out of the ring): run
+The portrait ring (Home's _Meet Dr. Sunil Navalgund_ and the About Us hero) also shows his head cut out of the photo (it breaks out of the ring): run
 `node scripts/make-portrait-cutout.mjs` to remake `dr-sunil-navalgund-head.png` from the new portrait
 and check it at 390 and 1440 px (the cut works on a plain studio backdrop like the current one).
 

@@ -15,10 +15,16 @@ export function MotionToggle({ pause, play, onDark = false }: { pause: string; p
   const [paused, setPaused] = React.useState(false);
   const ref = React.useRef<HTMLButtonElement>(null);
 
+  // A full load: pin --intro to the intro. No overlay (in-site navigation, or the page shown
+  // again from the router's cache, where its animations restart): 0s, never an earlier pin.
   React.useEffect(() => {
     const hero = ref.current?.closest("section");
-    if (!hero || !document.querySelector(".preloader")) return;
-    hero.style.setProperty("--intro", getComputedStyle(hero).getPropertyValue("--intro-delay").trim() || "0s");
+    if (!hero) return;
+    const intro = document.querySelector(".preloader");
+    hero.style.setProperty(
+      "--intro",
+      intro ? getComputedStyle(hero).getPropertyValue("--intro-delay").trim() || "0s" : "0s",
+    );
   }, []);
 
   React.useEffect(() => {

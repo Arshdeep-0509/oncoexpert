@@ -3,35 +3,32 @@ import { homeImages } from "@/content/pages/home.images";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
+import { DoctorRing } from "@/components/shared/DoctorRing";
 import { JourneyTimeline } from "@/components/pages/home/JourneyTimeline";
-import { SurgeonStats } from "@/components/pages/home/SurgeonStats";
 
 /**
- * 2 · #surgeon "Meet Dr. Sunil Navalgund" (warm band). Desktop: the portrait in the shared
- * arch (sticky while the right column scrolls) | tagline, the Apex training text, the
- * training-journey timeline and the booking button; then a full-width stats band.
- * Phones: portrait first, then the same column, stats 2×2.
+ * 2 · #surgeon "Meet Dr. Sunil Navalgund" (warm band). Desktop: the portrait in the gradient ring
+ * with the four stat chips around it, on a navy panel (sticky while the right column scrolls) |
+ * tagline, the Apex training text, the training-journey timeline and the booking button.
+ * Phones: the panel first (stats 2×2 under the ring), then the same column.
  */
 export function SurgeonSection() {
-  const photo = homeImages[surgeon.image];
-
   return (
     <Section id="surgeon" tone="warm" aria-labelledby="surgeon-title">
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-x-10 xl:gap-x-16">
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-6">
           <Reveal className="lg:sticky lg:top-[calc(var(--header-h)+40px)]">
-            <DoctorPortrait
-              image={{ src: photo.src, alt: photo.alt }}
-              glowClassName="bg-accent/25"
-              className="max-w-[340px] md:max-w-[420px]"
-              sizes="(min-width: 1024px) 420px, (min-width: 768px) 420px, 340px"
+            <DoctorRing
+              stats={surgeon.stats}
+              label={surgeon.a11y.stats}
+              photo={homeImages[surgeon.image]}
+              head={homeImages.doctorHead}
             />
           </Reveal>
         </div>
 
-        <div className="lg:col-span-7 lg:pt-4">
+        <div className="lg:col-span-6 lg:pt-4">
           <Reveal>
             <SectionHeading id="surgeon-title" title={surgeon.heading.title} emphasis={surgeon.heading.emphasis} />
           </Reveal>
@@ -56,8 +53,6 @@ export function SurgeonSection() {
           </Reveal>
         </div>
       </div>
-
-      <SurgeonStats />
     </Section>
   );
 }

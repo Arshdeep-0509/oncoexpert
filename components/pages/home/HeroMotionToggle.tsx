@@ -6,24 +6,34 @@ import { cn } from "@/lib/utils";
 import { styles } from "@/components/pages/home/hero-styles";
 
 /**
- * Pause / play for every ambient loop in the hero (marquee, ticker, ring spin, glows, chips,
- * sparks, particles, shine): sets data-paused on the hero section, which hero.css and the
- * ticker read. It also marks the hero data-offscreen while it is scrolled away, so the loops
- * stop costing anything. Hidden with reduced motion (nothing moves).
+ * Pause / play for every ambient loop in the hero (photo slider, marquee, ticker, glows,
+ * particles, shine): sets data-paused on the hero section, which hero.css and the ticker read.
+ * It also marks the hero data-offscreen while it is scrolled away, so the loops stop costing
+ * anything, and sets the entrance timing (after the intro, or quick without one). Hidden with
+ * reduced motion (nothing moves).
  */
 export function HeroMotionToggle({ pause, play }: { pause: string; play: string }) {
   const [paused, setPaused] = React.useState(false);
   const ref = React.useRef<HTMLButtonElement>(null);
 
-  // Latch the intro delay for this page load. --intro-delay comes from `.preloader ~
-  // [data-theme]` (globals.css), which stops matching once the overlay unmounts at the end of
-  // its fade: every entrance still running would then jump to its end. While the overlay is
-  // still there (a full load), pin the hero's --intro to its current value. After in-site
-  // navigation there is no overlay and the hero keeps --intro: 0s.
-  React.useEffect(() => {
+  // The entrance timing for this showing of the hero. On a full load the intro preloader plays
+  // first: pin --intro to it (--intro-delay comes from `.preloader ~ [data-theme]`, globals.css,
+  // which stops matching once the overlay unmounts at the end of its fade: every entrance still
+  // running would then jump to its end). With no overlay, after in-site navigation or when Home
+  // is shown again from the router's cache (Cache Components keep a visited page in the document
+  // with display: none, and its animations restart when it is shown), there is nothing to wait
+  // for: --intro 0s (never the pin from an earlier load) and data-quick, a faster entrance
+  // (hero.css), so the text is there at once. A layout effect: it applies before the hero is
+  // painted, and it runs again each time the page is shown.
+  React.useLayoutEffect(() => {
     const hero = ref.current?.closest("section");
-    if (!hero || !document.querySelector(".preloader")) return;
-    hero.style.setProperty("--intro", getComputedStyle(hero).getPropertyValue("--intro-delay").trim() || "0s");
+    if (!hero) return;
+    const intro = document.querySelector(".preloader");
+    hero.style.setProperty(
+      "--intro",
+      intro ? getComputedStyle(hero).getPropertyValue("--intro-delay").trim() || "0s" : "0s",
+    );
+    hero.toggleAttribute("data-quick", !intro);
   }, []);
 
   React.useEffect(() => {

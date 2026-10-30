@@ -51,8 +51,9 @@ export const appointmentSection = {
 /* ------------------------------------------------------------------ */
 
 export const reviewsSection = {
-  // SOURCE: EXISTING (as displayed: the live markup is sentence case, capitalised by CSS)
-  title: "Every Patient Story Reflects Our Commitment To Clinical Excellence.",
+  // SOURCE: EXISTING (as displayed: the live markup is sentence case, capitalised by CSS). Set in
+  // two lines (the client's review, 30 Oct 2026): the break is layout, not words.
+  title: ["Every Patient Story Reflects", "Our Commitment To Clinical Excellence."],
   // SOURCE: NEW (label; replaces the live "Verified by Trustindex" badge). The link is EXISTING:
   // the live site's "Main Clinic Location" Google profile (site.mainClinic).
   // PENDING DOCTOR: the doctor has three Google profiles (one per clinic); confirm which one
@@ -70,12 +71,13 @@ export const reviewsSection = {
     "vasudeva-murthy",
     "mangala-music",
   ],
-} as const satisfies { title: string; link: { label: string; href: string }; order: readonly ReviewId[] };
+} as const satisfies { title: readonly string[]; link: { label: string; href: string }; order: readonly ReviewId[] };
 
 export const videosSection = {
-  // SOURCE: NEW (the live pages show their videos without a heading; same words as Home)
+  // SOURCE: NEW (the live pages show their videos without a heading; same words as Home);
+  // "warriors": the client's review, 30 Oct 2026
   eyebrow: "Watch & learn",
-  title: "Hear from our experts",
+  title: "Hear from our warriors",
   // SOURCE: EXISTING (video IDs, content/shared/videos.ts)
   ids: youtubeVideos,
   // SOURCE: NEW (screen-reader labels)

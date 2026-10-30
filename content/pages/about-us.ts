@@ -17,6 +17,7 @@ import type { PageMeta, Stat } from "@/content/types";
 import type { AboutImageKey } from "@/content/pages/about-us.images";
 import { aboutOgImage } from "@/content/pages/about-us.images";
 import type { AppointmentService } from "@/content/site";
+import { surgeon } from "@/content/pages/home";
 import { bookingHref } from "@/lib/booking";
 
 // SOURCE: EXISTING (the hero intro; also the meta description)
@@ -66,10 +67,10 @@ export type AboutHeroContent = {
   ctas: { primary: BookingCta; secondary: BookingCta };
   /** The caption on the portrait card. */
   card: { name: string; role: string };
-  /** The credential chips floating around the portrait. */
-  chips: readonly string[];
+  /** The four figures around the portrait ring (DoctorRing). */
+  stats: readonly Stat[];
   image: AboutImageKey;
-  a11y: { chips: string; pause: string; play: string };
+  a11y: { stats: string; pause: string; play: string };
 };
 
 export type CredentialsContent = {
@@ -137,12 +138,14 @@ export const hero = {
   },
   // SOURCE: EXISTING
   card: { name: "Dr. Sunil Navalgund", role: "Surgical Oncologist & Founder" },
-  // SOURCE: EXISTING (words from this page: the credential "MCh Surgical Oncology", the intro's
-  // "Tata Memorial", the credential "Robotic Specialist")
-  chips: ["MCh Surgical Oncology", "Tata Memorial", "Robotic Specialist"],
+  // SOURCE: EXISTING (Home's four figures, shown around the same portrait ring: kept in one place,
+  // `surgeon.stats` in content/pages/home.ts; the client's review, 30 Oct 2026, asked for Home's
+  // ring here). PENDING DOCTOR: "15+ YEARS EXPERIENCE" now sits on the same page as "over a
+  // decade" (the intro) and "10+" (#experience); see the note on `intro`.
+  stats: surgeon.stats,
   image: "doctor",
   // SOURCE: NEW (screen-reader labels)
-  a11y: { chips: "Credentials", pause: "Pause animation", play: "Play animation" },
+  a11y: { stats: "Dr. Sunil Navalgund in numbers", pause: "Pause animation", play: "Play animation" },
 } as const satisfies AboutHeroContent;
 
 /* ------------------------------------------------------------------ */

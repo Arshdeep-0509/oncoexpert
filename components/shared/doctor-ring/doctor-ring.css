@@ -1,0 +1,370 @@
+/* ==================================================================
+   DoctorRing: Dr. Sunil's portrait in the logo's gradient ring with the four stat chips, on a
+   navy panel. Used by Home's #surgeon and the About hero.
+   Plain CSS, prefix aura- (see docs/PROJECT.md, "Page CSS"). Not ring-: cn() (tailwind-merge)
+   reads ring-* as Tailwind's ring utilities and keeps only the last of them on an element.
+
+   - The default styles are the final state. Every animation lives inside
+     prefers-reduced-motion: no-preference; transform and opacity only.
+   - The entrance plays once the panel is on screen (InView sets data-inview): until then every
+     animation in it holds its first frame. --d is a step's time after that moment, plus
+     --ring-delay (a hero sets it to its --intro, so the entrance waits for the preloader).
+   - Each kind of motion has its own wrapper so they never fight over a property: entrance (the
+     element) and ambient loop (.aura-loop). The loops stop while the panel is hovered or
+     focused, and with a hero's pause button (data-paused) or off screen (data-offscreen).
+   ================================================================== */
+
+.aura-root {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Ring diameter, from the panel's width (the panel is the size container) */
+  --stage: min(300px, 90cqw);
+  /* Ring thickness and the gap to the portrait, relative to the ring (cqw: the stage box) */
+  --th: 1.7cqw;
+  --inset: 4.6cqw;
+  /* The ring paint: the logo's two half-gradients, from 12 o'clock (right: magenta → blue →
+     teal at 6 o'clock; left: green → amber → orange back at the top). */
+  --ring-paint: conic-gradient(
+    from 0deg,
+    var(--logo-ring-right-1),
+    var(--logo-ring-right-2) 72deg,
+    var(--logo-ring-right-3) 135deg,
+    var(--logo-ring-end) 180deg,
+    var(--logo-ring-left-3) 216deg,
+    var(--logo-ring-left-2) 279deg,
+    var(--logo-ring-left-1) 360deg
+  );
+  container-type: inline-size;
+  /* Its own navy (Home's hero gradient), whatever the page's theme: the logo blue glows from the
+     top right, the logo orange from the bottom left. */
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(60% 55% at 88% 6%, color-mix(in srgb, var(--logo-blue) 60%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 6% 96%, color-mix(in srgb, var(--logo-orange) 22%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--ink), color-mix(in srgb, var(--ink) 92%, var(--logo-blue)));
+}
+@media (min-width: 768px) {
+  .aura-root {
+    --stage: min(360px, 66cqw);
+  }
+}
+@media (min-width: 1024px) {
+  .aura-root {
+    --stage: min(440px, 80cqw);
+  }
+}
+
+/* Entrance helper: --d is the step's time (seconds after the panel comes on screen). */
+.aura-step {
+  animation-delay: calc(var(--ring-delay, 0s) + var(--d, 0s));
+  animation-fill-mode: both;
+  animation-timing-function: var(--ease);
+}
+/* Until the panel is on screen, every animation in it waits on its first frame. */
+.aura-root:not([data-inview]) * {
+  animation-play-state: paused;
+}
+/* The loops stop while the panel is hovered or focused, paused by a hero's button, or off screen. */
+.aura-root:is(:hover, :focus-within) .aura-loop,
+:is([data-paused], [data-offscreen]) .aura-loop {
+  animation-play-state: paused;
+}
+
+/* ------------------------------------------------------------------ */
+/* The Ring                                                            */
+/* ------------------------------------------------------------------ */
+
+.aura-stage {
+  position: relative;
+  width: var(--stage);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  container-type: inline-size;
+}
+.aura-layer {
+  position: absolute;
+  inset: 0;
+}
+.aura-halo {
+  position: absolute;
+  inset: -24%;
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--logo-blue) 55%, transparent), transparent 72%);
+}
+/* A ring of thickness --th: everything inside the inner edge is masked away. */
+.aura-annulus {
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--th) - 0.6px), #000 calc(100% - var(--th)));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--th) - 0.6px), #000 calc(100% - var(--th)));
+}
+.aura-track {
+  position: absolute;
+  inset: 0;
+  background: rgb(255 255 255 / 0.07);
+}
+/* Drawn like ProgressRing: each half-window holds a half-disc (the piece) that turns 180° into
+   it. The paint inside the piece turns the other way at the same rate, so the gradient stays
+   put and only the reveal sweeps (otherwise the colours would slide round while drawing). */
+.aura-window {
+  position: absolute;
+  inset: 0;
+}
+.aura-window[data-half="r"] {
+  clip-path: inset(0 0 0 50%);
+}
+.aura-window[data-half="l"] {
+  clip-path: inset(0 50% 0 0);
+}
+.aura-piece {
+  position: absolute;
+  inset: 0;
+  rotate: 180deg;
+}
+.aura-window[data-half="r"] .aura-piece {
+  clip-path: inset(0 50% 0 0);
+}
+.aura-window[data-half="l"] .aura-piece {
+  clip-path: inset(0 0 0 50%);
+}
+.aura-paint {
+  position: absolute;
+  inset: 0;
+  background: var(--ring-paint);
+  rotate: -180deg;
+}
+/* Orange sparks: small glowing beads on the ring's path. */
+.aura-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2.6cqw;
+  height: 2.6cqw;
+  margin: -1.3cqw 0 0 -1.3cqw;
+  transform: rotate(var(--a)) translateY(calc(var(--th) / 2 - 50cqw));
+}
+.aura-sparkCore {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 16%, var(--highlight) 34%, transparent 70%);
+}
+
+/* Portrait: shoulders inside the ring, the head breaking out of its top. */
+.aura-portrait {
+  position: absolute;
+  inset: var(--inset);
+}
+.aura-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--portrait-backdrop);
+}
+/* The photo box: 120% of the circle, raised so the crown sits above the circle's top edge. */
+.aura-photo {
+  position: absolute;
+  left: -10%;
+  top: -11%;
+  width: 120%;
+  aspect-ratio: 886 / 1024;
+}
+/* The head cutout, same box (its image is the photo's top 40%), shown only above the line where
+   the circle takes over (--cut, in % of this box). */
+.aura-head {
+  position: absolute;
+  left: -10%;
+  top: -11%;
+  width: 120%;
+  aspect-ratio: 886 / 410;
+  --cut: 33%;
+  -webkit-mask: linear-gradient(to bottom, #000 calc(var(--cut) - 3%), transparent var(--cut));
+  mask: linear-gradient(to bottom, #000 calc(var(--cut) - 3%), transparent var(--cut));
+  pointer-events: none;
+}
+.aura-fill {
+  position: absolute;
+  inset: 0;
+}
+/* Entrance cover: an ink disc with a hole that widens (scale), so the photo underneath is painted
+   from the start (in a hero it is the LCP image). Hidden at rest. */
+.aura-iris {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle closest-side, transparent 18%, var(--ink) 19.5%);
+}
+
+/* Stat chips: a 2×2 grid under the ring on phones and tablets; around the ring on desktop. Below
+   1280px the ring is smaller next to the same chips, so they sit further out (clear of his face,
+   still inside the panel's padding). */
+@media (min-width: 1024px) {
+  .aura-chip {
+    position: absolute;
+  }
+  .aura-chip:nth-child(1) {
+    top: 0;
+    left: -12%;
+  }
+  .aura-chip:nth-child(2) {
+    top: 26%;
+    right: -12%;
+  }
+  .aura-chip:nth-child(3) {
+    bottom: 17%;
+    left: -12%;
+  }
+  .aura-chip:nth-child(4) {
+    bottom: -2%;
+    right: -8%;
+  }
+}
+@media (min-width: 1280px) {
+  .aura-chip:nth-child(1) {
+    top: 3%;
+    left: -9%;
+  }
+  .aura-chip:nth-child(2) {
+    top: 27%;
+    right: -9%;
+  }
+  .aura-chip:nth-child(3) {
+    bottom: 19%;
+    left: -12%;
+  }
+  .aura-chip:nth-child(4) {
+    bottom: -1%;
+    right: -3%;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion                                                              */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 0.0  the track and the halo */
+  .aura-fadeIn {
+    animation-name: aura-fadeIn;
+    animation-duration: 1.2s;
+  }
+
+  /* 0.1  the ring draws itself clockwise from the top: right half (ease-in), then left
+     (ease-out), 0.7s each; the speeds match where they meet, so it reads as one stroke. */
+  .aura-window[data-half="r"] :is(.aura-piece, .aura-paint) {
+    animation: aura-draw 0.7s cubic-bezier(0.12, 0, 0.39, 0) both;
+    animation-delay: calc(var(--ring-delay, 0s) + 0.1s);
+  }
+  .aura-window[data-half="l"] :is(.aura-piece, .aura-paint) {
+    animation: aura-draw 0.7s cubic-bezier(0.61, 1, 0.88, 1) both;
+    animation-delay: calc(var(--ring-delay, 0s) + 0.8s);
+  }
+  .aura-window[data-half] .aura-paint {
+    animation-name: aura-undraw;
+  }
+  .aura-spin {
+    animation: aura-spin 90s linear infinite;
+    animation-delay: calc(var(--ring-delay, 0s) + 1.5s);
+  }
+  .aura-sparkIn {
+    animation-name: aura-pop;
+    animation-duration: 0.6s;
+  }
+  .aura-twinkle {
+    animation: aura-twinkle 4.8s ease-in-out infinite;
+    animation-delay: calc(var(--ring-delay, 0s) + 2.2s + var(--phase, 0s));
+  }
+
+  /* 0.3  the portrait rises into the ring while the circle opens */
+  .aura-rise {
+    animation-name: aura-rise;
+    animation-duration: 0.9s;
+  }
+  .aura-iris {
+    animation: aura-iris 1s var(--ease) backwards;
+    animation-delay: calc(var(--ring-delay, 0s) + 0.3s);
+  }
+  /* The crown over the ring: in quickly once the circle has opened near its top edge. */
+  .aura-crownIn {
+    animation-name: aura-fadeIn;
+    animation-duration: 0.45s;
+  }
+
+  /* 1.2  chips pop in, count up, then float (desktop) */
+  .aura-pop {
+    animation-name: aura-pop;
+    animation-duration: 0.7s;
+  }
+  @media (min-width: 1024px) {
+    .aura-float {
+      animation: aura-float var(--float, 7s) ease-in-out infinite;
+      animation-delay: calc(var(--ring-delay, 0s) + 2.7s + var(--phase, 0s));
+    }
+  }
+}
+
+@keyframes aura-fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes aura-draw {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 180deg;
+  }
+}
+@keyframes aura-undraw {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: -180deg;
+  }
+}
+@keyframes aura-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes aura-pop {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+@keyframes aura-twinkle {
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes aura-rise {
+  from {
+    translate: 0 8cqw;
+  }
+}
+@keyframes aura-iris {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 1;
+    scale: 6;
+  }
+}
+@keyframes aura-float {
+  0%,
+  100% {
+    translate: 0 -3px;
+  }
+  50% {
+    translate: 0 3px;
+  }
+}

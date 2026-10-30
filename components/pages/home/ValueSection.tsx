@@ -14,7 +14,7 @@ const icons: Record<ValueIcon, LucideIcon> = {
 };
 
 /**
- * 7 · #value "Where Excellence, Compassion, Trust & Affordability Come Together": a blush-to-white
+ * 6 · #value "Where Excellence, Compassion, Trust & Affordability Come Together": a blush-to-white
  * band with one slow-drifting glow. "30–40%" as a huge number (counts to 30, then "–40%" fades
  * in) beside the three other items as cards; "Request a Treatment Estimate" opens the form
  * with the note "Estimate request".

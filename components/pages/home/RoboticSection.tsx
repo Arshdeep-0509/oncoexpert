@@ -55,12 +55,20 @@ const photoMask = {
  * (screen-blended on navy, drifting 40px with scroll) beside the heading and the link to
  * /robotic-surgery/, then the 8 features as an icon grid (4×2 desktop, 2×4 phones): the tiles
  * reveal in turn, each icon draws itself, then one glow passes left to right.
+ * Phones fit the band on about one screen: the photo turns into a faint backdrop behind the
+ * heading and the features are compact icon + label rows.
  */
 export function RoboticSection() {
   const photo = homeImages[robotic.image];
 
   return (
-    <Section id="robotic" tone="plum" aria-labelledby="robotic-title" contained={false} className="overflow-hidden">
+    <Section
+      id="robotic"
+      tone="plum"
+      aria-labelledby="robotic-title"
+      contained={false}
+      className="overflow-hidden max-md:py-12"
+    >
       {/* The robotic page's faint precision grid, and a teal glow from the logo ring behind the arms */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 precision-grid opacity-70" />
@@ -72,7 +80,7 @@ export function RoboticSection() {
           <Reveal>
             <SectionHeading id="robotic-title" title={robotic.title} intro={robotic.intro} onDark />
           </Reveal>
-          <Reveal className="mt-8 md:mt-10">
+          <Reveal className="mt-6 md:mt-10">
             <Button
               href={robotic.cta.href}
               variant="onDark"
@@ -85,8 +93,9 @@ export function RoboticSection() {
           </Reveal>
         </div>
 
-        {/* The photo's lower ~40% is black (blended away): phones pull the grid up over it. */}
-        <div className="relative -mx-(--gutter) max-lg:-mb-[22%] lg:col-span-6 lg:mx-0 lg:-mr-[6vw]">
+        {/* The photo's lower ~40% is black (blended away): tablets pull the grid up over it.
+            Phones: a faint backdrop across the top of the band, behind the heading. */}
+        <div className="relative -mx-(--gutter) max-md:pointer-events-none max-md:absolute max-md:inset-x-0 max-md:top-0 max-md:mx-0 md:max-lg:-mb-[22%] lg:col-span-6 lg:mx-0 lg:-mr-[6vw]">
           {/* The blend sits on the drifting wrapper: its transform makes it the layer that is
               composited onto the band, so screen drops the photo's black against the navy. */}
           <div className={cn(styles.drift, "blend-on-dark")}>
@@ -96,16 +105,21 @@ export function RoboticSection() {
               width={photo.width}
               height={photo.height}
               sizes="(min-width: 1024px) 56vw, 100vw"
-              className="h-auto w-full"
+              className="h-auto w-full max-md:opacity-30"
               style={{ ...photoMask, objectPosition: photo.focal }}
             />
           </div>
         </div>
       </Container>
 
-      <Container className="mt-10 md:mt-14">
+      <Container className="mt-8 md:mt-14">
         <h3 className="sr-only">{robotic.a11y.features}</h3>
-        <Reveal as="ul" stagger className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4" itemClassName={styles.tile}>
+        <Reveal
+          as="ul"
+          stagger
+          className="grid grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-4"
+          itemClassName={styles.tile}
+        >
           {robotic.features.map((feature, i) => {
             const Icon = icons[feature.icon];
             return (
@@ -113,12 +127,16 @@ export function RoboticSection() {
                 key={feature.label}
                 className={cn(
                   styles.card,
-                  "relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl bg-white/[0.04] p-5 ring-1 ring-white/10 md:flex-row md:items-center md:p-6",
+                  "relative flex h-full flex-row items-center gap-3 overflow-hidden rounded-xl bg-white/[0.04] p-3 ring-1 ring-white/10 md:gap-4 md:rounded-2xl md:p-6",
                 )}
                 style={{ "--col-sm": i % 2, "--col-lg": i % 4 } as React.CSSProperties}
               >
-                <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-white/[0.06] ring-1 ring-white/10">
-                  <Icon className={cn(styles.icon, "size-6 text-accent-glow")} strokeWidth={1.75} aria-hidden="true" />
+                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-white/[0.06] ring-1 ring-white/10 md:size-12 md:rounded-xl">
+                  <Icon
+                    className={cn(styles.icon, "size-5 text-accent-glow md:size-6")}
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
                 </span>
                 <span className="text-[15px] leading-snug font-semibold text-white md:text-base">{feature.label}</span>
                 <span aria-hidden="true" className={styles.sheen} />

@@ -18,7 +18,8 @@ function Line({ text, emphasis }: { text: string; emphasis: string }) {
 }
 
 /**
- * 6 · #approach "Fight Cancer with Clarity. Reclaim Life with Confidence." (navy band).
+ * 8 · #approach "Fight Cancer with Clarity. Reclaim Life with Confidence." (navy band), after
+ * #value and the reviews.
  * Desktop: sticky-scroll storytelling, the heading, body and button held on the left while the
  * 5 pillars scroll on the right (the one crossing the middle of the screen is active).
  * Phones: the heading block, then the pillars as a stacked list.

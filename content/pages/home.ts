@@ -57,7 +57,7 @@ export type HeroContent = {
   phone: { lead: string };
   /** The trust strip along the bottom edge. */
   trust: readonly string[];
-  a11y: { stats: string; trust: string; pause: string; play: string; scroll: string };
+  a11y: { trust: string; pause: string; play: string; scroll: string };
 };
 
 export type SurgeonContent = {
@@ -173,7 +173,6 @@ export const hero = {
   ],
   // SOURCE: NEW (screen-reader / control labels)
   a11y: {
-    stats: "Dr. Sunil Navalgund in numbers",
     trust: "Credentials",
     pause: "Pause animation",
     play: "Play animation",
@@ -212,15 +211,14 @@ export const surgeon = {
     body: "Dr. Sunil Navalgund brings global expertise and precision to surgical oncology, having trained at India’s most prestigious medical centers.",
     institutes: ["MS General Surgery", "M.Ch Surgical Oncology", "Tata Memorial Hospital", "Apollo & Sparsh Hospitals"],
   },
-  // SOURCE: NEW (the order and the "/ OncoXpert"); every role, place and note is EXISTING, from the
-  // credentials above ("Ex - Consultant Apollo Hospitals" → "Consultant", "Apollo Hospitals").
+  // SOURCE: DOCTOR (the client's review, 30 Oct 2026: this order and these roles and places, the
+  // current post first). The label and the note are as before (NEW / EXISTING).
   journey: {
     label: "Training journey",
     stops: [
-      { role: "M.S. General Surgery", place: "VIMS, Ballari" },
+      { role: "Senior Consultant", place: "Apollo Hospital, OncoXpert and Sparsh Hospital" },
       { role: "M.Ch Surgical Oncology", place: "Tata Memorial Hospital", note: "Asia's Best Cancer Hospital" },
-      { role: "Consultant", place: "Apollo Hospitals" },
-      { role: "Senior Consultant", place: "Sparsh Hospitals / OncoXpert" },
+      { role: "M.S. General Surgery", place: "VIMS, Ballari" },
     ],
   },
   // SOURCE: EXISTING (button label from the robotic page)
@@ -380,7 +378,29 @@ export const services = {
 } as const satisfies ServicesContent;
 
 /* ------------------------------------------------------------------ */
-/* 6 · #approach                                                       */
+/* 6 · #value                                                          */
+/* ------------------------------------------------------------------ */
+
+export const value = {
+  // SOURCE: EXISTING
+  title: "Where Excellence, Compassion, Trust & Affordability Come Together",
+  // NEW (presentation only): set in the serif italic
+  emphasis: "Come Together",
+  // SOURCE: EXISTING (the 4 items, in the live order); icons NEW
+  items: [
+    { title: "Affordable & Budget-Friendly Treatment", icon: "wallet" },
+    // Renders "30–40% Cost Savings", as on the live page (the big animated number).
+    // PENDING DOCTOR: confirm the 30–40% cost savings claim, and what it is compared with.
+    { title: "Cost Savings", range: { from: 30, to: 40, suffix: "%" } },
+    { title: "Transparent Pricing, No Hidden Charges", icon: "receipt" },
+    { title: "Cashless Insurance Assistance", icon: "shield-check" },
+  ],
+  // SOURCE: EXISTING (button label; opens the booking page on the live site); note NEW
+  cta: { label: "Request a Treatment Estimate", service: "Consultation", note: "Estimate request" },
+} as const satisfies ValueContent;
+
+/* ------------------------------------------------------------------ */
+/* 8 · #approach                                                       */
 /* ------------------------------------------------------------------ */
 
 export const approach = {
@@ -422,29 +442,7 @@ export const approach = {
 } as const satisfies ApproachContent;
 
 /* ------------------------------------------------------------------ */
-/* 7 · #value                                                          */
-/* ------------------------------------------------------------------ */
-
-export const value = {
-  // SOURCE: EXISTING
-  title: "Where Excellence, Compassion, Trust & Affordability Come Together",
-  // NEW (presentation only): set in the serif italic
-  emphasis: "Come Together",
-  // SOURCE: EXISTING (the 4 items, in the live order); icons NEW
-  items: [
-    { title: "Affordable & Budget-Friendly Treatment", icon: "wallet" },
-    // Renders "30–40% Cost Savings", as on the live page (the big animated number).
-    // PENDING DOCTOR: confirm the 30–40% cost savings claim, and what it is compared with.
-    { title: "Cost Savings", range: { from: 30, to: 40, suffix: "%" } },
-    { title: "Transparent Pricing, No Hidden Charges", icon: "receipt" },
-    { title: "Cashless Insurance Assistance", icon: "shield-check" },
-  ],
-  // SOURCE: EXISTING (button label; opens the booking page on the live site); note NEW
-  cta: { label: "Request a Treatment Estimate", service: "Consultation", note: "Estimate request" },
-} as const satisfies ValueContent;
-
-/* ------------------------------------------------------------------ */
-/* 8–13 · shared sections: this page's settings and headings           */
+/* 7, 9–13 · shared sections: this page's settings and headings        */
 /* (reviews: content/shared/reviews.ts; videos: content/shared/videos.ts;
     appointment, locations, final band: content/shared/sections.ts)    */
 /* Not built: the live page's "Join Our Newsletter" box (email sign-up for blog posts; there is
@@ -459,8 +457,9 @@ export const defaultAppointmentService: AppointmentService = "Consultation";
 
 export const reviews = {
   // SOURCE: EXISTING (as displayed: the live markup is sentence case, capitalised by CSS; same
-  // string as the breast page)
-  title: "Every Patient Story Reflects Our Commitment To Clinical Excellence.",
+  // words as the breast page). Set in two lines (the client's review, 30 Oct 2026): the break is
+  // layout, not words.
+  title: ["Every Patient Story Reflects", "Our Commitment To Clinical Excellence."],
   // SOURCE: NEW (label; replaces the live page's "Verified by Trustindex" badge). The link is
   // EXISTING: the live site's "Main Clinic Location" Google profile (site.mainClinic).
   // PENDING DOCTOR: the doctor has three Google profiles (one per clinic); confirm which one
@@ -478,12 +477,13 @@ export const reviews = {
     "vasudeva-murthy",
     "mangala-music",
   ],
-} as const satisfies { title: string; link: { label: string; href: string }; order: readonly ReviewId[] };
+} as const satisfies { title: readonly string[]; link: { label: string; href: string }; order: readonly ReviewId[] };
 
 export const videos = {
-  // SOURCE: NEW (the live page shows its videos without a heading)
+  // SOURCE: NEW (the live page shows its videos without a heading); "warriors": the client's
+  // review, 30 Oct 2026
   eyebrow: "Watch & learn",
-  title: "Hear from our experts",
+  title: "Hear from our warriors",
   // SOURCE: NEW (screen-reader labels)
   a11y: { play: "Play video", frame: "YouTube video", list: "Videos" },
 } as const;

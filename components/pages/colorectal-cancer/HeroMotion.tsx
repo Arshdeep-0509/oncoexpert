@@ -27,9 +27,13 @@ export function HeroMotion({ pause, play }: { pause: string; play: string }) {
   React.useEffect(() => {
     const hero = ref.current?.closest("section");
     if (!hero) return;
-    if (document.querySelector(".preloader")) {
-      hero.style.setProperty("--intro", getComputedStyle(hero).getPropertyValue("--intro-delay").trim() || "0s");
-    }
+    // A full load: pin --intro to the intro. No overlay (in-site navigation, or the page shown
+    // again from the router's cache, where its animations restart): 0s, never an earlier pin.
+    const intro = document.querySelector(".preloader");
+    hero.style.setProperty(
+      "--intro",
+      intro ? getComputedStyle(hero).getPropertyValue("--intro-delay").trim() || "0s" : "0s",
+    );
     const tablet = window.matchMedia("(min-width: 768px)").matches;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!tablet || still) return;

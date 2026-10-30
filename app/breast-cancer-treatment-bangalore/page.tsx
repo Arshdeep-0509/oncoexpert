@@ -37,6 +37,8 @@ export function generateViewport(): Viewport {
 const finalImage = breastImages.joyFlowers;
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, breast theme).
+// Order: the outcome figures and the reviews come before the planning section (client review,
+// 30 Oct 2026). Tones alternate white and tint all the way down, so no two tints touch.
 export default function BreastCancerPage() {
   return (
     <>
@@ -44,19 +46,20 @@ export default function BreastCancerPage() {
       <Hero /> {/* 1  #hero         hero gradient */}
       <Overview /> {/* 2  #overview     surface */}
       <WhyTrust /> {/* 3  #why-trust    surface-alt */}
-      <PrecisePlanning /> {/* 4  #planning     surface */}
-      <SurgicalTechniques /> {/* 5  #surgery      surface-warm */}
-      <CareJourney /> {/* 6  #journey      surface */}
-      <SurvivorsCircle /> {/* 7  #survivors    plum */}
-      <ProvenOutcomes /> {/* 8  #outcomes     surface */}
-      <InstitutionalValue /> {/* 9  #value        surface-alt */}
-      <CareFinancing /> {/* 10 #pricing      surface */}
-      <LeadSurgeon /> {/* 11 #surgeon      surface-warm */}
-      {/* 12–17: shared sections, driven by this page's content */}
-      <Reviews title={reviews.title} reviews={reviewsFor(pageSlug, reviews.order)} />
-      <Videos eyebrow={videos.eyebrow} title={videos.title} ids={youtubeVideos} labels={videos.a11y} />
-      <Faq title={faq.title} contactTitle={faq.contactTitle} items={faq.items} locations={site.locations} />
-      <Locations tone="alt" />
+      <ProvenOutcomes /> {/* 4  #outcomes     surface */}
+      {/* 5: shared, driven by this page's content (as are 13–16) */}
+      <Reviews tone="alt" title={reviews.title} reviews={reviewsFor(pageSlug, reviews.order)} />
+      <PrecisePlanning /> {/* 6  #planning     surface */}
+      <SurgicalTechniques /> {/* 7  #surgery      surface-warm */}
+      <CareJourney /> {/* 8  #journey      surface */}
+      <SurvivorsCircle /> {/* 9  #survivors    plum */}
+      <InstitutionalValue /> {/* 10 #value        surface-alt */}
+      <CareFinancing /> {/* 11 #pricing      surface */}
+      <LeadSurgeon /> {/* 12 #surgeon      surface-warm */}
+      {/* 13–17: shared sections, driven by this page's content */}
+      <Videos tone="surface" eyebrow={videos.eyebrow} title={videos.title} ids={youtubeVideos} labels={videos.a11y} />
+      <Faq tone="alt" title={faq.title} contactTitle={faq.contactTitle} items={faq.items} locations={site.locations} />
+      <Locations tone="surface" />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );

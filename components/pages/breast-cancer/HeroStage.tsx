@@ -129,11 +129,13 @@ export function HeroStage({ slides, labels, children, className }: HeroStageProp
           );
         })}
 
+        {/* Phones: bottom left (the floating cards take the top right, the middle left and the
+            bottom-right corner) */}
         <button
           type="button"
           onClick={() => setUserPaused((p) => !p)}
           aria-label={userPaused ? labels.play : labels.pause}
-          className="absolute right-3 bottom-3 z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink ring-1 shadow-soft-sm ring-line transition-colors hover:bg-white md:right-4 md:bottom-4"
+          className="absolute right-3 bottom-3 z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink ring-1 shadow-soft-sm ring-line transition-colors hover:bg-white max-md:right-auto max-md:left-3 md:right-4 md:bottom-4"
         >
           {userPaused ? (
             <Play className="size-4 translate-x-px" strokeWidth={1.75} aria-hidden="true" />

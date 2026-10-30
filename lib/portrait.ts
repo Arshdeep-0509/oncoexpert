@@ -3,7 +3,7 @@ import type * as React from "react";
 /**
  * The doctor portrait's edge treatment: it sits zoomed-out on its own studio backdrop
  * (--portrait-backdrop) and fades into it. Sides fade ∩ (long top fade ∪ short fade around the
- * head, which reaches the photo's top edge). Used by DoctorPortrait and the About hero.
+ * head, which reaches the photo's top edge). Used by DoctorPortrait.
  */
 export const portraitMaskStyle: React.CSSProperties = {
   maskImage: [

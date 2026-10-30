@@ -51,18 +51,21 @@ components/
     header/ footer/ mobile-menu/ preloader/   parts of the bigger shell components
   shared/                    sections every page reuses (each has a `look`, see below)
     Reviews, Videos, Faq, AppointmentSection, Locations, FinalCta, DoctorCard, DoctorPortrait,
-    AppointmentButton, Breadcrumb, LiteYouTube
+    AppointmentButton, Breadcrumb, LiteYouTube, DoctorRing (the portrait in the logo ring with the
+    four figures, on its own navy panel: Home #surgeon, About #hero with `hero`)
     appointment/             the form (lazy-loaded), its placeholder, Field, FormStyles type
+    doctor-ring/             doctor-ring.css (prefix `aura-`), RingCounter (intro-aware count)
     reviews/                 ReviewsCarousel, ReviewCard, Stars, GoogleMark
   ui/                        primitives: Button, Chip, Container, Counter, Eyebrow, InView, MotionToggle,
                              ProgressRing, Reveal, ScrollFillLine, ScrollVar, Section, SectionHeading,
                              SwipeRow (`initialIndex?`: phones start on that card), text-styles.ts,
                              brand-icons.tsx (icon set) + shadcn: accordion, navigation-menu, select, sheet
   pages/home/                sections used only by Home (blocks 8–13 are the shared sections).
-                             Hero "Orbit": HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroRing,
-                             HeroHeadline, HeroStats, HeroTrustStrip (server) and the islands HeroTicker,
-                             HeroCounter, HeroParallax, HeroMotionToggle, HeroParticles(Layer).
-                             SurgeonSection (+ SurgeonStats, JourneyTimeline + journey.css),
+                             Hero: HomeHero + hero.css (prefix `orbit-`), hero-styles.ts, HeroHeadline,
+                             HeroTrustStrip (server) and the islands HeroSlider (background photos),
+                             HeroTicker, HeroMotionToggle, HeroParticles(Layer); HeroParallax (used by
+                             the colorectal hero only).
+                             SurgeonSection (+ the shared DoctorRing; JourneyTimeline + journey.css),
                              RoboticSection (+ robotic-band.css), SpecialtiesSection (+ specialties.css,
                              specialty-icons.tsx icon set), ServicesSection, ApproachSection (+ the island
                              ApproachPillars), ValueSection (+ the island ValueRange, value-band.css);
@@ -72,7 +75,7 @@ components/
   pages/robotic-surgery/     sections used only by the robotic page (+ pills.ts, form-styles.ts,
                              content-icons.ts); hero-slider/ inside-the-robot/ surgery-numbers/
                              comparing-modalities/ hold the parts of its bigger sections
-  pages/about-us/            the about page: AboutHero (+ AboutHeadline, ProfilePortrait), Credentials,
+  pages/about-us/            the about page: AboutHero (+ AboutHeadline, the shared DoctorRing), Credentials,
                              Journey (pinned on desktop), QuoteSection; about.css (prefix `ab-`),
                              about-styles.ts
   pages/colorectal-cancer/   the colorectal page: Hero (+ HeroHeadline, HeroVisual, the islands HeroCounter
@@ -209,7 +212,7 @@ the same values as `variant`.
 
 | Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                                                                                             |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Reviews`            | `title`, `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                                                                                                          |
+| `Reviews`            | `title` (a string, or its lines: each starts a new line; soft: then full width, the chip under it), `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)               |
 | `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                              |
 | `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home) |
 | `AppointmentSection` | `page` (email subject), `formStyles?`, `heading?` ("h1" on the booking page), `className?`                                                                                                                                                       |
@@ -326,6 +329,9 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   per-page opt-out. It covers the page for ~3.3s, so anything that animates or auto-advances on load
   must wait for it: CSS via `--intro-delay`, JS via `introRemainingSeconds()` (`lib/intro.ts`).
   In-site navigation does not replay it (the root layout stays mounted).
+- Cache Components keep visited pages mounted but hidden (React Activity, `display: none`): when a
+  page is shown again its effects re-run and its CSS animations restart. Hero toggles therefore set
+  `--intro` on every showing: the intro's delay with the preloader, 0s without it.
 - Known issue: `--intro-delay` comes from `.preloader ~ [data-theme]`, so it drops to 0 when the
   overlay unmounts (end of its fade, intro + 0.8s; earlier on slow loads, where the overlay's safety
   timer, counted from navigation start, fires before the CSS fade ends). Every entrance animation
@@ -339,8 +345,12 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 - Home hero: the centred desktop grid would re-centre while the HTML streams in on slow devices
   (CLS). It is not painted until the `.orbit-end` marker after the trust strip has been parsed
   (`:has()`, hero.css). Keep that marker the hero's last child.
-- The hero portrait is the LCP element: `preload` + `fetchPriority="high"`; the head cut-out over the
-  ring is `loading="eager"`. Everything below the fold stays lazy.
+- The first hero photo (HeroSlider) is the LCP element: `preload` + `fetchPriority="high"`, on screen
+  from the first paint (it settles in after the intro; never an opacity fade). The other photos load
+  after the page. Everything below the fold stays lazy.
+- Page CSS prefixes must not look like Tailwind utilities: `cn()` (tailwind-merge) treats e.g.
+  `ring-*` classes as Tailwind's ring utilities and keeps only the last one (doctor-ring.css uses
+  `aura-`).
 - Scroll-linked effects animate transform/opacity only. Known exception in the shared header: it
   animates `height` when it compacts past a scroll threshold (fixed element, so nothing reflows).
 - Never hide the hero LCP image behind clip-path / opacity at load; reveal it with a transform on a
@@ -486,6 +496,40 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 - Colorectal #outcomes: no bar chart. The Outcome Dashboard is the total on a dark band (--grad-plum,
   large white figures), then a 2 × 2 grid of stage tiles, each count a large gradient figure
   (`.cxo-num`); the tiles rise in turn as the counts count up.
+- Home, client review (30 Oct 2026): #hero's background is a slider of Dr. Sunil's three photos
+  (`heroSlides`), each shown whole as on the live homepage: desktop at full height on the right, its
+  left edge melting into the navy behind the text; phones and tablets full width between the header
+  and the text. All three are 3:2 (the two portrait originals cropped), so every slide fills the
+  same frame. A crossfade every 6.5s, the new photo settling from a slight zoom; progress bars on
+  desktop; paused with the hero's other loops. The ring with the portrait and the four stat chips moved from the hero to
+  #surgeon (the shared DoctorRing, on a navy panel; its entrance plays in view); the stats band under #surgeon
+  is gone (it repeated the chips). The training journey reads Senior Consultant → M.Ch → M.S. Phones:
+  #robotic, #specialties and #services each fit on about one screen (compact feature rows, a 2 × 3
+  photo grid, 2 × 3 service tiles; the one-liners show from md); tablet and desktop unchanged.
+  Order: #value and #reviews now come before #approach. Hero slides: the operating room first, the
+  robotic arms, then the console.
+- About #hero (client review, 30 Oct 2026): the arch portrait and its three credential chips are
+  replaced by Home's portrait ring (the shared DoctorRing with `hero`: preloaded, its entrance and
+  count wait for the intro, the hero's pause button stops its loops), with the same four figures
+  (`surgeon.stats`). From 1280px the hero's portrait column is 540px (480px below). PENDING
+  DOCTOR: "15+ YEARS EXPERIENCE" now shares the page with "over a decade" and "10+".
+- Every page (client review, 30 Oct 2026): the videos heading reads "Hear from our warriors"; the
+  fourth video is `_3fI1R_Ddg8` (content/shared/videos.ts); the reviews heading is set in two lines
+  ("Every Patient Story Reflects" / "Our Commitment To Clinical Excellence.").
+- Breast #hero (client review, 30 Oct 2026): the three floating cards are Awareness Programmes,
+  Screening and Survivor Support Groups (`hero.highlights`: small cards, the icon beside its label,
+  no figures; all three float on every screen size; desktop top left, middle right, bottom left; on
+  phones a zig-zag: top right, middle left, bottom right, with the slideshow's pause button bottom left;
+  HeroHighlights + highlight-icons.ts; the figures stay in #outcomes and #surgery). PENDING DOCTOR:
+  the first label's wording (the request read "Awareness Create/ Programmes").
+- Breast order (client review, 30 Oct 2026): #outcomes ("Patient Experience Statistics") and
+  #reviews now come right after #why-trust, before #planning; tones re-alternated (reviews alt,
+  videos surface, faq alt, locations surface).
+- Heroes without an intro (in-site navigation, or a page shown again from the router's cache:
+  Cache Components keep visited pages in the document with display: none, and their CSS
+  animations restart when shown): Home, About, Colorectal and Endometrial set --intro to 0s each
+  time the hero is shown without the preloader (an earlier load's pinned 3.1s made the text wait).
+  Home also runs its entrance at a third of the pace then (data-quick → --pace, hero.css).
 - Endometrial #hero: no photo. The uterus line art is centred on a highlighted backdrop (a warm glow,
   the petal bloom on every screen size, two thin orbit rings); the bloom turns only on desktop.
   HeroBloom (the lazy desktop-only loader) is gone; `womanSmiling` remains only as og.jpg's source.

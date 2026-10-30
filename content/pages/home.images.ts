@@ -18,7 +18,7 @@ const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 export const homeImages = {
   /* Own photos, reused ---------------------------------------------- */
 
-  // Transparent PNG: sits on the theme's portrait backdrop (components/shared/DoctorPortrait).
+  // Transparent PNG: sits on the theme's portrait backdrop (the #surgeon ring, SurgeonRing).
   doctor: {
     file: "dr-sunil-navalgund.png",
     src: "/images/brand/dr-sunil-navalgund.png",
@@ -28,7 +28,7 @@ export const homeImages = {
     height: 1024,
   },
   // The head cut out of the same photo (scripts/make-portrait-cutout.mjs: its top 40%, backdrop
-  // removed), so it can break out of the hero ring. Decorative: the portrait above carries the alt.
+  // removed), so it can break out of the #surgeon ring. Decorative: the portrait above carries the alt.
   doctorHead: {
     file: "dr-sunil-navalgund-head.png",
     src: "/images/brand/dr-sunil-navalgund-head.png",
@@ -167,6 +167,44 @@ export const homeImages = {
 } as const satisfies Record<string, PageImage>;
 
 export type HomeImageKey = keyof typeof homeImages;
+
+/**
+ * The hero's background slider, in slide order: Dr. Sunil's own photos (no pexelsId). Decorative
+ * (the headline says it), so no alt text. Each file is shown whole (never cropped by the page):
+ * desktop at the hero's full height on the right, its edges melting into the navy; phones and
+ * tablets full width above the text. All three are 3:2 at 2400×1600, so every slide fills the same
+ * frame: the two portrait originals (4000×6000) were cropped to 3:2 for this (the head, the
+ * robotic arms; the theatre light and both surgeons). Keep new photos 3:2 too.
+ */
+export const heroSlides = [
+  // An operation under the theatre lights (the first slide: the hero's LCP image)
+  {
+    file: "hero-operating-room-wide.jpg",
+    src: `${BASE}/hero-operating-room-wide.jpg`,
+    alt: "",
+    decorative: true,
+    width: 2400,
+    height: 1600,
+  },
+  // Dr. Sunil at the patient cart, beside the draped robotic arms
+  {
+    file: "hero-robotic-arms-wide.jpg",
+    src: `${BASE}/hero-robotic-arms-wide.jpg`,
+    alt: "",
+    decorative: true,
+    width: 2400,
+    height: 1600,
+  },
+  // Dr. Sunil at the da Vinci surgeon console, smiling at the camera
+  {
+    file: "hero-davinci-console.jpg",
+    src: `${BASE}/hero-davinci-console.jpg`,
+    alt: "",
+    decorative: true,
+    width: 2400,
+    height: 1600,
+  },
+] as const satisfies readonly Omit<PageImage, "focal">[];
 
 /** Social share image: the portrait and the logo on the hero navy, made by `npm run images home`. */
 export const homeOgImage = { src: `${BASE}/og.jpg`, width: 1200, height: 630 } as const;

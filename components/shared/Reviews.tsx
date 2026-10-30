@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Cta, Review, SectionLook, SectionTone } from "@/content/types";
 import { averageRating, reviewLabels } from "@/content/shared/reviews";
 import { site } from "@/content/site";
+import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -13,20 +14,34 @@ type ReviewsProps = {
   id?: string;
   tone?: SectionTone;
   look?: SectionLook;
-  title: string;
+  /** One string, or the heading's lines (each starts a new line; a long one still wraps on phones). */
+  title: string | readonly string[];
   /** This page's reviews, already ordered / filtered (reviewsFor). */
   reviews: readonly Review[];
   /** soft only: a link to the reviews on Google, under the carousel (opens in a new tab). */
   link?: Cta;
 };
 
+/** The heading's content: the string, or one block per line. */
+function headingOf(title: string | readonly string[]) {
+  if (typeof title === "string") return title;
+  return title.map((line) => (
+    <span key={line} className="block">
+      {line}
+    </span>
+  ));
+}
+
 /**
  * #reviews: Google reviews (exact text) in a carousel. Shared by every page.
- * soft: heading with a summary chip (count + computed average), optional link to Google.
+ * soft: heading with a summary chip (count + computed average), optional link to Google. A heading
+ * given as lines takes the full width (its longest line fits on one line from md), with the chip
+ * under it; a string heading keeps the chip beside it.
  * classic: heading + arrows.
  */
 export function Reviews({ id = "reviews", tone = "surface", look = "soft", title, reviews, link }: ReviewsProps) {
   const titleId = `${id}-title`;
+  const inLines = typeof title !== "string";
 
   if (look === "classic") {
     return (
@@ -36,7 +51,7 @@ export function Reviews({ id = "reviews", tone = "surface", look = "soft", title
           look="classic"
           heading={
             <h2 id={titleId} className="max-w-[22ch] type-h2 text-ink">
-              {title}
+              {headingOf(title)}
             </h2>
           }
         />
@@ -48,10 +63,15 @@ export function Reviews({ id = "reviews", tone = "surface", look = "soft", title
   return (
     <Section id={id} tone={tone} aria-labelledby={titleId}>
       <Reveal>
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <SectionHeading id={titleId} title={title} className="max-w-[26ch]" />
+        <div className={cn("flex flex-col gap-5", !inLines && "md:flex-row md:items-end md:justify-between")}>
+          <SectionHeading id={titleId} title={headingOf(title)} className={inLines ? "max-w-none" : "max-w-[26ch]"} />
           {/* Summary chip: count + computed average */}
-          <p className="inline-flex min-h-11 items-center gap-2.5 self-start rounded-pill border border-line bg-surface px-4 py-2 shadow-soft-sm md:self-auto">
+          <p
+            className={cn(
+              "inline-flex min-h-11 items-center gap-2.5 self-start rounded-pill border border-line bg-surface px-4 py-2 shadow-soft-sm",
+              !inLines && "md:self-auto",
+            )}
+          >
             <span className="font-display text-xl leading-none font-semibold text-ink tabular-nums">
               <span className="sr-only">{reviewLabels.a11y.average(avg)}</span>
               <span aria-hidden="true">{avg.toFixed(1)}</span>

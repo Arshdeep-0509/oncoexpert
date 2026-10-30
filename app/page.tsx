@@ -41,8 +41,10 @@ const finalImage = homeImages.finalCouple;
  * the sections here renders the same <div data-theme="home"> → header → main → footer tree.
  *
  * Tones: navy bands carry the statements (hero, robotic, approach, final call); warm marks the
- * human moments, every fifth section (surgeon, value, locations); ice and white alternate in
- * between. Two tints never touch, so every edge is tint ↔ white or light ↔ navy.
+ * human moments (surgeon, value, locations); ice and white alternate in between. Two tints never
+ * touch, so every edge is tint ↔ white or light ↔ navy.
+ *
+ * Order: #value and the reviews come before #approach (client review, 30 Oct 2026).
  */
 export default function HomePage() {
   return (
@@ -59,10 +61,10 @@ export default function HomePage() {
       <RoboticSection /> {/* 3  #robotic      navy band */}
       <SpecialtiesSection /> {/* 4  #specialties  ice */}
       <ServicesSection /> {/* 5  #services     white */}
-      <ApproachSection /> {/* 6  #approach     navy band */}
-      <ValueSection /> {/* 7  #value        warm → white */}
-      {/* 8–13: shared sections (soft look), driven by this page's content */}
+      <ValueSection /> {/* 6  #value        warm → white */}
+      {/* 7, 9–13: shared sections (soft look), driven by this page's content */}
       <Reviews tone="alt" title={reviews.title} reviews={reviewsFor(pageSlug, reviews.order)} link={reviews.link} />
+      <ApproachSection /> {/* 8  #approach     navy band */}
       <Videos tone="surface" eyebrow={videos.eyebrow} title={videos.title} ids={youtubeVideos} labels={videos.a11y} />
       <Faq
         tone="alt"

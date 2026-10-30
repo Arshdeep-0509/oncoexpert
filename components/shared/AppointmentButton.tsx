@@ -6,8 +6,11 @@ import { Button, type ButtonVariant } from "@/components/ui/Button";
 import { bookingHref } from "@/lib/booking";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
 
-/** A page's own link styling, used instead of the Button styles (e.g. the robotic pills). */
-export type LinkLook = { className: string; arrowClassName: string };
+/**
+ * A page's own link styling, used instead of the Button styles (e.g. the robotic pills).
+ * `labelClassName` wraps the label in a span with those classes (e.g. visually hidden on phones).
+ */
+export type LinkLook = { className: string; arrowClassName: string; labelClassName?: string };
 
 type AppointmentButtonProps = {
   label: string;
@@ -49,7 +52,7 @@ export function AppointmentButton({
   if (look) {
     return (
       <a href={href} data-cta={cta} className={look.className} onClick={onClick}>
-        {label}
+        {look.labelClassName ? <span className={look.labelClassName}>{label}</span> : label}
         {arrow ? <ArrowRight className={look.arrowClassName} strokeWidth={1.75} aria-hidden="true" /> : null}
       </a>
     );

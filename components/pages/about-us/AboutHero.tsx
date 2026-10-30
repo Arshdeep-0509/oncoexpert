@@ -1,12 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { hero } from "@/content/pages/about-us";
+import { aboutImages } from "@/content/pages/about-us.images";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { MotionToggle } from "@/components/ui/MotionToggle";
+import { DoctorRing } from "@/components/shared/DoctorRing";
 import { at, styles } from "@/components/pages/about-us/about-styles";
 import { AboutHeadline } from "@/components/pages/about-us/AboutHeadline";
-import { ProfilePortrait } from "@/components/pages/about-us/ProfilePortrait";
 import "@/components/pages/about-us/about.css";
 
 /** Seconds after the intro (the headline and the portrait keep their own times). */
@@ -15,8 +16,9 @@ const T = { subtitle: 1.15, body: 1.3, ctas: 1.45 };
 /**
  * #hero: a cinematic profile on the navy → logo-blue gradient. Left: eyebrow, the H1 (each word
  * rises in its mask, his name in the gradient), subtitle and intro verbatim, and the two buttons,
- * which open the booking page with the service preselected. Right: the portrait in its arch
- * with the credential chips. Phones: portrait first (~70vw), the chips in a row, then the text.
+ * which open the booking page with the service preselected. Right: Home's portrait ring with the
+ * four figures (the shared DoctorRing; its entrance waits for the intro, the pause button stops its
+ * loops). Phones: the ring panel first, then the text.
  */
 export function AboutHero() {
   return (
@@ -36,7 +38,13 @@ export function AboutHero() {
         )}
       >
         <div className={styles.areaPortrait}>
-          <ProfilePortrait />
+          <DoctorRing
+            hero
+            stats={hero.stats}
+            label={hero.a11y.stats}
+            photo={aboutImages[hero.image]}
+            head={aboutImages.doctorHead}
+          />
         </div>
 
         <div className={styles.areaText}>

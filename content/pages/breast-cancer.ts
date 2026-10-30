@@ -43,6 +43,9 @@ export type Treatment = "surgery" | "chemotherapy" | "immunotherapy" | "radiothe
 
 type AppointmentCta = { label: string; service: AppointmentService };
 
+/** The hero's three floating cards. Icons are mapped in the components. */
+export type HeroHighlight = "awareness" | "screening" | "support";
+
 export type HeroContent = {
   eyebrow: string;
   /** Rendered as separate lines of the H1. */
@@ -51,9 +54,10 @@ export type HeroContent = {
   emphasisLine: number;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   chips: readonly { key: Treatment; label: string }[];
-  stats: readonly Stat[];
+  /** The three cards floating around the photo (no figures). */
+  highlights: readonly { key: HeroHighlight; label: string }[];
   slides: readonly BreastImageKey[];
-  a11y: { slideshow: string; pause: string; play: string; stats: string; chips: string };
+  a11y: { slideshow: string; pause: string; play: string; highlights: string; chips: string };
 };
 
 export type OverviewContent = Required<Pick<SectionCopy, "eyebrow" | "title" | "emphasis">> & {
@@ -84,11 +88,13 @@ export const hero = {
     { key: "immunotherapy", label: "Immunotherapy" },
     { key: "radiotherapy", label: "Radiotherapy" },
   ],
-  // SOURCE: DOCTOR
-  stats: [
-    { value: 96, suffix: "%", label: "Chemotherapy response" },
-    { value: 97, suffix: "%", label: "Immunotherapy response" },
-    { value: 65, suffix: "%", label: "Breast conservation and cosmetic surgeries" },
+  // SOURCE: DOCTOR (the client's review, 30 Oct 2026: these three around the hero photo instead of
+  // the outcome figures, which stay in #outcomes and #surgery). "Awareness Create/ Programmes" is
+  // set as "Awareness Programmes". PENDING DOCTOR: confirm that first label's wording.
+  highlights: [
+    { key: "awareness", label: "Awareness Programmes" },
+    { key: "screening", label: "Screening" },
+    { key: "support", label: "Survivor Support Groups" },
   ],
   slides: ["heroWoman1", "heroWoman2", "heroWoman3"],
   // SOURCE: NEW (screen-reader / control labels)
@@ -96,7 +102,7 @@ export const hero = {
     slideshow: "Photos of women smiling",
     pause: "Pause slideshow",
     play: "Play slideshow",
-    stats: "Treatment outcomes",
+    highlights: "Awareness, screening and survivor support",
     chips: "Treatments we offer",
   },
 } as const satisfies HeroContent;
@@ -650,8 +656,8 @@ export const pageSlug = "breast-cancer-treatment-bangalore";
 export const structuredData = { pageAbout: "Breast cancer" } as const;
 
 export const reviews = {
-  // SOURCE: EXISTING
-  title: "Every Patient Story Reflects Our Commitment To Clinical Excellence.",
+  // SOURCE: EXISTING. Set in two lines (the client's review, 30 Oct 2026): the break is layout.
+  title: ["Every Patient Story Reflects", "Our Commitment To Clinical Excellence."],
   // Breast page order. PENDING DOCTOR: Vasudeva Murthy's review is about colon cancer;
   // add excludeOn: ["breast-cancer-treatment-bangalore"] to it in content/shared/reviews.ts to hide it here.
   order: [
@@ -665,12 +671,12 @@ export const reviews = {
     "narasimhamurthy-sm",
     "vasudeva-murthy",
   ],
-} as const satisfies { title: string; order: readonly ReviewId[] };
+} as const satisfies { title: readonly string[]; order: readonly ReviewId[] };
 
 export const videos = {
-  // SOURCE: NEW
+  // SOURCE: NEW; "warriors": the client's review, 30 Oct 2026
   eyebrow: "Watch & learn",
-  title: "Hear from our experts",
+  title: "Hear from our warriors",
   // SOURCE: NEW (screen-reader labels)
   a11y: { play: "Play video", frame: "YouTube video", list: "Videos" },
 } as const;

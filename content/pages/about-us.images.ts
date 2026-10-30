@@ -27,6 +27,17 @@ export const aboutImages = {
     width: 886,
     height: 1024,
   },
+  // The head cut out of the same photo (as on Home), so it breaks out of the hero's ring
+  // (DoctorRing). Decorative: the portrait above carries the alt.
+  doctorHead: {
+    file: "dr-sunil-navalgund-head.png",
+    src: "/images/brand/dr-sunil-navalgund-head.png",
+    alt: "",
+    decorative: true,
+    focal: "50% 0%",
+    width: 886,
+    height: 410,
+  },
   // Surgical Expertise → Robotic Surgery card. Black background: blends away on navy.
   roboticArms: {
     file: "davinci-arms-black.jpg",

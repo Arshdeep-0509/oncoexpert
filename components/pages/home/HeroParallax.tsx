@@ -9,8 +9,9 @@ const EASE = 0.08;
 
 /**
  * Pointer parallax: every [data-depth="n"] layer in the hero moves up to n px against the
- * cursor (ring 12, portrait 8, chips 16), smoothed with requestAnimationFrame. The loop only
- * runs while the layers are still settling. Renders nothing.
+ * cursor, smoothed with requestAnimationFrame. The loop only runs while the layers are still
+ * settling. Renders nothing. (Used by the colorectal hero; Home's photos sit flush against the
+ * screen edge, where a shift would show the navy, so Home has none.)
  */
 export function HeroParallax() {
   const enabled = useMedia(QUERY);

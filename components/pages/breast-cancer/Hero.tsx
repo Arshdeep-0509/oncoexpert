@@ -9,9 +9,8 @@ import { HeroBackdrop } from "@/components/pages/breast-cancer/HeroBackdrop";
 import { HeroPetals } from "@/components/pages/breast-cancer/HeroPetals";
 import { HeroStage } from "@/components/pages/breast-cancer/HeroStage";
 import { HeroRibbon } from "@/components/pages/breast-cancer/HeroRibbon";
-import { HeroCounter } from "@/components/pages/breast-cancer/HeroCounter";
 import { HeroHeadline } from "@/components/pages/breast-cancer/HeroHeadline";
-import { HeroStats } from "@/components/pages/breast-cancer/HeroStats";
+import { HeroHighlights } from "@/components/pages/breast-cancer/HeroHighlights";
 import { treatmentIcons } from "@/components/pages/breast-cancer/treatment-icons";
 import { at, styles } from "@/components/pages/breast-cancer/hero-styles";
 import "@/components/pages/breast-cancer/hero.css";
@@ -21,7 +20,7 @@ const slides = hero.slides.map((key) => {
   return { src: img.src, alt: img.alt, focal: img.focal };
 });
 
-/** 1 · #hero "Bloom". Server-rendered; only the stage, backdrop, petals and counters are client code. */
+/** 1 · #hero "Bloom". Server-rendered; only the stage, backdrop and petals are client code. */
 export function Hero() {
   const petals = breastImages.petalsTexture;
 
@@ -73,18 +72,8 @@ export function Hero() {
                 "max-md:-top-[3%] max-md:-left-[7%] max-md:w-[19%] md:top-[30%] md:-left-[13%] md:w-[30%]",
               )}
             />
-            <HeroStats />
+            <HeroHighlights />
           </HeroStage>
-        </div>
-
-        {/* Phones: the third stat as a strip under the arch */}
-        <div className={cn(styles.step, styles.pop, "md:hidden")} style={at(1.3)}>
-          <div className="flex items-center gap-4 rounded-[20px] border border-line bg-white/90 px-5 py-3.5 shadow-soft">
-            <p className="shrink-0 font-display text-[1.75rem] leading-none font-semibold text-ink">
-              <HeroCounter value={hero.stats[2].value} suffix={hero.stats[2].suffix} />
-            </p>
-            <p className="text-[13px] leading-snug text-muted">{hero.stats[2].label}</p>
-          </div>
         </div>
 
         {/* Chips */}

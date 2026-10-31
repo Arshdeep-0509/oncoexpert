@@ -12,6 +12,7 @@ import { Hero } from "@/components/pages/breast-cancer/Hero";
 import { Overview } from "@/components/pages/breast-cancer/Overview";
 import { WhyTrust } from "@/components/pages/breast-cancer/WhyTrust";
 import { PrecisePlanning } from "@/components/pages/breast-cancer/PrecisePlanning";
+import { TeamSection } from "@/components/pages/breast-cancer/TeamSection";
 import { SurgicalTechniques } from "@/components/pages/breast-cancer/SurgicalTechniques";
 import { CareJourney } from "@/components/pages/breast-cancer/CareJourney";
 import { SurvivorsCircle } from "@/components/pages/breast-cancer/SurvivorsCircle";
@@ -50,6 +51,7 @@ export default function BreastCancerPage() {
       {/* 5: shared, driven by this page's content (as are 13–16) */}
       <Reviews tone="alt" title={reviews.title} reviews={reviewsFor(pageSlug, reviews.order)} />
       <PrecisePlanning /> {/* 6  #planning     surface */}
+      <TeamSection /> {/* 6b #team         plum (client review, 31 Oct 2026) */}
       <SurgicalTechniques /> {/* 7  #surgery      surface-warm */}
       <CareJourney /> {/* 8  #journey      surface */}
       <SurvivorsCircle /> {/* 9  #survivors    plum */}

@@ -15,12 +15,14 @@ import { treatmentIcons } from "@/components/pages/breast-cancer/treatment-icons
 import { at, styles } from "@/components/pages/breast-cancer/hero-styles";
 import "@/components/pages/breast-cancer/hero.css";
 
-const slides = hero.slides.map((key) => {
-  const img = breastImages[key];
-  return { src: img.src, alt: img.alt, focal: img.focal };
-});
+const heroPhoto = breastImages[hero.image];
+const photo = { src: heroPhoto.src, alt: heroPhoto.alt, focal: heroPhoto.focal };
 
-/** 1 · #hero "Bloom". Server-rendered; only the stage, backdrop and petals are client code. */
+/**
+ * 1 · #hero "Bloom". Server-rendered; only the stage, backdrop and petals are client code.
+ * The visual: one hopeful woman with no frame, melting into the blush in front of a soft sun and
+ * two turning rings, the ribbon and the three highlight cards floating around her.
+ */
 export function Hero() {
   const petals = breastImages.petalsTexture;
 
@@ -32,8 +34,8 @@ export function Hero() {
       className={cn(styles.hero, "relative isolate overflow-hidden bg-surface-alt bg-(image:--grad-hero)")}
     >
       <HeroBackdrop />
-      {/* Petal texture at 6% in the corner. Kept in a box smaller than the arch so it never
-          becomes the Largest Contentful Paint (that must be hero-woman-1). */}
+      {/* Petal texture at 6% in the corner. Kept in a box smaller than the hero photo so it never
+          becomes the Largest Contentful Paint (that must be the photo). */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute right-0 bottom-0 -z-10 size-[min(36vw,380px)] overflow-hidden rounded-tl-[999px] opacity-[0.06]"
@@ -62,14 +64,14 @@ export function Hero() {
         {/* Image stage */}
         <div className="md:col-start-2 md:row-span-5 md:row-start-1 md:self-center lg:col-span-6 lg:col-start-7">
           <HeroStage
-            slides={slides}
+            photo={photo}
             labels={hero.a11y}
-            className="mx-auto w-[min(84vw,calc(58svh*0.8))] max-md:mb-10 md:w-full md:max-w-[520px] lg:w-[86%]"
+            className="max-md:-mx-(--gutter) max-md:mb-2 md:w-full lg:w-[110%] lg:max-w-none"
           >
             <HeroRibbon
               className={cn(
                 "absolute z-10 aspect-[120/170]",
-                "max-md:-top-[3%] max-md:-left-[7%] max-md:w-[19%] md:top-[30%] md:-left-[13%] md:w-[30%]",
+                "max-md:top-[5%] max-md:left-[5%] max-md:w-[12%] md:top-[4%] md:-left-[2%] md:w-[12%]",
               )}
             />
             <HeroHighlights />

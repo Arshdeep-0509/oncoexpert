@@ -525,6 +525,17 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 - Breast order (client review, 30 Oct 2026): #outcomes ("Patient Experience Statistics") and
   #reviews now come right after #why-trust, before #planning; tones re-alternated (reviews alt,
   videos surface, faq alt, locations surface).
+- Breast #hero (client review, 31 Oct 2026): no slideshow, no arch frame. One hopeful woman
+  (`heroHope`, cropped from the live page's AI-generated banner, no text) whose edges melt into the
+  blush, in front of a soft sun and two accent rings that draw in and turn slowly; the photo
+  settles in, then breathes (pause button / off-screen stop the loops). Phones: a full-width
+  square crop. Breast phones: #planning's steps and #surgery's cards are swipe rows (no photos),
+  each section about half its old height; tablet and desktop unchanged.
+- Breast #team (client review, 31 Oct 2026): a new plum band between #planning and #surgery
+  (TeamSection + team.css, prefix `bteam-`; content `team`, all NEW, PENDING DOCTOR): the team
+  photo (team.jpg) with heading, intro and three points. On reveal a curtain slides off the photo
+  as it settles, an accent outline draws behind it, the badge pops in. Desktop text | photo;
+  tablets and phones photo first (points in a row of three on tablets, a list on phones).
 - Heroes without an intro (in-site navigation, or a page shown again from the router's cache:
   Cache Components keep visited pages in the document with display: none, and their CSS
   animations restart when shown): Home, About, Colorectal and Endometrial set --intro to 0s each

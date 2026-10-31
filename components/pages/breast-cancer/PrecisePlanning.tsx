@@ -19,7 +19,7 @@ export function PrecisePlanning() {
   const { staging } = planning;
 
   return (
-    <Section id="planning" tone="surface" aria-labelledby="planning-title">
+    <Section id="planning" tone="surface" aria-labelledby="planning-title" className="max-md:py-12">
       <PlanningSteps
         label={planning.a11y.steps}
         steps={planning.steps}
@@ -38,10 +38,10 @@ export function PrecisePlanning() {
       />
 
       {/* Staging: plum card, doctor's words as a quote */}
-      <Reveal className="mt-16 md:mt-24">
+      <Reveal className="mt-10 md:mt-24">
         <div
           data-tone="plum"
-          className="on-dark grid gap-10 overflow-hidden rounded-xl bg-ink bg-(image:--grad-plum) p-7 text-white shadow-soft-lg md:p-12 lg:grid-cols-2 lg:gap-16 lg:p-14"
+          className="on-dark grid gap-7 overflow-hidden rounded-xl bg-ink bg-(image:--grad-plum) p-6 text-white shadow-soft-lg md:gap-10 md:p-12 lg:grid-cols-2 lg:gap-16 lg:p-14"
         >
           <div>
             <h3 className="font-display text-[1.6rem] leading-tight md:text-[2rem]">{staging.title}</h3>

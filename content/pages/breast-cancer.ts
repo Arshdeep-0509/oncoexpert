@@ -56,8 +56,9 @@ export type HeroContent = {
   chips: readonly { key: Treatment; label: string }[];
   /** The three cards floating around the photo (no figures). */
   highlights: readonly { key: HeroHighlight; label: string }[];
-  slides: readonly BreastImageKey[];
-  a11y: { slideshow: string; pause: string; play: string; highlights: string; chips: string };
+  /** The hero photo (frameless: it melts into the hero's blush). */
+  image: BreastImageKey;
+  a11y: { pause: string; play: string; highlights: string; chips: string };
 };
 
 export type OverviewContent = Required<Pick<SectionCopy, "eyebrow" | "title" | "emphasis">> & {
@@ -96,12 +97,12 @@ export const hero = {
     { key: "screening", label: "Screening" },
     { key: "support", label: "Survivor Support Groups" },
   ],
-  slides: ["heroWoman1", "heroWoman2", "heroWoman3"],
+  // The client's review, 30 Oct 2026: one hopeful woman (the live page's), no frame.
+  image: "heroHope",
   // SOURCE: NEW (screen-reader / control labels)
   a11y: {
-    slideshow: "Photos of women smiling",
-    pause: "Pause slideshow",
-    play: "Play slideshow",
+    pause: "Pause animation",
+    play: "Play animation",
     highlights: "Awareness, screening and survivor support",
     chips: "Treatments we offer",
   },
@@ -285,6 +286,36 @@ export const planning = {
 /* ------------------------------------------------------------------ */
 /* 5 · #surgery                                                        */
 /* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* #team (before #surgery)                                             */
+/* ------------------------------------------------------------------ */
+
+export type TeamContent = {
+  eyebrow: string;
+  title: string;
+  /** Words of `title` set in the serif italic. */
+  emphasis: string;
+  intro: string;
+  /** Short promises beside the photo (no names or roles: none are confirmed). */
+  points: readonly string[];
+  image: BreastImageKey;
+  /** The tag on the photo. */
+  badge: string;
+};
+
+// SOURCE: NEW (the client's review, 31 Oct 2026: an "Our Team" section with the team photo,
+// before #surgery). PENDING DOCTOR: approve the wording; add names and roles if wanted.
+export const team = {
+  eyebrow: "Our Team",
+  title: "The people beside you, every step of the way",
+  emphasis: "every step of the way",
+  intro:
+    "Behind every treatment plan is a dedicated team led by Dr. Sunil Navalgund, working together so you are cared for, informed and never alone.",
+  points: ["Led by Dr. Sunil Navalgund", "One team, one plan for you", "Care that continues after surgery"],
+  image: "team",
+  badge: "Team OncoXpert",
+} as const satisfies TeamContent;
 
 export type SurgeryCardKey = "conservation" | "sentinel" | "robotic" | "reconstruction" | "planning";
 

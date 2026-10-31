@@ -5,15 +5,15 @@ import { highlightIcons } from "@/components/pages/breast-cancer/highlight-icons
 import { at, styles } from "@/components/pages/breast-cancer/hero-styles";
 
 /*
- * Card placement around the arch.
- * Desktop/tablet: top-left, middle-right, bottom-left (the ribbon has the middle left).
- * Phones, a zig-zag: top right (the ribbon has the top left), middle left, and pinned half outside
- * the arch's bottom-right corner (the pause button has the bottom left).
+ * Card placement around the photo, clear of her face (upper left of the picture).
+ * Desktop/tablet: top right, middle right (over the pink fabric), bottom left (over her shirt).
+ * Phones, a zig-zag: top right, middle left (below her chin), bottom right; the pause button has
+ * the bottom left and the ribbon the top left.
  */
 const CARD_POSITION = [
-  "max-md:top-[13%] max-md:-right-[7%] md:top-[4%] md:-left-[14%] lg:top-[9%] lg:-left-[16%]",
-  "max-md:top-1/2 max-md:-left-[7%] max-md:-translate-y-1/2 md:top-[40%] md:-right-[8%] lg:top-[44%] lg:-right-[12%]",
-  "max-md:-right-[7%] max-md:bottom-0 max-md:translate-y-1/2 md:bottom-[3%] md:-left-[14%] lg:bottom-[7%] lg:-left-[20%]",
+  "max-md:top-[8%] max-md:right-[4%] md:top-[6%] md:right-[2%]",
+  "max-md:top-[64%] max-md:left-[4%] md:top-[48%] md:right-[1%]",
+  "max-md:right-[4%] max-md:bottom-[6%] md:bottom-[10%] md:left-[6%]",
 ] as const;
 const FLOAT = ["6.5s", "7.5s", "7s"] as const;
 
@@ -48,7 +48,7 @@ export function HeroHighlights() {
         <div
           key={item.key}
           role="listitem"
-          className={cn("absolute z-10 w-max max-w-[55%] md:max-w-[210px]", CARD_POSITION[i])}
+          className={cn("absolute z-10 w-max max-w-[50%] md:max-w-[210px]", CARD_POSITION[i])}
         >
           <div className={cn(styles.step, styles.pop)} style={at(1 + i * 0.15)}>
             <div

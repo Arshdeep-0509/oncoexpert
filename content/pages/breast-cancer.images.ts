@@ -15,35 +15,25 @@ const BASE = "/images/breast-cancer";
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const breastImages = {
-  heroWoman1: {
-    file: "hero-woman-1.jpg",
-    src: `${BASE}/hero-woman-1.jpg`,
-    pexelsId: 29480426,
-    alt: "Smiling woman in a pink saree",
-    credit: { photographer: "Monojit Dutta", url: pexels(29480426) },
-    focal: "50% 30%",
-    width: 1333,
-    height: 2000,
+  // The hero: the client's own AI-generated image of a hopeful woman in a pink headscarf, cropped
+  // from the live page's banner (Hopeful-Breast-Cancer-Care-Banner.png, its right 1038px: no
+  // text). No pexelsId: the script only checks that it exists. `focal` frames the square phone box.
+  heroHope: {
+    file: "hero-hope.jpg",
+    src: `${BASE}/hero-hope.jpg`,
+    alt: "Smiling woman in a soft pink headscarf, looking up with hope",
+    focal: "30% 40%",
+    width: 1038,
+    height: 768,
   },
-  heroWoman2: {
-    file: "hero-woman-2.jpg",
-    src: `${BASE}/hero-woman-2.jpg`,
-    pexelsId: 15984371,
-    alt: "Confident middle-aged woman smiling",
-    credit: { photographer: "R.O.Y", url: pexels(15984371) },
-    focal: "50% 25%",
-    width: 1333,
-    height: 2000,
-  },
-  heroWoman3: {
-    file: "hero-woman-3.jpg",
-    src: `${BASE}/hero-woman-3.jpg`,
-    pexelsId: 36483814,
-    alt: "Smiling woman in a traditional sari",
-    credit: { photographer: "Capture Point", url: pexels(36483814) },
-    focal: "50% 30%",
-    width: 1333,
-    height: 2000,
+  // #team: the client's own photo of Dr. Sunil Navalgund and his team (no pexelsId).
+  team: {
+    file: "team.jpg",
+    src: `${BASE}/team.jpg`,
+    alt: "Dr. Sunil Navalgund with the OncoXpert team",
+    focal: "50% 35%",
+    width: 2400,
+    height: 1600,
   },
   consultation: {
     file: "consultation.jpg",

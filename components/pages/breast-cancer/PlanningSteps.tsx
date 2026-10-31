@@ -5,6 +5,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Chip } from "@/components/ui/Chip";
 import { ScrollFillLine } from "@/components/ui/ScrollFillLine";
+import { SwipeRow } from "@/components/ui/SwipeRow";
 
 export type PlanningImage = { src: string; alt: string; focal: string };
 
@@ -22,7 +23,9 @@ type PlanningStepsProps = {
 /**
  * Desktop (lg): sticky left column whose photo crossfades to the active step's image;
  * right, the vertical timeline. The step crossing the middle of the viewport is active.
- * Below lg: heading, one image, then the same timeline (no sticky).
+ * Tablets: heading, one image, then the same timeline (no sticky).
+ * Phones: heading, then the steps as a swipe row of numbered cards (no image), so the section
+ * takes far less scrolling.
  */
 export function PlanningSteps({ heading, steps, images, mobileImage, label }: PlanningStepsProps) {
   const [active, setActive] = React.useState(0);
@@ -46,7 +49,7 @@ export function PlanningSteps({ heading, steps, images, mobileImage, label }: Pl
   const activeImage = steps[active]?.image;
 
   return (
-    <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-2 lg:gap-20">
       {/* Left: sticky on desktop */}
       <div className="lg:sticky lg:top-[120px] lg:self-start">
         {heading}
@@ -72,7 +75,7 @@ export function PlanningSteps({ heading, steps, images, mobileImage, label }: Pl
         </div>
 
         {/* Phones / tablets: one image */}
-        <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-xl shadow-soft lg:hidden">
+        <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-xl shadow-soft max-md:hidden lg:hidden">
           <Image
             src={mobileImage.src}
             alt={mobileImage.alt}
@@ -84,8 +87,33 @@ export function PlanningSteps({ heading, steps, images, mobileImage, label }: Pl
         </div>
       </div>
 
-      {/* Right: timeline */}
-      <div className="relative">
+      {/* Phones: the steps as a swipe row */}
+      <SwipeRow label={label} className="-mt-2 md:hidden">
+        {steps.map((step, i) => (
+          <div key={step.title} className="flex h-full flex-col rounded-lg bg-surface-alt/70 p-5 ring-1 ring-line">
+            <span
+              aria-hidden="true"
+              className="grid size-9 place-items-center rounded-full bg-accent text-[15px] font-semibold text-white tabular-nums"
+            >
+              {i + 1}
+            </span>
+            <h3 className="mt-3 font-display text-xl leading-snug text-ink">{step.title}</h3>
+            <p className="mt-2 text-[15px] leading-relaxed text-muted">{step.body}</p>
+            {step.chips ? (
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {step.chips.map((chip) => (
+                  <li key={chip}>
+                    <Chip>{chip}</Chip>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ))}
+      </SwipeRow>
+
+      {/* Tablet / desktop: timeline */}
+      <div className="relative max-md:hidden">
         <ScrollFillLine className="absolute top-5 bottom-5 left-[19px] lg:top-[21svh] lg:bottom-[21svh] lg:left-[23px]" />
         {/* Desktop: each step gets a tall slot, so the sticky column has a scroll story to follow. */}
         <ol ref={listRef} aria-label={label} className="relative grid gap-4 lg:gap-0">

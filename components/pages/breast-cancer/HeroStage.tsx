@@ -4,138 +4,102 @@ import * as React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Pause, Play } from "lucide-react";
-import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { MEDIA, useMedia } from "@/lib/hooks/use-media";
-import { introRemainingSeconds } from "@/lib/intro";
 import { styles } from "@/components/pages/breast-cancer/hero-styles";
 
-const INTERVAL_MS = 5500;
-
-type HeroSlide = { src: string; alt: string; focal: string };
+type HeroPhoto = { src: string; alt: string; focal: string };
 
 type HeroStageProps = {
-  slides: readonly HeroSlide[];
-  labels: { slideshow: string; pause: string; play: string };
-  /** Ribbon and stat cards, positioned around the arch (server-rendered). */
+  photo: HeroPhoto;
+  labels: { pause: string; play: string };
+  /** Ribbon and highlight cards, positioned around the photo (server-rendered). */
   children?: React.ReactNode;
   className?: string;
 };
 
 /**
- * The arch with the crossfading portraits (5.5s, 1.2s fade, slow Ken Burns), a pause/play
- * button, and on desktop a gentle parallax. Autoplay stops when the visitor pauses it, when
- * the hero is off-screen or the tab is hidden, and with reduced motion (slide 1 stays).
+ * The hero's photo, with no frame: a hopeful woman whose edges dissolve into the blush, in front
+ * of a soft glowing "sun" and two thin rings in the accent gradient that draw themselves and then
+ * turn very slowly. The photo settles in and then breathes (a slow zoom). The pause button stops
+ * the loops (they also stop off-screen); desktop adds a gentle scroll parallax. Phones: a square
+ * crop, full width; from md the whole picture. The photo is the LCP image: painted from the
+ * start, it only ever moves (never fades in).
  */
-export function HeroStage({ slides, labels, children, className }: HeroStageProps) {
+export function HeroStage({ photo, labels, children, className }: HeroStageProps) {
   const reduce = useReducedMotion();
   const desktop = useMedia(MEDIA.lg);
   const rootRef = React.useRef<HTMLDivElement>(null);
-
-  // `previous` keeps its Ken Burns running while it fades out.
-  const [{ active, previous }, setSlide] = React.useState<{ active: number; previous: number | null }>({
-    active: 0,
-    previous: null,
-  });
   const [userPaused, setUserPaused] = React.useState(false);
   const [onScreen, setOnScreen] = React.useState(true);
-  const [tabVisible, setTabVisible] = React.useState(true);
-  // Slides 2–3 are only requested once the first (the LCP image) has loaded.
-  const [loadRest, setLoadRest] = React.useState(false);
-  // While the intro preloader covers the page, hold the slideshow so slide 1 gets its full time.
-  const [intro] = React.useState(introRemainingSeconds);
-  const [introPlaying, setIntroPlaying] = React.useState(intro > 0);
-
-  React.useEffect(() => {
-    if (!introPlaying) return;
-    const t = window.setTimeout(() => setIntroPlaying(false), intro * 1000);
-    return () => window.clearTimeout(t);
-  }, [introPlaying, intro]);
 
   React.useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
     const io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting));
     io.observe(el);
-    const onVisibility = () => setTabVisible(document.visibilityState === "visible");
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      io.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
+    return () => io.disconnect();
   }, []);
 
-  const playing = !reduce && !userPaused && onScreen && tabVisible && loadRest && !introPlaying;
-
-  React.useEffect(() => {
-    if (!playing) return;
-    const id = window.setInterval(() => {
-      setSlide(({ active: a }) => ({ active: (a + 1) % slides.length, previous: a }));
-    }, INTERVAL_MS);
-    return () => window.clearInterval(id);
-  }, [playing, slides.length]);
-
-  // Desktop only: the stage drifts down 40px over the first 900px of scroll (moves slower than the page).
+  // Desktop only: the visual drifts down 40px over the first 900px of scroll.
   const { scrollY } = useScroll();
   const parallax = useTransform(scrollY, [0, 900], [0, 40], { clamp: true });
   const useParallax = desktop && !reduce;
 
   return (
-    <motion.div ref={rootRef} style={{ y: useParallax ? parallax : 0 }} className={cn("relative", className)}>
-      {/* 10px blush ring, offset and rotated behind the arch */}
+    <motion.div
+      ref={rootRef}
+      style={{ y: useParallax ? parallax : 0 }}
+      data-paused={userPaused || !onScreen ? "" : undefined}
+      className={cn(styles.stage, "relative", className)}
+    >
+      {/* The soft sun behind her */}
       <div
         aria-hidden="true"
-        className={cn(
-          styles.arch,
-          "absolute inset-0 translate-x-3 translate-y-3 rotate-3 border-[10px] border-petal/80",
-        )}
+        className={cn(styles.halo, styles.step, styles.fadeIn)}
+        style={{ "--d": "0.1s" } as React.CSSProperties}
       />
 
-      <div
-        role="group"
-        aria-roledescription={site.a11y.carousel}
-        aria-label={labels.slideshow}
-        data-paused={playing ? undefined : ""}
-        className={cn(styles.stage, styles.arch, "relative aspect-[4/5] overflow-hidden bg-petal shadow-soft-lg")}
-      >
-        {/* Entrance: a blush panel shrinks upward to reveal the photo (transform only). */}
-        <span
-          aria-hidden="true"
-          className={cn(styles.archCover, styles.step, "absolute inset-0 z-[5] bg-petal")}
-          style={{ "--d": "0.5s" } as React.CSSProperties}
-        />
-        {slides.map((slide, i) => {
-          if (i > 0 && !loadRest) return null;
-          const isActive = i === active;
-          const animate = isActive || i === previous;
-          return (
-            <div
-              key={slide.src}
-              className={cn(styles.slide, "absolute inset-0")}
-              data-active={isActive ? "" : undefined}
-              aria-hidden={!isActive}
-            >
-              <Image
-                src={slide.src}
-                alt={slide.alt}
-                fill
-                sizes="(max-width: 767px) 84vw, (max-width: 1023px) 45vw, 520px"
-                {...(i === 0 ? { fetchPriority: "high" as const, loading: "eager" as const } : {})}
-                onLoad={i === 0 ? () => window.setTimeout(() => setLoadRest(true), 600) : undefined}
-                className={cn("object-cover", animate && styles.kenBurns)}
-                style={{ objectPosition: slide.focal }}
-              />
-            </div>
-          );
-        })}
+      {/* Two thin rings: drawn in, then turning slowly in opposite directions */}
+      <svg aria-hidden="true" viewBox="0 0 200 200" className={styles.orbit}>
+        <defs>
+          <linearGradient id="bloom-orbit-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" style={{ stopColor: "var(--accent)" }} />
+            <stop offset="0.6" style={{ stopColor: "var(--highlight, var(--accent))", stopOpacity: 0.7 }} />
+            <stop offset="1" style={{ stopColor: "var(--accent)", stopOpacity: 0.1 }} />
+          </linearGradient>
+        </defs>
+        <g className={styles.orbitTurn}>
+          <circle className={styles.orbitPath} cx="100" cy="100" r="96" pathLength={1} />
+        </g>
+        <g className={styles.orbitTurnBack}>
+          <circle className={cn(styles.orbitPath, styles.orbitDashed)} cx="100" cy="100" r="86" pathLength={1} />
+        </g>
+      </svg>
 
-        {/* Phones: bottom left (the floating cards take the top right, the middle left and the
-            bottom-right corner) */}
+      {/* The photo: frameless, its edges melting into the hero */}
+      <div className={styles.portrait} style={{ "--focal": photo.focal } as React.CSSProperties}>
+        <div className={cn(styles.settle, styles.step)} style={{ "--d": "0.2s" } as React.CSSProperties}>
+          <div className={styles.breathe}>
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              preload
+              fetchPriority="high"
+              sizes="(max-width: 767px) 100vw, (max-width: 1023px) 46vw, 680px"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+      {!reduce ? (
         <button
           type="button"
           onClick={() => setUserPaused((p) => !p)}
           aria-label={userPaused ? labels.play : labels.pause}
-          className="absolute right-3 bottom-3 z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink ring-1 shadow-soft-sm ring-line transition-colors hover:bg-white max-md:right-auto max-md:left-3 md:right-4 md:bottom-4"
+          className="absolute bottom-[6%] left-[5%] z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink ring-1 shadow-soft-sm ring-line transition-colors hover:bg-white md:right-[7%] md:bottom-[7%] md:left-auto"
         >
           {userPaused ? (
             <Play className="size-4 translate-x-px" strokeWidth={1.75} aria-hidden="true" />
@@ -143,7 +107,7 @@ export function HeroStage({ slides, labels, children, className }: HeroStageProp
             <Pause className="size-4" strokeWidth={1.75} aria-hidden="true" />
           )}
         </button>
-      </div>
+      ) : null}
 
       {children}
     </motion.div>

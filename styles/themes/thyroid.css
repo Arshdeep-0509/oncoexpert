@@ -1,0 +1,83 @@
+/* ==================================================================
+   Thyroid Cancer theme: /thyroid-cancer/
+   Light and gentle, after the thyroid cancer ribbon (teal, pink and blue)
+   and the butterfly shape of the gland. A periwinkle accent (deepened for
+   buttons so white text stays readable), blush petal bands, a teal glow,
+   indigo ink, lilac-white surfaces. The dark bands are indigo. Fraunces
+   display, Plus Jakarta Sans body. Cooler and more violet than the breast
+   rose, lighter than the Home navy, never the colorectal royal blue.
+
+   Contrast (WCAG 2.x; "/80" = white at 80% over that background).
+   Text needs 4.5:1, CTAs included; non-text marks need 3:1.
+
+   Text on light        surface  surface-alt  surface-warm  accent-soft  petal  hero base
+     --ink    #1f1c4d    15.43      14.13        14.33         13.02     11.88    14.60
+     --text   #24223a    15.05      13.78        13.98         12.70     11.59    14.25
+     --muted  #5b5877     6.61       6.05         6.14          5.58      5.09     6.26
+     --accent #4a54c4     6.12       5.60         5.68          5.16      4.71     5.79
+   (surface #fdfcff lilac white, hero base #f7f5fe)
+
+   CTAs
+     white on --accent (primary button)                          6.26
+     white on --accent-hover (hover)                             8.44
+     white on --grad-cta stops (action bar: hover, accent,
+       accent/accent-bright mix #5c67d2)                  8.44 · 6.26 · 4.85
+     --accent on white (secondary / outline button)              6.26
+     --accent on --accent-soft (chips, eyebrow pill)             5.16
+     ink on white (onDark button on the indigo bands)           15.77
+
+   Text on dark (--grad-plum)   ink #1f1c4d   end #342f7c
+     white                         15.77        11.39
+     white/80                      10.50         7.87
+     white/70                       8.34         6.46
+     --accent-glow #86e3d8         10.51         7.59
+     --gold #f2c46d                 9.68         6.99
+
+   Decoration only (non-text, 3:1)
+     --highlight (teal) on ink 6.09; on white 2.59 and surface-alt 2.32: glows, dots and fills on
+       light bands, never text and never the only edge of a control.
+     --petal (blush) is a fill only.
+     --accent-bright on white 3.81: gradient stop and large marks only, never body text.
+     --accent on ink 2.52: on the indigo bands the CTA is the white onDark pill.
+     --line on white 1.26: hairlines only.
+   ================================================================== */
+
+[data-theme="thyroid"] {
+  --ink: #1f1c4d; /* indigo: headings, dark bands */
+  --text: #24223a; /* body text */
+  --muted: #5b5877; /* secondary text */
+  --surface: #fdfcff; /* lilac white */
+  --surface-alt: #f3f1fd; /* lilac bands */
+  --surface-warm: #fdf1f5; /* blush bands */
+  --accent: #4a54c4; /* periwinkle: buttons, links, icons */
+  --accent-hover: #3a42a3;
+  --accent-soft: #e7e8fb; /* chips, icon tiles, eyebrow pills */
+  --accent-glow: #86e3d8; /* teal: accent text and focus rings on the indigo bands */
+  --accent-bright: #6d7ae0; /* light periwinkle: second stop of --grad-accent and --grad-cta */
+  --highlight: #2ab3a8; /* teal glow: dots, underlines, glows only */
+  --petal: #f8d7e3; /* blush petal decoration */
+  --gold: #f2c46d; /* tiny highlights on the indigo bands only */
+  --line: #e5e3f4; /* borders */
+
+  /* Lilac base with a blush light top-right and a teal one bottom-left: the ribbon's colours. */
+  --grad-hero:
+    radial-gradient(55% 55% at 88% 8%, rgb(248 215 227 / 0.8), transparent 70%),
+    radial-gradient(50% 50% at 6% 92%, rgb(42 179 168 / 0.13), transparent 70%),
+    linear-gradient(180deg, #f7f5fe, #fdfcff);
+  --grad-accent: linear-gradient(120deg, var(--accent), var(--accent-bright));
+  /* Dark bands (Section tone="plum"). */
+  --grad-plum: linear-gradient(160deg, #1f1c4d, #342f7c);
+
+  /* Type: Plus Jakarta Sans body, Fraunces display */
+  --font-display: var(--font-serif);
+  --display-weight: 560;
+  --display-tracking: -0.02em;
+
+  /* Shadows tinted with indigo */
+  --shadow-rgb: 31 28 77;
+}
+
+/* Headings on this page wrap in balanced lines (no single orphaned word). */
+[data-theme="thyroid"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}

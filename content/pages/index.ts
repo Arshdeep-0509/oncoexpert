@@ -11,6 +11,9 @@ import { meta as bookMeta } from "@/content/pages/book-appointment";
 import { meta as aboutMeta } from "@/content/pages/about-us";
 import { meta as colorectalMeta } from "@/content/pages/colorectal-cancer";
 import { meta as endometrialMeta } from "@/content/pages/endometrial-cancer";
+import { meta as lungMeta } from "@/content/pages/lung-cancer";
+import { meta as ovarianMeta } from "@/content/pages/ovarian-cancer";
+import { meta as thyroidMeta } from "@/content/pages/thyroid-cancer";
 
 export const pages = {
   home: {
@@ -71,6 +74,31 @@ export const pages = {
     theme: "endometrial",
     themeColor: "#FFF7F2",
     meta: endometrialMeta,
+  },
+  // The live URLs, kept for SEO (the menu already links them).
+  "lung-cancer-in-bangalore": {
+    slug: "lung-cancer-in-bangalore",
+    path: "/lung-cancer-in-bangalore/",
+    title: lungMeta.title,
+    theme: "lung",
+    themeColor: "#EAF4FB",
+    meta: lungMeta,
+  },
+  "ovarian-cancer-treatment": {
+    slug: "ovarian-cancer-treatment",
+    path: "/ovarian-cancer-treatment/",
+    title: ovarianMeta.title,
+    theme: "ovarian",
+    themeColor: "#FBF6EE",
+    meta: ovarianMeta,
+  },
+  "thyroid-cancer": {
+    slug: "thyroid-cancer",
+    path: "/thyroid-cancer/",
+    title: thyroidMeta.title,
+    theme: "thyroid",
+    themeColor: "#F7F5FE",
+    meta: thyroidMeta,
   },
 } as const satisfies Record<string, PageEntry>;
 

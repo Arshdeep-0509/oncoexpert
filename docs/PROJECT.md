@@ -6,7 +6,9 @@ The site is rebuilt page by page. Most visitors are on phones: design mobile-fir
 Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`), **Breast Cancer**
 (`/breast-cancer-treatment-bangalore/`), **Book Appointment** (`/book-your-appoinment-page/`, the live
 URL's spelling, kept for SEO), **About Us** (`/about-us/`), **Colorectal Cancer**
-(`/colon-cancer-treatment-bangalore/`) and **Endometrial Cancer** (`/endometrial-cancer-treatment-bangalore/`).
+(`/colon-cancer-treatment-bangalore/`), **Endometrial Cancer** (`/endometrial-cancer-treatment-bangalore/`),
+**Lung Cancer** (`/lung-cancer-in-bangalore/`), **Ovarian Cancer** (`/ovarian-cancer-treatment/`) and
+**Thyroid Cancer** (`/thyroid-cancer/`).
 They share one site shell and one set of section components; each page has its own theme, except booking
 and about, which share the `care` theme.
 
@@ -116,12 +118,14 @@ styles/
   themes/home.css, themes/breast.css, themes/robotic.css   one theme per page
   themes/care.css            booking + about (one theme: same palette)
   themes/colorectal.css, themes/endometrial.css   one theme each
+  themes/lung.css, themes/ovarian.css, themes/thyroid.css   one theme each
 scripts/
   fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
   make-portrait-cutout.mjs   one-off: Dr. Sunil's head cut out of the portrait (Home hero ring)
 public/images/               brand/ locations/ home/ breast-cancer/ robotic/ book-appointment/ about-us/
-                             colorectal-cancer/ endometrial-cancer/
+                             colorectal-cancer/ endometrial-cancer/ lung-cancer/ ovarian-cancer/
+                             thyroid-cancer/
 ```
 
 ### Naming
@@ -281,7 +285,9 @@ the same values as `variant`.
 ## Add a page
 
 1. **Theme**: `styles/themes/<name>.css` (recipe above), `@import` it in `app/globals.css`, add
-   `<name>` to `ThemeName` in `content/types.ts`.
+   `<name>` to `ThemeName` in `content/types.ts`. Turbopack's build cache can keep the old
+   `globals.css` import list: delete `.next/cache/turbopack` before the next build and check that the
+   page's stylesheet contains `[data-theme=<name>]`.
 2. **Content**: `content/pages/<name>.ts` with every word, SOURCE-tagged, plus `<name>.images.ts` if it
    has photos (and a `pageName` / `pageSlug` export for the form and reviews).
 3. **Registry**: add the page to `content/pages/index.ts` (slug, path, title, theme, themeColor, meta);
@@ -547,3 +553,26 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
 - Endometrial #hero: no photo. The uterus line art is centred on a highlighted backdrop (a warm glow,
   the petal bloom on every screen size, two thin orbit rings); the bloom turns only on desktop.
   HeroBloom (the lazy desktop-only loader) is gone; `womanSmiling` remains only as og.jpg's source.
+- Lung + Ovarian + Thyroid: foundation (1 Nov 2026). Routes on the live URLs (`/lung-cancer-in-bangalore/`,
+  `/ovarian-cancer-treatment/`, `/thyroid-cancer/`) in the registry, the sitemap (10 pages) and `builtPaths`;
+  the Services menu already pointed there. Titles kept as live (better Ovarian and Thyroid titles and
+  descriptions proposed as PENDING DOCTOR comments, not used). The live pages have no `<h1>`: `meta.h1` is
+  each hero heading. Every line of the three live pages, verbatim and SOURCE-tagged, in
+  `content/pages/lung-cancer.ts` / `ovarian-cancer.ts` / `thyroid-cancer.ts`: the lung #pathway is hidden
+  on phones on the live page, the ovarian and thyroid #packages are hidden on every device; all three are
+  kept (comments). Figures shown twice live are one constant (lung Stage I 86%, thyroid 100% / 0%); the
+  lung #volume total is computed (`volumeTotal`, 100); thyroid "High" is text, its 98.5% overall is kept as
+  stated. Prices are rupee integers (formatRupees), the thyroid asterisk is `mark`. The colon cancer review
+  is hidden on all three (`showColonReview`, PENDING DOCTOR). Themes: `lung` ("clean air": pearl, ice-blue
+  and mint bands, ocean-navy ink, sky-blue accent, dawn-sky hero, navy → teal dark band), `ovarian`
+  (awareness teal accent, plum ink, sand and sea-glass bands, gold decoration only), `thyroid` (periwinkle
+  accent, blush petal, teal glow, indigo ink, lilac-white surfaces); Fraunces display, Plus Jakarta body;
+  contrast tables in their headers. Image manifests (`npm run images lung|ovarian|thyroid`: 7 Pexels photos
+  each, an og.jpg each; the portrait, the robotic arms, Home's specialty photos and the colorectal /
+  endometrial photos reused). Sections are `SectionPlaceholder`s (restored) with their final ids, in order.
+  Lung: #hero, #highlights, #diagnosis, #pathway, #surgery, #techniques, #stage-iv, #survival, #volume,
+  #surgeon, #reviews, #videos, #locations, #final-cta. Ovarian: #hero, #features, #understanding,
+  #warning-signs, #diagnostics, #treatments, #second-opinion, #outcomes, #packages, #surgeon, then the
+  shared four. Thyroid: #hero, #understanding, #symptoms, #early-detection, #modalities, #dashboard,
+  #outcomes, #packages, #surgeon, #second-opinion, then the shared four. The shell's long loops stop on
+  hover/focus here as on Home. Waiting on the doctor's PENDING items in the three content files.

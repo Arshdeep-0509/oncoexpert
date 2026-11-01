@@ -18,6 +18,9 @@ const builtPaths = new Set([
   "/about-us/",
   "/colon-cancer-treatment-bangalore/",
   "/endometrial-cancer-treatment-bangalore/",
+  "/lung-cancer-in-bangalore/",
+  "/ovarian-cancer-treatment/",
+  "/thyroid-cancer/",
 ]);
 
 /** next/link's `prefetch` for `href`: the default (the page loads in the background once the link is on

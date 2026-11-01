@@ -10,6 +10,9 @@
 @import "../styles/themes/care.css";
 @import "../styles/themes/colorectal.css";
 @import "../styles/themes/endometrial.css";
+@import "../styles/themes/lung.css";
+@import "../styles/themes/ovarian.css";
+@import "../styles/themes/thyroid.css";
 
 /* ------------------------------------------------------------------
    Token → utility map. `inline`: each utility reads the CSS variable
@@ -540,7 +543,8 @@
   }
 }
 
-/* Home, the care pages (booking, about) and the colorectal and endometrial pages: every loop
+/* Home, the care pages (booking, about) and the colorectal, endometrial, lung, ovarian and thyroid
+   pages: every loop
    longer than 5s stops while its control is hovered or focused. The shell's two (WhatsApp pulse
    8s, action-bar shine 7s) do so on these pages only, so the robotic and breast pages keep their
    current behaviour. Removing the animation returns both to their resting state (ring hidden
@@ -560,5 +564,17 @@
 }
 [data-theme="endometrial"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
 [data-theme="endometrial"] .cta-shine:is(:hover, :focus-visible)::after {
+  animation: none;
+}
+[data-theme="lung"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
+[data-theme="lung"] .cta-shine:is(:hover, :focus-visible)::after {
+  animation: none;
+}
+[data-theme="ovarian"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
+[data-theme="ovarian"] .cta-shine:is(:hover, :focus-visible)::after {
+  animation: none;
+}
+[data-theme="thyroid"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
+[data-theme="thyroid"] .cta-shine:is(:hover, :focus-visible)::after {
   animation: none;
 }

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Image manifest for / (Home).
  *
  * New stock photos live in public/images/home/ and are produced by `npm run images home`
@@ -172,8 +172,8 @@ export type HomeImageKey = keyof typeof homeImages;
  * The hero's background slider, in slide order: Dr. Sunil's own photos (no pexelsId). Decorative
  * (the headline says it), so no alt text. Each file is shown whole (never cropped by the page):
  * desktop at the hero's full height on the right, its edges melting into the navy; phones and
- * tablets full width above the text. All three are 3:2 at 2400×1600, so every slide fills the same
- * frame: the two portrait originals (4000×6000) were cropped to 3:2 for this (the head, the
+ * tablets full width above the text. All three are 3:2 at 2400Ã—1600, so every slide fills the same
+ * frame: the two portrait originals (4000Ã—6000) were cropped to 3:2 for this (the head, the
  * robotic arms; the theatre light and both surgeons). Keep new photos 3:2 too.
  */
 export const heroSlides = [
@@ -204,7 +204,34 @@ export const heroSlides = [
     width: 2400,
     height: 1600,
   },
-] as const satisfies readonly Omit<PageImage, "focal">[];
+  // A patient and her family with the doctor (blue shirt, his back to the camera) in the clinic
+  // corridor (the client's photo, 1 Nov 2026: a 1080Ã—556 video still, so softer than the others).
+  // The full width (only a black strip trimmed off the top), so it is wider than 3:2: fine with
+  // fit "right" on desktop, and phones show it whole in their box.
+  {
+    file: "hero-family-visit-full.jpg",
+    src: `${BASE}/hero-family-visit-full.jpg`,
+    alt: "",
+    decorative: true,
+    // Its people span the whole width: desktop shows it whole in the right half, clear of the text.
+    fit: "right",
+    width: 1600,
+    height: 815,
+  },
+  // Dr. Sunil listening to a survivor's story (the client's photo, 1 Nov 2026; cropped to 3:2)
+  {
+    file: "hero-patient-talk.jpg",
+    src: `${BASE}/hero-patient-talk.jpg`,
+    alt: "",
+    decorative: true,
+    fit: "right",
+    width: 1600,
+    height: 1067,
+  },
+] as const satisfies readonly (Omit<PageImage, "focal"> & {
+  /** Desktop: "right" shows the whole photo in the hero's right half instead of at full height. */
+  fit?: "right";
+})[];
 
 /** Social share image: the portrait and the logo on the hero navy, made by `npm run images home`. */
 export const homeOgImage = { src: `${BASE}/og.jpg`, width: 1200, height: 630 } as const;

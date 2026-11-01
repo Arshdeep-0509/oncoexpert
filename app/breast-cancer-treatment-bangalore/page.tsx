@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { faq, pageSlug, reviews, videos } from "@/content/pages/breast-cancer";
+import { faq, pageSlug, reviews, showSurvivors, videos } from "@/content/pages/breast-cancer";
 import { breastImages } from "@/content/pages/breast-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { youtubeVideos } from "@/content/shared/videos";
@@ -54,7 +54,7 @@ export default function BreastCancerPage() {
       <TeamSection /> {/* 6b #team         plum (client review, 31 Oct 2026) */}
       <SurgicalTechniques /> {/* 7  #surgery      surface-warm */}
       <CareJourney /> {/* 8  #journey      surface */}
-      <SurvivorsCircle /> {/* 9  #survivors    plum */}
+      {showSurvivors ? <SurvivorsCircle /> : null} {/* 9  #survivors    plum (hidden: showSurvivors) */}
       <InstitutionalValue /> {/* 10 #value        surface-alt */}
       <CareFinancing /> {/* 11 #pricing      surface */}
       <LeadSurgeon /> {/* 12 #surgeon      surface-warm */}

@@ -14,7 +14,11 @@ export type AnalyticsEvent =
   // Shared SymptomGrid ("check"): how many signs are ticked (never which ones).
   | { event: "symptom_check"; page: string; count: number }
   // Ovarian #diagnostics: a test's drawer opened.
-  | { event: "ovarian_test_open"; label: string };
+  | { event: "ovarian_test_open"; label: string }
+  | { event: "ovarian_treatment_select"; label: string }
+  // Shared PackageCards: a package's button, the estimator at rest (debounced).
+  | { event: "package_select"; label: string; page: string }
+  | { event: "estimator_change"; cycles: number; page: string };
 
 declare global {
   interface Window {

@@ -16,7 +16,7 @@
  * Shared copy is reused, not repeated here: reviews, videos, locations and the final call band
  * (content/shared/sections.ts). Images: content/pages/ovarian-cancer.images.ts.
  */
-import type { PageMeta, SymptomIcon } from "@/content/types";
+import type { PackageCardsContent, PageMeta, Stat, SymptomIcon } from "@/content/types";
 import type { OvarianImageKey } from "@/content/pages/ovarian-cancer.images";
 import { ovarianOgImage } from "@/content/pages/ovarian-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -33,7 +33,6 @@ type AppointmentCta = { label: string; service: AppointmentService; note?: strin
 /** Icon keys, mapped to lucide icons in components/pages/ovarian-cancer. */
 export type FeatureIcon = "plan" | "cytoreduction" | "hipec" | "fertility";
 type TreatmentIcon = "cytoreduction" | "hipec" | "fertility" | "chemotherapy" | "immunotherapy";
-type FactIcon = "training" | "team" | "certified" | "research";
 
 /* ------------------------------------------------------------------ */
 /* 1 · #hero                                                           */
@@ -63,8 +62,6 @@ export const meta = {
   ogImage: ovarianOgImage,
 } as const satisfies PageMeta & { h1: string };
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Ovarian Cancer";
 export const pageSlug = "ovarian-cancer-treatment";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
@@ -246,14 +243,18 @@ export const diagnostics = {
 /* 6 · #treatments                                                     */
 /* ------------------------------------------------------------------ */
 
+/** The five treatments; `#treatments-<key>` selects one. */
+export type TreatmentKey = "cytoreduction" | "hipec" | "fertility" | "chemo" | "immuno";
+
 export const treatments = {
   // SOURCE: EXISTING (the right apostrophe in "patient’s" as live)
   title: "Personalized Treatment Options",
   intro:
     "We offer the full spectrum of advanced therapies, tailored to the unique molecular profile of each patient’s tumor.",
-  // SOURCE: EXISTING (titles, text, bullets); NEW (icon keys, photos)
+  // SOURCE: EXISTING (titles, text, bullets); NEW (keys, icon keys)
   items: [
     {
+      key: "cytoreduction",
       icon: "cytoreduction",
       title: "Cytoreductive Surgery",
       // The live text breaks "therapeutic<br>efficacy." (layout).
@@ -261,42 +262,49 @@ export const treatments = {
       bullets: ["Ultra-radical techniques", "Minimal residual disease focus"],
     },
     {
+      key: "hipec",
       icon: "hipec",
       title: "HIPEC",
       body: "Heated Intraperitoneal Chemotherapy delivered directly during surgery to target microscopic cells.",
       bullets: ["Heated precision delivery", "Reduced systemic toxicity"],
     },
     {
+      key: "fertility",
       icon: "fertility",
       title: "Fertility Preservation",
       body: "Specialized techniques to protect ovarian function and reproductive potential for young patients.",
       bullets: ["Ovarian-sparing approaches", "Multidisciplinary support"],
-      image: "youngFamily",
     },
     {
+      key: "chemo",
       icon: "chemotherapy",
       title: "Chemotherapy",
       body: "Evidence-based drug regimens optimized for tumor response and patient quality of life.",
       bullets: ["Latest agent combinations", "Side-effect management"],
-      image: "infusion",
     },
     {
+      key: "immuno",
       icon: "immunotherapy",
       title: "Immunotherapy",
       body: "Advanced treatments that harness your body’s immune system to recognize and attack cancer cells.",
       bullets: ["Biomarker-driven selection", "Cutting-edge checkpoint inhibitors"],
     },
   ],
+  // SOURCE: NEW (the button under each option, filled with its title; its note; labels)
+  ask: { label: "Ask about {option}", service: "Consultation", notePrefix: "Treatment: " },
+  a11y: { tabs: "Treatment options", replay: "Replay the illustration" },
 } as const satisfies {
   title: string;
   intro: string;
   items: readonly {
+    key: TreatmentKey;
     icon: TreatmentIcon;
     title: string;
     body: string;
     bullets: readonly [string, string];
-    image?: OvarianImageKey;
   }[];
+  ask: { label: string; service: AppointmentService; notePrefix: string };
+  a11y: { tabs: string; replay: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -304,10 +312,10 @@ export const treatments = {
 /* ------------------------------------------------------------------ */
 
 export const secondOpinion = {
-  // SOURCE: EXISTING (title, text, button label); NEW (the service it preselects)
+  // SOURCE: EXISTING (title, text, button label); NEW (the service it preselects, analytics label)
   title: "Confused about options?",
   body: "Get a clear, expert perspective on your diagnosis.",
-  cta: { label: "Second Opinion", service: "Second Opinion" },
+  cta: { label: "Second Opinion", service: "Second Opinion", cta: "ovarian:second-opinion:second-opinion" },
 } as const satisfies { title: string; body: string; cta: AppointmentCta };
 
 /* ------------------------------------------------------------------ */
@@ -329,11 +337,11 @@ export const outcomes = {
   ],
   survival: {
     title: "5-Year Survival Rates",
-    stages: [
-      { stage: "Stage I", value: 94 },
-      { stage: "Stage II", value: 86 },
-      { stage: "Stage III", value: 72 },
-      { stage: "Stage IV", value: 26 },
+    rows: [
+      { label: "Stage I", value: 94 },
+      { label: "Stage II", value: 86 },
+      { label: "Stage III", value: 72 },
+      { label: "Stage IV", value: 26 },
     ],
     unit: "%",
   },
@@ -341,19 +349,34 @@ export const outcomes = {
   // PENDING DOCTOR: the survival data is marked "updated Dec 2023", almost three years old.
   // Update the figures and the date, or confirm they still stand?
   footnote: "*Clinical data updated Dec 2023. Individual results may vary based on tumor biology and staging.",
-  image: "womanSmiling",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    figures: "Surgical outcomes",
+    figure: "Figure",
+    value: "Value",
+    survival: "5-year survival rates by stage",
+    row: "Stage",
+    rate: "5-year survival",
+  },
 } as const satisfies {
   lines: readonly string[];
   intro: string;
   stats: readonly { value: number; suffix: string; lines: readonly string[] }[];
-  survival: { title: string; stages: readonly { stage: string; value: number }[]; unit: string };
+  survival: { title: string; rows: readonly { label: string; value: number }[]; unit: string };
   footnote: string;
-  image: OvarianImageKey;
+  a11y: Record<"figures" | "figure" | "value" | "survival" | "row" | "rate", string>;
 };
 
 /* ------------------------------------------------------------------ */
-/* 9 · #packages                                                       */
+/* 9 · #packages (the shared PackageCards)                             */
 /* ------------------------------------------------------------------ */
+
+// SOURCE: NEW
+// PENDING DOCTOR: the chemotherapy cycle estimator (shown while showCycleEstimator is true): is a
+// per-cycle multiplication appropriate, and is 1–12 cycles a sensible range?
+const showCycleEstimator = true as boolean;
+
+const chemoPerCycle = 16000;
 
 // SOURCE: EXISTING. The live section is in the markup but hidden on every device
 // (elementor-hidden-desktop/-tablet/-mobile). Kept in full.
@@ -363,49 +386,57 @@ export const outcomes = {
 export const packages = {
   title: "Transparent Care Packages",
   intro: "Estimated treatment costs for financial planning.",
-  // SOURCE: EXISTING (names, price labels, prices, features, button labels); NEW (service + note
-  // each button sends with the form)
+  // SOURCE: EXISTING (names, price labels, prices, inclusions, button labels); NEW (service + note
+  // each button sends with the form, the ribbon)
+  // PENDING DOCTOR: the ribbon on the HIPEC card.
   items: [
     {
       name: "CYTOREDUCTIVE SURGERY",
-      priceLabel: "from",
-      amount: 96000,
-      features: ["Pre-op evaluation", "Surgical expertise fee", "Post-op monitoring"],
+      lead: "from",
+      price: 96000,
+      prefix: "₹",
+      inclusions: ["Pre-op evaluation", "Surgical expertise fee", "Post-op monitoring"],
       cta: { label: "Enquire Now", service: "Consultation For Surgery", note: "Package: Cytoreductive Surgery" },
     },
     {
       name: "HIPEC TREATMENT",
-      priceLabel: "from",
-      amount: 410000,
-      features: ["Hyperthermic pump use", "Intra-op chemo agents", "Specialized ICU care"],
+      lead: "from",
+      price: 410000,
+      prefix: "₹",
+      inclusions: ["Hyperthermic pump use", "Intra-op chemo agents", "Specialized ICU care"],
       cta: { label: "Select Package", service: "Consultation For Surgery", note: "Package: HIPEC Treatment" },
       // The middle card; the live markup gives it the "Select Package" button.
       featured: true,
+      ribbon: "Most comprehensive",
     },
     {
       name: "CHEMOTHERAPY",
-      priceLabel: "per cycle from",
-      amount: 16000,
-      features: ["Drug administration", "Daycare infusion", "Supportive care meds"],
+      lead: "per cycle from",
+      price: chemoPerCycle,
+      prefix: "₹",
+      inclusions: ["Drug administration", "Daycare infusion", "Supportive care meds"],
       cta: { label: "Enquire Now", service: "Consultation", note: "Package: Chemotherapy" },
     },
   ],
-} as const satisfies {
-  title: string;
-  intro: string;
-  items: readonly {
-    name: string;
-    priceLabel: string;
-    /** Rupees, as a number (formatRupees: 410000 → "₹4,10,000"). */
-    amount: number;
-    features: readonly string[];
-    cta: AppointmentCta;
-    featured?: boolean;
-  }[];
-};
+  // SOURCE: NEW
+  // PENDING DOCTOR: the "indicative only" note.
+  footnote: "Prices are indicative only: your final cost depends on your treatment plan and hospital.",
+  // SOURCE: NEW (the estimator under the chemotherapy card; "{n}", "{price}" and "{total}" are filled in)
+  estimator: showCycleEstimator
+    ? {
+        title: "Estimate chemotherapy cycles",
+        label: "Number of cycles",
+        sentence: "{n} cycles × {price} = from {total}",
+        unitPrice: chemoPerCycle,
+        min: 1,
+        max: 12,
+        initial: 6,
+      }
+    : undefined,
+} as const satisfies { title: string; intro: string } & Omit<PackageCardsContent, "page">;
 
 /* ------------------------------------------------------------------ */
-/* 10 · #surgeon                                                       */
+/* 10 · #surgeon (the shared DoctorCard)                               */
 /* ------------------------------------------------------------------ */
 
 // SOURCE: EXISTING
@@ -413,7 +444,8 @@ export const packages = {
 const researchPapers = 20;
 
 export const surgeon = {
-  // SOURCE: EXISTING
+  // SOURCE: EXISTING (the caption on the live portrait card and the heading)
+  label: "SURGICAL ONCOLOGIST",
   lines: ["Led by Expertise:", "Dr. Sunil Navalgund"],
   // PENDING DOCTOR: "over a decade" here, "15+" on the colorectal and endometrial pages, "10+" /
   // "over a decade" on About Us and the thyroid page, "Over 25 years" on the booking page. Which
@@ -421,27 +453,32 @@ export const surgeon = {
   bio: "A renowned Surgical Oncologist with a specialized focus on Gynecological Oncology and advanced HIPEC procedures. Dr. Sunil Navalgund brings over a decade of clinical excellence in complex ovarian cancer management.",
   // SOURCE: EXISTING (labels, text); NEW (icon keys). "Advanced Surgical<br>Oncology & …" (layout).
   facts: [
-    { icon: "training", label: "Specialized Training", value: "Advanced Surgical Oncology & Gyn-Onc fellowship." },
-    { icon: "team", label: "Multidisciplinary", value: "Collaborative tumor board approach for every patient." },
+    {
+      icon: "graduation-cap",
+      label: "Specialized Training",
+      value: "Advanced Surgical Oncology & Gyn-Onc fellowship.",
+    },
+    { icon: "stethoscope", label: "Multidisciplinary", value: "Collaborative tumor board approach for every patient." },
   ],
   // SOURCE: EXISTING
   // PENDING DOCTOR: "Certified HIPEC Specialist & Trainer": certified by whom? Does he train others?
-  badges: [
-    { icon: "certified", label: "Certified HIPEC Specialist & Trainer" },
-    { icon: "research", label: `Author of ${researchPapers}+ Peer-Reviewed Research Papers` },
-  ],
-  // SOURCE: EXISTING (the caption on the portrait card; the name is two lines on the live page)
-  portrait: { role: "SURGICAL ONCOLOGIST", lines: ["Dr. Sunil", "Navalgund"] },
-  // SOURCE: NEW (the live block has no button; label as on the endometrial page)
+  badges: [{ icon: "award", label: "Certified HIPEC Specialist & Trainer" }],
+  // SOURCE: EXISTING ("Author of 20+ Peer-Reviewed Research Papers", as a figure that counts up; the
+  // label is the rest of the live line)
+  stats: [{ value: researchPapers, suffix: "+", label: "Peer-Reviewed Research Papers" }],
+  // SOURCE: NEW (the live block has no buttons; labels as on the endometrial and colorectal pages)
   cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
+  link: { label: "View Full Profile", href: "/about-us/" },
   image: "doctor",
 } as const satisfies {
+  label: string;
   lines: readonly string[];
   bio: string;
-  facts: readonly { icon: FactIcon; label: string; value: string }[];
-  badges: readonly { icon: FactIcon; label: string }[];
-  portrait: { role: string; lines: readonly string[] };
+  facts: readonly { icon: "graduation-cap" | "stethoscope"; label: string; value: string }[];
+  badges: readonly { icon: "award"; label: string }[];
+  stats: readonly Stat[];
   cta: AppointmentCta;
+  link: { label: string; href: string };
   image: OvarianImageKey;
 };
 

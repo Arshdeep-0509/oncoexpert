@@ -165,3 +165,39 @@ export type SymptomIcon = "bloating" | "pelvic" | "full" | "urination" | "lump" 
 
 /** One card of SymptomGrid. `body` is shown by the "disclose" mode. */
 export type SymptomItem = { key: string; icon: SymptomIcon; title: string; body?: string };
+
+/** One card of PackageCards (components/shared/PackageCards.tsx). */
+export type PackageItem = {
+  name: string;
+  /** Small text above the price, e.g. "from", "per cycle from". */
+  lead?: string;
+  /** Rupees, as a number; it counts up, en-IN grouping. */
+  price: number;
+  prefix?: string;
+  suffix?: string;
+  /** e.g. "*" after the price (its footnote is the cards' `footnote`). */
+  asterisk?: string;
+  inclusions: readonly string[];
+  cta: { label: string; service: import("@/content/site").AppointmentService; note?: string };
+  featured?: boolean;
+  /** The featured card's ribbon. */
+  ribbon?: string;
+};
+
+/** PackageCards' optional cycle estimator: "{n}", "{price}", "{total}" fill `sentence`. */
+export type PackageEstimator = {
+  title: string;
+  label: string;
+  sentence: string;
+  unitPrice: number;
+  min: number;
+  max: number;
+  initial: number;
+};
+
+/** What a page's content file gives PackageCards. */
+export type PackageCardsContent = {
+  items: readonly PackageItem[];
+  footnote?: string;
+  estimator?: PackageEstimator;
+};

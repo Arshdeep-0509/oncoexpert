@@ -1,0 +1,15 @@
+/* ==================================================================
+   Ovarian #outcomes. Plain CSS, prefix ovo- (class names in Outcomes).
+   The five heat icons fill from the bottom, one after another, once in view: a filled icon rises
+   into each outline through a fixed clip box (transform only). Reduced motion: all filled.
+   ================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .ovo-heat:not([data-inview]) .ovo-rise {
+    transform: translateY(100%);
+  }
+  .ovo-heat[data-inview] .ovo-rise {
+    transition: transform 0.6s var(--ease-out-expo);
+    transition-delay: calc(0.3s + var(--k) * 0.2s);
+  }
+}

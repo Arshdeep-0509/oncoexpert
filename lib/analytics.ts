@@ -18,7 +18,10 @@ export type AnalyticsEvent =
   | { event: "ovarian_treatment_select"; label: string }
   // Shared PackageCards: a package's button, the estimator at rest (debounced).
   | { event: "package_select"; label: string; page: string }
-  | { event: "estimator_change"; cycles: number; page: string };
+  | { event: "estimator_change"; cycles: number; page: string }
+  // Thyroid page: the early / late switch, the modalities filter.
+  | { event: "thyroid_detection_toggle"; label: string }
+  | { event: "thyroid_modality_filter"; label: string };
 
 declare global {
   interface Window {

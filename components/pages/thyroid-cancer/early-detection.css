@@ -1,0 +1,71 @@
+/* ==================================================================
+   Thyroid #early-detection. Plain CSS, prefix tye- (class names in DetectionSwitch and
+   DetectionDiagram).
+   - Early: the dot sits in the lobe inside a calm ring; nodes unlit.
+   - Late: the ring fades, three dots travel from the tumour along the lymph paths to the nodes
+     (they start at the tumour: --dx / --dy), and the nodes light up (0.8s), one after another.
+   - Reduced motion: the switch and the single diagram are hidden; .tye-static shows both states
+     side by side. With motion allowed, .tye-static is hidden.
+   Transform and opacity only.
+   ================================================================== */
+
+.tye-live {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tye-live {
+    display: block;
+  }
+  .tye-static {
+    display: none;
+  }
+}
+
+.tye-modes[data-state="late"] .tye-thumb {
+  transform: translateX(100%);
+}
+
+.tye-lit,
+.tye-travel {
+  opacity: 0;
+}
+.tye-diagram[data-state="late"] .tye-lit {
+  opacity: 0.85;
+}
+.tye-diagram[data-state="late"] .tye-ring {
+  opacity: 0;
+}
+.tye-travel {
+  transform-box: view-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tye-thumb {
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .tye-ring,
+  .tye-lit {
+    transition: opacity 0.4s var(--ease-out-expo);
+  }
+  .tye-diagram[data-state="late"] .tye-lit {
+    transition-delay: calc(0.6s + var(--k) * 0.15s);
+  }
+  .tye-diagram[data-state="late"] .tye-travel {
+    animation: tye-travel 0.8s var(--ease-out-expo) calc(var(--k) * 0.15s) both;
+  }
+}
+
+/* A dot leaves the tumour, travels to its node and settles into it. */
+@keyframes tye-travel {
+  0% {
+    opacity: 1;
+    transform: translate(var(--dx), var(--dy));
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}

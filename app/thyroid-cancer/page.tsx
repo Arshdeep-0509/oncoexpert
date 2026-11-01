@@ -1,10 +1,8 @@
+import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
 import {
   dashboard,
-  earlyDetection,
-  hero,
-  modalities,
   outcomes,
   packages,
   pageName,
@@ -12,16 +10,18 @@ import {
   secondOpinion,
   shared,
   surgeon,
-  symptoms,
-  understanding,
 } from "@/content/pages/thyroid-cancer";
-import { thyroidImages } from "@/content/pages/thyroid-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { finalCtaSection, locationsSection, reviewsSection, videosSection } from "@/content/shared/sections";
 import { formatRupees } from "@/lib/format";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
+import { Hero } from "@/components/pages/thyroid-cancer/Hero";
+import { Understanding } from "@/components/pages/thyroid-cancer/Understanding";
+import { Symptoms } from "@/components/pages/thyroid-cancer/Symptoms";
+import { EarlyDetection } from "@/components/pages/thyroid-cancer/EarlyDetection";
+import { Modalities } from "@/components/pages/thyroid-cancer/Modalities";
 
 const page = pages[pageSlug];
 
@@ -35,45 +35,24 @@ export function generateViewport(): Viewport {
 const reviews = reviewsFor(pageSlug, shared.reviewOrder);
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, thyroid theme).
-// Foundation: every section is a placeholder with its final id, in its final order.
+// Sections 1–5 are built (each after the hero in its own <Suspense> boundary); the rest are
+// placeholders with their final ids, in their final order.
 export default function ThyroidCancerPage() {
   return (
     <>
-      {/* 1 #hero  lilac gradient */}
-      <SectionPlaceholder
-        id="hero"
-        as="h1"
-        hero
-        title={page.meta.h1}
-        className="bg-(image:--grad-hero)"
-        blocks={[
-          { label: `${pageName} · ${hero.eyebrow}`, wide: true },
-          ...hero.stats.map((stat) => ({
-            label: "text" in stat ? `${stat.text} ${stat.label}` : `${stat.value}${stat.suffix} ${stat.label}`,
-          })),
-          { label: hero.ctas.primary.label },
-          { label: hero.ctas.secondary.label },
-          { label: thyroidImages[hero.image].alt },
-        ]}
-      />
-      {/* 2 #understanding  surface */}
-      <SectionPlaceholder id="understanding" title={understanding.lines.join(" ")} />
-      {/* 3 #symptoms  alt */}
-      <SectionPlaceholder
-        id="symptoms"
-        tone="alt"
-        title={symptoms.title}
-        blocks={symptoms.items.map((label) => ({ label }))}
-      />
-      {/* 4 #early-detection  surface */}
-      <SectionPlaceholder id="early-detection" title={earlyDetection.title} />
-      {/* 5 #modalities  warm */}
-      <SectionPlaceholder
-        id="modalities"
-        tone="warm"
-        title={modalities.title}
-        blocks={[...modalities.items, ...modalities.strengths].map((card) => ({ label: card.title }))}
-      />
+      <Hero /> {/* 1  #hero             lilac gradient */}
+      <Suspense>
+        <Understanding /> {/* 2  #understanding    surface */}
+      </Suspense>
+      <Suspense>
+        <Symptoms /> {/* 3  #symptoms         alt */}
+      </Suspense>
+      <Suspense>
+        <EarlyDetection /> {/* 4  #early-detection  surface */}
+      </Suspense>
+      <Suspense>
+        <Modalities /> {/* 5  #modalities       warm (blush) */}
+      </Suspense>
       {/* 6 #dashboard  indigo band */}
       <SectionPlaceholder
         id="dashboard"
@@ -125,7 +104,7 @@ export default function ThyroidCancerPage() {
         title={locationsSection.heading}
         blocks={locationsSection.items.map((clinic) => ({ label: clinic.name }))}
       />
-      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} />
+      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} blocks={[{ label: pageName }]} />
     </>
   );
 }

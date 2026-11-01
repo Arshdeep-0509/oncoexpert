@@ -109,6 +109,48 @@ export const thyroidImages = {
     width: 1333,
     height: 2000,
   },
+  // #hero: the photo card (voice preserved: a man laughing as he talks). The LCP image.
+  speaking: {
+    file: "speaking.jpg",
+    src: `${BASE}/speaking.jpg`,
+    pexelsId: 4307713,
+    alt: "Man in a turban laughing as he talks on his phone",
+    credit: { photographer: "Ketut Subiyanto", url: pexels(4307713) },
+    focal: "40% 35%",
+    width: 2000,
+    height: 1333,
+  },
+  // #symptoms: Persistent cough, Voice changes, Difficulty swallowing.
+  cough: {
+    file: "cough.jpg",
+    src: `${BASE}/cough.jpg`,
+    pexelsId: 8817795,
+    alt: "Man in glasses covering a cough with his hand",
+    credit: { photographer: "Towfiqu Barbhuiya", url: pexels(8817795) },
+    focal: "50% 35%",
+    width: 2000,
+    height: 1334,
+  },
+  conversation: {
+    file: "conversation.jpg",
+    src: `${BASE}/conversation.jpg`,
+    pexelsId: 4308104,
+    alt: "Two colleagues talking and smiling at a desk",
+    credit: { photographer: "Ketut Subiyanto", url: pexels(4308104) },
+    focal: "50% 40%",
+    width: 2000,
+    height: 1333,
+  },
+  glassOfWater: {
+    file: "glass-of-water.jpg",
+    src: `${BASE}/glass-of-water.jpg`,
+    pexelsId: 4307684,
+    alt: "Woman sitting in a doorway with a glass of water",
+    credit: { photographer: "Ketut Subiyanto", url: pexels(4307684) },
+    focal: "60% 40%",
+    width: 2000,
+    height: 1333,
+  },
 } as const satisfies Record<string, PageImage>;
 
 export type ThyroidImageKey = keyof typeof thyroidImages;

@@ -1,0 +1,70 @@
+/* ==================================================================
+   Thyroid #understanding: the neck anatomy explorer. Plain CSS, prefix tyu- (class names in
+   AnatomyExplorer and NeckDiagram).
+   - The chosen structure (data-selected on the diagram, data-key on each part) stays at full
+     strength; the others dim to 25%.
+   - "Voice nerve": a soft sound wave draws once beside the larynx. "Parathyroids": the four dots
+     pulse once. The NEW one-liner re-enters on every choice.
+   Opacity, transform and stroke draws only. Reduced motion: the states change at once; the wave is
+   shown with the voice nerve.
+   ================================================================== */
+
+.tyu-part {
+  transition: opacity 0.4s var(--ease-out-expo);
+}
+.tyu-diagram:not([data-selected="thyroid"]) [data-key="thyroid"],
+.tyu-diagram:not([data-selected="nerve"]) [data-key="nerve"],
+.tyu-diagram:not([data-selected="parathyroids"]) [data-key="parathyroids"] {
+  opacity: 0.25;
+}
+.tyu-wave {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 0;
+}
+.tyu-diagram[data-selected="nerve"] .tyu-wave {
+  opacity: 1;
+}
+.tyu-para {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+.tyu-mark {
+  background: color-mix(in srgb, var(--petal) 70%, transparent);
+  color: var(--ink);
+  border-radius: 4px;
+  padding: 0 0.15em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tyu-diagram[data-selected="nerve"] .tyu-wave {
+    animation: tyu-wave 1.2s ease-out 0.15s backwards;
+  }
+  .tyu-diagram[data-selected="parathyroids"] .tyu-para {
+    animation: tyu-pulse 0.8s ease-out calc(var(--k) * 0.12s) 1;
+  }
+  .tyu-note {
+    animation: tyu-in 0.45s var(--ease-out-expo) backwards;
+  }
+}
+
+@keyframes tyu-wave {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes tyu-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.6);
+  }
+}
+@keyframes tyu-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

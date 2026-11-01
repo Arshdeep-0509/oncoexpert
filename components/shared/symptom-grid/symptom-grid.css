@@ -3,7 +3,7 @@
    - "check": a ticked card fills its box with the accent and gets an accent ring; the box gives a
      small bounce when ticked.
    - "disclose": from 768px the body is hidden until the card opens, keeping its space (no height
-     animation); on phones it is always shown.
+     animation); on phones it is always shown. A card's photo (optional) zooms slightly when it opens.
    Transform and opacity only (colour changes are instant state, not animation).
    ================================================================== */
 
@@ -45,6 +45,12 @@
   }
   .sgx-tick {
     transition: opacity 0.2s ease-out;
+  }
+  .sgx-photo {
+    transition: transform 0.8s var(--ease-out-expo);
+  }
+  .sgx-card[data-open] .sgx-photo {
+    transform: scale(1.04);
   }
   .sgx-body,
   .sgx-chev {

@@ -231,7 +231,7 @@ the same values as `variant`.
 | `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                                                                                                                                                                                                                                                  |
 | `TechniqueCompare`   | `title`, `sides` (two `TechniqueSideContent`: `key`, `label` (tab), `title`, `body?`, `points` (`icon`, `title`, `text?`), `image` (PageImage), `link?` (`label`, `href`, `cta?`), `drift?`), `labels` (`vs`, `tabs`), `page` (analytics prefix); no `look`                                                                                                                                                                                                                   |
 | `SurvivalChart`      | not a section: `rows` (`label`, `value`), `unit`, `caption` + `labels` (`row`, `value`) for the screen-reader table, `footnote?`, `max?` (default 100), `className?`; no `look`                                                                                                                                                                                                                                                                                               |
-| `SymptomGrid`        | not a section (client): `items` (`key`, `icon`, `title`, `body?`), `page` (analytics prefix), `mode`: `"check"` (+ `empty`, `result` (`some`, `cta`, `notePrefix`), `labels` (`group`, `result`)) or `"disclose"` (+ `labels` (`group`)); a 2 × 2 grid on phones                                                                                                                                                                                                              |
+| `SymptomGrid`        | not a section (client): `items` (`key`, `icon`, `title`, `body?`, `image?` (`src`, `alt`, `focal`): a photo on top with the icon as a badge, "disclose" only), `page` (analytics prefix), `mode`: `"check"` (+ `empty`, `result` (`some`, `cta`, `notePrefix`), `labels` (`group`, `result`)) or `"disclose"` (+ `labels` (`group`)); a 2 × 2 grid on phones                                                                                                                  |
 | `PackageCards`       | not a section: `packages` (`name`, `lead?`, `price`, `prefix?`, `suffix?`, `asterisk?`, `inclusions`, `cta` (`label`, `service`, `note?`, default "Package: <name>"), `featured?`, `ribbon?`), `footnote?`, `initialIndex?` (default: the featured card), `estimator?` (`title`, `label`, `sentence` with {n} {price} {total}, `unitPrice`, `min`, `max`, `initial`), `page`, `label`. Its section must not be `position: relative` (SwipeRow's initialIndex uses offsetLeft) |
 
 - One appointment form, on one page: `/book-your-appoinment-page/` is the shared `AppointmentSection`
@@ -698,3 +698,32 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   hydrate in their own <Suspense> boundaries. Client JS (gzip): TreatmentExplorer (with the art) 3.0 KB,
   InstrumentTray (with its art) 2.0, TreatmentPanel 1.8, FeatureCard 1.4, CycleEstimator 0.8, SymptomGrid
   0.8, ScrollVar 0.6, PackageCta 0.4, OffscreenFlag 0.3; the ovarian chunk is 13.0 KB.
+- Thyroid: #hero, #understanding, #symptoms, #early-detection and #modalities built (2 Nov 2026; the
+  foundation anchors kept). #hero "THE BUTTERFLY" (components/pages/thyroid-cancer, hero.css, `ty-`;
+  butterfly-art.ts): the gland as a butterfly in a periwinkle → blush gradient (`--blush`, a new
+  decoration-only token in themes/thyroid.css): the isthmus draws (0.4s), the lobes draw outward (0.8s),
+  the wings unfold (scaleX 0.6 → 1, 0.9s), then a wing-breath loop (scaleX 1 → 0.97 → 1, 9s); desktop
+  HeroButterflies (lazy after idle): six tiny butterflies drifting (18–26s). The photo card (a man
+  laughing on the phone: voice preserved; NEW Pexels `speaking`) is the LCP image. H1 word masks,
+  "Expert Surgical Care" in the gradient with blush underlines; the three live figures as glass chips
+  under both columns (100% counts up, 0% with a calm check, "High" fades in; they float), three across on
+  tablets, a swipe row on phones; the shared MotionToggle (48px) pauses the breath, the float, the
+  butterflies and the shine. #understanding, the neck anatomy explorer (AnatomyExplorer island +
+  NeckDiagram; understanding.css, `tyu-`): toggle buttons Thyroid / Voice nerve / Parathyroids (NEW;
+  aria-pressed, arrow keys) highlight a structure and dim the rest, mark the live paragraph's own phrase
+  for it ("the thyroid gland", "voice", "calcium balance") and show a NEW one-liner (PENDING DOCTOR); a
+  sound wave draws once for the nerve, the parathyroids pulse once; a polite live region. #symptoms: the
+  shared SymptomGrid ("disclose", now with optional photos; cough, conversation, glass-of-water are NEW
+  Pexels) with NEW card lines (PENDING DOCTOR), then the live "Many patients remain asymptomatic in early
+  stages." as an info note with Book. #early-detection (DetectionSwitch island + DetectionDiagram;
+  early-detection.css, `tye-`): a "Detected early" | "Detected late" radiogroup (NEW); late sends dots
+  along the lymph paths and lights the nodes (0.8s); the live sentence per state; desktop plays early →
+  late once in view; reduced motion shows both states side by side; `thyroid_detection_toggle`.
+  #modalities (ModalityFilter island + ModalityCard; modalities.css, `tym-`): an All | Treatments | Why
+  OncoXpert filter (NEW) that fades and scales the other group to 40% / 0.96 (nothing moves); a five-
+  column bento with Thyroidectomy and Expert Surgery wide, two columns on tablets, a swipe row per group on
+  phones; icons draw on reveal, hover lifts and fills them; the live words "Nerve Monitors" link to
+  #dashboard and "Transparent, competitive pricing models" to #packages; `thyroid_modality_filter`.
+  Other pages: pixel-identical; Endometrial's markup is identical apart from its script count (18 → 20),
+  because the bundler regrouped shared chunks (SymptomGrid now imports next/image). Lighthouse (warm,
+  ×3): Thyroid 71–75 perf (Breast 67–68 in the same runs), accessibility 100, CLS 0, TBT 320–360ms.

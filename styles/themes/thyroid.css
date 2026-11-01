@@ -36,7 +36,7 @@
    Decoration only (non-text, 3:1)
      --highlight (teal) on ink 6.09; on white 2.59 and surface-alt 2.32: glows, dots and fills on
        light bands, never text and never the only edge of a control.
-     --petal (blush) is a fill only.
+     --petal (blush) is a fill only; --blush #d97aa0 (on white 3.1) is a gradient stop in line art only.
      --accent-bright on white 3.81: gradient stop and large marks only, never body text.
      --accent on ink 2.52: on the indigo bands the CTA is the white onDark pill.
      --line on white 1.26: hairlines only.
@@ -56,6 +56,7 @@
   --accent-bright: #6d7ae0; /* light periwinkle: second stop of --grad-accent and --grad-cta */
   --highlight: #2ab3a8; /* teal glow: dots, underlines, glows only */
   --petal: #f8d7e3; /* blush petal decoration */
+  --blush: #d97aa0; /* deeper blush: the butterfly gradient's last stop; decoration only, never text */
   --gold: #f2c46d; /* tiny highlights on the indigo bands only */
   --line: #e5e3f4; /* borders */
 

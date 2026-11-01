@@ -1,0 +1,264 @@
+/* ==================================================================
+   Thyroid hero "THE BUTTERFLY". Plain CSS, prefix ty- (hero-styles.ts).
+   Load: the isthmus draws (0.4s), both lobes draw outward (0.8s), the wings unfold (scaleX 0.6 → 1
+   from the centre, 0.9s); then the wing-breath loop (scaleX 1 → 0.97 → 1 over 9s). The stat chips
+   pop in and float (7s); "High" fades in. Desktop: six tiny butterflies drift (18–26s, lazy).
+   The pause button (data-paused) and leaving the screen (data-offscreen) stop the breath, the
+   float, the butterflies and the button shine; hover / focus stops the shine.
+   Every entrance waits for the intro (--intro), scaled by --pace. Transform and opacity only, plus
+   the stroke draws; the default is the final state; motion lives in no-preference.
+   ================================================================== */
+
+.ty-hero {
+  --intro: var(--intro-delay, 0s);
+  --pace: 0.75;
+  --rise: 16px;
+}
+@media (min-width: 768px) {
+  .ty-hero {
+    --pace: 1;
+    --rise: 24px;
+  }
+}
+
+.ty-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Headline ---------------------------------------------------------- */
+
+.ty-wordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.06em 0.14em 0;
+  margin: 0 -0.06em -0.14em 0;
+}
+.ty-word {
+  display: inline-block;
+}
+.ty-phrase {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.ty-gradWord {
+  background-image: linear-gradient(90deg, var(--from), var(--to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ty-underline {
+  position: absolute;
+  left: 0;
+  bottom: -0.2em;
+  width: 100%;
+  height: 0.24em;
+  overflow: visible;
+}
+.ty-underline path,
+.ty-isthmus,
+.ty-lobe {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* The butterfly ------------------------------------------------------- */
+
+.ty-wing,
+.ty-breathe {
+  transform-box: view-box;
+  transform-origin: 200px 160px;
+}
+.ty-photoCover {
+  transform-origin: 50% 0;
+  scale: 1 0;
+}
+
+.ty-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ty-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  translate: -120% 0;
+  pointer-events: none;
+}
+
+.ty-flies {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ty-fly {
+  position: absolute;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ty-fadeDown {
+    animation-name: ty-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .ty-fadeUp {
+    animation-name: ty-fadeUp;
+    animation-duration: 0.7s;
+  }
+  .ty-pop {
+    animation-name: ty-pop;
+    animation-duration: 0.6s;
+  }
+  .ty-fadeIn {
+    animation-name: ty-fadeIn;
+    animation-duration: 0.9s;
+  }
+  .ty-wordRise {
+    animation-name: ty-rise;
+    animation-duration: calc(0.85s * var(--pace));
+  }
+  .ty-underline path {
+    animation: ty-draw calc(0.8s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + (1.2s + var(--u, 0s)) * var(--pace));
+  }
+
+  .ty-isthmus {
+    animation: ty-draw calc(0.4s * var(--pace)) ease-out both;
+    animation-delay: calc(var(--intro) + 0.3s * var(--pace));
+  }
+  .ty-lobe {
+    animation: ty-draw calc(0.8s * var(--pace)) cubic-bezier(0.45, 0, 0.25, 1) both;
+    animation-delay: calc(var(--intro) + 0.7s * var(--pace));
+  }
+  .ty-wing {
+    animation: ty-unfold calc(0.9s * var(--pace)) cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--intro) + 1.5s * var(--pace));
+  }
+  .ty-breathe {
+    animation: ty-breath 9s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 2.6s * var(--pace));
+  }
+  .ty-photoCover {
+    animation: ty-cover calc(0.9s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + 0.6s * var(--pace));
+  }
+  .ty-float {
+    animation: ty-float 7s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + (2.4s + var(--i, 0) * 0.5s) * var(--pace));
+  }
+  .ty-shine::after {
+    animation: ty-shine 6s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 3s);
+  }
+  .ty-fly {
+    animation: ty-drift var(--fly) ease-in-out infinite;
+    animation-delay: var(--start);
+  }
+
+  .ty-hero:is([data-paused], [data-offscreen]) :is(.ty-breathe, .ty-float, .ty-fly),
+  .ty-hero:is([data-paused], [data-offscreen]) .ty-shine::after,
+  .ty-shine:is(:hover, :focus-visible)::after {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes ty-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes ty-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise);
+  }
+}
+@keyframes ty-pop {
+  from {
+    opacity: 0;
+    scale: 0.85;
+  }
+}
+@keyframes ty-fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ty-rise {
+  from {
+    translate: 0 110%;
+  }
+}
+@keyframes ty-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes ty-unfold {
+  from {
+    scale: 0.6 1;
+  }
+}
+@keyframes ty-breath {
+  0%,
+  100% {
+    scale: 1 1;
+  }
+  50% {
+    scale: 0.97 1;
+  }
+}
+@keyframes ty-cover {
+  from {
+    scale: 1 1;
+  }
+  to {
+    scale: 1 0;
+  }
+}
+@keyframes ty-float {
+  0%,
+  100% {
+    translate: 0 -4px;
+  }
+  50% {
+    translate: 0 4px;
+  }
+}
+@keyframes ty-shine {
+  0% {
+    translate: -120% 0;
+  }
+  18%,
+  100% {
+    translate: 120% 0;
+  }
+}
+@keyframes ty-drift {
+  0% {
+    opacity: 0;
+    translate: 0 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    translate: var(--dx) var(--dy);
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    translate: calc(var(--dx) * 2) 0;
+  }
+}

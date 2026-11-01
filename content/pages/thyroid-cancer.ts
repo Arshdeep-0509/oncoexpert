@@ -15,7 +15,7 @@
  * `mark`). Shared copy is reused, not repeated here: reviews, videos, locations and the final call
  * band (content/shared/sections.ts). Images: content/pages/thyroid-cancer.images.ts.
  */
-import type { PageMeta } from "@/content/types";
+import type { PageMeta, SymptomIcon } from "@/content/types";
 import type { ThyroidImageKey } from "@/content/pages/thyroid-cancer.images";
 import { thyroidOgImage } from "@/content/pages/thyroid-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -27,14 +27,14 @@ import { reviewsSection } from "@/content/shared/sections";
 /* ------------------------------------------------------------------ */
 
 /** A button that opens the booking page with `service` preselected (and `note` in the email). */
-type AppointmentCta = { label: string; service: AppointmentService; note?: string };
+type AppointmentCta = { label: string; service: AppointmentService; note?: string; cta?: string };
 
 /** A hero figure: a number that counts up, or a word ("High") shown as it is. */
 type HeroStat = { label: string } & ({ value: number; suffix: string } | { text: string });
 
 /** Icon keys, mapped to lucide icons in components/pages/thyroid-cancer. */
-type ModalityIcon = "thyroidectomy" | "neck-dissection" | "radioiodine" | "monitoring";
-type StrengthIcon = "volume" | "diagnosis" | "nerve-monitor" | "affordable";
+export type ModalityIcon = "thyroidectomy" | "neck-dissection" | "radioiodine" | "monitoring";
+export type StrengthIcon = "volume" | "diagnosis" | "nerve-monitor" | "affordable";
 type BadgeIcon = "surgeries" | "fellow";
 
 /* ------------------------------------------------------------------ */
@@ -88,64 +88,169 @@ export const hero = {
   // SOURCE: EXISTING
   eyebrow: "CLINICAL EXCELLENCE IN ONCOLOGY",
   lines: heroLines,
-  // SOURCE: EXISTING. "High" is a word on the live page, not a figure: modelled as text.
+  // SOURCE: NEW (choice: the words set in the gradient, with a drawn underline)
+  emphasis: "Expert Surgical Care",
+  // SOURCE: EXISTING. "High" is a word on the live page, not a figure: modelled as text. The 0% is
+  // shown as it is, with a calm check (never a countdown).
   stats: [
     { value: completeRemoval, suffix: "%", label: "Complete Removal" },
     { value: voiceChange, suffix: "%", label: "Voice Change" },
     { text: "High", label: "Cure Rates" },
   ],
-  // SOURCE: EXISTING (button labels, in the live capitals); NEW (the service each one preselects)
+  // SOURCE: EXISTING (button labels, in the live capitals); NEW (the service each one preselects,
+  // analytics labels)
   ctas: {
-    primary: { label: "BOOK CONSULTATION", service: "Consultation" },
-    secondary: { label: "GET SECOND OPINION", service: "Second Opinion" },
+    primary: { label: "BOOK CONSULTATION", service: "Consultation", cta: "thyroid:hero:book-consultation" },
+    secondary: { label: "GET SECOND OPINION", service: "Second Opinion", cta: "thyroid:hero:second-opinion" },
   },
-  image: "youngWoman",
+  // The photo card: a man laughing as he talks (voice preserved). The LCP image.
+  image: "speaking",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    visual: "Illustration: the thyroid drawn as a butterfly",
+    stats: "At a glance",
+    pause: "Pause the hero animation",
+    play: "Play the hero animation",
+  },
 } as const satisfies {
   eyebrow: string;
   lines: readonly string[];
+  emphasis: string;
   stats: readonly HeroStat[];
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   image: ThyroidImageKey;
+  a11y: { visual: string; stats: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
-/* 2 · #understanding                                                  */
+/* 2 · #understanding (the neck anatomy explorer)                      */
 /* ------------------------------------------------------------------ */
+
+/** The three structures of the anatomy explorer. */
+export type AnatomyKey = "thyroid" | "nerve" | "parathyroids";
 
 export const understanding = {
   // SOURCE: EXISTING
   lines: ["Understanding Thyroid", "Cancer"],
   body: "Thyroid cancer occurs when cells in the thyroid gland undergo genetic mutations that allow them to grow and multiply rapidly. While generally highly curable, early diagnosis and precise surgical intervention are paramount to preserving vital functions like voice and calcium balance.",
-  image: "womanGarden",
-} as const satisfies { lines: readonly string[]; body: string; image: ThyroidImageKey };
+  // SOURCE: NEW (hotspot labels and one-liners); each `phrase` is the live paragraph's own words,
+  // highlighted in it when its hotspot is chosen
+  // PENDING DOCTOR: the three one-liners.
+  hotspots: [
+    {
+      key: "thyroid",
+      label: "Thyroid",
+      phrase: "the thyroid gland",
+      note: "A small, butterfly-shaped gland at the front of the neck that sets the body's pace.",
+    },
+    {
+      key: "nerve",
+      label: "Voice nerve",
+      phrase: "voice",
+      note: "The recurrent laryngeal nerves run just behind the thyroid and move the vocal cords.",
+    },
+    {
+      key: "parathyroids",
+      label: "Parathyroids",
+      phrase: "calcium balance",
+      note: "Four tiny glands behind the thyroid keep the body's calcium level steady.",
+    },
+  ],
+  // SOURCE: NEW (screen-reader labels)
+  a11y: { hotspots: "Parts of the neck", diagram: "Diagram of the front of the neck" },
+} as const satisfies {
+  lines: readonly string[];
+  body: string;
+  hotspots: readonly { key: AnatomyKey; label: string; phrase: string; note: string }[];
+  a11y: { hotspots: string; diagram: string };
+};
 
 /* ------------------------------------------------------------------ */
-/* 3 · #symptoms and 4 · #early-detection                              */
-/* (two cards beside "Understanding Thyroid Cancer" on the live page)  */
+/* 3 · #symptoms (the shared SymptomGrid, mode "disclose")             */
 /* ------------------------------------------------------------------ */
 
 export const symptoms = {
   // SOURCE: EXISTING
   title: "Key Symptoms",
   body: "Painless lumps in the neck, persistent cough, voice changes, or difficulty swallowing. Many patients remain asymptomatic in early stages.",
-  // SOURCE: NEW (chips: the four symptoms named in the live sentence, in its words)
-  items: ["Painless lumps in the neck", "Persistent cough", "Voice changes", "Difficulty swallowing"],
-  image: "neckExam",
-} as const satisfies { title: string; body: string; items: readonly string[]; image: ThyroidImageKey };
+  // SOURCE: EXISTING (the live sentence's second half, shown as a highlighted note)
+  note: "Many patients remain asymptomatic in early stages.",
+  // SOURCE: NEW (card titles: the four symptoms named in the live sentence, in its words; the line
+  // each card reveals: general guidance, never a diagnosis)
+  // PENDING DOCTOR: the four card lines.
+  items: [
+    {
+      key: "lump",
+      icon: "lump",
+      title: "Painless lumps in the neck",
+      body: "A lump at the front of the neck that you can feel or see, usually without pain.",
+      image: "neckExam",
+    },
+    {
+      key: "cough",
+      icon: "cough",
+      title: "Persistent cough",
+      body: "A cough that lingers for weeks without a cold or infection to explain it.",
+      image: "cough",
+    },
+    {
+      key: "voice",
+      icon: "voice",
+      title: "Voice changes",
+      body: "Hoarseness or a change in your voice that does not settle within a few weeks.",
+      image: "conversation",
+    },
+    {
+      key: "swallow",
+      icon: "swallow",
+      title: "Difficulty swallowing",
+      body: "A feeling that food or drink catches, or pressure in the throat when you swallow.",
+      image: "glassOfWater",
+    },
+  ],
+  // SOURCE: NEW (the button by the note, analytics label)
+  cta: { label: "Book Consultation", service: "Consultation", cta: "thyroid:symptoms:book-consultation" },
+  a11y: { group: "Symptoms to watch" },
+} as const satisfies {
+  title: string;
+  body: string;
+  note: string;
+  items: readonly { key: string; icon: SymptomIcon; title: string; body: string; image: ThyroidImageKey }[];
+  cta: AppointmentCta;
+  a11y: { group: string };
+};
+
+/* ------------------------------------------------------------------ */
+/* 4 · #early-detection ("Early vs Late")                              */
+/* ------------------------------------------------------------------ */
 
 export const earlyDetection = {
-  // SOURCE: EXISTING
+  // SOURCE: EXISTING. The live paragraph's two sentences, one per state.
   title: "Importance of Early Detection",
-  body: "Early-stage thyroid cancer has nearly a 100% cure rate. Delayed diagnosis may lead to local spread to lymph nodes or vital structures.",
-  image: "ultrasound",
-} as const satisfies { title: string; body: string; image: ThyroidImageKey };
+  early: "Early-stage thyroid cancer has nearly a 100% cure rate.",
+  late: "Delayed diagnosis may lead to local spread to lymph nodes or vital structures.",
+  // SOURCE: NEW (the switch, screen-reader labels)
+  modes: { early: "Detected early", late: "Detected late" },
+  a11y: {
+    modes: "When the cancer is found",
+    early: "Diagram: a small tumour contained in the thyroid",
+    late: "Diagram: cancer cells spreading along the lymph paths to the neck lymph nodes",
+  },
+} as const satisfies {
+  title: string;
+  early: string;
+  late: string;
+  modes: { early: string; late: string };
+  a11y: { modes: string; early: string; late: string };
+};
 
 /* ------------------------------------------------------------------ */
 /* 5 · #modalities (8 cards: 4 treatments, then 4 strengths)           */
 /* ------------------------------------------------------------------ */
 
 export const modalities = {
-  // SOURCE: EXISTING (title, card titles, text); NEW (icon keys)
+  // SOURCE: EXISTING (title, card titles, text); NEW (icon keys, the in-text links: the live words
+  // `link.phrase` become a link)
   title: "Specialized Treatment Modalities",
   items: [
     {
@@ -185,17 +290,29 @@ export const modalities = {
       icon: "nerve-monitor",
       title: "Expert Surgery",
       body: "Utilization of Nerve Monitors to ensure vocal cord safety during every case.",
+      link: { phrase: "Nerve Monitors", href: "#dashboard" },
     },
     {
       icon: "affordable",
       title: "Affordable Treatment",
       body: "Transparent, competitive pricing models without compromising quality.",
+      link: { phrase: "Transparent, competitive pricing models", href: "#packages" },
     },
   ],
+  // SOURCE: NEW (the filter, group labels, screen-reader label)
+  filters: { all: "All", treatments: "Treatments", why: "Why OncoXpert" },
+  a11y: { filter: "Show" },
 } as const satisfies {
   title: string;
   items: readonly { icon: ModalityIcon; title: string; body: string }[];
-  strengths: readonly { icon: StrengthIcon; title: string; body: string }[];
+  strengths: readonly {
+    icon: StrengthIcon;
+    title: string;
+    body: string;
+    link?: { phrase: string; href: string };
+  }[];
+  filters: { all: string; treatments: string; why: string };
+  a11y: { filter: string };
 };
 
 /* ------------------------------------------------------------------ */

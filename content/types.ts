@@ -163,8 +163,14 @@ export type ChartRow = { label: string; value: number };
 /** Icons of SymptomGrid's cards (components/shared/SymptomGrid.tsx). */
 export type SymptomIcon = "bloating" | "pelvic" | "full" | "urination" | "lump" | "cough" | "voice" | "swallow";
 
-/** One card of SymptomGrid. `body` is shown by the "disclose" mode. */
-export type SymptomItem = { key: string; icon: SymptomIcon; title: string; body?: string };
+/** One card of SymptomGrid. `body` is shown by the "disclose" mode; `image` puts a photo on top. */
+export type SymptomItem = {
+  key: string;
+  icon: SymptomIcon;
+  title: string;
+  body?: string;
+  image?: { src: string; alt: string; focal: string };
+};
 
 /** One card of PackageCards (components/shared/PackageCards.tsx). */
 export type PackageItem = {

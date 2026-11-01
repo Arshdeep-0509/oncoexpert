@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { Check, ChevronDown } from "lucide-react";
 import type { SymptomItem } from "@/content/types";
 import type { AppointmentService } from "@/content/site";
@@ -68,10 +69,33 @@ export function SymptomGrid(props: SymptomGridProps) {
                 data-open={expanded ? "" : undefined}
                 className="sgx-card relative flex h-full flex-col rounded-xl bg-surface p-4 ring-1 shadow-soft-sm ring-line md:p-6"
               >
-                <span className="sgx-icon grid size-12 place-items-center rounded-full bg-accent-soft text-accent">
-                  <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
-                </span>
-                <h3 className="mt-4 text-base leading-snug font-semibold text-ink md:text-lg">
+                {item.image ? (
+                  <div className="relative -mx-4 -mt-4 mb-2 aspect-[4/3] md:-mx-6 md:-mt-6">
+                    <div className="absolute inset-0 overflow-hidden rounded-t-xl">
+                      <Image
+                        src={item.image.src}
+                        alt={item.image.alt}
+                        fill
+                        sizes="(min-width: 1024px) 290px, 46vw"
+                        className="sgx-photo object-cover"
+                        style={{ objectPosition: item.image.focal }}
+                      />
+                    </div>
+                    <span className="sgx-icon absolute -bottom-6 left-4 grid size-12 place-items-center rounded-full bg-surface text-accent shadow-soft md:left-6">
+                      <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
+                    </span>
+                  </div>
+                ) : (
+                  <span className="sgx-icon grid size-12 place-items-center rounded-full bg-accent-soft text-accent">
+                    <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
+                  </span>
+                )}
+                <h3
+                  className={cn(
+                    "text-base leading-snug font-semibold text-ink md:text-lg",
+                    item.image ? "mt-7" : "mt-4",
+                  )}
+                >
                   <button
                     type="button"
                     aria-expanded={expanded}

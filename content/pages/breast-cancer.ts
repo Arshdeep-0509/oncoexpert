@@ -432,6 +432,9 @@ export type SurvivorsContent = {
   images: { main: BreastImageKey; secondary: BreastImageKey };
 };
 
+/** Hidden at the client's request (review, 1 Nov 2026). Set to true to show #survivors again. */
+export const showSurvivors = false;
+
 export const survivors = {
   // SOURCE: NEW
   eyebrow: "Survivors group",

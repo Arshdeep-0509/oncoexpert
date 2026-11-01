@@ -59,6 +59,7 @@ export function HeroSlider() {
               key={slide.src}
               className={styles.slide}
               data-state={state}
+              data-fit={"fit" in slide ? slide.fit : undefined}
               style={{ "--slide-delay": delayOf(i) } as React.CSSProperties}
             >
               {i === 0 || warm ? (

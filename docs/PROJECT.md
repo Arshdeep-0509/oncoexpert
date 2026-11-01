@@ -536,6 +536,9 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   photo (team.jpg) with heading, intro and three points. On reveal a curtain slides off the photo
   as it settles, an accent outline draws behind it, the badge pops in. Desktop text | photo;
   tablets and phones photo first (points in a row of three on tablets, a list on phones).
+- Breast #survivors ("You are not alone") is hidden (client review, 1 Nov 2026): `showSurvivors`
+  in content/pages/breast-cancer.ts; set it to true to show it again. Without it #journey (white)
+  meets #value (ice), so the tones still alternate.
 - Heroes without an intro (in-site navigation, or a page shown again from the router's cache:
   Cache Components keep visited pages in the document with display: none, and their CSS
   animations restart when shown): Home, About, Colorectal and Endometrial set --intro to 0s each

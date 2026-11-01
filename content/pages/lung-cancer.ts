@@ -15,7 +15,7 @@
  * Shared copy is reused, not repeated here: reviews, videos, locations and the final call band
  * (content/shared/sections.ts). Images: content/pages/lung-cancer.images.ts.
  */
-import type { PageMeta, Stat } from "@/content/types";
+import type { PageMeta, Stat, TechniqueSideContent } from "@/content/types";
 import type { LungImageKey } from "@/content/pages/lung-cancer.images";
 import { lungOgImage } from "@/content/pages/lung-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -37,15 +37,8 @@ export type SymptomIcon = "cough" | "blood";
 /** The three tests in the diagnostic lens (each has its own line art). */
 export type TestKey = "bronchoscopy" | "biopsy" | "petct";
 type BenefitIcon = "scars" | "pain" | "infection" | "discharge";
-type TechniqueIcon = "view" | "instruments" | "access" | "incisions" | "recovery" | "complications";
-type FactIcon = "training" | "expertise";
-
-type Technique = {
-  title: string;
-  body: string;
-  features: readonly { icon: TechniqueIcon; label: string }[];
-  image: LungImageKey;
-};
+/** One side of the shared TechniqueCompare, with this page's image keys. */
+type LungTechniqueSide = TechniqueSideContent<LungImageKey>;
 
 /* ------------------------------------------------------------------ */
 /* 1 · #hero                                                           */
@@ -70,8 +63,6 @@ export const meta = {
   ogImage: lungOgImage,
 } as const satisfies PageMeta & { h1: string };
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Lung Cancer";
 export const pageSlug = "lung-cancer-in-bangalore";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
@@ -257,6 +248,11 @@ export const pathway = {
 /* 5 · #surgery                                                        */
 /* ------------------------------------------------------------------ */
 
+/** The five lobes of the lobe explorer: three in the right lung, two in the left. */
+export type LobeKey = "rightUpper" | "rightMiddle" | "rightLower" | "leftUpper" | "leftLower";
+/** The two operations the lobe explorer compares. */
+export type SurgeryMode = "lobectomy" | "pneumonectomy";
+
 export const surgery = {
   // SOURCE: EXISTING
   eyebrow: "SURGICAL EXCELLENCE",
@@ -269,46 +265,89 @@ export const surgery = {
     { icon: "infection", label: "Lower Infection" },
     { icon: "discharge", label: "Early Discharge" },
   ],
-  image: "breathingCalm",
+  // SOURCE: NEW (the lobe explorer: labels, the lobes' names, the live summary). "{kept}", "{total}"
+  // and "{lobe}" are filled in; the counts are computed from `lobes`.
+  // PENDING DOCTOR: the explorer's captions ("4 of 5 lobes preserved" for a lobectomy, "2 of 5" for
+  // a right pneumonectomy) and whether a right pneumonectomy is the right example.
+  explorer: {
+    modes: { lobectomy: "Lobectomy", pneumonectomy: "Pneumonectomy" },
+    lobes: [
+      { key: "rightUpper", name: "right upper lobe", side: "right" },
+      { key: "rightMiddle", name: "right middle lobe", side: "right" },
+      { key: "rightLower", name: "right lower lobe", side: "right" },
+      { key: "leftUpper", name: "left upper lobe", side: "left" },
+      { key: "leftLower", name: "left lower lobe", side: "left" },
+    ],
+    preserved: "{kept} of {total} lobes preserved",
+    summary: {
+      lobectomy: "Lobectomy: only the {lobe} is removed.",
+      pneumonectomy: "Pneumonectomy: the whole right lung is removed.",
+    },
+    a11y: {
+      modes: "Type of operation",
+      lobes: "The lobes of both lungs",
+      lobe: "Show a lobectomy of the {lobe}",
+      hint: "Choose a lobe to see what a lobectomy keeps.",
+    },
+  },
 } as const satisfies {
   eyebrow: string;
   lines: readonly string[];
   body: string;
   benefits: readonly { icon: BenefitIcon; label: string }[];
-  image: LungImageKey;
+  explorer: {
+    modes: Record<SurgeryMode, string>;
+    lobes: readonly { key: LobeKey; name: string; side: "left" | "right" }[];
+    preserved: string;
+    summary: Record<SurgeryMode, string>;
+    a11y: { modes: string; lobes: string; lobe: string; hint: string };
+  };
 };
 
 /* ------------------------------------------------------------------ */
-/* 6 · #techniques                                                     */
+/* 6 · #techniques (the shared TechniqueCompare)                       */
 /* ------------------------------------------------------------------ */
 
 export const techniques = {
   // SOURCE: EXISTING
   title: "Advanced Minimally Invasive Techniques",
-  // SOURCE: EXISTING (text, "DaVinci" spelled as on the live page); NEW (icon keys, photos)
-  robotic: {
-    title: "Robotic Surgery",
-    body: "The pinnacle of surgical precision, utilizing the DaVinci system for complex thoracic procedures.",
-    features: [
-      { icon: "view", label: "3D High-Definition Visualization" },
-      { icon: "instruments", label: "Tremor-free, Articulated Instruments" },
-      { icon: "access", label: "Enhanced Access to Deep Tissues" },
-    ],
-    image: "roboticArms",
-  },
-  vats: {
-    title: "VATS (Video-Assisted Thoracic Surgery)",
-    body: "A proven, effective keyhole approach for standard lung cancer resections.",
-    features: [
-      { icon: "incisions", label: "Minimally Invasive Small Incisions" },
-      { icon: "recovery", label: "Reduced Recovery Time" },
-      { icon: "complications", label: "Lower Risk of Complications" },
-    ],
-    image: "keyhole",
-  },
-  // SOURCE: NEW (switch labels for phones)
-  tabs: { robotic: "Robotic", vats: "VATS" },
-} as const satisfies { title: string; robotic: Technique; vats: Technique; tabs: { robotic: string; vats: string } };
+  // SOURCE: EXISTING (titles, text, points; "DaVinci" spelled as on the live page); NEW (tab labels,
+  // icon keys, photos, the link)
+  sides: [
+    {
+      key: "robotic",
+      label: "Robotic",
+      title: "Robotic Surgery",
+      body: "The pinnacle of surgical precision, utilizing the DaVinci system for complex thoracic procedures.",
+      points: [
+        { icon: "view", title: "3D High-Definition Visualization" },
+        { icon: "instruments", title: "Tremor-free, Articulated Instruments" },
+        { icon: "access", title: "Enhanced Access to Deep Tissues" },
+      ],
+      image: "roboticArms",
+      link: { label: "Explore robotic surgery", href: "/robotic-surgery/", cta: "lung:techniques:robotic-surgery" },
+      drift: true,
+    },
+    {
+      key: "vats",
+      label: "VATS",
+      title: "VATS (Video-Assisted Thoracic Surgery)",
+      body: "A proven, effective keyhole approach for standard lung cancer resections.",
+      points: [
+        { icon: "incisions", title: "Minimally Invasive Small Incisions" },
+        { icon: "recovery", title: "Reduced Recovery Time" },
+        { icon: "complications", title: "Lower Risk of Complications" },
+      ],
+      image: "keyhole",
+    },
+  ],
+  // SOURCE: NEW (the medallion, screen-reader labels)
+  labels: { vs: "VS", tabs: "Choose a technique" },
+} as const satisfies {
+  title: string;
+  sides: readonly [LungTechniqueSide, LungTechniqueSide];
+  labels: { vs: string; tabs: string };
+};
 
 /* ------------------------------------------------------------------ */
 /* 7 · #stage-iv and 8 · #survival                                     */
@@ -321,32 +360,78 @@ export const techniques = {
 const stageISurvival = 86;
 
 export const stageIV = {
-  // SOURCE: EXISTING
+  // SOURCE: EXISTING. Two lines for the rise (layout only; the words are the live heading's).
   title: "When Advanced Cancer Still Has Effective Treatment Options",
+  lines: ["When Advanced Cancer Still Has", "Effective Treatment Options"],
   body: "Stage IV lung cancer care has evolved. Through modern immunotherapy and detailed genetic analysis, we target specific mutations to provide long-term survival and excellent quality of life even in advanced cases.",
   stats: [
     { value: stageISurvival, suffix: "%", label: "STAGE I SURVIVAL" },
     { value: 50, suffix: "%", label: "STAGE IV RESPONSE" },
   ],
-  image: "seniorSmile",
-} as const satisfies { title: string; body: string; stats: readonly Stat[]; image: LungImageKey };
+  // SOURCE: NEW
+  // PENDING DOCTOR: the disclaimer under the figures.
+  disclaimer:
+    "Figures describe outcomes in our practice; every patient's response depends on their own cancer, health and treatment.",
+  // SOURCE: EXISTING (label, as the hero's); NEW (the note and the analytics label)
+  cta: {
+    label: "Get Second Opinion",
+    service: "Second Opinion",
+    note: "Stage IV",
+    cta: "lung:stage-iv:second-opinion",
+  },
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    table: "Stage I survival and Stage IV response",
+    figure: "Figure",
+    value: "Value",
+    cells: "Illustration: immune cells gathering around a tumour",
+  },
+} as const satisfies {
+  title: string;
+  lines: readonly string[];
+  body: string;
+  stats: readonly Stat[];
+  disclaimer: string;
+  cta: AppointmentCta;
+  a11y: { table: string; figure: string; value: string; cells: string };
+};
+
+// SOURCE: NEW
+// PENDING DOCTOR: the footnote under the survival chart (shown once approved: set showFootnote).
+const showFootnote = false as boolean;
 
 export const survival = {
   // SOURCE: EXISTING
   // PENDING DOCTOR: the source of the survival benchmarks (86 / 80 / 72%): the practice's own
   // results or published figures? Over which years? 5-year survival?
   title: "Survival Benchmarks",
-  stages: [
-    { stage: "Stage I", value: stageISurvival },
-    { stage: "Stage II", value: 80 },
-    { stage: "Stage III", value: 72 },
+  rows: [
+    { label: "Stage I", value: stageISurvival },
+    { label: "Stage II", value: 80 },
+    { label: "Stage III", value: 72 },
   ],
   unit: "%",
-} as const satisfies { title: string; stages: readonly { stage: string; value: number }[]; unit: string };
+  // SOURCE: NEW
+  footnote: showFootnote ? "Benchmarks are 5-year survival rates by stage at diagnosis." : undefined,
+  // SOURCE: NEW (screen-reader labels)
+  a11y: { table: "Survival benchmarks by stage", row: "Stage", value: "Survival" },
+} as const satisfies {
+  title: string;
+  rows: readonly { label: string; value: number }[];
+  unit: string;
+  footnote: string | undefined;
+  a11y: { table: string; row: string; value: string };
+};
 
 /* ------------------------------------------------------------------ */
 /* 9 · #volume                                                         */
 /* ------------------------------------------------------------------ */
+
+// SOURCE: NEW
+// PENDING DOCTOR: the total adds stage counts and surgery counts (46 + 18 + 24 + 12 = 100). Do
+// they overlap (a Stage III patient who had VATS counted twice)? What period do they cover, and
+// what should the total be called? Hidden until approved: set showTotal.
+const showTotal = false as boolean;
 
 export const volume = {
   // SOURCE: EXISTING
@@ -358,40 +443,57 @@ export const volume = {
     { value: 12, label: "ROBOTIC SURGERIES" },
   ],
   // SOURCE: NEW (the live page shows no total)
-  // PENDING DOCTOR: the total adds stage counts and surgery counts (46 + 18 + 24 + 12 = 100). Do
-  // they overlap (a Stage III patient who had VATS counted twice)? What period do they cover, and
-  // what should the total be called?
-  total: { label: "TOTAL CASES", period: null as string | null },
+  total: { show: showTotal, label: "TOTAL CASES", period: null as string | null },
+  // SOURCE: NEW (screen-reader labels; the dot matrix: one dot per case)
+  a11y: {
+    table: "Clinical volume",
+    group: "Group",
+    count: "Count",
+    matrix: "One dot per case, coloured by group",
+  },
 } as const satisfies {
   title: string;
   counts: readonly { value: number; label: string }[];
-  total: { label: string; period: string | null };
+  total: { show: boolean; label: string; period: string | null };
+  a11y: { table: string; group: string; count: string; matrix: string };
 };
 
 /** Sum of the four counts (100 with the live numbers). */
 export const volumeTotal = sumBy(volume.counts, (count) => count.value);
 
 /* ------------------------------------------------------------------ */
-/* 10 · #surgeon                                                       */
+/* 10 · #surgeon (the shared DoctorCard)                               */
 /* ------------------------------------------------------------------ */
 
 export const surgeon = {
+  // SOURCE: NEW (the label above the name, as on the colorectal page)
+  label: "Lead Surgeon",
+  name: "Dr. Sunil Navalgund",
   // SOURCE: EXISTING ("Organ Preservation—ensuring", the em dash and curly apostrophe as live)
   title: "Expertise Forged at Tata Memorial Hospital",
   bio: "Specializing in thoracic oncology and robotic-assisted surgery, Dr. Sunil Navalgund brings world-class training to personalized cancer care. His philosophy centers on Organ Preservation—ensuring that treatment not only removes the cancer but protects the patient’s long-term quality of life.",
   // SOURCE: EXISTING (labels, values); NEW (icon keys)
   facts: [
-    { icon: "training", label: "Training", value: "Tata Memorial Hospital, Mumbai" },
-    { icon: "expertise", label: "Expertise", value: "Robotic & VATS Thoracic Surgery" },
+    { icon: "graduation-cap", label: "Training", value: "Tata Memorial Hospital, Mumbai" },
+    { icon: "stethoscope", label: "Expertise", value: "Robotic & VATS Thoracic Surgery" },
   ],
-  // SOURCE: NEW (the live block has no button; label as on the endometrial page)
+  // SOURCE: NEW (the live lung block shows no years; the figure from the colorectal and endometrial pages)
+  // PENDING DOCTOR: "15+" here and on the colorectal and endometrial pages, "10+" / "over a decade" on
+  // About Us, the ovarian and the thyroid pages, "Over 25 years" on the booking page. Which is right?
+  stats: [{ value: 15, suffix: "+ Years", label: "Clinical Experience" }],
+  // SOURCE: NEW (the live block has no buttons; labels as on the endometrial and colorectal pages)
   cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
+  link: { label: "View Full Profile", href: "/about-us/" },
   image: "doctor",
 } as const satisfies {
+  label: string;
+  name: string;
   title: string;
   bio: string;
-  facts: readonly { icon: FactIcon; label: string; value: string }[];
+  facts: readonly { icon: "graduation-cap" | "stethoscope"; label: string; value: string }[];
+  stats: readonly Stat[];
   cta: AppointmentCta;
+  link: { label: string; href: string };
   image: LungImageKey;
 };
 

@@ -130,3 +130,32 @@ export type SectionCopy = {
   emphasis?: string;
   intro?: string;
 };
+
+/* ------------------------------------------------------------------ */
+/* Shared comparison and chart sections                                */
+/* ------------------------------------------------------------------ */
+
+/** Icons of TechniqueCompare's points (components/shared/TechniqueCompare.tsx). */
+export type TechniqueIcon = "view" | "instruments" | "access" | "incisions" | "recovery" | "complications";
+
+/**
+ * One side of TechniqueCompare, as a page's content file writes it. `Img` is the page's image key
+ * (the page resolves it to a PageImage before passing the side on).
+ */
+export type TechniqueSideContent<Img = PageImage> = {
+  /** Stable key (tabs, analytics). */
+  key: string;
+  /** The tab's label below lg. */
+  label: string;
+  title: string;
+  body?: string;
+  points: readonly { icon: TechniqueIcon; title: string; text?: string }[];
+  image: Img;
+  /** A link under the points, e.g. to /robotic-surgery/. `cta`: analytics label. */
+  link?: { label: string; href: string; cta?: string };
+  /** The photo drifts slowly (12s loop; stops on hover, off-screen, reduced motion). */
+  drift?: boolean;
+};
+
+/** One bar of SurvivalChart (components/shared/SurvivalChart.tsx). */
+export type ChartRow = { label: string; value: number };

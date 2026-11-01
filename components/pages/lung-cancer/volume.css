@@ -1,0 +1,42 @@
+/* ==================================================================
+   Lung #volume. Plain CSS, prefix lu-vol- (class names in Volume and DotMatrix).
+   - The matrix fills group by group once in view: each group starts 0.35s after the last, its
+     dots popping in quickly in turn (--g group, --k index in the group).
+   - Hovering a tile highlights its group's dots and dims the rest (:has, no JavaScript).
+   Transform and opacity only; reduced motion shows the full matrix.
+   ================================================================== */
+
+.lu-vol-dot {
+  transition: opacity 0.3s var(--ease-out-expo);
+}
+.lu-vol-tile {
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.lu-vol:has([data-tile="0"]:hover) .lu-vol-dot:not([data-group="0"]),
+.lu-vol:has([data-tile="1"]:hover) .lu-vol-dot:not([data-group="1"]),
+.lu-vol:has([data-tile="2"]:hover) .lu-vol-dot:not([data-group="2"]),
+.lu-vol:has([data-tile="3"]:hover) .lu-vol-dot:not([data-group="3"]) {
+  opacity: 0.15;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lu-vol-tile:hover {
+    transform: translateY(-3px);
+  }
+  .lu-vol-matrix:not([data-inview]) .lu-vol-dot {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  .lu-vol-matrix[data-inview] .lu-vol-dot {
+    animation: lu-vol-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    animation-delay: calc(var(--g) * 0.35s + var(--k) * 0.012s);
+  }
+}
+
+@keyframes lu-vol-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}

@@ -1,26 +1,27 @@
+import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import {
-  pageName,
-  pageSlug,
-  shared,
-  stageIV,
-  surgeon,
-  surgery,
-  survival,
-  techniques,
-  volume,
-  volumeTotal,
-} from "@/content/pages/lung-cancer";
+import { pageSlug, shared, surgeon } from "@/content/pages/lung-cancer";
+import { lungImages } from "@/content/pages/lung-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
-import { finalCtaSection, locationsSection, reviewsSection, videosSection } from "@/content/shared/sections";
+import { reviewsSection, videosSection } from "@/content/shared/sections";
+import { keepLastWords } from "@/lib/format";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
-import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
 import { Hero } from "@/components/pages/lung-cancer/Hero";
 import { Highlights } from "@/components/pages/lung-cancer/Highlights";
 import { Diagnosis } from "@/components/pages/lung-cancer/Diagnosis";
 import { Pathway } from "@/components/pages/lung-cancer/Pathway";
+import { Surgery } from "@/components/pages/lung-cancer/Surgery";
+import { Techniques } from "@/components/pages/lung-cancer/Techniques";
+import { StageIV } from "@/components/pages/lung-cancer/StageIV";
+import { Survival } from "@/components/pages/lung-cancer/Survival";
+import { Volume } from "@/components/pages/lung-cancer/Volume";
+import { DoctorCard } from "@/components/shared/DoctorCard";
+import { Reviews } from "@/components/shared/Reviews";
+import { Videos } from "@/components/shared/Videos";
+import { Locations } from "@/components/shared/Locations";
+import { FinalCta } from "@/components/shared/FinalCta";
 
 const page = pages[pageSlug];
 
@@ -31,78 +32,82 @@ export function generateViewport(): Viewport {
   return pageViewport(page);
 }
 
-const reviews = reviewsFor(pageSlug, shared.reviewOrder);
+const portrait = lungImages[surgeon.image];
+const finalImage = lungImages[shared.finalImage];
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, lung theme).
-// Sections 1–4 are built; the rest are placeholders with their final ids, in their final order.
+// Every section after the hero sits in its own <Suspense> boundary, so React hydrates them one by
+// one and yields between them (shorter main-thread tasks; no visual difference).
+// Tones alternate so no two tints touch: ice and mint bands between pearl ones, the navy bands
+// (#stage-iv, the final band) between light ones.
 export default function LungCancerPage() {
   return (
     <>
       <Hero /> {/* 1  #hero        dawn-sky gradient */}
-      <Highlights /> {/* 2  #highlights  surface, overlapping the hero on desktop */}
-      <Diagnosis /> {/* 3  #diagnosis   alt */}
-      <Pathway /> {/* 4  #pathway     surface */}
-      {/* 5 #surgery  warm */}
-      <SectionPlaceholder
-        id="surgery"
-        tone="warm"
-        title={surgery.lines.join(" ")}
-        blocks={surgery.benefits.map((benefit) => ({ label: benefit.label }))}
-      />
-      {/* 6 #techniques  surface */}
-      <SectionPlaceholder
-        id="techniques"
-        title={techniques.title}
-        blocks={[{ label: techniques.robotic.title }, { label: techniques.vats.title }]}
-      />
-      {/* 7 #stage-iv  navy band */}
-      <SectionPlaceholder
-        id="stage-iv"
-        tone="plum"
-        title={stageIV.title}
-        blocks={stageIV.stats.map((stat) => ({ label: `${stat.value}${stat.suffix} ${stat.label}` }))}
-      />
-      {/* 8 #survival  alt */}
-      <SectionPlaceholder
-        id="survival"
-        tone="alt"
-        title={survival.title}
-        blocks={survival.stages.map((stage) => ({ label: `${stage.stage} · ${stage.value}${survival.unit}` }))}
-      />
-      {/* 9 #volume  surface */}
-      <SectionPlaceholder
-        id="volume"
-        title={volume.title}
-        blocks={[
-          ...volume.counts.map((count) => ({ label: `${count.value} ${count.label}` })),
-          { label: `${volumeTotal} ${volume.total.label}`, wide: true },
-        ]}
-      />
-      {/* 10 #surgeon  warm */}
-      <SectionPlaceholder
-        id="surgeon"
-        tone="warm"
-        title={surgeon.title}
-        blocks={[
-          ...surgeon.facts.map((fact) => ({ label: `${fact.label}: ${fact.value}` })),
-          { label: surgeon.cta.label },
-        ]}
-      />
-      {/* 11–14: the shared sections */}
-      <SectionPlaceholder
-        id="reviews"
-        tone="alt"
-        title={reviewsSection.title.join(" ")}
-        blocks={reviews.map((review) => ({ label: review.author }))}
-      />
-      <SectionPlaceholder id="videos" title={videosSection.title} />
-      <SectionPlaceholder
-        id="locations"
-        tone="alt"
-        title={locationsSection.heading}
-        blocks={locationsSection.items.map((clinic) => ({ label: clinic.name }))}
-      />
-      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} blocks={[{ label: pageName }]} />
+      <Suspense>
+        <Highlights /> {/* 2  #highlights  surface, overlapping the hero on desktop */}
+      </Suspense>
+      <Suspense>
+        <Diagnosis /> {/* 3  #diagnosis   alt */}
+      </Suspense>
+      <Suspense>
+        <Pathway /> {/* 4  #pathway     surface */}
+      </Suspense>
+      <Suspense>
+        <Surgery /> {/* 5  #surgery     warm (mint) */}
+      </Suspense>
+      <Suspense>
+        <Techniques /> {/* 6  #techniques  surface */}
+      </Suspense>
+      <Suspense>
+        <StageIV /> {/* 7  #stage-iv    navy band */}
+      </Suspense>
+      <Suspense>
+        <Survival /> {/* 8  #survival    alt */}
+      </Suspense>
+      <Suspense>
+        <Volume /> {/* 9  #volume      surface */}
+      </Suspense>
+      {/* 10 #surgeon: the shared DoctorCard with the live lung profile */}
+      <Suspense>
+        <DoctorCard
+          id="surgeon"
+          tone="warm"
+          label={surgeon.label}
+          name={surgeon.name}
+          title={surgeon.title}
+          bio={surgeon.bio}
+          stats={surgeon.stats}
+          badges={surgeon.facts.map((fact) => ({ icon: fact.icon, label: `${fact.label}: ${fact.value}` }))}
+          cta={surgeon.cta}
+          link={surgeon.link}
+          image={{ src: portrait.src, alt: portrait.alt }}
+        />
+      </Suspense>
+      {/* 11–14: shared sections (soft look), re-themed by the lung theme */}
+      <Suspense>
+        <Reviews
+          tone="alt"
+          title={reviewsSection.title}
+          reviews={reviewsFor(pageSlug, shared.reviewOrder)}
+          link={reviewsSection.link}
+        />
+      </Suspense>
+      <Suspense>
+        <Videos
+          tone="surface"
+          eyebrow={videosSection.eyebrow}
+          title={keepLastWords(videosSection.title)}
+          ids={videosSection.ids}
+          labels={videosSection.a11y}
+        />
+      </Suspense>
+      <Suspense>
+        <Locations tone="alt" />
+      </Suspense>
+      <Suspense>
+        <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
+      </Suspense>
     </>
   );
 }

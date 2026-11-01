@@ -7,7 +7,10 @@ export type AnalyticsEvent =
   // Lung page: a symptom card opened, a test chosen in the diagnostic lens, a pathway step jumped to.
   | { event: "lung_symptom_open"; label: string }
   | { event: "lung_test_select"; label: string }
-  | { event: "lung_pathway_step"; label: string; step: number };
+  | { event: "lung_pathway_step"; label: string; step: number }
+  | { event: "lung_surgery_toggle"; label: string }
+  // Shared TechniqueCompare: a tab chosen below lg (`page`: the page's analytics prefix, e.g. "lung").
+  | { event: "technique_switch"; label: string; page: string };
 
 declare global {
   interface Window {

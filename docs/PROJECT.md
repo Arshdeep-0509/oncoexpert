@@ -53,6 +53,8 @@ components/
     header/ footer/ mobile-menu/ preloader/   parts of the bigger shell components
   shared/                    sections every page reuses (each has a `look`, see below)
     Reviews, Videos, Faq, AppointmentSection, Locations, FinalCta, DoctorCard, DoctorPortrait,
+    TechniqueCompare (+ technique-compare/: CompareCard, the CompareSwitch island, OffscreenFlag,
+    icons.ts, technique-compare.css, prefix `tcx-`), SurvivalChart (+ survival-chart.css, `svc-`),
     AppointmentButton, Breadcrumb, LiteYouTube, DoctorRing (the portrait in the logo ring with the
     four figures, on its own navy panel: Home #surgeon, About #hero with `hero`)
     appointment/             the form (lazy-loaded), its placeholder, Field, FormStyles type
@@ -214,16 +216,18 @@ Each component keeps its looks in a class map at the top of the file (`const loo
 A new page normally uses `soft` and re-themes it with its theme file. `Eyebrow` and `SectionHeading` take
 the same values as `variant`.
 
-| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Reviews`            | `title` (a string, or its lines: each starts a new line; soft: then full width, the chip under it), `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)               |
-| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                              |
-| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home) |
-| `AppointmentSection` | `page` (email subject), `formStyles?`, `heading?` ("h1" on the booking page), `className?`                                                                                                                                                       |
-| `Locations`          | none (clinics from content)                                                                                                                                                                                                                      |
-| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                  |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `stats?` (soft: figures that count up), `image`                                  |
-| `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                     |
+| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                                                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Reviews`            | `title` (a string, or its lines: each starts a new line; soft: then full width, the chip under it), `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                          |
+| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                                         |
+| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home)            |
+| `AppointmentSection` | `page` (email subject), `formStyles?`, `heading?` ("h1" on the booking page), `className?`                                                                                                                                                                  |
+| `Locations`          | none (clinics from content)                                                                                                                                                                                                                                 |
+| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                             |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `stats?` (soft: figures that count up), `image`                                             |
+| `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                                |
+| `TechniqueCompare`   | `title`, `sides` (two `TechniqueSideContent`: `key`, `label` (tab), `title`, `body?`, `points` (`icon`, `title`, `text?`), `image` (PageImage), `link?` (`label`, `href`, `cta?`), `drift?`), `labels` (`vs`, `tabs`), `page` (analytics prefix); no `look` |
+| `SurvivalChart`      | not a section: `rows` (`label`, `value`), `unit`, `caption` + `labels` (`row`, `value`) for the screen-reader table, `footnote?`, `max?` (default 100), `className?`; no `look`                                                                             |
 
 - One appointment form, on one page: `/book-your-appoinment-page/` is the shared `AppointmentSection`
   alone ("GET IN TOUCH", "Need Clarity?" as its H1, the phone and email cards, the form: Name, Contact
@@ -607,3 +611,33 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   events are typed in lib/analytics.ts. Lighthouse mobile (warm, ×3): performance 77–78 (endometrial
   63–67 on the same machine), accessibility, best practices and SEO 100, CLS 0; the LCP element is the
   H1 (render delay from the intro, as on the other pages).
+- Lung: complete (all 14 sections, 1 Nov 2026). #surgery: the lobe explorer (LobeExplorer island +
+  LobeDiagram, lobes.ts; surgery.css, `lu-sx-`): a Lobectomy | Pneumonectomy radiogroup (NEW labels,
+  arrow keys) over five lobe buttons (SVG, Enter / Space, aria-labels). Lobectomy hatches and lifts the
+  chosen lobe out while the rest glow; pneumonectomy lifts the whole right lung; hover previews on
+  desktop; 0.5s transitions; the computed caption "4 of 5 lobes preserved" (PENDING DOCTOR) and a polite
+  live summary; `lung_surgery_toggle`. Beside it the live heading, copy and the four benefit chips (they
+  pop in, their checks draw). #techniques: the new shared TechniqueCompare (Robotic vs VATS, link to
+  /robotic-surgery/, `technique_switch`). #stage-iv: a dark band; the heading rises line by line;
+  ProgressRings 86 / 50 count up (screen-reader table); a one-time 4s immune-cell sequence (ImmuneCells;
+  stage-iv.css, `lu-iv-`); NEW disclaimer (PENDING DOCTOR); onDark "Get Second Opinion" with the note
+  "Stage IV". #survival: the new shared SurvivalChart (I 86 / II 80 / III 72; NEW footnote behind
+  `showFootnote`). #volume: four counters, the computed total band behind `showTotal` (false, PENDING
+  DOCTOR), a 10 × 10 dot matrix (one dot per case) that fills group by group; hovering a tile highlights
+  its dots (volume.css, `lu-vol-`); a screen-reader table. #surgeon: the shared DoctorCard (soft) with
+  the live lung profile; Training and Expertise as badges (the soft `credentials` list fails a
+  Lighthouse rule, see the follow-ups); "15+ Years" PENDING DOCTOR; View Full Profile → /about-us/ and
+  the booking button. Then #reviews (colon review hidden), #videos, #locations, #final-cta. Every
+  section after the hero sits in its own <Suspense> boundary (hydrated one by one). Lighthouse mobile
+  (warm, interleaved ×3 with Breast): performance 70–71 (Breast 67–74), accessibility, best practices
+  and SEO 100, CLS 0, LCP 4.3–4.5s (Breast 5.0–5.2s); TBT 440–500ms (Breast 180–440ms, same machine).
+  Client JS (gzip): AirwayJourney 2.9 KB, DiagnosticLens 2.2, LobeExplorer 2.1, CompareSwitch 1.7,
+  SymptomCard 0.75, HeroParallax 0.57, HeroAir 0.36 (+ its desktop-only layer), OffscreenFlag 0.27; the
+  lung chunk is 13.7 KB and the page's total JS is within 1% of Breast's.
+- Follow-ups: (1) migrate the colorectal #techniques and endometrial #precision comparisons to
+  TechniqueCompare, and stage figures elsewhere to SurvivalChart where they fit (not done: those pages
+  stay pixel-identical for now). (2) DoctorCard's soft `credentials` render
+  `<dl><div><span/><div><dt/><dd/></div></div></dl>`, which Lighthouse flags (definition-list, dlitem);
+  the fix changes the endometrial page's markup. (3) Lung TBT is above the 200ms target on this laptop
+  (as is Breast's); next candidates: render the pathway cards on the server (slots) and lazy-hydrate the
+  lens and the explorer.

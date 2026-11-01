@@ -3,7 +3,11 @@ export type AnalyticsEvent =
   | { event: "phone_click"; location: string }
   | { event: "whatsapp_click"; location: string }
   | { event: "cta_click"; label: string; location: string; section: string }
-  | { event: "form_submit"; status: "success" | "error" | "invalid"; service?: string; page?: string };
+  | { event: "form_submit"; status: "success" | "error" | "invalid"; service?: string; page?: string }
+  // Lung page: a symptom card opened, a test chosen in the diagnostic lens, a pathway step jumped to.
+  | { event: "lung_symptom_open"; label: string }
+  | { event: "lung_test_select"; label: string }
+  | { event: "lung_pathway_step"; label: string; step: number };
 
 declare global {
   interface Window {

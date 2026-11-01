@@ -1,12 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
 import {
-  diagnosis,
-  hero,
-  highlights,
   pageName,
   pageSlug,
-  pathway,
   shared,
   stageIV,
   surgeon,
@@ -16,12 +12,15 @@ import {
   volume,
   volumeTotal,
 } from "@/content/pages/lung-cancer";
-import { lungImages } from "@/content/pages/lung-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { finalCtaSection, locationsSection, reviewsSection, videosSection } from "@/content/shared/sections";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
+import { Hero } from "@/components/pages/lung-cancer/Hero";
+import { Highlights } from "@/components/pages/lung-cancer/Highlights";
+import { Diagnosis } from "@/components/pages/lung-cancer/Diagnosis";
+import { Pathway } from "@/components/pages/lung-cancer/Pathway";
 
 const page = pages[pageSlug];
 
@@ -35,47 +34,14 @@ export function generateViewport(): Viewport {
 const reviews = reviewsFor(pageSlug, shared.reviewOrder);
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, lung theme).
-// Foundation: every section is a placeholder with its final id, in its final order.
+// Sections 1–4 are built; the rest are placeholders with their final ids, in their final order.
 export default function LungCancerPage() {
   return (
     <>
-      {/* 1 #hero  dawn-sky gradient */}
-      <SectionPlaceholder
-        id="hero"
-        as="h1"
-        hero
-        title={page.meta.h1}
-        className="bg-(image:--grad-hero)"
-        blocks={[
-          { label: pageName, wide: true },
-          { label: hero.ctas.primary.label },
-          { label: hero.ctas.secondary.label },
-          { label: lungImages[hero.image].alt },
-        ]}
-      />
-      {/* 2 #highlights  surface */}
-      <SectionPlaceholder
-        id="highlights"
-        title={highlights.a11y.label}
-        blocks={highlights.items.map((item) => ({ label: item.label }))}
-      />
-      {/* 3 #diagnosis  alt */}
-      <SectionPlaceholder
-        id="diagnosis"
-        tone="alt"
-        title={diagnosis.title}
-        blocks={[
-          ...diagnosis.symptoms.map((label) => ({ label })),
-          ...diagnosis.tests.map((label) => ({ label })),
-          { label: `${diagnosis.callout.lead} ${diagnosis.callout.body}`, wide: true },
-        ]}
-      />
-      {/* 4 #pathway  surface */}
-      <SectionPlaceholder
-        id="pathway"
-        title={pathway.title}
-        blocks={pathway.steps.map((step, i) => ({ label: `${i + 1} · ${step.title}` }))}
-      />
+      <Hero /> {/* 1  #hero        dawn-sky gradient */}
+      <Highlights /> {/* 2  #highlights  surface, overlapping the hero on desktop */}
+      <Diagnosis /> {/* 3  #diagnosis   alt */}
+      <Pathway /> {/* 4  #pathway     surface */}
       {/* 5 #surgery  warm */}
       <SectionPlaceholder
         id="surgery"
@@ -136,7 +102,7 @@ export default function LungCancerPage() {
         title={locationsSection.heading}
         blocks={locationsSection.items.map((clinic) => ({ label: clinic.name }))}
       />
-      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} />
+      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} blocks={[{ label: pageName }]} />
     </>
   );
 }

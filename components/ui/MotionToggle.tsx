@@ -11,7 +11,18 @@ import { cn } from "@/lib/utils";
  * when the preloader unmounts). Hidden with reduced motion (nothing moves). Used by the booking
  * and about heroes.
  */
-export function MotionToggle({ pause, play, onDark = false }: { pause: string; play: string; onDark?: boolean }) {
+export function MotionToggle({
+  pause,
+  play,
+  onDark = false,
+  className,
+}: {
+  pause: string;
+  play: string;
+  onDark?: boolean;
+  /** Extra classes on the button (e.g. "size-12" for a 48px target). */
+  className?: string;
+}) {
   const [paused, setPaused] = React.useState(false);
   const ref = React.useRef<HTMLButtonElement>(null);
 
@@ -50,6 +61,7 @@ export function MotionToggle({ pause, play, onDark = false }: { pause: string; p
         onDark
           ? "text-white/80 ring-white/25 hover:bg-white/10 hover:text-white"
           : "text-muted ring-line hover:bg-accent-soft hover:text-accent",
+        className,
       )}
     >
       {paused ? (

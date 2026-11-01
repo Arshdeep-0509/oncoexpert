@@ -27,11 +27,15 @@ import { sumBy } from "@/lib/utils";
 /* Section content types                                               */
 /* ------------------------------------------------------------------ */
 
-/** A button that opens the booking page with `service` preselected (and `note` in the email). */
-type AppointmentCta = { label: string; service: AppointmentService; note?: string };
+/** A button that opens the booking page with `service` preselected (and `note` in the email).
+ *  `cta`: the analytics label, <page>:<section>:<action>. */
+type AppointmentCta = { label: string; service: AppointmentService; note?: string; cta?: string };
 
 /** Icon keys, mapped to lucide icons in components/pages/lung-cancer. */
-type HighlightIcon = "care" | "robotic" | "keyhole" | "stage-iv";
+export type HighlightIcon = "care" | "robotic" | "keyhole" | "stage-iv";
+export type SymptomIcon = "cough" | "blood";
+/** The three tests in the diagnostic lens (each has its own line art). */
+export type TestKey = "bronchoscopy" | "biopsy" | "petct";
 type BenefitIcon = "scars" | "pain" | "infection" | "discharge";
 type TechniqueIcon = "view" | "instruments" | "access" | "incisions" | "recovery" | "complications";
 type FactIcon = "training" | "expertise";
@@ -75,21 +79,39 @@ export const pageSlug = "lung-cancer-in-bangalore";
 export const defaultAppointmentService: AppointmentService = "Consultation";
 
 export const hero = {
+  // SOURCE: NEW (eyebrow; the live hero has none)
+  eyebrow: "Lung Cancer Care · Bengaluru",
   lines: heroLines,
+  // SOURCE: NEW (choice: the word set in the gradient, with a drawn underline)
+  emphasis: "Breathing",
   // SOURCE: EXISTING
   body: "Personalized lung cancer treatment using robotic surgery, keyhole surgery, immunotherapy and multidisciplinary cancer care designed to maximize outcomes while minimizing treatment burden.",
-  // SOURCE: EXISTING (button labels); NEW (the service each one preselects)
+  // SOURCE: EXISTING (button labels); NEW (the service each one preselects, analytics labels)
   ctas: {
-    primary: { label: "Book Consultation", service: "Consultation" },
-    secondary: { label: "Get Second Opinion", service: "Second Opinion" },
+    primary: { label: "Book Consultation", service: "Consultation", cta: "lung:hero:book-consultation" },
+    secondary: { label: "Get Second Opinion", service: "Second Opinion", cta: "lung:hero:second-opinion" },
   },
-  // The live hero shows the portrait beside the text.
-  image: "doctor",
+  // The photo card in the visual (the LCP image). The live hero shows the portrait, which moves
+  // to #surgeon.
+  image: "breathingCalm",
+  // SOURCE: NEW
+  // PENDING DOCTOR: the glass caption on the photo card.
+  caption: "Care planned around every breath",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    visual: "Illustration: a pair of lungs drawn as one line, breathing slowly",
+    pause: "Pause the hero animation",
+    play: "Play the hero animation",
+  },
 } as const satisfies {
+  eyebrow: string;
   lines: readonly string[];
+  emphasis: string;
   body: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   image: LungImageKey;
+  caption: string;
+  a11y: { visual: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -97,17 +119,39 @@ export const hero = {
 /* ------------------------------------------------------------------ */
 
 export const highlights = {
-  // SOURCE: EXISTING (labels, in the live capitals); NEW (icon keys). On the live page the first
-  // label stands alone above the other three, which carry an icon each.
+  // SOURCE: EXISTING (labels, in the live capitals); NEW (icon keys, detail lines, links). On the
+  // live page the first label stands alone above the other three, which carry an icon each.
+  // PENDING DOCTOR: the four detail lines.
   items: [
-    { icon: "care", label: "PERSONALIZED CANCER CARE" },
-    { icon: "robotic", label: "ROBOTIC SURGERY" },
-    { icon: "keyhole", label: "KEYHOLE SURGERY" },
-    { icon: "stage-iv", label: "STAGE IV TREATMENT OPTIONS" },
+    {
+      icon: "care",
+      label: "PERSONALIZED CANCER CARE",
+      detail: "One plan, shaped around your scans, your lungs and your life.",
+    },
+    {
+      icon: "robotic",
+      label: "ROBOTIC SURGERY",
+      detail: "Precise, lung-sparing surgery through small incisions.",
+      href: "/robotic-surgery/",
+    },
+    {
+      icon: "keyhole",
+      label: "KEYHOLE SURGERY",
+      detail: "VATS: a camera and fine instruments instead of a large opening.",
+    },
+    {
+      icon: "stage-iv",
+      label: "STAGE IV TREATMENT OPTIONS",
+      detail: "Immunotherapy and targeted options for advanced disease.",
+      href: "#stage-iv",
+    },
   ],
-  // SOURCE: NEW (screen-reader label)
+  // SOURCE: NEW (screen-reader label, analytics labels per link)
   a11y: { label: "What we offer" },
-} as const satisfies { items: readonly { icon: HighlightIcon; label: string }[]; a11y: { label: string } };
+} as const satisfies {
+  items: readonly { icon: HighlightIcon; label: string; detail: string; href?: string }[];
+  a11y: { label: string };
+};
 
 /* ------------------------------------------------------------------ */
 /* 3 · #diagnosis                                                      */
@@ -117,24 +161,62 @@ export const diagnosis = {
   // SOURCE: EXISTING
   title: "Early Diagnosis Creates More Treatment Options",
   body: "Timely evaluation for symptoms like chronic cough, coughing blood, or persistent chest pain is critical. Our precision diagnostic suite includes high-resolution bronchoscopy and CT-guided biopsies, complemented by PET-CT for precise staging.",
-  // SOURCE: EXISTING (the two symptom chips above the heading)
-  symptoms: ["Chronic Cough", "Coughing Blood"],
-  // SOURCE: NEW (chips: the three tests named in the live paragraph, in its words)
-  tests: ["Bronchoscopy", "CT-guided biopsy", "PET-CT"],
+  // SOURCE: EXISTING (titles: the two symptom chips above the heading); NEW (icon keys and the
+  // "when to see a doctor" lines: general guidance, never a diagnosis)
+  // PENDING DOCTOR: the two "when to see a doctor" lines.
+  symptoms: [
+    {
+      icon: "cough",
+      title: "Chronic Cough",
+      when: "See a doctor if a cough lasts more than three weeks, or changes in a long-standing cough.",
+    },
+    {
+      icon: "blood",
+      title: "Coughing Blood",
+      when: "See a doctor promptly if you cough up any blood, even a small streak.",
+    },
+  ],
+  // SOURCE: NEW (the lens: the three tests named in the live paragraph, in its words; each caption
+  // is a plain description of the test)
+  // PENDING DOCTOR: the three test captions.
+  tests: [
+    {
+      key: "bronchoscopy",
+      title: "Bronchoscopy",
+      caption: "A thin, flexible camera looks inside the airways and can take small samples.",
+    },
+    {
+      key: "biopsy",
+      title: "CT-guided biopsy",
+      caption: "A CT scan guides a fine needle to take a tiny sample from the lung.",
+    },
+    {
+      key: "petct",
+      title: "PET-CT",
+      caption: "A whole-body scan that shows where the disease is active, for precise staging.",
+    },
+  ],
   // SOURCE: EXISTING. One paragraph on the live page ("Did you know? Detection at …"); the lead is
   // split off so it can be styled. Rendered as `${lead} ${body}`.
   callout: {
     lead: "Did you know?",
     body: "Detection at Stage I increases survival rates significantly compared to later stages.",
+    // SOURCE: NEW (the large figure beside it: the stage the sentence names, not a statistic)
+    figure: "I",
   },
-  image: "chestXray",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    symptoms: "Symptoms to watch",
+    tests: "Diagnostic tests",
+    lens: "How each test looks at the lungs",
+  },
 } as const satisfies {
   title: string;
   body: string;
-  symptoms: readonly string[];
-  tests: readonly string[];
-  callout: { lead: string; body: string };
-  image: LungImageKey;
+  symptoms: readonly { icon: SymptomIcon; title: string; when: string }[];
+  tests: readonly { key: TestKey; title: string; caption: string }[];
+  callout: { lead: string; body: string; figure: string };
+  a11y: { symptoms: string; tests: string; lens: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -147,14 +229,29 @@ export const pathway = {
   title: "The OncoXpert Care Pathway",
   // The live step numbers are 1–6: the list order. NEW (photo per step, for the design).
   steps: [
-    { title: "Symptoms", body: "Identification of persistent cough or discomfort." },
+    { title: "Symptoms", body: "Identification of persistent cough or discomfort.", image: "breathingCalm" },
     { title: "Biopsy", body: "Bronchoscopy or CT Guided diagnostic sample.", image: "xrayReview" },
-    { title: "PET-CT", body: "Precise staging to map the cancer's spread." },
+    { title: "PET-CT", body: "Precise staging to map the cancer's spread.", image: "chestXray" },
     { title: "Planning", body: "Multidisciplinary tumor board review.", image: "consultation" },
-    { title: "Treatment", body: "Surgery, Immunotherapy, or combination care." },
-    { title: "Recovery", body: "Post-op care and long-term surveillance." },
+    { title: "Treatment", body: "Surgery, Immunotherapy, or combination care.", image: "roboticArms" },
+    { title: "Recovery", body: "Post-op care and long-term surveillance.", image: "seniorSmile" },
   ],
-} as const satisfies { title: string; steps: readonly { title: string; body: string; image?: LungImageKey }[] };
+  // SOURCE: NEW (the button after the last step; label as the hero's)
+  cta: { label: "Book Consultation", service: "Consultation", cta: "lung:pathway:book-consultation" },
+  // SOURCE: NEW (screen-reader labels; "{n}" and "{total}" are filled in)
+  a11y: {
+    steps: "The six steps",
+    stepper: "Go to a step",
+    step: "Step",
+    status: "Step {n} of {total}",
+    progress: "Progress through the steps",
+  },
+} as const satisfies {
+  title: string;
+  steps: readonly { title: string; body: string; image: LungImageKey }[];
+  cta: AppointmentCta;
+  a11y: { steps: string; stepper: string; step: string; status: string; progress: string };
+};
 
 /* ------------------------------------------------------------------ */
 /* 5 · #surgery                                                        */

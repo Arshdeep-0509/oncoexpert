@@ -576,3 +576,34 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   shared four. Thyroid: #hero, #understanding, #symptoms, #early-detection, #modalities, #dashboard,
   #outcomes, #packages, #surgeon, #second-opinion, then the shared four. The shell's long loops stop on
   hover/focus here as on Home. Waiting on the doctor's PENDING items in the three content files.
+- Lung: #hero, #highlights, #diagnosis and #pathway built (1 Nov 2026; the foundation anchors kept).
+  #hero "BREATH" (components/pages/lung-cancer, hero.css, prefix `lu-`): desktop text left, the visual
+  right, a screen tall; tablets the visual at 70%; phones the H1 and full-width buttons in the first
+  screen (375 × 667: buttons end at 516px), then the visual (max 360px). The lungs are one gradient
+  bronchial tree (lung-art.ts): trachea 0.5s, three waves of branches 0.4s each, the outline 0.8s, then
+  40 alveoli pop in by distance from the carina; then the breathing loop (scale 1 → 1.035 → 1 over 8s:
+  inhale 3.5s, hold 0.5s, exhale 4s) with a glow in step. HeroAir (desktop, lazy after idle, like the
+  breast petals): 18 rising dots, 14–22s. The photo card (a woman breathing calmly, `breathingCalm`) is
+  preloaded at high priority and never faded; NEW glass caption (PENDING DOCTOR). Pointer parallax ≤ 10px
+  (Home's HeroParallax). H1 words rise in masks, "Breathing" in the gradient with a drawn underline;
+  NEW eyebrow. Book Consultation shines every 6s. The shared MotionToggle (new optional `className`;
+  here 48px) stops the breathing, the dots and the shine; so does leaving the screen. #highlights
+  (highlights.css, `lu-hl-`): the four live labels as cards (solid 92% surface, 48px icon circles, NEW
+  detail lines, PENDING DOCTOR) overlapping the hero by 40px on desktop; 2 × 2 on tablets, a swipe row
+  on phones; icons draw on reveal (a copy of Home's rules), hover lifts and fills the circle; Robotic →
+  /robotic-surgery/, Stage IV → #stage-iv. #diagnosis (diagnosis.css, `lud-`): two symptom disclosure
+  cards (aria-expanded, reserved height, open on phones; NEW "when to see a doctor" lines, PENDING
+  DOCTOR; `lung_symptom_open`), the DiagnosticLens island (320px circle, ARIA tabs with a roving tab
+  stop: Bronchoscopy, CT-guided biopsy, PET-CT as line art; the ring turns 120° and the art crossfades;
+  advances every 5s only in view until the first interaction, holds on hover / focus, never with reduced
+  motion; `lung_test_select`; NEW captions, PENDING DOCTOR) and the "Did you know?" band (the live
+  sentence, a large "I", a line that fills on reveal). #pathway, the airway journey (pathway.css,
+  `lup-`; airway-path.ts): desktop pins for 2.5 screens (ScrollVar pin, steps 6); an airway draws with the
+  scroll and a bronchial fork draws at each reached step; the active node scales and pulses once; the
+  card slides out left and in from the right; nodes jump through Lenis, set aria-current="step", answer
+  to arrow keys; a polite live region says "Step 3 of 6"; `lung_pathway_step`. Tablets: the node stepper,
+  a snap row and a progress bar. Phones: a ScrollFillLine timeline, cards from alternating sides. Reduced
+  motion: a static list. Then Book Consultation. Analytics labels `lung:<section>:<action>`; the three
+  events are typed in lib/analytics.ts. Lighthouse mobile (warm, ×3): performance 77–78 (endometrial
+  63–67 on the same machine), accessibility, best practices and SEO 100, CLS 0; the LCP element is the
+  H1 (render delay from the intro, as on the other pages).

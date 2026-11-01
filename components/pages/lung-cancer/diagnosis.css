@@ -1,0 +1,98 @@
+/* ==================================================================
+   Lung #diagnosis. Plain CSS, prefix lud- (class names in the components).
+   - Symptom cards (SymptomCard): from 768px the "when to see a doctor" line is hidden until the
+     card opens, but always keeps its space (no height animation). Phones: always shown.
+   - Diagnostic lens (DiagnosticLens): the ring turns by --turn (thirds); the art crossfades and
+     settles; the caption re-enters.
+   - "Did you know?" band: the line fills once in view (InView).
+   Transform and opacity only; reduced motion shows every final state at once.
+   ================================================================== */
+
+/* Symptom cards ------------------------------------------------------ */
+
+@media (min-width: 768px) {
+  .lud-when {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.35s var(--ease-out-expo),
+      transform 0.45s var(--ease-out-expo);
+  }
+  .lud-sym[data-open] .lud-when {
+    opacity: 1;
+    transform: none;
+  }
+  .lud-chev {
+    transition: transform 0.35s var(--ease-out-expo);
+  }
+  .lud-sym[data-open] .lud-chev {
+    transform: rotate(180deg);
+  }
+  .lud-symIcon {
+    transition:
+      background-color 0.3s var(--ease-out-expo),
+      color 0.3s var(--ease-out-expo);
+  }
+  .lud-sym[data-open] .lud-symIcon {
+    background-color: var(--accent);
+    color: var(--white);
+  }
+}
+
+/* Lens ----------------------------------------------------------------- */
+
+.lud-ring {
+  transform: rotate(var(--turn, 0deg));
+}
+.lud-art {
+  opacity: 0;
+}
+.lud-art[data-active] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lud-ring {
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .lud-art {
+    transform: scale(0.94) rotate(-6deg);
+    transition:
+      opacity 0.5s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
+  }
+  .lud-art[data-active] {
+    transform: none;
+  }
+  .lud-caption {
+    animation: lud-in 0.5s var(--ease-out-expo) both;
+  }
+}
+
+/* Did you know? -------------------------------------------------------- */
+
+.lud-figure {
+  background-image: var(--grad-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lud-fill {
+  transform-origin: 0 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lud-band:not([data-inview]) .lud-fill {
+    transform: scaleX(0);
+  }
+  .lud-band[data-inview] .lud-fill {
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+  }
+}
+
+@keyframes lud-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

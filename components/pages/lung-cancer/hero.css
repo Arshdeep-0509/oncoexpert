@@ -1,0 +1,283 @@
+/* ==================================================================
+   Lung hero "BREATH": entrance choreography and the breathing loop.
+   Plain CSS, prefix lu- (hero-styles.ts). Every entrance waits for the intro (--intro) and is
+   scaled by --pace (quicker on phones). Transform and opacity only, plus the SVG stroke draws.
+   The default styles are the final state: lungs drawn, words in place, nothing looping. All
+   motion lives in prefers-reduced-motion: no-preference.
+   The art draws in this order: trachea (0.5s), three waves of branches (0.4s each), the outline
+   (0.8s), then ~40 alveoli pop in by their distance from the carina (--t, 0–1).
+   Loops: the breathing (8s: inhale 3.5s, hold 0.5s, exhale 4s) with its glow, the air dots
+   (desktop only, 14–22s) and the button shine (6s). The pause button (data-paused) and leaving
+   the screen (data-offscreen) stop all of them; hover / focus stops the shine.
+   ================================================================== */
+
+.lu-hero {
+  --intro: var(--intro-delay, 0s);
+  --pace: 0.75;
+  --rise: 16px;
+  /* when the art has finished drawing: the breathing starts */
+  --breath-at: 3.4s;
+}
+@media (min-width: 768px) {
+  .lu-hero {
+    --pace: 1;
+    --rise: 24px;
+  }
+}
+
+.lu-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Headline                                                            */
+/* ------------------------------------------------------------------ */
+
+.lu-wordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.06em 0.14em 0;
+  margin: 0 -0.06em -0.14em 0;
+}
+.lu-word {
+  display: inline-block;
+}
+.lu-phrase {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.lu-gradWord {
+  background-image: var(--grad-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lu-underline {
+  position: absolute;
+  left: 0;
+  bottom: -0.2em;
+  width: 100%;
+  height: 0.24em;
+  overflow: visible;
+}
+.lu-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* The art                                                             */
+/* ------------------------------------------------------------------ */
+
+.lu-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.lu-breathe,
+.lu-glow {
+  transform-box: view-box;
+  transform-origin: 50% 56%;
+}
+.lu-alv {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+/* Cover over the photo card: visible only while its entrance runs. The photo under it is
+   painted from the first frame (it is the LCP image). */
+.lu-photoCover {
+  transform-origin: 50% 100%;
+  scale: 1 0;
+}
+
+/* Primary button: a light sweep every 6s. */
+.lu-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.lu-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  translate: -120% 0;
+  pointer-events: none;
+}
+
+/* Air: small dots rising through the hero (desktop, lazy-loaded). */
+.lu-air {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.lu-dot {
+  position: absolute;
+  bottom: -24px;
+  border-radius: 999px;
+  background: radial-gradient(circle, var(--highlight), transparent 70%);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lu-fadeDown {
+    animation-name: lu-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .lu-fadeUp {
+    animation-name: lu-fadeUp;
+    animation-duration: 0.7s;
+  }
+  .lu-pop {
+    animation-name: lu-pop;
+    animation-duration: 0.6s;
+  }
+  .lu-wordRise {
+    animation-name: lu-rise;
+    animation-duration: calc(0.85s * var(--pace));
+  }
+  .lu-underline path {
+    animation: lu-draw calc(0.8s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + 1.15s * var(--pace));
+  }
+  .lu-photoCover {
+    animation: lu-cover calc(0.9s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + 0.6s * var(--pace));
+  }
+
+  /* Each drawn stroke: --d is its start, --dur its length (seconds, desktop timing). */
+  .lu-draw {
+    animation: lu-draw calc(var(--dur) * var(--pace)) cubic-bezier(0.45, 0, 0.25, 1) both;
+    animation-delay: calc(var(--intro) + var(--d) * var(--pace));
+  }
+  .lu-alv {
+    animation: lu-pop calc(0.45s * var(--pace)) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: calc(var(--intro) + (2.6s + var(--t) * 0.6s) * var(--pace));
+  }
+
+  /* Breathing: inhale 3.5s, hold 0.5s, exhale 4s; the glow brightens in step. */
+  .lu-breathe {
+    animation: lu-breathe 8s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + var(--breath-at) * var(--pace));
+  }
+  .lu-glow {
+    animation:
+      lu-fade 1s ease-out both,
+      lu-glow 8s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 2.4s * var(--pace)), calc(var(--intro) + var(--breath-at) * var(--pace));
+  }
+
+  .lu-shine::after {
+    animation: lu-shine 6s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 3s);
+  }
+  .lu-dot {
+    animation: lu-air var(--fly) linear infinite;
+    animation-delay: var(--start);
+  }
+
+  .lu-hero:is([data-paused], [data-offscreen]) :is(.lu-breathe, .lu-glow, .lu-dot),
+  .lu-hero:is([data-paused], [data-offscreen]) .lu-shine::after,
+  .lu-shine:is(:hover, :focus-visible)::after {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes lu-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes lu-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise);
+  }
+}
+@keyframes lu-pop {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+@keyframes lu-rise {
+  from {
+    translate: 0 110%;
+  }
+}
+@keyframes lu-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes lu-cover {
+  from {
+    scale: 1 1;
+  }
+  to {
+    scale: 1 0;
+  }
+}
+@keyframes lu-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes lu-breathe {
+  0%,
+  100% {
+    scale: 1;
+  }
+  43.75%,
+  50% {
+    scale: 1.035;
+  }
+}
+@keyframes lu-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    scale: 0.96;
+  }
+  43.75%,
+  50% {
+    opacity: 1;
+    scale: 1.06;
+  }
+}
+@keyframes lu-shine {
+  0% {
+    translate: -120% 0;
+  }
+  18%,
+  100% {
+    translate: 120% 0;
+  }
+}
+@keyframes lu-air {
+  0% {
+    opacity: 0;
+    translate: 0 0;
+  }
+  12% {
+    opacity: 0.7;
+  }
+  50% {
+    translate: var(--sway) -55vh;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    translate: 0 -110vh;
+  }
+}

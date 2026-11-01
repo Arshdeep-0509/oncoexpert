@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
 import {
-  diagnostics,
-  features,
-  hero,
   outcomes,
   packages,
   pageName,
@@ -12,16 +9,18 @@ import {
   shared,
   surgeon,
   treatments,
-  understanding,
-  warningSigns,
 } from "@/content/pages/ovarian-cancer";
-import { ovarianImages } from "@/content/pages/ovarian-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { finalCtaSection, locationsSection, reviewsSection, videosSection } from "@/content/shared/sections";
 import { formatRupees } from "@/lib/format";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
+import { Hero } from "@/components/pages/ovarian-cancer/Hero";
+import { Features } from "@/components/pages/ovarian-cancer/Features";
+import { Understanding } from "@/components/pages/ovarian-cancer/Understanding";
+import { WarningSigns } from "@/components/pages/ovarian-cancer/WarningSigns";
+import { Diagnostics } from "@/components/pages/ovarian-cancer/Diagnostics";
 
 const page = pages[pageSlug];
 
@@ -35,50 +34,20 @@ export function generateViewport(): Viewport {
 const reviews = reviewsFor(pageSlug, shared.reviewOrder);
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, ovarian theme).
-// Foundation: every section is a placeholder with its final id, in its final order.
+// Sections 1–5 are built; the rest are placeholders with their final ids, in their final order.
 export default function OvarianCancerPage() {
   return (
     <>
-      {/* 1 #hero  sand gradient */}
-      <SectionPlaceholder
-        id="hero"
-        as="h1"
-        hero
-        title={page.meta.h1}
-        className="bg-(image:--grad-hero)"
-        blocks={[
-          { label: `${pageName} · ${hero.eyebrow}`, wide: true },
-          { label: hero.ctas.primary.label },
-          { label: hero.ctas.secondary.label },
-          { label: ovarianImages[hero.image].alt },
-        ]}
-      />
-      {/* 2 #features  surface */}
-      <SectionPlaceholder
-        id="features"
-        title={features.a11y.label}
-        blocks={features.items.map((item) => ({ label: item.label }))}
-      />
-      {/* 3 #understanding  alt */}
-      <SectionPlaceholder id="understanding" tone="alt" title={understanding.title} />
-      {/* 4 #warning-signs  surface */}
-      <SectionPlaceholder
-        id="warning-signs"
-        title={warningSigns.title}
-        blocks={warningSigns.signs.map((label) => ({ label }))}
-      />
-      {/* 5 #diagnostics  warm */}
-      <SectionPlaceholder
-        id="diagnostics"
-        tone="warm"
-        title={diagnostics.title}
-        blocks={diagnostics.markers.map((label) => ({ label }))}
-      />
+      <Hero /> {/* 1  #hero           sand gradient */}
+      <Features /> {/* 2  #features       surface */}
+      <Understanding /> {/* 3  #understanding  alt (sea-glass) */}
+      <WarningSigns /> {/* 4  #warning-signs  surface */}
+      <Diagnostics /> {/* 5  #diagnostics    warm (sand) */}
       {/* 6 #treatments  surface */}
       <SectionPlaceholder
         id="treatments"
         title={treatments.title}
-        blocks={treatments.items.map((item) => ({ label: item.title }))}
+        blocks={treatments.items.map((item) => ({ id: `treatments-${item.icon}`, label: item.title }))}
       />
       {/* 7 #second-opinion  plum band */}
       <SectionPlaceholder
@@ -128,7 +97,7 @@ export default function OvarianCancerPage() {
         title={locationsSection.heading}
         blocks={locationsSection.items.map((clinic) => ({ label: clinic.name }))}
       />
-      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} />
+      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} blocks={[{ label: pageName }]} />
     </>
   );
 }

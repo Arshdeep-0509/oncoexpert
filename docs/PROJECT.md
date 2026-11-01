@@ -55,6 +55,7 @@ components/
     Reviews, Videos, Faq, AppointmentSection, Locations, FinalCta, DoctorCard, DoctorPortrait,
     TechniqueCompare (+ technique-compare/: CompareCard, the CompareSwitch island, OffscreenFlag,
     icons.ts, technique-compare.css, prefix `tcx-`), SurvivalChart (+ survival-chart.css, `svc-`),
+    SymptomGrid (island; + symptom-grid/: icons.ts, symptom-grid.css, prefix `sgx-`),
     AppointmentButton, Breadcrumb, LiteYouTube, DoctorRing (the portrait in the logo ring with the
     four figures, on its own navy panel: Home #surgeon, About #hero with `hero`)
     appointment/             the form (lazy-loaded), its placeholder, Field, FormStyles type
@@ -216,18 +217,19 @@ Each component keeps its looks in a class map at the top of the file (`const loo
 A new page normally uses `soft` and re-themes it with its theme file. `Eyebrow` and `SectionHeading` take
 the same values as `variant`.
 
-| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                                                                                                        |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Reviews`            | `title` (a string, or its lines: each starts a new line; soft: then full width, the chip under it), `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                          |
-| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                                         |
-| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home)            |
-| `AppointmentSection` | `page` (email subject), `formStyles?`, `heading?` ("h1" on the booking page), `className?`                                                                                                                                                                  |
-| `Locations`          | none (clinics from content)                                                                                                                                                                                                                                 |
-| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                             |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `stats?` (soft: figures that count up), `image`                                             |
-| `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                                |
-| `TechniqueCompare`   | `title`, `sides` (two `TechniqueSideContent`: `key`, `label` (tab), `title`, `body?`, `points` (`icon`, `title`, `text?`), `image` (PageImage), `link?` (`label`, `href`, `cta?`), `drift?`), `labels` (`vs`, `tabs`), `page` (analytics prefix); no `look` |
-| `SurvivalChart`      | not a section: `rows` (`label`, `value`), `unit`, `caption` + `labels` (`row`, `value`) for the screen-reader table, `footnote?`, `max?` (default 100), `className?`; no `look`                                                                             |
+| Component            | Props (besides `id`, `tone`, `look`)                                                                                                                                                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Reviews`            | `title` (a string, or its lines: each starts a new line; soft: then full width, the chip under it), `reviews` (`reviewsFor(slug, order)` from content/shared), `link?` (soft: a link to the reviews on Google, under the carousel)                               |
+| `Videos`             | `eyebrow`, `title`, `ids`, `labels`                                                                                                                                                                                                                              |
+| `Faq` (no `look`)    | `title`, `contactTitle`, `items` (`question`, `answer`, `icon`), `locations`: every Q&A as an animated card in a masonry grid, contact card last (+ FAQPage JSON-LD; `structuredData={false}` when the page's own @graph carries it, as on Home)                 |
+| `AppointmentSection` | `page` (email subject), `formStyles?`, `heading?` ("h1" on the booking page), `className?`                                                                                                                                                                       |
+| `Locations`          | none (clinics from content)                                                                                                                                                                                                                                      |
+| `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                                  |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `stats?` (soft: figures that count up), `image`                                                  |
+| `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                                     |
+| `TechniqueCompare`   | `title`, `sides` (two `TechniqueSideContent`: `key`, `label` (tab), `title`, `body?`, `points` (`icon`, `title`, `text?`), `image` (PageImage), `link?` (`label`, `href`, `cta?`), `drift?`), `labels` (`vs`, `tabs`), `page` (analytics prefix); no `look`      |
+| `SurvivalChart`      | not a section: `rows` (`label`, `value`), `unit`, `caption` + `labels` (`row`, `value`) for the screen-reader table, `footnote?`, `max?` (default 100), `className?`; no `look`                                                                                  |
+| `SymptomGrid`        | not a section (client): `items` (`key`, `icon`, `title`, `body?`), `page` (analytics prefix), `mode`: `"check"` (+ `empty`, `result` (`some`, `cta`, `notePrefix`), `labels` (`group`, `result`)) or `"disclose"` (+ `labels` (`group`)); a 2 × 2 grid on phones |
 
 - One appointment form, on one page: `/book-your-appoinment-page/` is the shared `AppointmentSection`
   alone ("GET IN TOUCH", "Need Clarity?" as its H1, the phone and email cards, the form: Name, Contact
@@ -291,7 +293,8 @@ the same values as `variant`.
 1. **Theme**: `styles/themes/<name>.css` (recipe above), `@import` it in `app/globals.css`, add
    `<name>` to `ThemeName` in `content/types.ts`. Turbopack's build cache can keep the old
    `globals.css` import list: delete `.next/cache/turbopack` before the next build and check that the
-   page's stylesheet contains `[data-theme=<name>]`.
+   page's stylesheet contains `[data-theme=<name>]`. If a build then fails with "Can't resolve
+   '@vercel/turbopack-next/internal/font/google/font'", delete the whole `.next` folder and build again.
 2. **Content**: `content/pages/<name>.ts` with every word, SOURCE-tagged, plus `<name>.images.ts` if it
    has photos (and a `pageName` / `pageSlug` export for the form and reviews).
 3. **Registry**: add the page to `content/pages/index.ts` (slug, path, title, theme, themeColor, meta);
@@ -641,3 +644,28 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   the fix changes the endometrial page's markup. (3) Lung TBT is above the 200ms target on this laptop
   (as is Breast's); next candidates: render the pathway cards on the server (slots) and lazy-hydrate the
   lens and the explorer.
+- Ovarian: #hero, #features, #understanding, #warning-signs and #diagnostics built (1 Nov 2026; the
+  foundation anchors kept). #hero "THE TEAL RIBBON" (components/pages/ovarian-cancer, hero.css, `ov-`;
+  ribbon-art.ts): one teal line from an awareness ribbon (bottom left) up into the ovaries, tubes and
+  the top of the uterus crowning the arch, and down the right side; it draws over 2.2s, then a white
+  shimmer travels it every 10s; five seeds pop in and float (7s). The arch-framed portrait is the LCP
+  image (preloaded, never faded): the arch outline draws, the photo rises behind a cover that slides
+  off. Parallax ≤ 10px (Home's HeroParallax), H1 word masks, "Personalized Surgical Oncology Care" in
+  the gradient with underlines, two CTAs (shine on Book), the shared MotionToggle (48px) pauses the
+  shimmer, the seeds and the shine (also off-screen). #features (features.css, `ov-ft-`; FeatureIcon:
+  plan + heart, scalpel + crosshair, heat over a drop, seedling in hands): cards flip (rotateY) on
+  hover, focus inside or tap ("Show details", aria-expanded) to a NEW detail and "Learn more" →
+  #treatments-<key> (the #treatments placeholder carries those anchors); Escape or a tap on the back
+  turns it back; reduced motion: no flip, the back under the front. Tablet 2 × 2, phone swipe row.
+  #understanding (understanding.css, `ovu-`): desktop pins for 1.6 screens; each word of the live first
+  sentence goes from 0.12 to 1 opacity as ScrollVar's --p passes its threshold (pure CSS), "silent
+  killer" in the gradient; then the second sentence rises and a flat line crossfades into a wave.
+  Below 1024px the same, view-linked, no pin. Screen readers get the paragraph once. #warning-signs: the
+  new shared SymptomGrid ("check"): four checkbox cards (Space toggles, teal fill with a bounce); the live
+  sentence until one is ticked, then a NEW line (PENDING DOCTOR) and Book with the ticked list as its
+  note; nothing stored; `symptom_check` sends the count only. #diagnostics, the instrument tray
+  (InstrumentTray island + TrayArt; diagnostics.css, `ovd-`): a rail draws through four nodes on desktop
+  and each tile's illustration plays as its node lights (tube fills, ultrasound sweep, CT slices fan,
+  helix rungs draw), replaying on hover; each tile opens a drawer (aria-expanded, arrow keys, Escape)
+  with the live sentence and a NEW "What it tells us" line (PENDING DOCTOR); `ovarian_test_open`.
+  Tablet 2 × 2, phone a vertical list with ScrollFillLine.

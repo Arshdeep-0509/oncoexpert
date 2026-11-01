@@ -159,3 +159,9 @@ export type TechniqueSideContent<Img = PageImage> = {
 
 /** One bar of SurvivalChart (components/shared/SurvivalChart.tsx). */
 export type ChartRow = { label: string; value: number };
+
+/** Icons of SymptomGrid's cards (components/shared/SymptomGrid.tsx). */
+export type SymptomIcon = "bloating" | "pelvic" | "full" | "urination" | "lump" | "cough" | "voice" | "swallow";
+
+/** One card of SymptomGrid. `body` is shown by the "disclose" mode. */
+export type SymptomItem = { key: string; icon: SymptomIcon; title: string; body?: string };

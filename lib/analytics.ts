@@ -10,7 +10,11 @@ export type AnalyticsEvent =
   | { event: "lung_pathway_step"; label: string; step: number }
   | { event: "lung_surgery_toggle"; label: string }
   // Shared TechniqueCompare: a tab chosen below lg (`page`: the page's analytics prefix, e.g. "lung").
-  | { event: "technique_switch"; label: string; page: string };
+  | { event: "technique_switch"; label: string; page: string }
+  // Shared SymptomGrid ("check"): how many signs are ticked (never which ones).
+  | { event: "symptom_check"; page: string; count: number }
+  // Ovarian #diagnostics: a test's drawer opened.
+  | { event: "ovarian_test_open"; label: string };
 
 declare global {
   interface Window {

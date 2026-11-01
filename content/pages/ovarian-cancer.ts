@@ -16,7 +16,7 @@
  * Shared copy is reused, not repeated here: reviews, videos, locations and the final call band
  * (content/shared/sections.ts). Images: content/pages/ovarian-cancer.images.ts.
  */
-import type { PageMeta } from "@/content/types";
+import type { PageMeta, SymptomIcon } from "@/content/types";
 import type { OvarianImageKey } from "@/content/pages/ovarian-cancer.images";
 import { ovarianOgImage } from "@/content/pages/ovarian-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -28,10 +28,10 @@ import { reviewsSection } from "@/content/shared/sections";
 /* ------------------------------------------------------------------ */
 
 /** A button that opens the booking page with `service` preselected (and `note` in the email). */
-type AppointmentCta = { label: string; service: AppointmentService; note?: string };
+type AppointmentCta = { label: string; service: AppointmentService; note?: string; cta?: string };
 
 /** Icon keys, mapped to lucide icons in components/pages/ovarian-cancer. */
-type FeatureIcon = "plan" | "cytoreduction" | "hipec" | "fertility";
+export type FeatureIcon = "plan" | "cytoreduction" | "hipec" | "fertility";
 type TreatmentIcon = "cytoreduction" | "hipec" | "fertility" | "chemotherapy" | "immunotherapy";
 type FactIcon = "training" | "team" | "certified" | "research";
 
@@ -75,20 +75,31 @@ export const hero = {
   // SOURCE: EXISTING
   eyebrow: "Precision Surgical Oncology",
   lines: heroLines,
+  // SOURCE: NEW (choice: the words set in the gradient, with a drawn underline)
+  emphasis: "Personalized Surgical Oncology Care",
+  // SOURCE: EXISTING
   body: "Comprehensive ovarian cancer care combining advanced diagnosis, cytoreductive surgery, HIPEC, chemotherapy, immunotherapy, fertility-preserving treatment, and personalized treatment planning.",
-  // SOURCE: EXISTING (button labels); NEW (the service each one preselects)
+  // SOURCE: EXISTING (button labels); NEW (the service each one preselects, analytics labels)
   ctas: {
-    primary: { label: "Book Consultation", service: "Consultation" },
-    secondary: { label: "Get Second Opinion", service: "Second Opinion" },
+    primary: { label: "Book Consultation", service: "Consultation", cta: "ovarian:hero:book-consultation" },
+    secondary: { label: "Get Second Opinion", service: "Second Opinion", cta: "ovarian:hero:second-opinion" },
   },
-  // The live hero shows the portrait beside the text.
+  // The live hero shows the portrait beside the text: here in an arch, the LCP image.
   image: "doctor",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    visual: "Illustration: a teal ribbon whose line becomes the outline of the ovaries and tubes",
+    pause: "Pause the hero animation",
+    play: "Play the hero animation",
+  },
 } as const satisfies {
   eyebrow: string;
   lines: readonly string[];
+  emphasis: string;
   body: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   image: OvarianImageKey;
+  a11y: { visual: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -96,53 +107,140 @@ export const hero = {
 /* ------------------------------------------------------------------ */
 
 export const features = {
-  // SOURCE: EXISTING (labels; the four icons under the hero buttons on the live page); NEW (icon keys)
+  // SOURCE: EXISTING (labels; the four icons under the hero buttons on the live page); NEW (icon
+  // keys, the detail on each card's back, the link to the matching treatment)
+  // PENDING DOCTOR: the four detail lines.
   items: [
-    { icon: "plan", label: "Personalized Treatment Plans" },
-    { icon: "cytoreduction", label: "Advanced Cytoreductive Surgery" },
-    { icon: "hipec", label: "HIPEC Specialist" },
-    { icon: "fertility", label: "Fertility Preservation Options" },
+    {
+      icon: "plan",
+      label: "Personalized Treatment Plans",
+      detail: "Your scans, tumour biology and life goals shape one plan, reviewed by the whole team.",
+      href: "#treatments",
+    },
+    {
+      icon: "cytoreduction",
+      label: "Advanced Cytoreductive Surgery",
+      detail: "Removing every visible tumour deposit, the step that most improves long-term outcomes.",
+      href: "#treatments-cytoreduction",
+    },
+    {
+      icon: "hipec",
+      label: "HIPEC Specialist",
+      detail: "Heated chemotherapy washed through the abdomen during surgery, where it is needed.",
+      href: "#treatments-hipec",
+    },
+    {
+      icon: "fertility",
+      label: "Fertility Preservation Options",
+      detail: "For younger patients, ovarian-sparing choices discussed before treatment begins.",
+      href: "#treatments-fertility",
+    },
   ],
-  // SOURCE: NEW (screen-reader label)
-  a11y: { label: "What we offer" },
-} as const satisfies { items: readonly { icon: FeatureIcon; label: string }[]; a11y: { label: string } };
+  // SOURCE: NEW (the link on each card's back, screen-reader labels)
+  learnMore: "Learn more",
+  a11y: { label: "What we offer", flip: "Show details" },
+} as const satisfies {
+  items: readonly { icon: FeatureIcon; label: string; detail: string; href: string }[];
+  learnMore: string;
+  a11y: { label: string; flip: string };
+};
 
 /* ------------------------------------------------------------------ */
 /* 3 · #understanding                                                  */
 /* ------------------------------------------------------------------ */
 
 export const understanding = {
-  // SOURCE: EXISTING (curly quotes as on the live page)
+  // SOURCE: EXISTING (curly quotes as on the live page). The live paragraph's two sentences are
+  // shown in turn (`lead` large, word by word; `rest` after it); together they are the paragraph.
   title: "Understanding Ovarian Cancer",
-  body: "Often called the “silent killer,” ovarian cancer symptoms can be subtle. Early diagnosis is the single most critical factor in successful treatment outcomes.",
-  image: "anatomy",
-} as const satisfies { title: string; body: string; image: OvarianImageKey };
+  lead: "Often called the “silent killer,” ovarian cancer symptoms can be subtle.",
+  rest: "Early diagnosis is the single most critical factor in successful treatment outcomes.",
+  // SOURCE: NEW (choice: the words that end in the gradient)
+  emphasis: ["silent", "killer"],
+} as const satisfies { title: string; lead: string; rest: string; emphasis: readonly string[] };
 
 /* ------------------------------------------------------------------ */
-/* 4 · #warning-signs                                                  */
+/* 4 · #warning-signs (the shared SymptomGrid, mode "check")           */
 /* ------------------------------------------------------------------ */
 
 export const warningSigns = {
   // SOURCE: EXISTING
   title: "Warning Signs",
   body: "Persistent abdominal bloating, pelvic pain, feeling full quickly, and frequent urination should not be ignored.",
-  // SOURCE: NEW (chips: the four signs named in the live sentence, in its words)
-  signs: ["Abdominal bloating", "Pelvic pain", "Feeling full quickly", "Frequent urination"],
-  image: "womanCalm",
-} as const satisfies { title: string; body: string; signs: readonly string[]; image: OvarianImageKey };
+  // SOURCE: NEW (the four signs named in the live sentence, in its words; icon keys)
+  items: [
+    { key: "bloating", icon: "bloating", title: "Abdominal bloating" },
+    { key: "pelvic", icon: "pelvic", title: "Pelvic pain" },
+    { key: "full", icon: "full", title: "Feeling full quickly" },
+    { key: "urination", icon: "urination", title: "Frequent urination" },
+  ],
+  // SOURCE: NEW (the result once something is ticked: general guidance, never a diagnosis; the
+  // button sends the ticked list as its note; nothing is stored)
+  // PENDING DOCTOR: the result line.
+  result: {
+    some: "Noticing one or more of these for a few weeks? A short consultation can rule things out.",
+    cta: { label: "Book Consultation", service: "Consultation", cta: "ovarian:warning-signs:book-consultation" },
+    notePrefix: "Warning signs: ",
+  },
+  // SOURCE: NEW (screen-reader labels)
+  a11y: { group: "Tick the signs you have noticed", result: "What to do next" },
+} as const satisfies {
+  title: string;
+  body: string;
+  items: readonly { key: string; icon: SymptomIcon; title: string }[];
+  result: { some: string; cta: AppointmentCta; notePrefix: string };
+  a11y: { group: string; result: string };
+};
 
 /* ------------------------------------------------------------------ */
-/* 5 · #diagnostics                                                    */
+/* 5 · #diagnostics (the instrument tray)                              */
 /* ------------------------------------------------------------------ */
+
+export type TestKey = "ca125" | "tvus" | "ct" | "brca";
 
 export const diagnostics = {
   // SOURCE: EXISTING
   title: "Diagnostic Markers",
   body: "We utilize advanced CA-125 blood testing, high-resolution transvaginal ultrasound, CT imaging, and genetic screening (BRCA1/2).",
-  // SOURCE: NEW (chips: the four tests named in the live sentence, in its words)
-  markers: ["CA-125", "Transvaginal ultrasound", "CT imaging", "BRCA1/2"],
-  image: "consultation",
-} as const satisfies { title: string; body: string; markers: readonly string[]; image: OvarianImageKey };
+  // SOURCE: NEW (the four tests named in the live sentence, in its words; each drawer's "What it
+  // tells us" line is general information, never a diagnosis)
+  // PENDING DOCTOR: the four "What it tells us" lines.
+  tests: [
+    {
+      key: "ca125",
+      title: "CA-125",
+      kind: "Blood test",
+      tells: "A protein that can rise with ovarian cancer; most useful for following treatment over time.",
+    },
+    {
+      key: "tvus",
+      title: "Transvaginal ultrasound",
+      kind: "Imaging",
+      tells: "A close, clear view of the ovaries that shows the size and character of a mass.",
+    },
+    {
+      key: "ct",
+      title: "CT imaging",
+      kind: "Imaging",
+      tells: "Shows whether the disease has spread in the abdomen, which guides the surgical plan.",
+    },
+    {
+      key: "brca",
+      title: "BRCA1/2",
+      kind: "Genetic screening",
+      tells: "Inherited changes that can shape treatment choices and matter for family members.",
+    },
+  ],
+  // SOURCE: NEW (labels)
+  tellsLabel: "What it tells us",
+  a11y: { tray: "The four tests", close: "Close" },
+} as const satisfies {
+  title: string;
+  body: string;
+  tests: readonly { key: TestKey; title: string; kind: string; tells: string }[];
+  tellsLabel: string;
+  a11y: { tray: string; close: string };
+};
 
 /* ------------------------------------------------------------------ */
 /* 6 · #treatments                                                     */

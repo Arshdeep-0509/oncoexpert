@@ -1,27 +1,27 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import {
-  dashboard,
-  outcomes,
-  packages,
-  pageName,
-  pageSlug,
-  secondOpinion,
-  shared,
-  surgeon,
-} from "@/content/pages/thyroid-cancer";
+import { pageSlug, shared, surgeon } from "@/content/pages/thyroid-cancer";
+import { thyroidImages } from "@/content/pages/thyroid-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
-import { finalCtaSection, locationsSection, reviewsSection, videosSection } from "@/content/shared/sections";
-import { formatRupees } from "@/lib/format";
+import { reviewsSection, videosSection } from "@/content/shared/sections";
+import { keepLastWords } from "@/lib/format";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
-import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
 import { Hero } from "@/components/pages/thyroid-cancer/Hero";
 import { Understanding } from "@/components/pages/thyroid-cancer/Understanding";
 import { Symptoms } from "@/components/pages/thyroid-cancer/Symptoms";
 import { EarlyDetection } from "@/components/pages/thyroid-cancer/EarlyDetection";
 import { Modalities } from "@/components/pages/thyroid-cancer/Modalities";
+import { Dashboard } from "@/components/pages/thyroid-cancer/Dashboard";
+import { Outcomes } from "@/components/pages/thyroid-cancer/Outcomes";
+import { Packages } from "@/components/pages/thyroid-cancer/Packages";
+import { SecondOpinion } from "@/components/pages/thyroid-cancer/SecondOpinion";
+import { DoctorCard } from "@/components/shared/DoctorCard";
+import { Reviews } from "@/components/shared/Reviews";
+import { Videos } from "@/components/shared/Videos";
+import { Locations } from "@/components/shared/Locations";
+import { FinalCta } from "@/components/shared/FinalCta";
 
 const page = pages[pageSlug];
 
@@ -32,11 +32,12 @@ export function generateViewport(): Viewport {
   return pageViewport(page);
 }
 
-const reviews = reviewsFor(pageSlug, shared.reviewOrder);
+const portrait = thyroidImages[surgeon.image];
+const finalImage = thyroidImages[shared.finalImage];
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, thyroid theme).
-// Sections 1–5 are built (each after the hero in its own <Suspense> boundary); the rest are
-// placeholders with their final ids, in their final order.
+// Every section after the hero sits in its own <Suspense> boundary, so React hydrates them one by
+// one and yields between them (shorter main-thread tasks; no visual difference).
 export default function ThyroidCancerPage() {
   return (
     <>
@@ -53,58 +54,57 @@ export default function ThyroidCancerPage() {
       <Suspense>
         <Modalities /> {/* 5  #modalities       warm (blush) */}
       </Suspense>
-      {/* 6 #dashboard  indigo band */}
-      <SectionPlaceholder
-        id="dashboard"
-        tone="plum"
-        title={dashboard.title}
-        blocks={dashboard.stats.map((stat) => ({ label: `${stat.value}${stat.suffix} ${stat.label}` }))}
-      />
-      {/* 7 #outcomes  alt */}
-      <SectionPlaceholder
-        id="outcomes"
-        tone="alt"
-        title={outcomes.title}
-        blocks={[
-          ...outcomes.stages.map((stage) => ({ label: `${stage.label} · ${stage.value}${outcomes.unit}` })),
-          { label: `${outcomes.overall.value}${outcomes.overall.suffix} ${outcomes.overall.label}`, wide: true },
-        ]}
-      />
-      {/* 8 #packages  warm (hidden on every device on the live page: PENDING DOCTOR) */}
-      <SectionPlaceholder
-        id="packages"
-        tone="warm"
-        title={packages.title}
-        blocks={packages.items.map((item) => ({ label: `${item.name} · ${formatRupees(item.amount)}${item.mark}` }))}
-      />
-      {/* 9 #surgeon  surface */}
-      <SectionPlaceholder
-        id="surgeon"
-        title={surgeon.name}
-        blocks={[...surgeon.badges.map((badge) => ({ label: badge.label })), { label: surgeon.cta.label }]}
-      />
-      {/* 10 #second-opinion  indigo band */}
-      <SectionPlaceholder
-        id="second-opinion"
-        tone="plum"
-        title={secondOpinion.title}
-        blocks={[{ label: secondOpinion.cta.label }]}
-      />
-      {/* 11–14: the shared sections */}
-      <SectionPlaceholder
-        id="reviews"
-        tone="alt"
-        title={reviewsSection.title.join(" ")}
-        blocks={reviews.map((review) => ({ label: review.author }))}
-      />
-      <SectionPlaceholder id="videos" title={videosSection.title} />
-      <SectionPlaceholder
-        id="locations"
-        tone="alt"
-        title={locationsSection.heading}
-        blocks={locationsSection.items.map((clinic) => ({ label: clinic.name }))}
-      />
-      <SectionPlaceholder id="final-cta" tone="plum" title={finalCtaSection.text} blocks={[{ label: pageName }]} />
+      <Suspense>
+        <Dashboard /> {/* 6  #dashboard       indigo band */}
+      </Suspense>
+      <Suspense>
+        <Outcomes /> {/* 7  #outcomes        alt */}
+      </Suspense>
+      <Suspense>
+        <Packages /> {/* 8  #packages        warm (hidden on the live page: PENDING DOCTOR) */}
+      </Suspense>
+      {/* 9 #surgeon: the shared DoctorCard with the live thyroid profile */}
+      <Suspense>
+        <DoctorCard
+          id="surgeon"
+          tone="surface"
+          label={surgeon.role}
+          name={surgeon.name}
+          bio={surgeon.bio}
+          stats={surgeon.stats}
+          badges={surgeon.badges}
+          cta={surgeon.cta}
+          link={surgeon.link}
+          image={{ src: portrait.src, alt: portrait.alt }}
+        />
+      </Suspense>
+      <Suspense>
+        <SecondOpinion /> {/* 10 #second-opinion  indigo band */}
+      </Suspense>
+      {/* 11–14: shared sections (soft look), re-themed by the thyroid theme */}
+      <Suspense>
+        <Reviews
+          tone="alt"
+          title={reviewsSection.title}
+          reviews={reviewsFor(pageSlug, shared.reviewOrder)}
+          link={reviewsSection.link}
+        />
+      </Suspense>
+      <Suspense>
+        <Videos
+          tone="surface"
+          eyebrow={videosSection.eyebrow}
+          title={keepLastWords(videosSection.title)}
+          ids={videosSection.ids}
+          labels={videosSection.a11y}
+        />
+      </Suspense>
+      <Suspense>
+        <Locations tone="warm" />
+      </Suspense>
+      <Suspense>
+        <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
+      </Suspense>
     </>
   );
 }

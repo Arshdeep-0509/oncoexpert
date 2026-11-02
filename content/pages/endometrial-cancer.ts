@@ -137,6 +137,8 @@ export type SurgeonContent = {
   paragraphs: readonly string[];
   facts: readonly { label: string; value: string }[];
   cta: AppointmentCta;
+  /** The name links to the profile page (DoctorCard `profile`). */
+  profile: { href: string; cta: string };
   image: EndometrialImageKey;
 };
 
@@ -401,6 +403,8 @@ export const surgeon = {
   ],
   // SOURCE: EXISTING (label); NEW (the service it preselects)
   cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
+  // SOURCE: NEW (the name links to About Us; analytics label)
+  profile: { href: "/about-us/", cta: "endometrial:surgeon:profile" },
   image: "doctor",
 } as const satisfies SurgeonContent;
 

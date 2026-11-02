@@ -16,6 +16,8 @@ type SurvivalChartProps = {
   footnote?: string;
   /** Bars are drawn against this maximum. Default 100. */
   max?: number;
+  /** Long labels: the label and figure on one line, the bar full width under them. */
+  stacked?: boolean;
   className?: string;
 };
 
@@ -26,29 +28,41 @@ type SurvivalChartProps = {
  * its label; a visually hidden <table> carries the same data for screen readers and assistive
  * tools. Server-rendered; InView and the counters are the only client code.
  */
-export function SurvivalChart({ rows, unit, caption, labels, footnote, max = 100, className }: SurvivalChartProps) {
+export function SurvivalChart({
+  rows,
+  unit,
+  caption,
+  labels,
+  footnote,
+  max = 100,
+  stacked = false,
+  className,
+}: SurvivalChartProps) {
   return (
     <div className={className}>
-      <table className="sr-only">
-        <caption>{caption}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{labels.row}</th>
-            <th scope="col">{labels.value}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.label}>
-              <th scope="row">{row.label}</th>
-              <td>
-                {row.value}
-                {unit}
-              </td>
+      {/* In a div: a table ignores sr-only's 1px width and could widen the page. */}
+      <div className="sr-only">
+        <table>
+          <caption>{caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{labels.row}</th>
+              <th scope="col">{labels.value}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.label}>
+                <th scope="row">{row.label}</th>
+                <td>
+                  {row.value}
+                  {unit}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <InView threshold={0.35} className="svc-chart">
         <ul className="grid gap-4 md:gap-5">
@@ -59,14 +73,23 @@ export function SurvivalChart({ rows, unit, caption, labels, footnote, max = 100
                 role="img"
                 aria-label={`${row.label}: ${row.value}${unit}`}
                 className={cn(
-                  "svc-row grid grid-cols-[5.5rem_1fr_auto] items-center gap-4 rounded-lg px-3 py-3 outline-none focus-visible:ring-2 focus-visible:ring-accent md:grid-cols-[7rem_1fr_auto] md:gap-6",
+                  "svc-row grid items-center rounded-lg px-3 py-3 outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                  stacked
+                    ? "grid-cols-[1fr_auto] gap-x-4 gap-y-3"
+                    : "grid-cols-[5.5rem_1fr_auto] gap-4 md:grid-cols-[7rem_1fr_auto] md:gap-6",
                 )}
                 style={{ "--i": i, "--v": row.value / max } as React.CSSProperties}
               >
                 <span aria-hidden="true" className="font-display text-lg font-semibold text-ink md:text-xl">
                   {row.label}
                 </span>
-                <span aria-hidden="true" className="relative h-4 overflow-hidden rounded-full bg-accent-soft md:h-5">
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "relative h-4 overflow-hidden rounded-full bg-accent-soft md:h-5",
+                    stacked && "order-last col-span-2",
+                  )}
+                >
                   <span className="svc-bar absolute inset-0 rounded-full bg-(image:--grad-accent)" />
                 </span>
                 <span

@@ -54,6 +54,7 @@ export default function EndometrialCancerPage() {
         stats={[surgeon.experience]}
         credentials={surgeon.facts.map((f) => ({ ...f, icon: factIcons[f.label] }))}
         cta={surgeon.cta}
+        profile={surgeon.profile}
         image={{ src: portrait.src, alt: portrait.alt }}
       />
       {/* 8–12: shared sections (soft look), re-themed by the endometrial theme */}

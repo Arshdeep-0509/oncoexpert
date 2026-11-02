@@ -128,6 +128,29 @@ first one is shown large. Titles and thumbnails come from YouTube automatically.
 
 ---
 
+## Edit the Lung, Ovarian and Thyroid pages
+
+Each page's words and numbers are in one file: `content/pages/lung-cancer.ts`, `ovarian-cancer.ts` and
+`thyroid-cancer.ts`. Search the file for the name in the left column. Prices are plain rupee numbers
+(`115000`, shown as "₹1,15,000"), percentages are plain numbers (`94`, the `%` is the `unit` or
+`suffix`), and totals are calculated, never typed in.
+
+| To change     | Lung                                                                                           | Ovarian                                                                                                                                                           | Thyroid                                                                                                                               |
+| ------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Prices        | (no prices)                                                                                    | `packages.items`: `price` per package; the chemotherapy price is `chemoPerCycle` (the card and the cycle estimator both use it)                                   | `packages.items`: `price` per package, `asterisk: "*"` after it; `packages.footnote` under the cards                                  |
+| Packages      | (none)                                                                                         | `packages.items`: `name`, `lead` ("from"), `inclusions`, `cta`; `featured: true` on one card (with its `ribbon`); `showCycleEstimator` turns the estimator off/on | `packages.items`: `name`, `inclusions`, `cta`; `featured: true` on one card                                                           |
+| Survival rows | `survival.rows` (`label`, `value`); Stage I is `stageISurvival` (also in `stageIV.stats`)      | `outcomes.survival.rows`; the 96% ring is `outcomes.stats`                                                                                                        | `outcomes.stages`; the overall 98.5% is `outcomes.overall.value` (stated, not calculated); the dashboard gauges are `dashboard.stats` |
+| Volume counts | `volume.counts` (`value`, `label`); the total is calculated and hidden until `showTotal` is on | the "500+" is `outcomes.stats`                                                                                                                                    | "10,000+ Surgeries" is `surgeries`; the hero's 100% / 0% are `completeRemoval` / `voiceChange` (shown in the hero and the dashboard)  |
+| Symptoms      | `diagnosis.symptoms` (`title`, `when`)                                                         | `warningSigns.items` (`title`) and `warningSigns.result`                                                                                                          | `symptoms.items` (`title`, `body`, `image`) and `symptoms.note`                                                                       |
+| Treatments    | `surgery.explorer` (the lobe options), `techniques.sides` (VATS vs robotic), `stageIV`         | `treatments.items` (`title`, `body`, `bullets`)                                                                                                                   | `modalities.items` (treatments) and `modalities.strengths` (Why OncoXpert)                                                            |
+
+- To add a row or card, copy an existing `{ … },` entry inside the same `[ … ]` and change its words.
+  Give it a new `key` where the entries have one.
+- A new photo goes in the page's `.images.ts` file (`npm run images <page>` downloads the Pexels ones).
+- Run `npm run build` after an edit: if it fails, the error names the file and line.
+
+---
+
 ## Edit the Home page
 
 Everything on `/` is in `content/pages/home.ts`, one block per section, in page order (`hero`,

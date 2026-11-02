@@ -53,6 +53,10 @@ const PORTRAIT = { width: 1717, height: 2576 } as const;
 const LANDSCAPE = { width: 2400, height: 1600 } as const;
 const ARMS = { width: 1200, height: 839 } as const;
 
+/** Buttons that name no service (header, menu, FAQ card) preselect this one. */
+// SOURCE: NEW (choice; the first of the live "Service Required" options)
+export const defaultAppointmentService: AppointmentService = "Consultation";
+
 export const images = {
   xFrontWhite: { src: "/images/robotic/davinci-x-front-white.jpg", alt: ALT.front, bg: "white", ...PORTRAIT },
   xInstrumentsWhite: {

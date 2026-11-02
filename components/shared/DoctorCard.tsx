@@ -43,6 +43,12 @@ type DoctorCardProps = {
   cta?: { label: string; service: AppointmentService };
   /** A plain link button after (or instead of) the appointment button, e.g. "View Full Profile". */
   link?: { label: string; href: string };
+  /**
+   * The doctor's profile page, linked from the name (soft look), with its analytics label
+   * (<page>:surgeon:profile). For pages without `link`: the name looks the same until hovered
+   * (underline) or focused (ring).
+   */
+  profile?: { href: string; cta: string };
   /** Figures under the title that count up, e.g. "15+ Years · Clinical Experience" (soft look). */
   stats?: readonly Stat[];
   /** The page's own button styling instead of the Button (classic look). */
@@ -99,12 +105,35 @@ export function DoctorCard(props: DoctorCardProps) {
 
 type TextProps = DoctorCardProps & { titleId: string };
 
-function SoftText({ label, name, title, bio, emphasis, badges, stats, credentials, cta, link, titleId }: TextProps) {
+function SoftText({
+  label,
+  name,
+  title,
+  bio,
+  emphasis,
+  badges,
+  stats,
+  credentials,
+  cta,
+  link,
+  profile,
+  titleId,
+}: TextProps) {
   return (
     <Reveal className="lg:col-span-7" delay={0.08}>
       <Eyebrow>{label}</Eyebrow>
       <h2 id={titleId} className={textStyles.title.soft}>
-        {name}
+        {profile ? (
+          <a
+            href={profile.href}
+            data-cta={profile.cta}
+            className="rounded-md decoration-2 underline-offset-[6px] outline-none hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4"
+          >
+            {name}
+          </a>
+        ) : (
+          name
+        )}
       </h2>
       {title ? <p className="mt-2 text-lg font-semibold text-muted">{title}</p> : null}
       {badges?.length ? (

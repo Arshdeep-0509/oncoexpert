@@ -227,10 +227,10 @@ the same values as `variant`.
 | `AppointmentSection` | `page` (email subject), `formStyles?`, `heading?` ("h1" on the booking page), `className?`                                                                                                                                                                                                                                                                                                                                                                                    |
 | `Locations`          | none (clinics from content)                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `FinalCta`           | `image` (soft: `{src, focal}`; classic: `{src, width, height}`)                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `stats?` (soft: figures that count up), `image`                                                                                                                                                                                                                                                               |
+| `DoctorCard`         | `label`, `name`, `title?`, `lead?`, `bio`, `emphasis?`, `badges?`, `credentials?`, `cta?`, `ctaLook?`, `link?` (a plain link button, e.g. "View Full Profile"), `profile?` (`href`, `cta`: the name links to /about-us/ and looks unchanged at rest; Breast and Endometrial, which have no `link`), `stats?` (soft: figures that count up), `image`                                                                                                                           |
 | `AppointmentButton`  | `label`, `service?`, `note?`, `cta?` (analytics label when the text repeats in a section), `variant?` or `look?` (a page's own link classes)                                                                                                                                                                                                                                                                                                                                  |
 | `TechniqueCompare`   | `title`, `sides` (two `TechniqueSideContent`: `key`, `label` (tab), `title`, `body?`, `points` (`icon`, `title`, `text?`), `image` (PageImage), `link?` (`label`, `href`, `cta?`), `drift?`), `labels` (`vs`, `tabs`), `page` (analytics prefix); no `look`                                                                                                                                                                                                                   |
-| `SurvivalChart`      | not a section: `rows` (`label`, `value`), `unit`, `caption` + `labels` (`row`, `value`) for the screen-reader table, `footnote?`, `max?` (default 100), `className?`; no `look`                                                                                                                                                                                                                                                                                               |
+| `SurvivalChart`      | not a section: `rows` (`label`, `value`), `unit`, `caption` + `labels` (`row`, `value`) for the screen-reader table, `footnote?`, `max?` (default 100), `stacked?` (long labels: label and figure on one line, the bar under them; Thyroid), `className?`; no `look`                                                                                                                                                                                                          |
 | `SymptomGrid`        | not a section (client): `items` (`key`, `icon`, `title`, `body?`, `image?` (`src`, `alt`, `focal`): a photo on top with the icon as a badge, "disclose" only), `page` (analytics prefix), `mode`: `"check"` (+ `empty`, `result` (`some`, `cta`, `notePrefix`), `labels` (`group`, `result`)) or `"disclose"` (+ `labels` (`group`)); a 2 × 2 grid on phones                                                                                                                  |
 | `PackageCards`       | not a section: `packages` (`name`, `lead?`, `price`, `prefix?`, `suffix?`, `asterisk?`, `inclusions`, `cta` (`label`, `service`, `note?`, default "Package: <name>"), `featured?`, `ribbon?`), `footnote?`, `initialIndex?` (default: the featured card), `estimator?` (`title`, `label`, `sentence` with {n} {price} {total}, `unitPrice`, `min`, `max`, `initial`), `page`, `label`. Its section must not be `position: relative` (SwipeRow's initialIndex uses offsetLeft) |
 
@@ -242,7 +242,8 @@ the same values as `variant`.
   `bookingHref(service, note, from)` (lib/booking.ts), e.g.
   `/book-your-appoinment-page/?service=consultation-for-surgery&note=Package%3A%20Laparoscopic&from=%2F…`.
   The links' own `href` is the same URL, so they work without JavaScript and in a new tab. Buttons that
-  name no service use `SiteShell`'s `defaultService` (most pages: "Consultation"). On the booking page
+  name no service use `SiteShell`'s `defaultService` (every page but the booking page: "Consultation";
+  `AppointmentButton` puts it in its `href` too, from the appointment context). On the booking page
   itself the header's button scrolls to the form instead.
 - The form reads `?service=` (preselects), `?note=` (hidden note) and `?from=` (the page the visitor
   came from: the hidden page field becomes "Book Appointment via /colon-…/"). The server action emails
@@ -727,3 +728,23 @@ FinalCta, DoctorCard) with the default `soft` look; write page-only sections in
   Other pages: pixel-identical; Endometrial's markup is identical apart from its script count (18 → 20),
   because the bundler regrouped shared chunks (SymptomGrid now imports next/image). Lighthouse (warm,
   ×3): Thyroid 71–75 perf (Breast 67–68 in the same runs), accessibility 100, CLS 0, TBT 320–360ms.
+- Thyroid: complete (all 14 sections, 2 Nov 2026). #dashboard (Dashboard + Gauge + VoiceWave; dashboard.css,
+  `tyd-`): an indigo instrument panel, three semicircle gauges (the arc a stroke draw, the figure counting
+  up) with the live notes under them; the 0% gauge draws no arc, it shows a check and a flat-then-steady
+  voice line (once). The hypocalcemia note is shown as live, no comparison figure (PENDING DOCTOR).
+  Screen-reader table; phones stack the gauges. #outcomes: the shared SurvivalChart (new `stacked`
+  rows for the long live labels) beside the overall 98.5% as its own figure (stated, not computed; no
+  count-up, the counter rounds) on a photo card. #packages: the shared PackageCards, Total Thyroidectomy
+  featured, the asterisk and the live footnote, no estimator; "SELECT PACKAGE" books with
+  "Package: <name>". #surgeon: DoctorCard (role as label, "10,000+ Surgeries" counting up, "Robotic
+  Oncology Fellow" badge, View Full Profile). #second-opinion: indigo band with a NEW "What to bring"
+  checklist (PENDING DOCTOR), ticks drawing in turn. Shared reviews (colon review hidden), videos,
+  locations, final band. SectionPlaceholder removed (no page uses it).
+  Cross-page polish (no pixel change: per-section diffs of the 9 finished pages identical, apart from the
+  known two-state About-375 and Endometrial-375 noise, each matched to a baseline capture): every cancer
+  page's doctor links to /about-us/ (Breast and Endometrial through the name, DoctorCard `profile`);
+  Breast and Robotic now set `defaultService` ("Consultation") and every AppointmentButton's `href` names
+  the page default, so all booking links on all 9 pages preselect a service. SurvivalChart's screen-reader
+  table sits in an sr-only div (it widened the Thyroid page by 7px at 320). README: "Edit the Lung,
+  Ovarian and Thyroid pages". Lighthouse (warm, ×3, laptop; noisy): Thyroid 67–80, Lung 63–79, Ovarian
+  68–78, Breast 67–80 in the same runs; CLS 0; a11y 100 except one Ovarian run (97: a word mid-fade).

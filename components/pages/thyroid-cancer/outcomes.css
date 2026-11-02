@@ -1,0 +1,17 @@
+/* ==================================================================
+   Thyroid #outcomes. Plain CSS, prefix ty- (class names in Outcomes).
+   - The overall figure rises and fades in once its card is in view.
+   Reduced motion: shown at once. Opacity and transform only.
+   ================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .ty-overall:not([data-inview]) .ty-overallFigure {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .ty-overall[data-inview] .ty-overallFigure {
+    transition:
+      opacity 0.8s var(--ease-out-expo) 0.15s,
+      transform 0.8s var(--ease-out-expo) 0.15s;
+  }
+}

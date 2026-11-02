@@ -1,0 +1,27 @@
+/* ==================================================================
+   Thyroid #second-opinion. Plain CSS, prefix ty- (class names in SecondOpinion).
+   - Once the checklist is in view, each item fades in and its tick draws, one after another (--i).
+   Reduced motion: every item shown ticked. Opacity, transform and stroke draws only.
+   ================================================================== */
+
+.ty-bringTick {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :not([data-inview]) > .ty-bring .ty-bringItem {
+    opacity: 0.45;
+  }
+  :not([data-inview]) > .ty-bring .ty-bringTick {
+    stroke-dashoffset: 1;
+  }
+  [data-inview] > .ty-bring .ty-bringItem {
+    transition: opacity 0.5s var(--ease-out-expo);
+    transition-delay: calc(0.2s + var(--i) * 0.45s);
+  }
+  [data-inview] > .ty-bring .ty-bringTick {
+    transition: stroke-dashoffset 0.5s var(--ease-out-expo);
+    transition-delay: calc(0.35s + var(--i) * 0.45s);
+  }
+}

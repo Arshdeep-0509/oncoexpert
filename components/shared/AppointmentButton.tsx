@@ -42,8 +42,9 @@ export function AppointmentButton({
   look,
   ...props
 }: AppointmentButtonProps) {
-  const { openAppointment } = useAppointment();
-  const href = bookingHref(service, note);
+  const { openAppointment, defaultService } = useAppointment();
+  // The link names the page's default service too, so it preselects without JavaScript as well.
+  const href = bookingHref(service ?? defaultService, note);
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     openAppointment(service, note);

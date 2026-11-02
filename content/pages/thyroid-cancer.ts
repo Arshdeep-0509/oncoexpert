@@ -15,7 +15,7 @@
  * `mark`). Shared copy is reused, not repeated here: reviews, videos, locations and the final call
  * band (content/shared/sections.ts). Images: content/pages/thyroid-cancer.images.ts.
  */
-import type { PageMeta, SymptomIcon } from "@/content/types";
+import type { ChartRow, PackageItem, PageMeta, Stat, SymptomIcon } from "@/content/types";
 import type { ThyroidImageKey } from "@/content/pages/thyroid-cancer.images";
 import { thyroidOgImage } from "@/content/pages/thyroid-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -35,7 +35,6 @@ type HeroStat = { label: string } & ({ value: number; suffix: string } | { text:
 /** Icon keys, mapped to lucide icons in components/pages/thyroid-cancer. */
 export type ModalityIcon = "thyroidectomy" | "neck-dissection" | "radioiodine" | "monitoring";
 export type StrengthIcon = "volume" | "diagnosis" | "nerve-monitor" | "affordable";
-type BadgeIcon = "surgeries" | "fellow";
 
 /* ------------------------------------------------------------------ */
 /* Shared figures (shown in #hero and #dashboard)                      */
@@ -76,8 +75,6 @@ export const meta = {
   ogImage: thyroidOgImage,
 } as const satisfies PageMeta & { h1: string };
 
-/** Page name used in the appointment email subject and the form's hidden "page" field. */
-export const pageName = "Thyroid Cancer";
 export const pageSlug = "thyroid-cancer";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
@@ -344,9 +341,17 @@ export const dashboard = {
       note: "Significantly lower than global average for parathyroid stunning.",
     },
   ],
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    table: "Surgical performance figures",
+    figure: "Figure",
+    value: "Value",
+    note: "Note",
+  },
 } as const satisfies {
   title: string;
   stats: readonly { value: number; suffix: string; label: string; note: string }[];
+  a11y: Record<"table" | "figure" | "value" | "note", string>;
 };
 
 /* ------------------------------------------------------------------ */
@@ -374,13 +379,20 @@ export const outcomes = {
     note: "Aggregated across all differentiated thyroid cancer types.",
   },
   image: "seniorSmile",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    survival: "Survival rates by stage",
+    row: "Stage",
+    rate: "Survival rate",
+  },
 } as const satisfies {
   title: string;
   intro: string;
-  stages: readonly { label: string; value: number }[];
+  stages: readonly ChartRow[];
   unit: string;
   overall: { value: number; suffix: string; label: string; note: string };
   image: ThyroidImageKey;
+  a11y: Record<"survival" | "row" | "rate", string>;
 };
 
 /* ------------------------------------------------------------------ */
@@ -388,40 +400,42 @@ export const outcomes = {
 /* ------------------------------------------------------------------ */
 
 // SOURCE: EXISTING. The live section is in the markup but hidden on every device
-// (elementor-hidden-desktop/-tablet/-mobile). Kept in full. The live buttons link to "#".
+// (elementor-hidden-desktop/-tablet/-mobile). Shown on the rebuilt page. The live buttons link to "#".
 // PENDING DOCTOR: show the packages on the rebuilt page? Confirm the three prices (₹85,000* ·
 // ₹1,15,000* · ₹98,000*) and what each includes. The live order lists the ₹1,15,000 package
 // before the ₹98,000 one: keep that order?
 export const packages = {
   title: "Transparent Surgical Packages",
   // SOURCE: EXISTING (names, prices with their asterisk, features, button labels); NEW (service +
-  // note each button sends with the form)
+  // note each button sends with the form; Total Thyroidectomy featured)
   items: [
     {
       name: "Total Thyroidectomy",
-      amount: 85000,
-      mark: "*",
-      features: ["Comprehensive Surgery", "Nerve Monitoring Included", "2-Day Stay Package"],
+      price: 85000,
+      prefix: "₹",
+      asterisk: "*",
+      inclusions: ["Comprehensive Surgery", "Nerve Monitoring Included", "2-Day Stay Package"],
       cta: { label: "SELECT PACKAGE", service: "Consultation For Surgery", note: "Package: Total Thyroidectomy" },
+      featured: true,
     },
     {
       name: "Modified Neck Dissection",
-      amount: 115000,
-      mark: "*",
-      features: ["Advanced Nodal Clearance", "Cosmetic Incision Planning", "3-Day Post-Op Monitoring"],
+      price: 115000,
+      prefix: "₹",
+      asterisk: "*",
+      inclusions: ["Advanced Nodal Clearance", "Cosmetic Incision Planning", "3-Day Post-Op Monitoring"],
       cta: {
         label: "SELECT PACKAGE",
         service: "Consultation For Surgery",
         note: "Package: Modified Neck Dissection",
       },
-      // The middle card.
-      featured: true,
     },
     {
       name: "Neck Dissection (Level 1-3)",
-      amount: 98000,
-      mark: "*",
-      features: ["Selective Nodal Removal", "Standard Nerve Checks", "2-Day Hospitalization"],
+      price: 98000,
+      prefix: "₹",
+      asterisk: "*",
+      inclusions: ["Selective Nodal Removal", "Standard Nerve Checks", "2-Day Hospitalization"],
       cta: {
         label: "SELECT PACKAGE",
         service: "Consultation For Surgery",
@@ -431,19 +445,7 @@ export const packages = {
   ],
   // SOURCE: EXISTING
   footnote: "*Prices are indicative and may vary based on co-morbidities and hospital choice.",
-} as const satisfies {
-  title: string;
-  items: readonly {
-    name: string;
-    /** Rupees, as a number (formatRupees: 115000 → "₹1,15,000"); `mark` follows it. */
-    amount: number;
-    mark: string;
-    features: readonly string[];
-    cta: AppointmentCta;
-    featured?: boolean;
-  }[];
-  footnote: string;
-};
+} as const satisfies { title: string; items: readonly PackageItem[]; footnote: string };
 
 /* ------------------------------------------------------------------ */
 /* 9 · #surgeon                                                        */
@@ -461,20 +463,22 @@ export const surgeon = {
   // PENDING DOCTOR: "over a decade" here and on the ovarian page, "10+" on About Us, "15+" on the
   // colorectal and endometrial pages, "Over 25 years" on the booking page. Which is right?
   bio: "Specializing in high-precision head and neck oncology, Dr. Navalgund has spent over a decade perfecting surgical techniques that prioritize organ function preservation. His approach to Thyroid Cancer integrates robotic-assisted technology with traditional surgical wisdom to deliver outcomes that go beyond mere survival.",
-  // SOURCE: EXISTING (labels); NEW (icon keys)
-  badges: [
-    { icon: "surgeries", label: `${surgeries.toLocaleString("en-IN")}+ Surgeries` },
-    { icon: "fellow", label: "Robotic Oncology Fellow" },
-  ],
-  // SOURCE: NEW (the live block has no button; label as on the endometrial page)
+  // SOURCE: EXISTING ("10,000+ Surgeries": the figure counts up, "Surgeries" under it)
+  stats: [{ value: surgeries, suffix: "+", label: "Surgeries" }],
+  // SOURCE: EXISTING (label); NEW (icon key)
+  badges: [{ icon: "award", label: "Robotic Oncology Fellow" }],
+  // SOURCE: NEW (the live block has no buttons; labels as on the lung and ovarian pages)
   cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
+  link: { label: "View Full Profile", href: "/about-us/" },
   image: "doctor",
 } as const satisfies {
   name: string;
   role: string;
   bio: string;
-  badges: readonly { icon: BadgeIcon; label: string }[];
+  stats: readonly Stat[];
+  badges: readonly { icon: "award"; label: string }[];
   cta: AppointmentCta;
+  link: { label: string; href: string };
   image: ThyroidImageKey;
 };
 
@@ -488,8 +492,20 @@ export const secondOpinion = {
   body: "Get a definitive second opinion from Dr. Sunil Navalgund. We review your scans and pathology reports to provide expert clarity.",
   // SOURCE: NEW (the live block has no button; the hero's label in sentence case)
   cta: { label: "Get Second Opinion", service: "Second Opinion" },
+  // SOURCE: NEW (a checklist beside the band; the live block has none)
+  // PENDING DOCTOR: what patients should bring for a second opinion.
+  bring: {
+    title: "What to bring",
+    items: ["Your scans (CT, MRI, ultrasound)", "Your pathology report", "Recent blood tests"],
+  },
   image: "consultation",
-} as const satisfies { title: string; body: string; cta: AppointmentCta; image: ThyroidImageKey };
+} as const satisfies {
+  title: string;
+  body: string;
+  cta: AppointmentCta;
+  bring: { title: string; items: readonly string[] };
+  image: ThyroidImageKey;
+};
 
 /* ------------------------------------------------------------------ */
 /* 11–14 · shared sections                                             */

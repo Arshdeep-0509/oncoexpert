@@ -151,6 +151,60 @@ Each page's words and numbers are in one file: `content/pages/lung-cancer.ts`, `
 
 ---
 
+## Edit the Colorectal and Endometrial pages
+
+Same rules as above, in `content/pages/colorectal-cancer.ts` and `endometrial-cancer.ts`.
+
+| To change     | Colorectal                                                                                                                                     | Endometrial                                                                                                |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Prices        | (no prices)                                                                                                                                    | `packages.packages`: `amount` per package; `packages.priceLabel` ("Starting at") and `packages.disclaimer` |
+| Packages      | (none)                                                                                                                                         | `packages.packages`: `name`, `body`, `features`, `cta`; `featured: true` on one card                       |
+| Stage counts  | `outcomes.dashboard.stages` (`label`, `cases`): the "Total" is their sum; `totalSource: "live"` shows the live page's 78 instead (`liveTotal`) | (none)                                                                                                     |
+| Survival rows | `outcomes.survival.items` (`stage`, `rate`, `body`); the stoma bars are `qualityOfLife.stoma`; the stage IV figure is `advancedCases.stat`     | `clinical.stats` (Stage I survival, minimally invasive share)                                              |
+| Symptoms      | (none on the page)                                                                                                                             | `symptoms.items` (`title`, `body`, `image`)                                                                |
+| Treatments    | `approach.cards`, `techniques.robotic` / `techniques.laparoscopic`, `recoveryPath.steps`                                                       | `precision.robotic` / `precision.laparoscopic`, `sentinel`                                                 |
+
+## Booking options
+
+The services people can choose ("Service Required") are `appointmentServices` in `content/site.ts`:
+Consultation, Second Opinion, Consultation For Surgery, Follow Up. Each page's buttons preselect one
+(`service` on each button in the page's content file; the header's button uses the page's
+`defaultAppointmentService`). Adding an option: add it to the list, then it can be used in a button's
+`service`; its link slug is the name in lower case with hyphens (`?service=follow-up`).
+
+## About Us timeline
+
+`journey.stages` in `content/pages/about-us.ts`: each step has a `stage` (the small capitals label),
+a `title` and a `body`. The order in the file is the order on the page.
+
+## Quick answers, definitions and the "Medically reviewed" line (waiting for the doctor)
+
+Every cancer page has a NEW "Quick answers" block, a one-sentence definition under its H1 and a
+"Medically reviewed by Dr. Sunil Navalgund · Last reviewed <date>" line. They are written, built and
+tested, but switched off until the doctor approves them.
+
+- The words: `content/pages/<page>.seo.ts` (`definition`, `quickAnswers`: each `question` and `answer`;
+  answers are 40–60 words and start with the direct answer; figures and prices are filled in from the
+  page's content, so they never go out of date). Booking and About have their definition in
+  `book-appointment.seo.ts` / `about-us.seo.ts`.
+- The switches: `content/shared/approvals.ts`. Set `quickAnswers: true` to show the answers (Google
+  then also gets them as FAQPage data); `definitions: true` for the definitions; `medicalReview: true`
+  with `lastReviewed: "YYYY-MM-DD"` only once Dr. Sunil has reviewed the pages; `packageOffers: true`
+  once the prices are confirmed.
+- To see everything before switching it on: `NEXT_PUBLIC_SHOW_PENDING=1 npm run build` then
+  `npm run start` (never set that variable on the live site).
+
+## llms.txt (for AI answer engines)
+
+`/llms.txt` and `/llms-full.txt` are generated from the page list and the content files by
+`lib/llms.ts` at build time: the practice, the doctor, phone, clinics, one line per page, and in the
+full file each cancer page's symptoms and treatments (plus the quick answers once approved). Edit the
+facts in the content files, not in lib/llms.ts; the one-line page descriptions are `purpose` in each
+`.seo.ts` file. Whether AI crawlers may read the site is set in `app/robots.ts` (allowed for now,
+pending the doctor's decision).
+
+---
+
 ## Edit the Home page
 
 Everything on `/` is in `content/pages/home.ts`, one block per section, in page order (`hero`,
@@ -288,13 +342,15 @@ checklist in [docs/PROJECT.md](docs/PROJECT.md#add-a-page).
 Google Tag Manager (`GTM-PBNWCFV7`, set in `content/site.ts`) loads on the visitor's first interaction
 or after 12 s, so it never delays the first paint. `dataLayer` events:
 
-| Event            | When                    | Fields                  |
-| ---------------- | ----------------------- | ----------------------- |
-| `phone_click`    | any `tel:` link         | `location` (section id) |
-| `whatsapp_click` | any WhatsApp link       | `location`              |
-| `cta_click`      | any CTA button          | `label`, `location`     |
-| `form_submit`    | appointment form submit | `status`, `service`     |
+| Event              | When                                                                        | Fields                                                    |
+| ------------------ | --------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `phone_click`      | any `tel:` link                                                             | `location` (section id)                                   |
+| `whatsapp_click`   | any WhatsApp link                                                           | `location`                                                |
+| `cta_click`        | any CTA button                                                              | `label` (`<page>:<section>:<action>`), `text`, `location` |
+| `form_step`        | a booking-form field left filled in (once each)                             | `step`, `field`, `page`                                   |
+| `form_submit`      | appointment form submit                                                     | `status`, `service`, `page`                               |
+| interaction events | toggles, tabs, symptom cards, the checklist, explorers, packages, estimator | see docs/PROJECT.md, "Analytics events"                   |
 
-`label` is the button's text. Where the same text repeats in one section, the label names the item:
-on Home the service cards send "Chemotherapy: Book a Consultation" and so on, and the specialty tiles
-send the cancer's name.
+`label` always reads `<page>:<section>:<action>`, e.g. `lung:hero:book-consultation`; `text` keeps the
+button's own label. Where the same text repeats in one section, `text` names the item: on Home the service cards send
+"Chemotherapy: Book a Consultation" and the specialty tiles send the cancer's name.

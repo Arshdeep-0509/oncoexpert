@@ -1,4 +1,6 @@
 import { hero } from "@/content/pages/ovarian-cancer";
+import { ovarianSeo } from "@/content/pages/ovarian-cancer.seo";
+import { Definition } from "@/components/shared/Definition";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
@@ -31,11 +33,17 @@ export function Hero() {
         <div className="lg:col-span-6">
           <HeroHeadline />
           <p
+            data-speakable
             className={cn(styles.step, styles.fadeUp, "mt-4 measure text-base text-text md:mt-6 md:text-lg")}
             style={at(1.05)}
           >
             {hero.body}
           </p>
+          <Definition
+            text={ovarianSeo.definition}
+            className={cn(styles.step, styles.fadeUp, "mt-3")}
+            style={at(1.05)}
+          />
           <div
             className={cn(styles.step, styles.fadeUp, "mt-5 flex flex-col gap-3 md:mt-8 md:flex-row md:flex-wrap")}
             style={at(1.2)}

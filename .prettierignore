@@ -13,3 +13,7 @@ components/ui/accordion.tsx
 components/ui/navigation-menu.tsx
 components/ui/select.tsx
 components/ui/sheet.tsx
+
+# Generated (scripts/motion-audit.mjs, scripts/content-audit.mjs)
+docs/MOTION.md
+docs/CONTENT-AUDIT.md

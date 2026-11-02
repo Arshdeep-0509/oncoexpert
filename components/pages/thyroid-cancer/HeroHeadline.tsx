@@ -58,6 +58,7 @@ export function HeroHeadline() {
       </p>
       <h1
         id="hero-title"
+        data-speakable
         className="mt-4 font-display text-[clamp(1.95rem,8.2vw,2.4rem)] leading-[1.08] tracking-(--display-tracking) text-ink md:mt-5 md:text-[3rem] lg:text-[clamp(2.6rem,3.7vw,3.5rem)]"
       >
         {words.map((word, i) => {

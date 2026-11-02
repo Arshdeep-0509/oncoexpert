@@ -55,6 +55,8 @@ export type PageEntry = {
   themeColor: string;
   /** app/sitemap.ts priority. Default 0.8. */
   sitemapPriority?: number;
+  /** When the page's content last changed (YYYY-MM-DD): the sitemap's lastmod. Update it with the page. */
+  lastModified: string;
   meta: PageMeta;
 };
 
@@ -206,4 +208,39 @@ export type PackageCardsContent = {
   items: readonly PackageItem[];
   footnote?: string;
   estimator?: PackageEstimator;
+};
+
+/* ------------------------------------------------------------------ */
+/* Search and answer engines (the pages' .seo.ts files)                */
+/* ------------------------------------------------------------------ */
+
+/** One "Quick answers" item: the answer leads with the direct answer, 40–60 words. */
+export type QuickAnswer = { question: string; answer: string };
+
+/** A figure written once as a self-contained sentence, with its source and date when known. */
+export type CitableStat = { sentence: string; source: string; date: string | null };
+
+/** The condition a cancer page is about (schema.org MedicalCondition), from the page's own words. */
+export type ConditionFacts = {
+  name: string;
+  alternateName: readonly string[];
+  possibleTreatment: readonly string[];
+  signOrSymptom: readonly string[];
+};
+
+/** A package price for schema.org Offer (`from`: the price is a starting price). */
+export type OfferFacts = { name: string; price: number; from: boolean };
+
+/** Search and answer-engine facts for one cancer page (content/pages/<page>.seo.ts). */
+export type CancerPageSeo = {
+  /** The page's name in breadcrumbs and the related strip, e.g. "Lung Cancer". */
+  name: string;
+  /** NEW: one sentence under the H1 that answers who, what and where. */
+  definition: string;
+  condition: ConditionFacts;
+  quickAnswers: readonly QuickAnswer[];
+  stats: readonly CitableStat[];
+  offers: readonly OfferFacts[];
+  /** One line for llms.txt: what the page is for. */
+  purpose: string;
 };

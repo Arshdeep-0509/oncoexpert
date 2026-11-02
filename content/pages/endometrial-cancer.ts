@@ -40,9 +40,6 @@ export const pageSlug = "endometrial-cancer-treatment-bangalore";
 // SOURCE: NEW (choice; the first of the live "Service Required" options)
 export const defaultAppointmentService: AppointmentService = "Consultation";
 
-/** Structured data (JSON-LD): the condition this page is about. Not visible on the page. */
-export const structuredData = { pageAbout: "Endometrial cancer" } as const;
-
 /* ------------------------------------------------------------------ */
 /* Section content types                                               */
 /* ------------------------------------------------------------------ */

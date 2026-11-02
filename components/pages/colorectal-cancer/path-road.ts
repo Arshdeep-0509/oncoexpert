@@ -4,7 +4,7 @@
  */
 export const ROAD_BOX = { width: 600, height: 220 } as const;
 
-export const MILESTONES = [
+const MILESTONES = [
   { x: 36, y: 168 },
   { x: 140, y: 70 },
   { x: 248, y: 150 },

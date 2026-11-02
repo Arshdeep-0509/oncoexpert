@@ -103,7 +103,7 @@ export function PrecisionDetails({
               </span>
               <span className="min-w-0">
                 <span className={cn("block font-semibold", onDark ? "text-white" : "text-ink")}>{f.title}</span>
-                <span className={cn("mt-1 block text-[15px] leading-relaxed", onDark ? "text-white/75" : "text-muted")}>
+                <span className={cn("mt-1 block text-base leading-relaxed", onDark ? "text-white/75" : "text-muted")}>
                   {f.body}
                 </span>
               </span>

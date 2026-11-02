@@ -6,6 +6,7 @@ import { CalendarDays, ChevronDown, Droplet, TriangleAlert, Waves, type LucideIc
 import type { SymptomIcon } from "@/content/pages/endometrial-cancer";
 import type { PageImage } from "@/content/types";
 import { useMedia } from "@/lib/hooks/use-media";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const icons: Record<SymptomIcon, LucideIcon> = {
@@ -61,14 +62,17 @@ export function SymptomCard({ icon, title, body, image, id }: SymptomCardProps) 
             type="button"
             aria-expanded={open || phone}
             aria-controls={bodyId}
-            onClick={() => setOpen((o) => !o)}
+            onClick={() => {
+              if (!open) track({ event: "symptom_open", label: title, page: "endometrial" });
+              setOpen(!open);
+            }}
             className="text-left after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
           >
             {title}
           </button>
         </h3>
         <span aria-hidden="true" className="exs-rule mt-4 block h-0.5 w-12 rounded-full bg-(image:--grad-accent)" />
-        <p id={bodyId} className={cn("exs-body mt-3 text-[15px] leading-relaxed text-muted md:text-base")}>
+        <p id={bodyId} className={cn("exs-body mt-3 text-base leading-relaxed text-muted")}>
           {body}
         </p>
       </div>

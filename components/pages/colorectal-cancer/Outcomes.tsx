@@ -133,7 +133,7 @@ export function Outcomes() {
                     <h3 className="font-display text-lg leading-snug text-white">
                       {item.stage}: {keepLastWords(`${item.rate}% ${survival.rateUnit}`)}
                     </h3>
-                    <p className="mt-1 text-[15px] leading-snug text-white/75">{item.body}</p>
+                    <p className="mt-1 text-base leading-snug text-white/75">{item.body}</p>
                   </div>
                 </li>
               ))}
@@ -142,7 +142,7 @@ export function Outcomes() {
         </Reveal>
       </div>
 
-      <p className="mt-6 max-w-[68ch] text-[13px] leading-relaxed text-muted md:text-sm">{outcomes.disclaimer}</p>
+      <p className="mt-6 max-w-[68ch] text-sm leading-relaxed text-muted">{outcomes.disclaimer}</p>
     </Section>
   );
 }

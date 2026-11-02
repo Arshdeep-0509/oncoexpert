@@ -59,7 +59,7 @@ export function TechniqueDetails({
             key={feature}
             className={cn(
               enter,
-              "flex items-start gap-3 text-[15px] leading-snug md:text-base",
+              "flex items-start gap-3 text-base leading-snug",
               onDark ? "text-white/85" : "text-text",
             )}
             style={step(2 + i)}
@@ -80,7 +80,7 @@ export function TechniqueDetails({
       <p
         className={cn(
           animate && styles.pop,
-          "mt-6 self-start rounded-lg px-4 py-3 text-[15px] leading-snug",
+          "mt-6 self-start rounded-lg px-4 py-3 text-base leading-snug",
           onDark ? "bg-white/10 text-white ring-1 ring-white/15" : "bg-surface-alt text-text ring-1 ring-line",
         )}
       >

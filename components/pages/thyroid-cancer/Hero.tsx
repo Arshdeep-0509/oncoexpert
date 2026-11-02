@@ -1,4 +1,6 @@
 import { hero } from "@/content/pages/thyroid-cancer";
+import { thyroidSeo } from "@/content/pages/thyroid-cancer.seo";
+import { Definition } from "@/components/shared/Definition";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
@@ -34,6 +36,11 @@ export function Hero() {
       >
         <div className="lg:col-span-6">
           <HeroHeadline />
+          <Definition
+            text={thyroidSeo.definition}
+            className={cn(styles.step, styles.fadeUp, "mt-4 md:mt-6")}
+            style={at(1)}
+          />
           <div
             className={cn(styles.step, styles.fadeUp, "mt-6 flex flex-col gap-3 md:mt-8 md:flex-row md:flex-wrap")}
             style={at(1.1)}

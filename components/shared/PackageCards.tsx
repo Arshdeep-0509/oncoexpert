@@ -1,5 +1,6 @@
 import type { PackageEstimator, PackageItem } from "@/content/types";
 import { SwipeRow } from "@/components/ui/SwipeRow";
+import { PriceTable } from "@/components/shared/PriceTable";
 import { PackageCard } from "@/components/shared/package-cards/PackageCard";
 import { CycleEstimator } from "@/components/shared/package-cards/CycleEstimator";
 import { OffscreenFlag } from "@/components/shared/technique-compare/OffscreenFlag";
@@ -30,6 +31,14 @@ export function PackageCards({ packages, footnote, initialIndex, estimator, page
   return (
     <div>
       <OffscreenFlag />
+      <PriceTable
+        caption={label}
+        rows={packages.map((p) => ({
+          name: p.name,
+          price: `${p.lead ? `${p.lead} ` : ""}${p.prefix ?? ""}${p.price.toLocaleString("en-IN")}${p.suffix ?? ""}${p.asterisk ?? ""}`,
+          includes: p.inclusions,
+        }))}
+      />
       <SwipeRow
         label={label}
         initialIndex={initialIndex ?? Math.max(0, featured)}

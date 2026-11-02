@@ -32,7 +32,7 @@ export function PackageCard({ pkg, id }: { pkg: Package; id: string }) {
           <h3 id={id} className="pr-24 font-display text-2xl leading-tight text-ink">
             {pkg.name}
           </h3>
-          <p className="mt-2 text-[15px] leading-relaxed text-muted">{pkg.body}</p>
+          <p className="mt-2 text-base leading-relaxed text-muted">{pkg.body}</p>
           <p className="mt-6 font-display text-[2.5rem] leading-none font-semibold text-ink md:text-[2.75rem]">
             <Counter value={pkg.amount} prefix="₹" duration={1.4} delay={0.25} reserveWidth />
           </p>
@@ -41,7 +41,7 @@ export function PackageCard({ pkg, id }: { pkg: Package; id: string }) {
 
         <ul className="mt-6 grid gap-3 border-t border-line pt-6 md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0 md:self-center md:border-t-0 md:border-l md:pt-0 md:pl-10 lg:mt-6 lg:self-auto lg:border-t lg:border-l-0 lg:pt-6 lg:pl-0">
           {pkg.features.map((f, i) => (
-            <li key={f} className="flex items-start gap-3 text-[15px] leading-snug text-text">
+            <li key={f} className="flex items-start gap-3 text-base leading-snug text-text">
               <span className="mt-px grid size-5 shrink-0 place-items-center rounded-full bg-accent-soft">
                 <svg
                   viewBox="0 0 16 16"
@@ -69,6 +69,7 @@ export function PackageCard({ pkg, id }: { pkg: Package; id: string }) {
           <AppointmentButton
             {...pkg.cta}
             cta={`${pkg.cta.label} (${pkg.name})`}
+            event={{ event: "package_select", label: pkg.name, page: "endometrial" }}
             variant={featured ? "primary" : "secondary"}
             arrow
             className="w-full"

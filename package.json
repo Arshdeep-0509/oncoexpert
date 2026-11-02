@@ -10,7 +10,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "images": "node scripts/fetch-images.mjs"
+    "images": "node scripts/fetch-images.mjs",
+    "audit:motion": "node scripts/motion-audit.mjs > docs/MOTION.md",
+    "audit:content": "node scripts/content-audit.mjs > docs/CONTENT-AUDIT.md"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

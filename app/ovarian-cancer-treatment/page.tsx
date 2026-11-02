@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageSlug, shared, surgeon } from "@/content/pages/ovarian-cancer";
+import { defaultAppointmentService, meta, pageSlug, shared, surgeon } from "@/content/pages/ovarian-cancer";
+import { ovarianSeo } from "@/content/pages/ovarian-cancer.seo";
+import { cancerPageGraph } from "@/lib/jsonld";
 import { ovarianImages } from "@/content/pages/ovarian-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
@@ -22,6 +24,9 @@ import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { QuickAnswers } from "@/components/shared/QuickAnswers";
+import { RelatedTreatments } from "@/components/shared/RelatedTreatments";
 
 const page = pages[pageSlug];
 
@@ -39,9 +44,23 @@ const finalImage = ovarianImages[shared.finalImage];
 // Every section after the hero sits in its own <Suspense> boundary, so React hydrates them one by
 // one and yields between them (shorter main-thread tasks; no visual difference).
 // Tones alternate: sand and sea-glass bands between white ones, the teal band and the final band.
+// One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
+// and Offers once approved): lib/jsonld.ts.
+const graph = cancerPageGraph({
+  meta,
+  seo: ovarianSeo,
+  breadcrumb: [
+    { label: "Home", href: "/" },
+    { label: "Our Services", href: "/our-services/" },
+    { label: ovarianSeo.name, href: new URL(meta.canonical).pathname },
+  ],
+  physicianDescription: surgeon.bio,
+});
+
 export default function OvarianCancerPage() {
   return (
     <>
+      <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero           sand gradient */}
       <Suspense>
         <Features /> {/* 2  #features       surface */}
@@ -106,6 +125,9 @@ export default function OvarianCancerPage() {
       <Suspense>
         <Locations tone="warm" />
       </Suspense>
+      {/* NEW: quick answers (once approved) and the related treatments strip */}
+      <QuickAnswers items={ovarianSeo.quickAnswers} stats={ovarianSeo.stats} />
+      <RelatedTreatments path={new URL(meta.canonical).pathname} page="ovarian" service={defaultAppointmentService} />
       <Suspense>
         <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
       </Suspense>

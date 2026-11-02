@@ -1,6 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageSlug, shared, surgeon } from "@/content/pages/colorectal-cancer";
+import {
+  breadcrumb,
+  defaultAppointmentService,
+  meta,
+  pageSlug,
+  shared,
+  surgeon,
+} from "@/content/pages/colorectal-cancer";
+import { colorectalSeo } from "@/content/pages/colorectal-cancer.seo";
+import { cancerPageGraph } from "@/lib/jsonld";
 import { colorectalImages } from "@/content/pages/colorectal-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
@@ -19,6 +28,9 @@ import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { QuickAnswers } from "@/components/shared/QuickAnswers";
+import { RelatedTreatments } from "@/components/shared/RelatedTreatments";
 
 const page = pages[pageSlug];
 
@@ -35,9 +47,19 @@ const finalImage = colorectalImages[shared.finalImage];
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, colorectal theme).
 // Tones alternate so no two tints touch: light bands between the three dark ones (quality of
 // life, hope, the final call).
+// One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
+// and Offers once approved): lib/jsonld.ts.
+const graph = cancerPageGraph({
+  meta,
+  seo: colorectalSeo,
+  breadcrumb: breadcrumb.items,
+  physicianDescription: surgeon.bio,
+});
+
 export default function ColorectalCancerPage() {
   return (
     <>
+      <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero             hero gradient */}
       <Approach /> {/* 2  #approach         alt */}
       <RecoveryPath /> {/* 3  #path             surface, pinned on desktop */}
@@ -72,6 +94,13 @@ export default function ColorectalCancerPage() {
         labels={videosSection.a11y}
       />
       <Locations tone="warm" />
+      {/* NEW: quick answers (once approved) and the related treatments strip */}
+      <QuickAnswers items={colorectalSeo.quickAnswers} stats={colorectalSeo.stats} />
+      <RelatedTreatments
+        path={new URL(meta.canonical).pathname}
+        page="colorectal"
+        service={defaultAppointmentService}
+      />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );

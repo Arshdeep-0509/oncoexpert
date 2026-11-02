@@ -82,7 +82,8 @@
   .cxt-drift {
     animation: cxt-drift 18s ease-in-out infinite alternate;
   }
-  .cxt-side:is(:hover, :focus-within) .cxt-drift {
+  .cxt-side:is(:hover, :focus-within) .cxt-drift,
+  [data-offscreen] .cxt-drift {
     animation-play-state: paused;
   }
 }

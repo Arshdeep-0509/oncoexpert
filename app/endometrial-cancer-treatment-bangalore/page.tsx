@@ -1,6 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageSlug, shared, surgeon } from "@/content/pages/endometrial-cancer";
+import {
+  breadcrumb,
+  defaultAppointmentService,
+  meta,
+  pageSlug,
+  shared,
+  surgeon,
+} from "@/content/pages/endometrial-cancer";
+import { endometrialSeo } from "@/content/pages/endometrial-cancer.seo";
+import { cancerPageGraph } from "@/lib/jsonld";
 import { endometrialImages } from "@/content/pages/endometrial-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
@@ -18,6 +27,9 @@ import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { QuickAnswers } from "@/components/shared/QuickAnswers";
+import { RelatedTreatments } from "@/components/shared/RelatedTreatments";
 
 const page = pages[pageSlug];
 
@@ -35,9 +47,19 @@ const factIcons = { Education: "graduation-cap", Expertise: "stethoscope" } as c
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, endometrial theme).
 // Tones alternate so no two tints touch: peach and apricot bands between white ones, the plum
 // final band last.
+// One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
+// and Offers once approved): lib/jsonld.ts.
+const graph = cancerPageGraph({
+  meta,
+  seo: endometrialSeo,
+  breadcrumb: breadcrumb.items,
+  physicianDescription: surgeon.paragraphs.join(" "),
+});
+
 export default function EndometrialCancerPage() {
   return (
     <>
+      <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero           peach gradient */}
       <ClinicalExcellence /> {/* 2  #clinical       warm band */}
       <Symptoms /> {/* 3  #symptoms       surface */}
@@ -72,6 +94,13 @@ export default function EndometrialCancerPage() {
         labels={videosSection.a11y}
       />
       <Locations tone="warm" />
+      {/* NEW: quick answers (once approved) and the related treatments strip */}
+      <QuickAnswers items={endometrialSeo.quickAnswers} stats={endometrialSeo.stats} />
+      <RelatedTreatments
+        path={new URL(meta.canonical).pathname}
+        page="endometrial"
+        service={defaultAppointmentService}
+      />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );

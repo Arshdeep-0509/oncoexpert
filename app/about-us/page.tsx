@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageSlug } from "@/content/pages/about-us";
+import { hero, meta, pageSlug } from "@/content/pages/about-us";
 import { aboutImages } from "@/content/pages/about-us.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
+import { aboutGraph } from "@/lib/jsonld";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { AboutHero } from "@/components/pages/about-us/AboutHero";
@@ -17,6 +18,7 @@ import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
+import { JsonLd } from "@/components/shared/JsonLd";
 
 const page = pages[pageSlug];
 
@@ -29,12 +31,16 @@ export function generateViewport(): Viewport {
 
 const finalImage = aboutImages.careHands;
 
+// One @graph: ProfilePage (main entity: the Physician), Physician, MedicalClinic, BreadcrumbList.
+const graph = aboutGraph(meta, hero.body);
+
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, care theme, dark hero).
 // Tones: navy bands open, break and close the page (hero, experience, final call); between them
 // white, ice, the ivory quote and warm alternate, so no two tints touch.
 export default function AboutUsPage() {
   return (
     <>
+      <JsonLd graph={graph} />
       <AboutHero /> {/* 1  #hero         navy → logo-blue gradient */}
       <Credentials /> {/* 2  #credentials  white */}
       <Journey /> {/* 3  #journey      ice, pinned on desktop */}

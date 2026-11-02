@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import type { TechniquesContent } from "@/content/pages/colorectal-cancer";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { TechniqueDetails } from "@/components/pages/colorectal-cancer/TechniqueDetails";
 import { styles } from "@/components/pages/colorectal-cancer/techniques-styles";
@@ -22,6 +23,10 @@ type TechniqueSwitchProps = {
  */
 export function TechniqueSwitch({ content, images }: TechniqueSwitchProps) {
   const [selected, setSelected] = React.useState<Key>("robotic");
+  const choose = (key: Key) => {
+    if (key !== selected) track({ event: "technique_switch", label: key, page: "colorectal" });
+    setSelected(key);
+  };
   const tabs = React.useRef<Record<Key, HTMLButtonElement | null>>({ robotic: null, laparoscopic: null });
   const id = React.useId();
 
@@ -39,7 +44,7 @@ export function TechniqueSwitch({ content, images }: TechniqueSwitchProps) {
               : null;
     if (!next) return;
     e.preventDefault();
-    setSelected(next);
+    choose(next);
     tabs.current[next]?.focus();
   };
 
@@ -76,7 +81,7 @@ export function TechniqueSwitch({ content, images }: TechniqueSwitchProps) {
             aria-selected={selected === key}
             aria-controls={`${id}-panel`}
             tabIndex={selected === key ? 0 : -1}
-            onClick={() => setSelected(key)}
+            onClick={() => choose(key)}
             className={cn(
               styles.tab,
               "relative min-h-12 rounded-pill px-3 text-[15px] leading-tight font-semibold text-ink",

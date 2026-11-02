@@ -13,6 +13,7 @@ import { serviceFromSlug } from "@/lib/booking";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
 import { Field } from "@/components/shared/appointment/Field";
+import { appointmentDraft as draft } from "@/components/shared/appointment/draft";
 import { formCopy as f, type FormStyles } from "@/components/shared/appointment/form";
 
 type Status = "idle" | "success" | "error";
@@ -28,6 +29,9 @@ type AppointmentFormProps = {
  * server action). Buttons on any page link here with ?service= and ?note=, which preselect the
  * service and carry the note. Never reports success unless the request was delivered.
  */
+/** The form's steps, in order (form_step). */
+const STEPS = ["name", "phone", "service", "date"] as const;
+
 export function AppointmentForm({ page, styles }: AppointmentFormProps) {
   const { service: requested, note, requestId } = useAppointment();
   const [status, setStatus] = React.useState<Status>("idle");
@@ -39,6 +43,7 @@ export function AppointmentForm({ page, styles }: AppointmentFormProps) {
     control,
     handleSubmit,
     setValue,
+    getValues,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<AppointmentInput>({
@@ -66,12 +71,36 @@ export function AppointmentForm({ page, styles }: AppointmentFormProps) {
     if (from?.startsWith("/")) setValue("page", `${page} via ${from.slice(0, 80)}`);
   }, [setValue, page]);
 
+  // Anything typed into the placeholder while this form was loading, and the field in focus.
+  React.useEffect(() => {
+    for (const field of ["name", "phone", "date"] as const) {
+      const value = draft[field];
+      if (value) setValue(field, value, { shouldDirty: true });
+    }
+    const focus = draft.focus;
+    // Taken over: clear it, so a later visit to the form starts empty.
+    delete draft.name;
+    delete draft.phone;
+    delete draft.date;
+    delete draft.focus;
+    if (focus) requestAnimationFrame(() => document.getElementById(focus)?.focus({ preventScroll: true }));
+  }, [setValue]);
+
   // A CTA on the same page (the header's, on the booking page) preselects its service here.
   React.useEffect(() => {
     if (requestId === 0) return;
     if (requested) setValue("service", requested, { shouldValidate: true, shouldDirty: true });
     setValue("note", note ?? "");
   }, [requestId, requested, note, setValue]);
+
+  // form_step: the first time the visitor leaves each field with a value in it.
+  const stepsDone = React.useRef(new Set<string>());
+  const onBlurCapture = (e: React.FocusEvent<HTMLFormElement>) => {
+    const field = STEPS.find((name) => e.target.id === `appt-${name}`);
+    if (!field || stepsDone.current.has(field) || !getValues(field)) return;
+    stepsDone.current.add(field);
+    track({ event: "form_step", step: STEPS.indexOf(field) + 1, field, page });
+  };
 
   const onSubmit = handleSubmit(
     async (values) => {
@@ -97,7 +126,7 @@ export function AppointmentForm({ page, styles }: AppointmentFormProps) {
   const describedBy = (name: keyof AppointmentInput) => (errors[name] ? `appt-${name}-error` : undefined);
 
   return (
-    <form onSubmit={onSubmit} noValidate className="grid gap-5">
+    <form onSubmit={onSubmit} onBlurCapture={onBlurCapture} noValidate className="grid gap-5">
       <Field id="appt-name" label={f.name} error={errors.name?.message}>
         <input
           id="appt-name"

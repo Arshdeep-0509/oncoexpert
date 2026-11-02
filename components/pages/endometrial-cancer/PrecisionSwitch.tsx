@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type { PrecisionContent } from "@/content/pages/endometrial-cancer";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { PrecisionDetails } from "@/components/pages/endometrial-cancer/PrecisionDetails";
 import { styles } from "@/components/pages/endometrial-cancer/precision-styles";
@@ -21,6 +22,10 @@ type PrecisionSwitchProps = {
  */
 export function PrecisionSwitch({ content, images }: PrecisionSwitchProps) {
   const [selected, setSelected] = React.useState<Key>("robotic");
+  const choose = (key: Key) => {
+    if (key !== selected) track({ event: "technique_switch", label: key, page: "endometrial" });
+    setSelected(key);
+  };
   const tabs = React.useRef<Record<Key, HTMLButtonElement | null>>({ robotic: null, laparoscopic: null });
   const id = React.useId();
 
@@ -36,7 +41,7 @@ export function PrecisionSwitch({ content, images }: PrecisionSwitchProps) {
             : null;
     if (!next) return;
     e.preventDefault();
-    setSelected(next);
+    choose(next);
     tabs.current[next]?.focus();
   };
 
@@ -73,7 +78,7 @@ export function PrecisionSwitch({ content, images }: PrecisionSwitchProps) {
             aria-selected={selected === key}
             aria-controls={`${id}-panel`}
             tabIndex={selected === key ? 0 : -1}
-            onClick={() => setSelected(key)}
+            onClick={() => choose(key)}
             className={cn(
               styles.tab,
               "relative min-h-12 rounded-pill px-3 text-[15px] leading-tight font-semibold text-ink",

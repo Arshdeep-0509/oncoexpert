@@ -102,7 +102,7 @@ export function Journey() {
                         <h3 className="relative mt-4 font-display text-xl leading-snug font-bold text-ink md:text-2xl lg:mt-5 lg:text-[2rem] lg:leading-tight">
                           {stage.title}
                         </h3>
-                        <p className="relative mt-3 max-w-[48ch] text-[15px] leading-relaxed text-muted md:text-base lg:mt-4 lg:text-lg">
+                        <p className="relative mt-3 max-w-[48ch] text-base leading-relaxed text-muted lg:mt-4 lg:text-lg">
                           {stage.body}
                         </p>
                         {/* A thin logo-gradient rule along the bottom */}

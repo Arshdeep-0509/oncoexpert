@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageSlug, shared, surgeon } from "@/content/pages/lung-cancer";
+import { defaultAppointmentService, meta, pageSlug, shared, surgeon } from "@/content/pages/lung-cancer";
+import { lungSeo } from "@/content/pages/lung-cancer.seo";
+import { cancerPageGraph } from "@/lib/jsonld";
 import { lungImages } from "@/content/pages/lung-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
@@ -22,6 +24,9 @@ import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { QuickAnswers } from "@/components/shared/QuickAnswers";
+import { RelatedTreatments } from "@/components/shared/RelatedTreatments";
 
 const page = pages[pageSlug];
 
@@ -40,9 +45,23 @@ const finalImage = lungImages[shared.finalImage];
 // one and yields between them (shorter main-thread tasks; no visual difference).
 // Tones alternate so no two tints touch: ice and mint bands between pearl ones, the navy bands
 // (#stage-iv, the final band) between light ones.
+// One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
+// and Offers once approved): lib/jsonld.ts.
+const graph = cancerPageGraph({
+  meta,
+  seo: lungSeo,
+  breadcrumb: [
+    { label: "Home", href: "/" },
+    { label: "Our Services", href: "/our-services/" },
+    { label: lungSeo.name, href: new URL(meta.canonical).pathname },
+  ],
+  physicianDescription: surgeon.bio,
+});
+
 export default function LungCancerPage() {
   return (
     <>
+      <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero        dawn-sky gradient */}
       <Suspense>
         <Highlights /> {/* 2  #highlights  surface, overlapping the hero on desktop */}
@@ -105,6 +124,9 @@ export default function LungCancerPage() {
       <Suspense>
         <Locations tone="alt" />
       </Suspense>
+      {/* NEW: quick answers (once approved) and the related treatments strip */}
+      <QuickAnswers items={lungSeo.quickAnswers} stats={lungSeo.stats} />
+      <RelatedTreatments path={new URL(meta.canonical).pathname} page="lung" service={defaultAppointmentService} />
       <Suspense>
         <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
       </Suspense>

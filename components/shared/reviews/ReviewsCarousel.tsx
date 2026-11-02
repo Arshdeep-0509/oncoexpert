@@ -18,7 +18,8 @@ const looks = {
     track: "-ml-4 flex touch-pan-y md:-ml-6",
     slide: "min-w-0 shrink-0 grow-0 basis-[92.6%] pl-4 md:basis-1/2 md:pl-6 lg:basis-1/3",
     dots: "mt-5 flex justify-center gap-1 md:hidden",
-    dotButton: "grid size-8 place-items-center",
+    // 32px dots on a 36px pitch (eight fit a 320px phone); the invisible ::before makes each 48px tall.
+    dotButton: "relative grid size-8 place-items-center before:absolute before:inset-x-0 before:-inset-y-2",
     dot: "size-2 rounded-full transition-[background-color,scale] duration-300",
     dotOn: "scale-125 bg-accent",
     dotOff: "bg-accent/25",

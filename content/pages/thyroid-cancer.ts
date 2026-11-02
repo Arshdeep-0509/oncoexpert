@@ -58,18 +58,18 @@ const heroLines = ["Advanced", "Thyroid Cancer Treatment with Expert Surgical Ca
 /* Metadata                                                            */
 /* ------------------------------------------------------------------ */
 
-// SOURCE: EXISTING (identical to the live page, keeps the SEO). The live description is the
-// SEO plugin's automatic excerpt (the page's first words, line breaks dropped: "ThyroidCancer"),
-// kept exactly until the doctor approves a new one. The live page has no <h1> (its headings are
-// styled divs): `h1` is the hero heading, which becomes the page's one <h1>.
-// PENDING DOCTOR: a better title and description, not used yet:
+// SOURCE: EXISTING title (identical to the live page, keeps the SEO). The live page has no
+// written description: its meta description is the SEO plugin's automatic excerpt (the page's
+// first words, line breaks dropped: "For Appointment CLINICAL EXCELLENCE IN ONCOLOGY …"), replaced
+// by a NEW one. The live page has no <h1> (its headings are styled divs): `h1` is the hero
+// heading, which becomes the page's one <h1>.
+// PENDING DOCTOR: approve the description; a better title, not used yet:
 //   title: "Thyroid Cancer Treatment & Surgery in Bangalore | OncoXpert"
-//   description: "Thyroid cancer surgery in Bangalore at OncoXpert: thyroidectomy and neck dissection
-//     with nerve monitoring to protect the voice, radioiodine therapy and long-term follow-up."
 export const meta = {
   title: "Thyroid Cancer - oncoxpert.in",
+  // SOURCE: NEW (159 characters)
   description:
-    "For Appointment CLINICAL EXCELLENCE IN ONCOLOGY Advanced Thyroid Cancer Treatment with Expert Surgical Care 100% Complete Removal 0% Voice Change High Cure Rates BOOK CONSULTATION GET SECOND OPINION Understanding ThyroidCancer Thyroid cancer occurs when cells in the thyroid gland undergo genetic mutations that allow them to grow and multiply rapidly. While generally highly curable, early",
+    "Thyroid cancer surgery in Bangalore at OncoXpert: thyroidectomy and neck dissection with nerve monitoring to protect the voice, radioiodine therapy, follow-up.",
   h1: heroLines.join(" "),
   canonical: "https://oncoxpert.in/thyroid-cancer/",
   ogImage: thyroidOgImage,

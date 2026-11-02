@@ -26,7 +26,8 @@
   .cxh-glow {
     animation: cxh-breathe 8s ease-in-out infinite;
   }
-  .cxh-band:is(:hover, :focus-within) .cxh-glow {
+  .cxh-band:is(:hover, :focus-within) .cxh-glow,
+  [data-offscreen] .cxh-glow {
     animation-play-state: paused;
   }
 }

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Bot, ClipboardCheck, HeartPulse, Microscope, ScanLine, UsersRound, type LucideIcon } from "lucide-react";
 import type { PathIcon } from "@/content/pages/colorectal-cancer";
 import { getLenis } from "@/lib/lenis";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { ScrollFillLine } from "@/components/ui/ScrollFillLine";
 import { InView } from "@/components/ui/InView";
@@ -24,7 +25,7 @@ const icons: Record<PathIcon, LucideIcon> = {
 const PINNED = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
 const ROW = "(min-width: 768px)";
 
-export type PathStep = {
+type PathStep = {
   icon: PathIcon;
   title: string;
   body: string;
@@ -123,6 +124,8 @@ export function PathTimeline({ heading, steps, labels }: PathTimelineProps) {
   }, [count]);
 
   const jump = (i: number) => {
+    const step = steps[i];
+    if (step) track({ event: "pathway_step", label: step.title, step: i + 1, page: "colorectal" });
     const pin = pinRef.current;
     const list = listRef.current;
     if (!pin || !list) return;
@@ -285,7 +288,7 @@ export function PathTimeline({ heading, steps, labels }: PathTimelineProps) {
                               <h3 className="mt-0.5 font-display text-xl leading-snug text-ink lg:text-[2rem] lg:leading-tight">
                                 {step.title}
                               </h3>
-                              <p className="mt-1.5 text-[15px] leading-relaxed text-muted lg:mt-2 lg:text-lg">
+                              <p className="mt-1.5 text-base leading-relaxed text-muted lg:mt-2 lg:text-lg">
                                 {step.body}
                               </p>
                             </div>

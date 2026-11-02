@@ -1,4 +1,6 @@
 import { hero } from "@/content/pages/lung-cancer";
+import { lungSeo } from "@/content/pages/lung-cancer.seo";
+import { Definition } from "@/components/shared/Definition";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
@@ -36,11 +38,13 @@ export function Hero() {
           <HeroHeadline />
 
           <p
+            data-speakable
             className={cn(styles.step, styles.fadeUp, "mt-4 measure text-base text-text md:mt-6 md:text-lg")}
             style={at(0.95)}
           >
             {hero.body}
           </p>
+          <Definition text={lungSeo.definition} className={cn(styles.step, styles.fadeUp, "mt-3")} style={at(0.95)} />
 
           <div
             className={cn(styles.step, styles.fadeUp, "mt-5 flex flex-col gap-3 md:mt-8 md:flex-row md:flex-wrap")}

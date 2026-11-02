@@ -40,7 +40,7 @@ export function SentinelNode() {
                   </span>
                   <div className="min-w-0">
                     <h3 className="font-semibold text-ink">{b.title}</h3>
-                    <p className="mt-1 text-[15px] leading-relaxed text-muted">{b.body}</p>
+                    <p className="mt-1 text-base leading-relaxed text-muted">{b.body}</p>
                   </div>
                 </div>
               );

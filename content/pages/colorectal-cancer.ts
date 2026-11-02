@@ -40,9 +40,6 @@ export const pageSlug = "colon-cancer-treatment-bangalore";
 // SOURCE: NEW (choice; the first of the live "Service Required" options)
 export const defaultAppointmentService: AppointmentService = "Consultation";
 
-/** Structured data (JSON-LD): the condition this page is about. Not visible on the page. */
-export const structuredData = { pageAbout: "Colorectal cancer" } as const;
-
 /* ------------------------------------------------------------------ */
 /* Section content types                                               */
 /* ------------------------------------------------------------------ */
@@ -445,7 +442,7 @@ export const outcomes = {
 } as const satisfies OutcomesContent;
 
 /** Sum of the dashboard's stage cases (93 with the live numbers). */
-export const totalCases = sumBy(outcomes.dashboard.stages, (stage) => stage.cases);
+const totalCases = sumBy(outcomes.dashboard.stages, (stage) => stage.cases);
 
 /** The total the dashboard shows: the computed sum, unless the doctor picks the live figure. */
 export const dashboardTotal = outcomes.dashboard.totalSource === "live" ? outcomes.dashboard.liveTotal : totalCases;

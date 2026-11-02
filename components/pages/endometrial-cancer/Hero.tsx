@@ -1,4 +1,6 @@
 import type * as React from "react";
+import { endometrialSeo } from "@/content/pages/endometrial-cancer.seo";
+import { Definition } from "@/components/shared/Definition";
 import { Activity, Bot, Crosshair, Globe, type LucideIcon } from "lucide-react";
 import { breadcrumb, hero, type FeatureIcon } from "@/content/pages/endometrial-cancer";
 import { cn } from "@/lib/utils";
@@ -87,7 +89,12 @@ export function Hero() {
       >
         <div className="max-md:order-2 lg:col-span-6">
           <div className={cn(styles.step, styles.fadeDown)} style={at(0.05)}>
-            <Breadcrumb label={breadcrumb.label} items={breadcrumb.items} className="mb-5 max-md:sr-only" />
+            <Breadcrumb
+              label={breadcrumb.label}
+              items={breadcrumb.items}
+              className="mb-5 max-md:sr-only"
+              structuredData={false}
+            />
             <p className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-accent-soft px-3.5 py-1.5 text-xs leading-tight font-semibold tracking-[0.14em] text-accent uppercase">
               <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-highlight" />
               {hero.eyebrow}
@@ -97,11 +104,17 @@ export function Hero() {
           <Headline />
 
           <p
+            data-speakable
             className={cn(styles.step, styles.fadeUp, "mt-5 measure text-base text-text md:mt-6 md:text-lg")}
             style={at(0.95)}
           >
             {hero.body}
           </p>
+          <Definition
+            text={endometrialSeo.definition}
+            className={cn(styles.step, styles.fadeUp, "mt-3")}
+            style={at(0.95)}
+          />
 
           <div
             className={cn(styles.step, styles.fadeUp, "mt-7 flex flex-col gap-3 md:mt-8 md:flex-row md:flex-wrap")}

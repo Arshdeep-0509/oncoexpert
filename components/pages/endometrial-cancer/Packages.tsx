@@ -1,10 +1,11 @@
 import { packages } from "@/content/pages/endometrial-cancer";
-import { keepLastWords } from "@/lib/format";
+import { formatRupees, keepLastWords } from "@/lib/format";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { SwipeRow } from "@/components/ui/SwipeRow";
 import { PackageCard } from "@/components/pages/endometrial-cancer/PackageCard";
+import { PriceTable } from "@/components/shared/PriceTable";
 import "@/components/pages/endometrial-cancer/packages.css";
 
 const featured = packages.packages.findIndex((p) => "featured" in p && p.featured);
@@ -33,6 +34,14 @@ export function Packages() {
           align="center"
         />
       </Reveal>
+      <PriceTable
+        caption={packages.a11y.list}
+        rows={packages.packages.map((p) => ({
+          name: p.name,
+          price: `${packages.priceLabel} ${formatRupees(p.amount)}`,
+          includes: p.features,
+        }))}
+      />
       <SwipeRow
         label={packages.a11y.list}
         initialIndex={featured > 0 ? featured : undefined}
@@ -47,7 +56,7 @@ export function Packages() {
         ))}
       </SwipeRow>
       <p
-        className="mx-auto mt-8 max-w-[68ch] text-center text-[13px] leading-relaxed text-muted md:text-sm"
+        className="mx-auto mt-8 max-w-[68ch] text-center text-sm leading-relaxed text-muted"
         data-pending-approval={packages.pendingApproval}
       >
         {packages.disclaimer}

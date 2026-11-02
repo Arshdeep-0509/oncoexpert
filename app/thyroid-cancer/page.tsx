@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageSlug, shared, surgeon } from "@/content/pages/thyroid-cancer";
+import { defaultAppointmentService, meta, pageSlug, shared, surgeon } from "@/content/pages/thyroid-cancer";
+import { thyroidSeo } from "@/content/pages/thyroid-cancer.seo";
+import { cancerPageGraph } from "@/lib/jsonld";
 import { thyroidImages } from "@/content/pages/thyroid-cancer.images";
 import { reviewsFor } from "@/content/shared/reviews";
 import { reviewsSection, videosSection } from "@/content/shared/sections";
@@ -22,6 +24,9 @@ import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Locations } from "@/components/shared/Locations";
 import { FinalCta } from "@/components/shared/FinalCta";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { QuickAnswers } from "@/components/shared/QuickAnswers";
+import { RelatedTreatments } from "@/components/shared/RelatedTreatments";
 
 const page = pages[pageSlug];
 
@@ -38,9 +43,23 @@ const finalImage = thyroidImages[shared.finalImage];
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, thyroid theme).
 // Every section after the hero sits in its own <Suspense> boundary, so React hydrates them one by
 // one and yields between them (shorter main-thread tasks; no visual difference).
+// One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
+// and Offers once approved): lib/jsonld.ts.
+const graph = cancerPageGraph({
+  meta,
+  seo: thyroidSeo,
+  breadcrumb: [
+    { label: "Home", href: "/" },
+    { label: "Our Services", href: "/our-services/" },
+    { label: thyroidSeo.name, href: new URL(meta.canonical).pathname },
+  ],
+  physicianDescription: surgeon.bio,
+});
+
 export default function ThyroidCancerPage() {
   return (
     <>
+      <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero             lilac gradient */}
       <Suspense>
         <Understanding /> {/* 2  #understanding    surface */}
@@ -102,6 +121,9 @@ export default function ThyroidCancerPage() {
       <Suspense>
         <Locations tone="warm" />
       </Suspense>
+      {/* NEW: quick answers (once approved) and the related treatments strip */}
+      <QuickAnswers items={thyroidSeo.quickAnswers} stats={thyroidSeo.stats} />
+      <RelatedTreatments path={new URL(meta.canonical).pathname} page="thyroid" service={defaultAppointmentService} />
       <Suspense>
         <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
       </Suspense>

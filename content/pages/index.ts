@@ -18,6 +18,7 @@ import { meta as thyroidMeta } from "@/content/pages/thyroid-cancer";
 export const pages = {
   home: {
     slug: "home",
+    lastModified: "2026-11-01",
     path: "/",
     title: homeMeta.title,
     theme: "home",
@@ -27,6 +28,7 @@ export const pages = {
   },
   "robotic-surgery": {
     slug: "robotic-surgery",
+    lastModified: "2026-11-02",
     path: "/robotic-surgery/",
     title: roboticMeta.title,
     theme: "robotic",
@@ -35,6 +37,7 @@ export const pages = {
   },
   "breast-cancer-treatment-bangalore": {
     slug: "breast-cancer-treatment-bangalore",
+    lastModified: "2026-11-02",
     path: "/breast-cancer-treatment-bangalore/",
     title: breastMeta.title,
     theme: "breast",
@@ -44,6 +47,7 @@ export const pages = {
   // The live URL, misspelling included ("appoinment"): it is indexed and linked site-wide.
   "book-your-appoinment-page": {
     slug: "book-your-appoinment-page",
+    lastModified: "2026-11-03",
     path: "/book-your-appoinment-page/",
     title: bookMeta.title,
     theme: "care",
@@ -52,6 +56,7 @@ export const pages = {
   },
   "about-us": {
     slug: "about-us",
+    lastModified: "2026-11-03",
     path: "/about-us/",
     title: aboutMeta.title,
     theme: "care",
@@ -61,6 +66,7 @@ export const pages = {
   // The live URL ("colon", while the page and the menu say "Colorectal"): kept for SEO.
   "colon-cancer-treatment-bangalore": {
     slug: "colon-cancer-treatment-bangalore",
+    lastModified: "2026-11-03",
     path: "/colon-cancer-treatment-bangalore/",
     title: colorectalMeta.title,
     theme: "colorectal",
@@ -69,6 +75,7 @@ export const pages = {
   },
   "endometrial-cancer-treatment-bangalore": {
     slug: "endometrial-cancer-treatment-bangalore",
+    lastModified: "2026-11-03",
     path: "/endometrial-cancer-treatment-bangalore/",
     title: endometrialMeta.title,
     theme: "endometrial",
@@ -78,6 +85,7 @@ export const pages = {
   // The live URLs, kept for SEO (the menu already links them).
   "lung-cancer-in-bangalore": {
     slug: "lung-cancer-in-bangalore",
+    lastModified: "2026-11-03",
     path: "/lung-cancer-in-bangalore/",
     title: lungMeta.title,
     theme: "lung",
@@ -86,6 +94,7 @@ export const pages = {
   },
   "ovarian-cancer-treatment": {
     slug: "ovarian-cancer-treatment",
+    lastModified: "2026-11-03",
     path: "/ovarian-cancer-treatment/",
     title: ovarianMeta.title,
     theme: "ovarian",
@@ -94,6 +103,7 @@ export const pages = {
   },
   "thyroid-cancer": {
     slug: "thyroid-cancer",
+    lastModified: "2026-11-03",
     path: "/thyroid-cancer/",
     title: thyroidMeta.title,
     theme: "thyroid",

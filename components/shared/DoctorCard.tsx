@@ -163,17 +163,22 @@ function SoftText({
           {credentials.map((c) => {
             const Icon = icons[c.icon];
             return (
+              // A <dl> group may hold only <dt> and <dd>: the icon tile sits inside the <dt>, placed
+              // against the card's padding (left 16px + 40px tile + 12px gap = the text's 68px inset).
               <div
                 key={c.label}
-                className="flex items-start gap-3 rounded-xl bg-surface p-4 ring-1 shadow-soft-sm ring-line"
+                className="relative min-h-[4.5rem] rounded-xl bg-surface p-4 pl-[4.25rem] ring-1 shadow-soft-sm ring-line"
               >
-                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
-                  <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
-                </span>
-                <div className="min-w-0">
-                  <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">{c.label}</dt>
-                  <dd className="mt-1 font-semibold text-ink">{c.value}</dd>
-                </div>
+                <dt className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-4 left-4 grid size-10 place-items-center rounded-xl bg-accent-soft text-accent"
+                  >
+                    <Icon className="size-5" strokeWidth={1.75} />
+                  </span>
+                  {c.label}
+                </dt>
+                <dd className="mt-1 min-w-0 font-semibold text-ink">{c.value}</dd>
               </div>
             );
           })}

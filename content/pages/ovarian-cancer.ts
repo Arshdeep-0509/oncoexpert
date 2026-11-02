@@ -45,18 +45,18 @@ const heroLines = ["Advanced Ovarian", "Cancer Treatment with", "Personalized Su
 /* Metadata                                                            */
 /* ------------------------------------------------------------------ */
 
-// SOURCE: EXISTING (identical to the live page, keeps the SEO). The live description is the
-// SEO plugin's automatic excerpt (the page's first words, line breaks dropped: "OvarianCancer"),
-// kept exactly until the doctor approves a new one. The live page has no <h1> (its headings are
-// styled divs): `h1` is the hero heading, which becomes the page's one <h1>.
-// PENDING DOCTOR: a better title and description, not used yet:
+// SOURCE: EXISTING title (identical to the live page, keeps the SEO). The live page has no
+// written description: its meta description is the SEO plugin's automatic excerpt (the page's
+// first 80 words, line breaks dropped: "For Appointment Precision Surgical Oncology Advanced
+// OvarianCancer …"), replaced by a NEW one. The live page has no <h1> (its headings are styled
+// divs): `h1` is the hero heading, which becomes the page's one <h1>.
+// PENDING DOCTOR: approve the description; a better title, not used yet:
 //   title: "Ovarian Cancer Treatment in Bangalore | HIPEC & Cytoreductive Surgery | OncoXpert"
-//   description: "Ovarian cancer treatment in Bangalore at OncoXpert: cytoreductive surgery, HIPEC,
-//     fertility-preserving options, chemotherapy and immunotherapy, planned around each patient."
 export const meta = {
   title: "Ovarian Cancer - oncoxpert.in",
+  // SOURCE: NEW (160 characters)
   description:
-    'For Appointment Precision Surgical Oncology Advanced OvarianCancer Treatment withPersonalized SurgicalOncology Care Comprehensive ovarian cancer care combining advanced diagnosis, cytoreductive surgery, HIPEC, chemotherapy, immunotherapy, fertility-preserving treatment, and personalized treatment planning. Book Consultation Get Second Opinion Personalized Treatment Plans Advanced Cytoreductive Surgery HIPEC Specialist Fertility Preservation Options Understanding Ovarian Cancer Often called the "silent killer," ovarian cancer',
+    "Ovarian cancer treatment in Bangalore at OncoXpert: cytoreductive surgery, HIPEC, fertility-preserving options, chemotherapy and immunotherapy, planned for you.",
   h1: heroLines.join(" "),
   canonical: "https://oncoxpert.in/ovarian-cancer-treatment/",
   ogImage: ovarianOgImage,

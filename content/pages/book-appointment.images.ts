@@ -15,7 +15,7 @@ const BASE = "/images/book-appointment";
 
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
-export const bookImages = {
+const bookImages = {
   /* Own photos, reused ---------------------------------------------- */
 
   // Transparent PNG: sits on the theme's portrait backdrop (components/shared/DoctorPortrait).
@@ -77,8 +77,6 @@ export const bookImages = {
     height: 1125,
   },
 } as const satisfies Record<string, PageImage>;
-
-export type BookImageKey = keyof typeof bookImages;
 
 /** Social share image: the logo and the report photo on the care theme's ivory, made by `npm run images book`. */
 export const bookOgImage = { src: `${BASE}/og.jpg`, width: 1200, height: 630 } as const;

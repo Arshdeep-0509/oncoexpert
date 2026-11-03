@@ -17,7 +17,6 @@ export const styles = {
   breathe: "lu-breathe",
   glow: "lu-glow",
   alveolus: "lu-alv",
-  photoCover: "lu-photoCover",
   shine: "lu-shine",
   air: "lu-air",
   dot: "lu-dot",

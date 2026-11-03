@@ -579,8 +579,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | lung-cancer.ts | label | EXISTING (button labels); NEW (the service each one preselects, ana… | Get Second Opinion |
 | lung-cancer.ts | service | EXISTING (button labels); NEW (the service each one preselects, ana… | Second Opinion |
 | lung-cancer.ts | cta | EXISTING (button labels); NEW (the service each one preselects, ana… | lung:hero:second-opinion |
-| lung-cancer.ts | image | EXISTING (button labels); NEW (the service each one preselects, ana… | breathingCalm |
-| lung-cancer.ts | caption | NEW | Care planned around every breath |
+| lung-cancer.ts | caption | NEW (the hero has no photo: the live hero's portrait is in #surgeon) | Care planned around every breath |
 | lung-cancer.ts | visual | NEW (screen-reader labels) | Illustration: a pair of lungs drawn as one line, breathing slowly |
 | lung-cancer.ts | pause | NEW (screen-reader labels) | Pause the hero animation |
 | lung-cancer.ts | play | NEW (screen-reader labels) | Play the hero animation |
@@ -606,17 +605,18 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | lung-cancer.ts | caption | NEW (the lens: the three tests named in the live paragraph, in its … | A whole-body scan that shows where the disease is active, for precise staging. |
 | lung-cancer.ts | lead | EXISTING. One paragraph on the live page ("Did you know? Detection … | Did you know? |
 | lung-cancer.ts | body | EXISTING. One paragraph on the live page ("Did you know? Detection … | Detection at Stage I increases survival rates significantly compared to later stages. |
+| lung-cancer.ts | hint | NEW (the hint on each symptom card, and the label over its line) | When to see a doctor |
 | lung-cancer.ts | symptoms | NEW (screen-reader labels) | Symptoms to watch |
 | lung-cancer.ts | tests | NEW (screen-reader labels) | Diagnostic tests |
 | lung-cancer.ts | lens | NEW (screen-reader labels) | How each test looks at the lungs |
 | lung-cancer.ts | title | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | The OncoXpert Care Pathway |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Identification of persistent cough or discomfort. |
-| lung-cancer.ts | image | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | breathingCalm |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Bronchoscopy or CT Guided diagnostic sample. |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Precise staging to map the cancer's spread. |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Multidisciplinary tumor board review. |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Surgery, Immunotherapy, or combination care. |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Post-op care and long-term surveillance. |
+| lung-cancer.ts | image | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | breathingCalm |
 | lung-cancer.ts | label | NEW (the button after the last step; label as the hero's) | Book Consultation |
 | lung-cancer.ts | service | NEW (the button after the last step; label as the hero's) | Consultation |
 | lung-cancer.ts | cta | NEW (the button after the last step; label as the hero's) | lung:pathway:book-consultation |
@@ -737,6 +737,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - CT-guided biopsy
 - A CT scan guides a fine needle to take a tiny sample from the lung.
 - A whole-body scan that shows where the disease is active, for precise staging.
+- When to see a doctor
 - Symptoms to watch
 - Diagnostic tests
 - How each test looks at the lungs
@@ -809,10 +810,12 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 ### PENDING DOCTOR
 
-- (lung-cancer.ts) the glass caption on the photo card.
+- (lung-cancer.ts) the glass caption under the lungs.
 - (lung-cancer.ts) the four detail lines.
 - (lung-cancer.ts) the two "when to see a doctor" lines.
 - (lung-cancer.ts) the three test captions.
+- (lung-cancer.ts) the two scale labels.
+- (lung-cancer.ts) the label.
 - (lung-cancer.ts) the explorer's captions ("4 of 5 lobes preserved" for a lobectomy, "2 of 5" for a right pneumonectomy) and whether a right pneumonectomy is the right example.
 - (lung-cancer.ts) "86% STAGE I SURVIVAL" and "50% STAGE IV RESPONSE": confirm both figures, what they measure (5-year survival? response to which treatment?) and the period they cover.
 - (lung-cancer.ts) the disclaimer under the figures.
@@ -844,7 +847,9 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | ovarian-cancer.ts | label | EXISTING (button labels); NEW (the service each one preselects, ana… | Get Second Opinion |
 | ovarian-cancer.ts | service | EXISTING (button labels); NEW (the service each one preselects, ana… | Second Opinion |
 | ovarian-cancer.ts | cta | EXISTING (button labels); NEW (the service each one preselects, ana… | ovarian:hero:second-opinion |
-| ovarian-cancer.ts | visual | NEW (screen-reader labels) | Illustration: a teal ribbon whose line becomes the outline of the ovaries and tubes |
+| ovarian-cancer.ts |  | NEW (the steps of the hero illustration; the live hero shows the po… | Cytoreductive Surgery |
+| ovarian-cancer.ts |  | NEW (screen-reader labels) | Illustration: a teal ribbon outlines the ovaries; tumour deposits on one ovary are removed, warm waves wash through the abdomen, and a check marks recovery |
+| ovarian-cancer.ts | steps | NEW (screen-reader labels) | Treatment steps |
 | ovarian-cancer.ts | pause | NEW (screen-reader labels) | Pause the hero animation |
 | ovarian-cancer.ts | play | NEW (screen-reader labels) | Play the hero animation |
 | ovarian-cancer.ts | label | EXISTING (labels; the four icons under the hero buttons on the live… | Personalized Treatment Plans |
@@ -1000,7 +1005,9 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Ovarian cancer treatment in Bangalore at OncoXpert: cytoreductive surgery, HIPEC, fertility-preserving options, chemotherapy and immunotherapy, planned for you.
 - Consultation
 - Personalized Surgical Oncology Care
-- Illustration: a teal ribbon whose line becomes the outline of the ovaries and tubes
+- Cytoreductive Surgery
+- Illustration: a teal ribbon outlines the ovaries; tumour deposits on one ovary are removed, warm waves wash through the abdomen, and a check marks recovery
+- Treatment steps
 - Pause the hero animation
 - Play the hero animation
 - What we offer

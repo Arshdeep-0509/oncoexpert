@@ -66,6 +66,17 @@ export const lungImages = {
   /* New stock photos ------------------------------------------------- */
 
   // #hero / #surgery: calm, easy breathing. Source of og.jpg.
+  // The thyroid page's photo, for the pathway's Symptoms step.
+  cough: {
+    file: "cough.jpg",
+    src: "/images/thyroid-cancer/cough.jpg",
+    pexelsId: 8817795,
+    alt: "Man in glasses covering a cough with his hand",
+    credit: { photographer: "Towfiqu Barbhuiya", url: pexels(8817795) },
+    focal: "50% 35%",
+    width: 2000,
+    height: 1334,
+  },
   breathingCalm: {
     file: "breathing-calm.jpg",
     src: `${BASE}/breathing-calm.jpg`,

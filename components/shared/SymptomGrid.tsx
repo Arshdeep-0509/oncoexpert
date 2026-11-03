@@ -1,15 +1,13 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
-import { Check, ChevronDown } from "lucide-react";
 import type { SymptomItem } from "@/content/types";
 import type { AppointmentService } from "@/content/site";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
-import { useMedia } from "@/lib/hooks/use-media";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
-import { symptomIcons } from "@/components/shared/symptom-grid/icons";
+import { CheckCard } from "@/components/shared/symptom-grid/CheckCard";
+import { HoverCard } from "@/components/shared/symptom-grid/HoverCard";
 import "@/components/shared/symptom-grid/symptom-grid.css";
 
 type CheckProps = {
@@ -29,23 +27,19 @@ type SymptomGridProps = (CheckProps | DiscloseProps) & {
   className?: string;
 };
 
-const PHONE = "(max-width: 767px)";
-
 /**
  * A grid of symptom cards (shared; first used on the ovarian page). A 2 × 2 grid on phones (never a
  * swipe row), four across from lg.
- * - "check": each card is a checkbox (role="checkbox", Space or click toggles; teal fill with a
- *   small bounce). A result panel under the grid shows `empty` while nothing is ticked; once one or
- *   more are, a NEW line and a booking button whose note lists them. Nothing is stored; analytics
- *   gets the count only (symptom_check).
- * - "disclose": each card is a button (aria-expanded) that reveals its `body` in place (the space
- *   is reserved); on phones every card is open.
+ * - "check": each card is a checkbox (CheckCard; Space or click toggles; teal fill with a small
+ *   bounce; with `image`, the photo fills the card). A result panel under the grid shows `empty`
+ *   while nothing is ticked; once one or more are, a NEW line and a booking button whose note lists
+ *   them. Nothing is stored; analytics gets the count only (symptom_check).
+ * - "disclose": hover cards (HoverCard): hovering or focusing a card reveals its `body` over the
+ *   photo; on touch screens the body sits under the title.
  */
 export function SymptomGrid(props: SymptomGridProps) {
   const { items, page, className } = props;
   const [ticked, setTicked] = React.useState<ReadonlySet<string>>(new Set());
-  const [open, setOpen] = React.useState<string | null>(null);
-  const phone = useMedia(PHONE);
 
   const toggle = (key: string) => {
     const next = new Set(ticked);
@@ -60,64 +54,11 @@ export function SymptomGrid(props: SymptomGridProps) {
   if (props.mode === "disclose") {
     return (
       <ul aria-label={props.labels.group} className={cn(grid, className)}>
-        {items.map((item) => {
-          const Icon = symptomIcons[item.icon];
-          const expanded = open === item.key || phone;
-          return (
-            <li key={item.key}>
-              <div
-                data-open={expanded ? "" : undefined}
-                className="sgx-card relative flex h-full flex-col rounded-xl bg-surface p-4 ring-1 shadow-soft-sm ring-line md:p-6"
-              >
-                {item.image ? (
-                  <div className="relative -mx-4 -mt-4 mb-2 aspect-[4/3] md:-mx-6 md:-mt-6">
-                    <div className="absolute inset-0 overflow-hidden rounded-t-xl">
-                      <Image
-                        src={item.image.src}
-                        alt={item.image.alt}
-                        fill
-                        sizes="(min-width: 1024px) 290px, 46vw"
-                        className="sgx-photo object-cover"
-                        style={{ objectPosition: item.image.focal }}
-                      />
-                    </div>
-                    <span className="sgx-icon absolute -bottom-6 left-4 grid size-12 place-items-center rounded-full bg-surface text-accent shadow-soft md:left-6">
-                      <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
-                    </span>
-                  </div>
-                ) : (
-                  <span className="sgx-icon grid size-12 place-items-center rounded-full bg-accent-soft text-accent">
-                    <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
-                  </span>
-                )}
-                <h3
-                  className={cn(
-                    "text-base leading-snug font-semibold text-ink md:text-lg",
-                    item.image ? "mt-7" : "mt-4",
-                  )}
-                >
-                  <button
-                    type="button"
-                    aria-expanded={expanded}
-                    aria-controls={`sgx-${item.key}`}
-                    onClick={() => setOpen(open === item.key ? null : item.key)}
-                    className="flex min-h-12 w-full items-center justify-between gap-2 text-left after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-accent"
-                  >
-                    {item.title}
-                    <ChevronDown
-                      className="sgx-chev hidden size-5 shrink-0 text-muted md:block"
-                      strokeWidth={1.75}
-                      aria-hidden="true"
-                    />
-                  </button>
-                </h3>
-                <p id={`sgx-${item.key}`} className="sgx-body mt-2 text-base leading-relaxed text-muted">
-                  {item.body}
-                </p>
-              </div>
-            </li>
-          );
-        })}
+        {items.map((item) => (
+          <li key={item.key}>
+            <HoverCard item={item} />
+          </li>
+        ))}
       </ul>
     );
   }
@@ -126,37 +67,10 @@ export function SymptomGrid(props: SymptomGridProps) {
   return (
     <div className={className}>
       <div role="group" aria-label={props.labels.group} className={grid}>
-        {items.map((item) => {
-          const Icon = symptomIcons[item.icon];
-          const checked = ticked.has(item.key);
-          return (
-            <div
-              key={item.key}
-              role="checkbox"
-              aria-checked={checked}
-              tabIndex={0}
-              onClick={() => toggle(item.key)}
-              onKeyDown={(e) => {
-                if (e.key !== " ") return;
-                e.preventDefault();
-                toggle(item.key);
-              }}
-              className="sgx-check relative flex min-h-36 cursor-pointer flex-col justify-between rounded-xl bg-surface p-4 ring-1 shadow-soft-sm ring-line outline-none focus-visible:ring-2 focus-visible:ring-accent md:p-6"
-            >
-              <span className="flex items-start justify-between gap-2">
-                <span className="sgx-icon grid size-12 place-items-center rounded-full bg-accent-soft text-accent">
-                  <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
-                </span>
-                <span aria-hidden="true" className="sgx-box grid size-7 place-items-center rounded-md ring-2 ring-line">
-                  <Check className="sgx-tick size-4 text-white" strokeWidth={3} />
-                </span>
-              </span>
-              <span className="mt-4 text-base leading-snug font-semibold text-ink md:text-lg">{item.title}</span>
-            </div>
-          );
-        })}
+        {items.map((item) => (
+          <CheckCard key={item.key} item={item} checked={ticked.has(item.key)} onToggle={() => toggle(item.key)} />
+        ))}
       </div>
-
       <div
         aria-live="polite"
         aria-label={props.labels.result}

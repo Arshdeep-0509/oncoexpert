@@ -100,8 +100,6 @@ export const hero = {
     primary: { label: "BOOK CONSULTATION", service: "Consultation", cta: "thyroid:hero:book-consultation" },
     secondary: { label: "GET SECOND OPINION", service: "Second Opinion", cta: "thyroid:hero:second-opinion" },
   },
-  // The photo card: a man laughing as he talks (voice preserved). The LCP image.
-  image: "speaking",
   // SOURCE: NEW (screen-reader labels)
   a11y: {
     visual: "Illustration: the thyroid drawn as a butterfly",
@@ -115,7 +113,6 @@ export const hero = {
   emphasis: string;
   stats: readonly HeroStat[];
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
-  image: ThyroidImageKey;
   a11y: { visual: string; stats: string; pause: string; play: string };
 };
 

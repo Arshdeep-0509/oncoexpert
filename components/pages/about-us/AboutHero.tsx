@@ -42,6 +42,7 @@ export function AboutHero() {
         <div className={styles.areaPortrait}>
           <DoctorRing
             hero
+            bare
             stats={hero.stats}
             label={hero.a11y.stats}
             photo={aboutImages[hero.image]}

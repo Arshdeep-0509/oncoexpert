@@ -1,64 +1,55 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown, Droplet, Wind, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, Droplet, Wind, type LucideIcon } from "lucide-react";
 import type { SymptomIcon } from "@/content/pages/lung-cancer";
 import { track } from "@/lib/analytics";
-import { useMedia } from "@/lib/hooks/use-media";
 
 const icons: Record<SymptomIcon, LucideIcon> = { cough: Wind, blood: Droplet };
 
-/** Phones: every card open (diagnosis.css shows the line there regardless). */
-const PHONE = "(max-width: 767px)";
-
-type SymptomCardProps = { icon: SymptomIcon; title: string; when: string; id: string };
+type SymptomCardProps = { icon: SymptomIcon; title: string; when: string; hint: string; id: string };
 
 /**
- * One symptom (EXISTING title) with a NEW "when to see a doctor" line. From 768px a disclosure: the
- * title is a button (aria-expanded) that reveals the line in place. The line always keeps its space
- * (reserved height; only opacity and transform change), so nothing below moves. Phones: open, and
- * the button reports it. Opening sends lung_symptom_open.
+ * One symptom (EXISTING title) and its NEW "when to see a doctor" line, as a hover card. On devices
+ * that can hover, the card shows its icon, title and a hint; hovering or focusing it (Tab stops on
+ * the card) slides an accent panel with the line over it (diagnosis.css). Touch screens show the
+ * line under the title. The first hover or focus sends lung_symptom_open.
  */
-export function SymptomCard({ icon, title, when, id }: SymptomCardProps) {
-  const [open, setOpen] = React.useState(false);
-  const phone = useMedia(PHONE);
+export function SymptomCard({ icon, title, when, hint, id }: SymptomCardProps) {
+  const sent = React.useRef(false);
   const Icon = icons[icon];
-  const bodyId = `${id}-when`;
-
-  const toggle = () => {
-    if (!open) track({ event: "lung_symptom_open", label: title });
-    setOpen(!open);
+  const titleId = `${id}-title`;
+  const opened = () => {
+    if (sent.current) return;
+    sent.current = true;
+    track({ event: "lung_symptom_open", label: title });
   };
 
   return (
     <article
-      data-open={open ? "" : undefined}
-      className="lud-sym relative flex h-full flex-col rounded-xl border border-line bg-surface p-5 shadow-soft-sm md:p-6"
+      tabIndex={0}
+      aria-labelledby={titleId}
+      onMouseEnter={opened}
+      onFocus={opened}
+      className="lud-sym relative flex h-full min-h-44 flex-col overflow-hidden rounded-xl border border-line bg-surface p-5 shadow-soft-sm outline-none focus-visible:ring-2 focus-visible:ring-accent md:p-6"
     >
-      <div className="flex items-center gap-4">
-        <span className="lud-symIcon grid size-12 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
-          <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
-        </span>
-        <h3 className="min-w-0 flex-1 font-display text-xl leading-snug text-ink">
-          <button
-            type="button"
-            aria-expanded={open || phone}
-            aria-controls={bodyId}
-            onClick={toggle}
-            className="min-h-12 w-full text-left after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-accent"
-          >
-            {title}
-          </button>
-        </h3>
-        <ChevronDown
-          aria-hidden="true"
-          className="lud-chev hidden size-5 shrink-0 text-muted md:block"
-          strokeWidth={1.75}
-        />
-      </div>
-      <p id={bodyId} className="lud-when mt-3 text-base leading-relaxed text-muted">
-        {when}
+      <span className="grid size-12 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+        <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
+      </span>
+      <h3 id={titleId} className="mt-4 font-display text-xl leading-snug text-ink">
+        {title}
+      </h3>
+      <p
+        aria-hidden="true"
+        className="lud-hint mt-auto flex items-center gap-1.5 pt-3 text-sm font-semibold text-accent"
+      >
+        {hint}
+        <ArrowUpRight className="size-4" strokeWidth={2} />
       </p>
+      <div className="lud-when mt-3">
+        <p className="lud-whenLabel text-sm font-bold tracking-[0.08em] uppercase">{hint}</p>
+        <p className="mt-1.5 text-base leading-relaxed">{when}</p>
+      </div>
     </article>
   );
 }

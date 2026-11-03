@@ -18,7 +18,6 @@ export const styles = {
   lobe: "ty-lobe",
   wing: "ty-wing",
   breathe: "ty-breathe",
-  photoCover: "ty-photoCover",
   float: "ty-float",
   shine: "ty-shine",
   flies: "ty-flies",

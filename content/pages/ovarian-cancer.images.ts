@@ -110,6 +110,49 @@ export const ovarianImages = {
     width: 1333,
     height: 2000,
   },
+  /* #warning-signs card photos (NEW, Pexels) ---------------------------- */
+
+  // The endometrial page's photo, for "Pelvic pain".
+  pelvicPain: {
+    file: "abdominal-pain.jpg",
+    src: "/images/endometrial-cancer/abdominal-pain.jpg",
+    pexelsId: 5938365,
+    alt: "Woman lying on a sofa, holding her lower abdomen in discomfort",
+    credit: { photographer: "Sora Shimazaki", url: pexels(5938365) },
+    focal: "75% 40%",
+    width: 2000,
+    height: 1333,
+  },
+  bloating: {
+    file: "bloating.jpg",
+    src: `${BASE}/bloating.jpg`,
+    pexelsId: 7298911,
+    alt: "A woman's hands resting on her stomach",
+    credit: { photographer: "Kindel Media", url: pexels(7298911) },
+    focal: "50% 50%",
+    width: 2000,
+    height: 1127,
+  },
+  fullQuickly: {
+    file: "full-quickly.jpg",
+    src: `${BASE}/full-quickly.jpg`,
+    pexelsId: 7272617,
+    alt: "Woman at a table who has lost interest in her bowl of soup",
+    credit: { photographer: "Pexels", url: pexels(7272617) },
+    focal: "55% 45%",
+    width: 2000,
+    height: 1333,
+  },
+  restroom: {
+    file: "restroom.jpg",
+    src: `${BASE}/restroom.jpg`,
+    pexelsId: 5341491,
+    alt: "Round restroom sign on a wooden door",
+    credit: { photographer: "Pexels", url: pexels(5341491) },
+    focal: "78% 50%",
+    width: 2000,
+    height: 1333,
+  },
 } as const satisfies Record<string, PageImage>;
 
 export type OvarianImageKey = keyof typeof ovarianImages;

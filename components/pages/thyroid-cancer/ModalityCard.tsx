@@ -35,7 +35,7 @@ type ModalityCardProps = {
 
 /**
  * One modality card (modalities.css, tym-): the icon in a circle (it draws on reveal, fills on
- * hover), the live title and text. Server-rendered; the filter dims it through data-group.
+ * hover), the live title and text. Server-rendered; the filter hides it through data-group.
  */
 export function ModalityCard({ icon, title, body, link, group, className }: ModalityCardProps) {
   const Icon = icons[icon];

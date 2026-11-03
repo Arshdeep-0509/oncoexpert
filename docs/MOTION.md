@@ -76,7 +76,6 @@ properties and are not listed.
 | --- | --- | --- | --- | --- | --- | --- |
 | `.lud-caption` | lud-in (diagnosis.css) | page load (after the intro) | 0.5s | no | n/a (runs once) | final state (no animation) |
 | `.lu-underline path` | lu-draw (hero.css) | page load (after the intro) | 0.8s | no | n/a (runs once) | final state (no animation) |
-| `.lu-photoCover` | lu-cover (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
 | `.lu-draw` | lu-draw (hero.css) | page load (after the intro) | var(--dur) | no | n/a (runs once) | final state (no animation) |
 | `.lu-alv` | lu-pop (hero.css) | page load (after the intro) | 0.45s | no | n/a (runs once) | final state (no animation) |
 | `.lu-breathe` | lu-breathe (hero.css) | page load (after the intro) | 8s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
@@ -112,9 +111,15 @@ properties and are not listed.
 | `.ovd-tray[data-inview] .ovd-tile:hover .ovd-rung` | ovd-draw2 (diagnostics.css) | scrolled into view | 0.4s | no | n/a (runs once) | final state (no animation) |
 | `.ov-underline path` | ov-draw (hero.css) | page load (after the intro) | 0.8s | no | n/a (runs once) | final state (no animation) |
 | `.ov-line` | ov-draw (hero.css) | page load (after the intro) | 2.2s | no | n/a (runs once) | final state (no animation) |
-| `.ov-arch` | ov-draw (hero.css) | page load (after the intro) | 1s | no | n/a (runs once) | final state (no animation) |
-| `.ov-cover` | ov-cover (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
-| `.ov-photo` | ov-photoRise (hero.css) | page load (after the intro) | 1.1s | no | n/a (runs once) | final state (no animation) |
+| `.ov-uterus` | ov-draw (hero.css) | page load (after the intro) | 1s | no | n/a (runs once) | final state (no animation) |
+| `.ov-tumour` | ov-tumour (hero.css) | page load (after the intro) | 2.6s | no | n/a (runs once) | final state (no animation) |
+| `.ov-ring` | ov-ring (hero.css) | page load (after the intro) | 2.4s | no | n/a (runs once) | final state (no animation) |
+| `.ov-wave` | ov-draw (hero.css) | page load (after the intro) | 1.2s | no | n/a (runs once) | final state (no animation) |
+| `.ov-waves` | ov-drift (hero.css) | page load (after the intro) | 6s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
+| `.ov-glow` | ov-glowIn (hero.css) | page load (after the intro) | 1.4s | no | n/a (runs once) | final state (no animation) |
+| `.ov-check` | ov-pop (hero.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |
+| `.ov-checkMark` | ov-draw (hero.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |
+| `.ov-storyStep` | ov-fadeUp (hero.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |
 | `.ov-seed` | ov-pop (hero.css) | page load (after the intro) | 0.5s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
 | `.ov-shimmer` | ov-shimmer (hero.css) | page load (after the intro) | 10s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
 | `.ov-shine::after` | ov-shine (hero.css) | page load (after the intro) | 6s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
@@ -149,10 +154,10 @@ properties and are not listed.
 | `.ty-lobe` | ty-draw (hero.css) | page load (after the intro) | 0.8s | no | n/a (runs once) | final state (no animation) |
 | `.ty-wing` | ty-unfold (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
 | `.ty-breathe` | ty-breath (hero.css) | page load (after the intro) | 9s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
-| `.ty-photoCover` | ty-cover (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
 | `.ty-float` | ty-float (hero.css) | page load (after the intro) | 7s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
 | `.ty-shine::after` | ty-shine (hero.css) | page load (after the intro) | 6s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
 | `.ty-fly` | ty-drift (hero.css) | page load (after the intro) | var(--fly) | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
+| `.tym-swap` | tym-swap (modalities.css) | page load (after the intro) | 0.45s | no | n/a (runs once) | final state (no animation) |
 | `.tym-reveal[data-inview] .tym-draw :is(path, circle, line, rect, po…` | tym-draw (modalities.css) | scrolled into view | 1.1s | no | n/a (runs once) | final state (no animation) |
 | `.tyu-diagram[data-selected="nerve"] .tyu-wave` | tyu-wave (understanding.css) | an interaction (state change) | 1.2s | no | n/a (runs once) | final state (no animation) |
 | `.tyu-diagram[data-selected="parathyroids"] .tyu-para` | tyu-pulse (understanding.css) | an interaction (state change) | 0.8s | repeats | n/a (runs once) | final state (no animation) |

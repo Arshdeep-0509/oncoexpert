@@ -70,6 +70,8 @@ type DoctorRingProps = {
   head: { src: string };
   /** Above the fold (a hero): the photo is preloaded, and the entrance and the count wait for the intro. */
   hero?: boolean;
+  /** No navy panel (no background, corners or shadow): for a section that is already navy (About). */
+  bare?: boolean;
 };
 
 /**
@@ -81,12 +83,13 @@ type DoctorRingProps = {
  * (doctor-ring.css). Home's #surgeon and the About hero (`hero`). No backdrop blur on the chips:
  * they animate.
  */
-export function DoctorRing({ stats, label, photo, head, hero = false }: DoctorRingProps) {
+export function DoctorRing({ stats, label, photo, head, hero = false, bare = false }: DoctorRingProps) {
   return (
     <InView
       className={cn(
         styles.root,
         "on-dark relative isolate overflow-hidden rounded-[28px] px-5 pt-12 pb-6 text-white shadow-soft-lg md:px-10 md:pt-14 md:pb-10 lg:px-6 lg:py-16",
+        bare && "rounded-none bg-transparent! bg-none! shadow-none!",
       )}
       style={hero ? ({ "--ring-delay": "var(--intro, 0s)" } as React.CSSProperties) : undefined}
     >

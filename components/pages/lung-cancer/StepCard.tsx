@@ -22,7 +22,7 @@ export function StepCard({ step, index, state, stepLabel }: StepCardProps) {
         "lup-card relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-soft-sm lg:flex-row",
       )}
     >
-      <div className="relative aspect-[16/10] shrink-0 overflow-hidden lg:aspect-auto lg:w-[44%]">
+      <div className="relative aspect-[16/10] shrink-0 overflow-hidden lg:aspect-[4/3] lg:w-[44%]">
         <Image
           src={step.image.src}
           alt=""

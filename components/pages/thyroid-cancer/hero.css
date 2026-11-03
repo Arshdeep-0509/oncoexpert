@@ -72,10 +72,6 @@
   transform-box: view-box;
   transform-origin: 200px 160px;
 }
-.ty-photoCover {
-  transform-origin: 50% 0;
-  scale: 1 0;
-}
 
 .ty-shine {
   position: relative;
@@ -146,10 +142,6 @@
     animation: ty-breath 9s ease-in-out infinite;
     animation-delay: calc(var(--intro) + 2.6s * var(--pace));
   }
-  .ty-photoCover {
-    animation: ty-cover calc(0.9s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
-    animation-delay: calc(var(--intro) + 0.6s * var(--pace));
-  }
   .ty-float {
     animation: ty-float 7s ease-in-out infinite;
     animation-delay: calc(var(--intro) + (2.4s + var(--i, 0) * 0.5s) * var(--pace));
@@ -215,14 +207,6 @@
   }
   50% {
     scale: 0.97 1;
-  }
-}
-@keyframes ty-cover {
-  from {
-    scale: 1 1;
-  }
-  to {
-    scale: 1 0;
   }
 }
 @keyframes ty-float {

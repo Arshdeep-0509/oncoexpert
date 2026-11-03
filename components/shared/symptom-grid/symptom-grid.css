@@ -1,9 +1,10 @@
 /* ==================================================================
-   Shared SymptomGrid. Plain CSS, prefix sgx- (class names in SymptomGrid.tsx).
-   - "check": a ticked card fills its box with the accent and gets an accent ring; the box gives a
-     small bounce when ticked.
-   - "disclose": from 768px the body is hidden until the card opens, keeping its space (no height
-     animation); on phones it is always shown. A card's photo (optional) zooms slightly when it opens.
+   Shared SymptomGrid. Plain CSS, prefix sgx- (class names in CheckCard and HoverCard).
+   - "check": a ticked card gets an accent ring, its box fills with the accent and gives a small
+     bounce. With a photo, the photo zooms slightly on hover / focus.
+   - "disclose" (hover cards): on devices that can hover, the body sits over the photo, hidden,
+     and slides up on a dark gradient when the card is hovered or focused; the photo zooms a little.
+     On touch screens (and without a photo) the body is shown under the title.
    Transform and opacity only (colour changes are instant state, not animation).
    ================================================================== */
 
@@ -11,7 +12,7 @@
   opacity: 0;
 }
 .sgx-check[aria-checked="true"] {
-  box-shadow: inset 0 0 0 2px var(--accent);
+  box-shadow: inset 0 0 0 3px var(--accent);
 }
 .sgx-check[aria-checked="true"] .sgx-box {
   background: var(--accent);
@@ -25,17 +26,29 @@
   color: var(--white);
 }
 
-@media (min-width: 768px) {
-  .sgx-body {
+/* Hover cards: the body over the photo, from 768px on devices that can hover (phones always show it). */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .sgx-card[data-photo] .sgx-body {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    aspect-ratio: 4 / 3;
+    margin: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.25rem 1.25rem 2.25rem;
+    color: var(--white);
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--ink) 94%, transparent) 45%,
+      color-mix(in srgb, var(--ink) 10%, transparent)
+    );
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(10px);
   }
-  .sgx-card[data-open] .sgx-body {
+  .sgx-card[data-photo]:is(:hover, :focus-visible) .sgx-body {
     opacity: 1;
     transform: none;
-  }
-  .sgx-card[data-open] .sgx-chev {
-    transform: rotate(180deg);
   }
 }
 
@@ -49,11 +62,10 @@
   .sgx-photo {
     transition: transform 0.8s var(--ease-out-expo);
   }
-  .sgx-card[data-open] .sgx-photo {
-    transform: scale(1.04);
+  :is(.sgx-card, .sgx-check):is(:hover, :focus-visible) .sgx-photo {
+    transform: scale(1.05);
   }
-  .sgx-body,
-  .sgx-chev {
+  .sgx-body {
     transition:
       opacity 0.35s var(--ease-out-expo),
       transform 0.45s var(--ease-out-expo);

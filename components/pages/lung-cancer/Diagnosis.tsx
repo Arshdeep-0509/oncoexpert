@@ -21,7 +21,7 @@ export function Diagnosis() {
             <ul aria-label={diagnosis.a11y.symptoms} className="mt-8 grid gap-4 md:grid-cols-2 md:gap-5">
               {diagnosis.symptoms.map((symptom, i) => (
                 <li key={symptom.title}>
-                  <SymptomCard id={`lung-symptom-${i}`} {...symptom} />
+                  <SymptomCard id={`lung-symptom-${i}`} hint={diagnosis.hint} {...symptom} />
                 </li>
               ))}
             </ul>

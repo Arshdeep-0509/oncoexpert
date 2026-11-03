@@ -5,7 +5,6 @@ import { Container } from "@/components/ui/Container";
 import { Counter } from "@/components/ui/Counter";
 import { InView } from "@/components/ui/InView";
 import { ProgressRing } from "@/components/ui/ProgressRing";
-import { SurvivalChart } from "@/components/shared/SurvivalChart";
 import "@/components/pages/ovarian-cancer/outcomes.css";
 
 const HEAT_ICONS = 5;
@@ -13,8 +12,8 @@ const HEAT_ICONS = 5;
 /**
  * 8 · #outcomes "Clinical Excellence & Outcomes". The two live figures: 96% as a large
  * ProgressRing, "500+" counting up while five heat icons fill in turn (both PENDING DOCTOR). Beside
- * them the shared SurvivalChart (Stage I–IV, one colour for every stage) and the live "Dec 2023"
- * footnote. Desktop: the figures stay sticky beside the chart. Screen-reader tables for both.
+ * them the 5-year survival rates as plain numbers (Stage I–IV, counting up) and the live "Dec 2023"
+ * footnote. Desktop: the figures stay sticky beside them. Screen-reader tables for both.
  */
 export function Outcomes() {
   const [ring, count] = outcomes.stats;
@@ -112,14 +111,46 @@ export function Outcomes() {
 
           <div className="lg:col-span-7">
             <h3 className="font-display text-2xl text-ink md:text-[1.75rem]">{outcomes.survival.title}</h3>
-            <SurvivalChart
-              className="mt-6"
-              rows={outcomes.survival.rows}
-              unit={outcomes.survival.unit}
-              caption={outcomes.a11y.survival}
-              labels={{ row: outcomes.a11y.row, value: outcomes.a11y.rate }}
-              footnote={outcomes.footnote}
-            />
+            {/* The figures as numbers (no bars), with a real table for screen readers */}
+            <div className="sr-only">
+              <table>
+                <caption>{outcomes.a11y.survival}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{outcomes.a11y.row}</th>
+                    <th scope="col">{outcomes.a11y.rate}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {outcomes.survival.rows.map((row) => (
+                    <tr key={row.label}>
+                      <th scope="row">{row.label}</th>
+                      <td>
+                        {row.value}
+                        {outcomes.survival.unit}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <ul aria-hidden="true" className="mt-6 grid grid-cols-2 gap-3 md:gap-4">
+              {outcomes.survival.rows.map((row, i) => (
+                <li key={row.label} className="rounded-xl bg-surface p-5 ring-1 shadow-soft-sm ring-line md:p-6">
+                  <p className="text-sm font-bold tracking-[0.08em] text-muted uppercase">{row.label}</p>
+                  <p className="mt-2 font-display text-[2.6rem] leading-none font-semibold text-accent md:text-[3.25rem]">
+                    <Counter
+                      value={row.value}
+                      suffix={outcomes.survival.unit}
+                      delay={0.15 + i * 0.12}
+                      duration={1.3}
+                      reserveWidth
+                    />
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 measure text-sm leading-relaxed text-muted">{outcomes.footnote}</p>
           </div>
         </div>
       </Container>

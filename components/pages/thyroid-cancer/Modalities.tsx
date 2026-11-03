@@ -36,10 +36,10 @@ export function Modalities() {
               {/* Phones: one swipe row per group */}
               <div className="grid gap-8 md:hidden">
                 {[
-                  { label: modalities.filters.treatments, cards: treatments },
-                  { label: modalities.filters.why, cards: why },
+                  { key: "treatments", label: modalities.filters.treatments, cards: treatments },
+                  { key: "why", label: modalities.filters.why, cards: why },
                 ].map((group) => (
-                  <div key={group.label}>
+                  <div key={group.key} data-group={group.key}>
                     <h3 className="mb-3 text-sm font-bold tracking-[0.12em] text-accent uppercase">{group.label}</h3>
                     <SwipeRow label={group.label}>
                       {group.cards.map((m) => (

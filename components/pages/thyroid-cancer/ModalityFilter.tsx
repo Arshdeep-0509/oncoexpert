@@ -16,8 +16,9 @@ type ModalityFilterProps = {
 
 /**
  * The modality filter: a three-way radiogroup (arrow keys, roving tab stop). It sets data-filter
- * on its box; modalities.css fades and scales the non-matching cards (0.96, 40%) instead of
- * removing them, so nothing moves. A choice sends thyroid_modality_filter.
+ * on its box; modalities.css hides the other group (its cards on tablets and desktop, its swipe
+ * row on phones). The cards are re-mounted on each choice (keyed by it), so they fade back in and
+ * their icons draw again. A choice sends thyroid_modality_filter.
  */
 export function ModalityFilter({ labels, groupLabel, children }: ModalityFilterProps) {
   const [filter, setFilter] = React.useState<Filter>("all");
@@ -66,7 +67,9 @@ export function ModalityFilter({ labels, groupLabel, children }: ModalityFilterP
           </button>
         ))}
       </div>
-      <div className="mt-8">{children}</div>
+      <div key={filter} className="tym-swap mt-8">
+        {children}
+      </div>
     </div>
   );
 }

@@ -81,11 +81,14 @@ export const hero = {
     primary: { label: "Book Consultation", service: "Consultation", cta: "ovarian:hero:book-consultation" },
     secondary: { label: "Get Second Opinion", service: "Second Opinion", cta: "ovarian:hero:second-opinion" },
   },
-  // The live hero shows the portrait beside the text: here in an arch, the LCP image.
-  image: "doctor",
+  // SOURCE: NEW (the steps of the hero illustration; the live hero shows the portrait, which is
+  // in #surgeon). PENDING DOCTOR: the step names.
+  story: ["Cytoreductive Surgery", "HIPEC", "Recovery"],
   // SOURCE: NEW (screen-reader labels)
   a11y: {
-    visual: "Illustration: a teal ribbon whose line becomes the outline of the ovaries and tubes",
+    visual:
+      "Illustration: a teal ribbon outlines the ovaries; tumour deposits on one ovary are removed, warm waves wash through the abdomen, and a check marks recovery",
+    steps: "Treatment steps",
     pause: "Pause the hero animation",
     play: "Play the hero animation",
   },
@@ -95,8 +98,8 @@ export const hero = {
   emphasis: string;
   body: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
-  image: OvarianImageKey;
-  a11y: { visual: string; pause: string; play: string };
+  story: readonly string[];
+  a11y: { visual: string; steps: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -164,12 +167,12 @@ export const warningSigns = {
   // SOURCE: EXISTING
   title: "Warning Signs",
   body: "Persistent abdominal bloating, pelvic pain, feeling full quickly, and frequent urination should not be ignored.",
-  // SOURCE: NEW (the four signs named in the live sentence, in its words; icon keys)
+  // SOURCE: NEW (the four signs named in the live sentence, in its words; icon keys; the card photos)
   items: [
-    { key: "bloating", icon: "bloating", title: "Abdominal bloating" },
-    { key: "pelvic", icon: "pelvic", title: "Pelvic pain" },
-    { key: "full", icon: "full", title: "Feeling full quickly" },
-    { key: "urination", icon: "urination", title: "Frequent urination" },
+    { key: "bloating", icon: "bloating", title: "Abdominal bloating", image: "bloating" },
+    { key: "pelvic", icon: "pelvic", title: "Pelvic pain", image: "pelvicPain" },
+    { key: "full", icon: "full", title: "Feeling full quickly", image: "fullQuickly" },
+    { key: "urination", icon: "urination", title: "Frequent urination", image: "restroom" },
   ],
   // SOURCE: NEW (the result once something is ticked: general guidance, never a diagnosis; the
   // button sends the ticked list as its note; nothing is stored)
@@ -184,7 +187,7 @@ export const warningSigns = {
 } as const satisfies {
   title: string;
   body: string;
-  items: readonly { key: string; icon: SymptomIcon; title: string }[];
+  items: readonly { key: string; icon: SymptomIcon; title: string; image: OvarianImageKey }[];
   result: { some: string; cta: AppointmentCta; notePrefix: string };
   a11y: { group: string; result: string };
 };

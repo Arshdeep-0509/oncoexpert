@@ -82,11 +82,8 @@ export const hero = {
     primary: { label: "Book Consultation", service: "Consultation", cta: "lung:hero:book-consultation" },
     secondary: { label: "Get Second Opinion", service: "Second Opinion", cta: "lung:hero:second-opinion" },
   },
-  // The photo card in the visual (the LCP image). The live hero shows the portrait, which moves
-  // to #surgeon.
-  image: "breathingCalm",
-  // SOURCE: NEW
-  // PENDING DOCTOR: the glass caption on the photo card.
+  // SOURCE: NEW (the hero has no photo: the live hero's portrait is in #surgeon)
+  // PENDING DOCTOR: the glass caption under the lungs.
   caption: "Care planned around every breath",
   // SOURCE: NEW (screen-reader labels)
   a11y: {
@@ -100,7 +97,6 @@ export const hero = {
   emphasis: string;
   body: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
-  image: LungImageKey;
   caption: string;
   a11y: { visual: string; pause: string; play: string };
 };
@@ -192,9 +188,15 @@ export const diagnosis = {
   callout: {
     lead: "Did you know?",
     body: "Detection at Stage I increases survival rates significantly compared to later stages.",
-    // SOURCE: NEW (the large figure beside it: the stage the sentence names, not a statistic)
-    figure: "I",
+    // SOURCE: NEW (the scale under it: the four stages, Stage I marked as found early; no figures)
+    // PENDING DOCTOR: the two scale labels.
+    stages: ["Stage I", "Stage II", "Stage III", "Stage IV"],
+    early: "Found early",
+    late: "Found later",
   },
+  // SOURCE: NEW (the hint on each symptom card, and the label over its line)
+  // PENDING DOCTOR: the label.
+  hint: "When to see a doctor",
   // SOURCE: NEW (screen-reader labels)
   a11y: {
     symptoms: "Symptoms to watch",
@@ -206,7 +208,8 @@ export const diagnosis = {
   body: string;
   symptoms: readonly { icon: SymptomIcon; title: string; when: string }[];
   tests: readonly { key: TestKey; title: string; caption: string }[];
-  callout: { lead: string; body: string; figure: string };
+  callout: { lead: string; body: string; stages: readonly string[]; early: string; late: string };
+  hint: string;
   a11y: { symptoms: string; tests: string; lens: string };
 };
 
@@ -220,12 +223,12 @@ export const pathway = {
   title: "The OncoXpert Care Pathway",
   // The live step numbers are 1–6: the list order. NEW (photo per step, for the design).
   steps: [
-    { title: "Symptoms", body: "Identification of persistent cough or discomfort.", image: "breathingCalm" },
+    { title: "Symptoms", body: "Identification of persistent cough or discomfort.", image: "cough" },
     { title: "Biopsy", body: "Bronchoscopy or CT Guided diagnostic sample.", image: "xrayReview" },
     { title: "PET-CT", body: "Precise staging to map the cancer's spread.", image: "chestXray" },
     { title: "Planning", body: "Multidisciplinary tumor board review.", image: "consultation" },
     { title: "Treatment", body: "Surgery, Immunotherapy, or combination care.", image: "roboticArms" },
-    { title: "Recovery", body: "Post-op care and long-term surveillance.", image: "seniorSmile" },
+    { title: "Recovery", body: "Post-op care and long-term surveillance.", image: "breathingCalm" },
   ],
   // SOURCE: NEW (the button after the last step; label as the hero's)
   cta: { label: "Book Consultation", service: "Consultation", cta: "lung:pathway:book-consultation" },

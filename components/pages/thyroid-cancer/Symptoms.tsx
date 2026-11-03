@@ -12,8 +12,8 @@ const items = symptoms.items.map(({ image, ...item }) => {
 });
 
 /**
- * 3 · #symptoms "Key Symptoms": the shared SymptomGrid in "disclose" mode (four photo cards that
- * reveal their line in place; all open on phones), then the live "Many patients remain asymptomatic
+ * 3 · #symptoms "Key Symptoms": the shared SymptomGrid in "disclose" mode (four photo hover cards:
+ * the line slides up over the photo; under it on touch screens), then the live "Many patients remain asymptomatic
  * in early stages." as a highlighted note with Book.
  */
 export function Symptoms() {

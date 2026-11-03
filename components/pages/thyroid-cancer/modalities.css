@@ -1,7 +1,7 @@
 /* ==================================================================
    Thyroid #modalities. Plain CSS, prefix tym- (class names in Modalities, ModalityCard,
    ModalityFilter).
-   - The filter (data-filter) hides the other group: its cards (tablet, desktop) or its swipe row
+   - The filter (data-filter) hides the other group: its cards (tablet, desktop) or its grid
      (phones). The remaining cards fade in again (.tym-swap is re-mounted on each choice).
    - Each icon draws on reveal (a copy of Home's icon-draw rules); hover lifts the card and fills
      the icon circle.

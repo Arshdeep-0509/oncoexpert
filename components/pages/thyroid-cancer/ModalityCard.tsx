@@ -44,14 +44,17 @@ export function ModalityCard({ icon, title, body, link, group, className }: Moda
     <article
       data-group={group}
       className={cn(
-        "tym-card flex h-full flex-col gap-4 rounded-xl bg-surface p-6 ring-1 shadow-soft-sm ring-line",
+        // Phones: a little tighter, two to a row; from md as before.
+        "tym-card flex h-full flex-col gap-3 rounded-xl bg-surface p-4 ring-1 shadow-soft-sm ring-line md:gap-4 md:p-6",
         className,
       )}
     >
-      <span className="tym-icon grid size-12 place-items-center rounded-full bg-accent-soft text-accent">
-        <Icon className="tym-draw size-6" strokeWidth={1.75} aria-hidden="true" />
+      <span className="tym-icon grid size-10 place-items-center rounded-full bg-accent-soft text-accent md:size-12">
+        <Icon className="tym-draw size-5 md:size-6" strokeWidth={1.75} aria-hidden="true" />
       </span>
-      <h3 className="font-display text-xl leading-snug text-ink">{title}</h3>
+      <h3 className="font-display text-base leading-snug wrap-break-word hyphens-auto text-ink md:text-xl md:hyphens-manual">
+        {title}
+      </h3>
       <p className="text-base leading-relaxed text-muted">
         {link && at >= 0 ? (
           <>

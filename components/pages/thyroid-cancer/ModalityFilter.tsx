@@ -45,7 +45,7 @@ export function ModalityFilter({ labels, groupLabel, children }: ModalityFilterP
         role="radiogroup"
         aria-label={groupLabel}
         onKeyDown={onKeyDown}
-        className="inline-flex flex-wrap gap-2 rounded-pill bg-surface p-1.5 ring-1 shadow-soft-sm ring-line"
+        className="flex w-full gap-1 rounded-pill bg-surface p-1 ring-1 shadow-soft-sm ring-line md:inline-flex md:w-auto md:flex-wrap md:gap-2 md:p-1.5"
       >
         {FILTERS.map((f, i) => (
           <button
@@ -59,7 +59,8 @@ export function ModalityFilter({ labels, groupLabel, children }: ModalityFilterP
             tabIndex={filter === f ? 0 : -1}
             onClick={() => choose(f)}
             className={cn(
-              "min-h-12 rounded-pill px-5 text-[15px] font-semibold transition-colors",
+              // Phones: the three on one row (they share the width); from md as before.
+              "min-h-12 flex-auto rounded-pill px-3 text-sm font-semibold whitespace-nowrap transition-colors md:flex-initial md:px-5 md:text-[15px]",
               filter === f ? "bg-accent text-white" : "text-ink hover:bg-accent-soft",
             )}
           >

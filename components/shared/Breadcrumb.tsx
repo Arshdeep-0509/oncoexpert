@@ -8,10 +8,12 @@ type BreadcrumbProps = {
   label: string;
   items: readonly { label: string; href: string }[];
   className?: string;
+  /** false when the page carries its BreadcrumbList in its own @graph (lib/jsonld.ts). */
+  structuredData?: boolean;
 };
 
 /** Visible trail (last item = current page) plus BreadcrumbList structured data. */
-export function Breadcrumb({ label, items, className }: BreadcrumbProps) {
+export function Breadcrumb({ label, items, className, structuredData = true }: BreadcrumbProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -25,7 +27,9 @@ export function Breadcrumb({ label, items, className }: BreadcrumbProps) {
 
   return (
     <nav aria-label={label} className={className}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {structuredData ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      ) : null}
       <ol className="flex flex-wrap items-center gap-1 text-[13px] leading-none text-muted">
         {items.map((item, i) => {
           const last = i === items.length - 1;

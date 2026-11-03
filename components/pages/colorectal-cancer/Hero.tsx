@@ -1,4 +1,6 @@
 import { Bot, Crosshair, ShieldCheck, type LucideIcon } from "lucide-react";
+import { colorectalSeo } from "@/content/pages/colorectal-cancer.seo";
+import { Definition } from "@/components/shared/Definition";
 import { hero, type TrustIcon } from "@/content/pages/colorectal-cancer";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
@@ -41,11 +43,17 @@ export function Hero() {
           <HeroHeadline />
 
           <p
+            data-speakable
             className={cn(styles.step, styles.fadeUp, "mt-5 measure text-base text-text md:mt-6 md:text-lg")}
             style={at(0.95)}
           >
             {hero.body}
           </p>
+          <Definition
+            text={colorectalSeo.definition}
+            className={cn(styles.step, styles.fadeUp, "mt-3")}
+            style={at(0.95)}
+          />
 
           <div
             className={cn(styles.step, styles.fadeUp, "mt-7 flex flex-col gap-3 md:mt-8 md:flex-row md:flex-wrap")}

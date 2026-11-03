@@ -1,0 +1,313 @@
+/* ==================================================================
+   Ovarian hero "THE TEAL RIBBON". Plain CSS, prefix ov- (hero-styles.ts). The ribbon draws, then the
+   treatment story inside it plays once (HeroStory); the default CSS is its end state.
+   - The teal line draws over 2.2s; the arch outline draws, then the portrait rises behind a cover
+     that slides off (the portrait is the LCP image: painted from the first frame, never faded).
+   - Then a bright shimmer segment travels the line every 10s, and five seeds pop in and float on a
+     7s loop. The pause button (data-paused) and leaving the screen (data-offscreen) stop both, and
+     the button shine; hover / focus stops the shine.
+   - Every entrance waits for the intro (--intro), scaled by --pace (quicker on phones).
+   Transform and opacity only, plus the stroke draws. The default styles are the final state; all
+   motion lives in prefers-reduced-motion: no-preference.
+   ================================================================== */
+
+.ov-hero {
+  --intro: var(--intro-delay, 0s);
+  --pace: 0.75;
+  --rise: 16px;
+}
+@media (min-width: 768px) {
+  .ov-hero {
+    --pace: 1;
+    --rise: 24px;
+  }
+}
+
+.ov-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Headline ---------------------------------------------------------- */
+
+.ov-wordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.06em 0.14em 0;
+  margin: 0 -0.06em -0.14em 0;
+}
+.ov-word {
+  display: inline-block;
+}
+.ov-phrase {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.ov-gradWord {
+  background-image: linear-gradient(90deg, var(--from), var(--to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ov-underline {
+  position: absolute;
+  left: 0;
+  bottom: -0.2em;
+  width: 100%;
+  height: 0.24em;
+  overflow: visible;
+}
+.ov-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* The art ------------------------------------------------------------- */
+
+.ov-line,
+.ov-uterus,
+.ov-wave,
+.ov-checkMark {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+/* The treatment story's end state (HeroStory): deposits gone, ring put away, glow, check. */
+.ov-tumour,
+.ov-ring {
+  opacity: 0;
+}
+.ov-tumour,
+.ov-check,
+.ov-glow {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+.ov-ring {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.ov-glow {
+  opacity: 0.35;
+}
+/* The shimmer: a short bright dash, parked off the line's start until it travels. */
+.ov-shimmer {
+  stroke-dasharray: 0.07 0.93;
+  stroke-dashoffset: 0.07;
+  opacity: 0;
+}
+.ov-seed {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.ov-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ov-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  translate: -120% 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ov-fadeDown {
+    animation-name: ov-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .ov-fadeUp {
+    animation-name: ov-fadeUp;
+    animation-duration: 0.7s;
+  }
+  .ov-wordRise {
+    animation-name: ov-rise;
+    animation-duration: calc(0.85s * var(--pace));
+  }
+  .ov-underline path {
+    animation: ov-draw calc(0.8s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + (1.3s + var(--u, 0s)) * var(--pace));
+  }
+
+  .ov-line {
+    animation: ov-draw calc(2.2s * var(--pace)) cubic-bezier(0.45, 0, 0.25, 1) both;
+    animation-delay: calc(var(--intro) + 0.3s * var(--pace));
+  }
+  /* The treatment story (desktop seconds × --pace): uterus 1.0s; deposits appear 2.4s, the ring
+     finds them 3.0s, each is removed in turn (~4s); waves 4.6s; check and glow 6.0s; the step
+     chips light at 3.0, 4.6 and 6.2s. */
+  .ov-uterus {
+    animation: ov-draw calc(1s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + 1s * var(--pace));
+  }
+  .ov-tumour {
+    animation: ov-tumour calc(2.6s * var(--pace)) ease-in-out both;
+    animation-delay: calc(var(--intro) + (2.4s + var(--i) * 0.22s) * var(--pace));
+  }
+  .ov-ring {
+    animation: ov-ring calc(2.4s * var(--pace)) ease-in-out both;
+    animation-delay: calc(var(--intro) + 3s * var(--pace));
+  }
+  .ov-wave {
+    animation: ov-draw calc(1.2s * var(--pace)) cubic-bezier(0.45, 0, 0.25, 1) both;
+    animation-delay: calc(var(--intro) + (4.6s + var(--i) * 0.15s) * var(--pace));
+  }
+  .ov-waves {
+    animation: ov-drift 6s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 6s * var(--pace));
+  }
+  .ov-glow {
+    animation: ov-glowIn calc(1.4s * var(--pace)) cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--intro) + 6s * var(--pace));
+  }
+  .ov-check {
+    animation: ov-pop calc(0.6s * var(--pace)) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: calc(var(--intro) + 6s * var(--pace));
+  }
+  .ov-checkMark {
+    animation: ov-draw calc(0.6s * var(--pace)) ease-out both;
+    animation-delay: calc(var(--intro) + 6.4s * var(--pace));
+  }
+  .ov-storyStep {
+    animation: ov-fadeUp calc(0.6s * var(--pace)) cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--intro) + (3s + var(--s) * 1.6s) * var(--pace));
+  }
+  .ov-seed {
+    animation:
+      ov-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+      ov-float 7s ease-in-out infinite;
+    animation-delay:
+      calc(var(--intro) + (2.4s + var(--i) * 0.12s) * var(--pace)),
+      calc(var(--intro) + (3s + var(--i) * 0.6s) * var(--pace));
+  }
+  .ov-shimmer {
+    animation: ov-shimmer 10s linear infinite;
+    animation-delay: calc(var(--intro) + 2.6s * var(--pace));
+  }
+  .ov-shine::after {
+    animation: ov-shine 6s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 3s);
+  }
+
+  .ov-hero:is([data-paused], [data-offscreen]) :is(.ov-seed, .ov-shimmer, .ov-waves),
+  .ov-hero:is([data-paused], [data-offscreen]) .ov-shine::after,
+  .ov-shine:is(:hover, :focus-visible)::after {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes ov-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes ov-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise);
+  }
+}
+@keyframes ov-rise {
+  from {
+    translate: 0 110%;
+  }
+}
+@keyframes ov-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes ov-tumour {
+  0% {
+    opacity: 0;
+    scale: 0.3;
+  }
+  14%,
+  58% {
+    opacity: 1;
+    scale: 1;
+  }
+  80%,
+  100% {
+    opacity: 0;
+    scale: 0;
+  }
+}
+@keyframes ov-ring {
+  0% {
+    opacity: 1;
+    stroke-dashoffset: 1;
+  }
+  35%,
+  85% {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ov-glowIn {
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+}
+@keyframes ov-drift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 10px 0;
+  }
+}
+@keyframes ov-pop {
+  from {
+    opacity: 0;
+    scale: 0.3;
+  }
+}
+@keyframes ov-float {
+  0%,
+  100% {
+    translate: 0 -5px;
+  }
+  50% {
+    translate: 0 5px;
+  }
+}
+/* The dash travels the line in the first 40% of the 10s, then rests out of sight. */
+@keyframes ov-shimmer {
+  0% {
+    opacity: 1;
+    stroke-dashoffset: 0.07;
+  }
+  40% {
+    opacity: 1;
+    stroke-dashoffset: -0.93;
+  }
+  41%,
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -0.93;
+  }
+}
+@keyframes ov-shine {
+  0% {
+    translate: -120% 0;
+  }
+  18%,
+  100% {
+    translate: 120% 0;
+  }
+}

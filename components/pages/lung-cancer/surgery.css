@@ -1,0 +1,101 @@
+/* ==================================================================
+   Lung #surgery: the lobe explorer and the benefit chips. Plain CSS, prefix lu-sx- (class names
+   in Surgery, LobeExplorer and LobeDiagram).
+   - Lobes: kept lobes glow (a soft wide stroke under the outline); removed lobes are hatched and
+     lift out by --lx / --ly; a hovered lobe is previewed half-lifted. 0.5s transitions.
+   - The radiogroup's pill slides under the chosen mode.
+   - Chips pop in one by one once in view; their checks draw (stroke).
+   Transform, opacity and stroke draws only; reduced motion: states change at once.
+   ================================================================== */
+
+.lu-sx-lobe {
+  transform-box: view-box;
+}
+.lu-sx-fill {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+}
+.lu-sx-glow {
+  fill: none;
+  stroke: var(--highlight);
+  stroke-opacity: 0.35;
+}
+.lu-sx-hatch {
+  stroke: var(--muted);
+  stroke-dasharray: 6 5;
+  opacity: 0;
+}
+.lu-sx-focus {
+  stroke: var(--ink);
+  opacity: 0;
+}
+.lu-sx-lobe:focus-visible .lu-sx-focus {
+  opacity: 1;
+}
+
+.lu-sx-lobe[data-removed] {
+  translate: var(--lx) var(--ly);
+}
+.lu-sx-lobe[data-removed] .lu-sx-hatch {
+  opacity: 1;
+}
+.lu-sx-lobe[data-removed] .lu-sx-glow {
+  opacity: 0;
+}
+.lu-sx-lobe[data-preview] {
+  translate: calc(var(--lx) * 0.5) calc(var(--ly) * 0.5);
+}
+.lu-sx-lobe[data-preview] .lu-sx-hatch {
+  opacity: 0.6;
+}
+
+.lu-sx-modes[data-mode="pneumonectomy"] .lu-sx-thumb {
+  transform: translateX(100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lu-sx-lobe {
+    transition: translate 0.5s var(--ease-out-expo);
+  }
+  .lu-sx-hatch,
+  .lu-sx-glow {
+    transition: opacity 0.5s var(--ease-out-expo);
+  }
+  .lu-sx-thumb {
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .lu-sx-chips:not([data-inview]) .lu-sx-chip {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  .lu-sx-chips[data-inview] .lu-sx-chip {
+    animation: lu-sx-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    animation-delay: calc(var(--i) * 0.12s);
+  }
+  .lu-sx-chips:not([data-inview]) .lu-sx-check path {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+  }
+  .lu-sx-chips[data-inview] .lu-sx-check path {
+    animation: lu-sx-draw 0.5s cubic-bezier(0.65, 0, 0.35, 1) backwards;
+    animation-delay: calc(var(--i) * 0.12s + 0.25s);
+  }
+}
+
+@keyframes lu-sx-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+@keyframes lu-sx-draw {
+  from {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+  }
+  to {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 0;
+  }
+}

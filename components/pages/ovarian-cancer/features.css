@@ -1,0 +1,53 @@
+/* ==================================================================
+   Ovarian #features: flip cards. Plain CSS, prefix ov-ft- (class names in FeatureCard).
+   - Both faces share one grid cell. With motion allowed the card turns (rotateY 180deg) on hover,
+     on focus inside it, and when tapped (data-flipped); the back's link stays reachable because
+     focus inside keeps it turned.
+   - Reduced motion (the default here): no flip; the back sits under the front.
+   Transform and opacity only.
+   ================================================================== */
+
+.ov-ft-face {
+  grid-area: 1 / 1;
+}
+/* Default (and reduced motion): stacked, the back under the front; the fronts stretch so the
+   backs line up across the row. */
+.ov-ft-inner {
+  grid-template-rows: 1fr auto;
+  gap: 12px;
+}
+.ov-ft-back {
+  grid-area: 2 / 1;
+}
+.ov-ft-flip {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ov-ft-card {
+    perspective: 1200px;
+  }
+  .ov-ft-inner {
+    grid-template-rows: none;
+    gap: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.7s var(--ease-out-expo);
+  }
+  .ov-ft-face {
+    backface-visibility: hidden;
+  }
+  .ov-ft-back {
+    grid-area: 1 / 1;
+    transform: rotateY(180deg);
+  }
+  .ov-ft-flip {
+    display: inline-flex;
+  }
+  .ov-ft-card:is(:hover, :focus-within, [data-flipped]) .ov-ft-inner {
+    transform: rotateY(180deg);
+  }
+  /* The flip button itself keeps the card unturned until it is pressed (tap / Enter). */
+  .ov-ft-card:not([data-flipped]):has(.ov-ft-flip:focus-visible):not(:hover) .ov-ft-inner {
+    transform: none;
+  }
+}

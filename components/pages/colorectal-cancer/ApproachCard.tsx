@@ -70,7 +70,7 @@ export function ApproachCard({ card }: { card: Card }) {
         <div className="mt-auto pt-10">
           <h3 className={cn("heading-3 text-white", large && "lg:text-[1.75rem]")}>{card.title}</h3>
           {card.tagline ? <p className="mt-1 text-sm font-semibold text-accent-glow">{card.tagline}</p> : null}
-          <p className="mt-3 text-[15px] leading-relaxed text-white/85">{card.body}</p>
+          <p className="mt-3 text-base leading-relaxed text-white/85">{card.body}</p>
           <p
             className={cn(
               styles.detail,

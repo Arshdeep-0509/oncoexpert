@@ -1,0 +1,166 @@
+/* ==================================================================
+   Ovarian #diagnostics: the instrument tray. Plain CSS, prefix ovd- (class names in
+   InstrumentTray and TrayArt).
+   - Desktop: a rail draws across the four tiles; each node lights in turn (--i), and its tile's
+     illustration plays as it lights: the tube fills, the sweep crosses the fan, the slices fan out,
+     the helix rungs draw. Hovering a tile replays its illustration.
+   - Drawers sit after their tile in the list; from 768px they move after all tiles (order) and
+     span the full row.
+   - Phones: a vertical list with ScrollFillLine; the rail is hidden.
+   Transform and opacity only, plus stroke draws. The default is the final state.
+   ================================================================== */
+
+.ovd-rail {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .ovd-rail {
+    display: block;
+  }
+}
+@media (min-width: 768px) {
+  .ovd-item {
+    order: 0;
+  }
+  .ovd-drawer {
+    order: 1;
+  }
+}
+
+.ovd-railDraw,
+.ovd-rung {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.ovd-fill {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.ovd-sweep {
+  transform-box: view-box;
+  transform-origin: 60px 82px;
+}
+.ovd-slice {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transform: translateY(var(--y));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ovd-tray:not([data-inview]) .ovd-railDraw {
+    stroke-dashoffset: 1;
+  }
+  .ovd-tray[data-inview] .ovd-railDraw {
+    animation: ovd-draw 1.8s cubic-bezier(0.45, 0, 0.25, 1) 0.1s backwards;
+  }
+  .ovd-tray:not([data-inview]) .ovd-nodeOn {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  .ovd-tray[data-inview] .ovd-nodeOn {
+    animation: ovd-light 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    animation-delay: calc(0.2s + var(--i) * 0.45s);
+  }
+
+  /* Illustrations: hidden at their start until in view, then played as the node lights. */
+  .ovd-tray[data-inview] .ovd-item {
+    --at: calc(0.25s + var(--i) * 0.45s);
+  }
+  .ovd-tray:not([data-inview]) .ovd-fill {
+    transform: scaleY(0);
+  }
+  .ovd-tray[data-inview] .ovd-fill {
+    animation: ovd-fill 1.2s var(--ease-out-expo) var(--at) backwards;
+  }
+  .ovd-tray[data-inview] .ovd-sweep {
+    animation: ovd-sweep 1.4s ease-in-out var(--at) backwards;
+  }
+  .ovd-tray:not([data-inview]) .ovd-slice {
+    transform: none;
+    opacity: 0.3;
+  }
+  .ovd-tray[data-inview] .ovd-slice {
+    animation: ovd-fan 0.9s var(--ease-out-expo) calc(var(--at) + var(--k) * 0.06s) backwards;
+  }
+  .ovd-tray:not([data-inview]) .ovd-rung {
+    stroke-dashoffset: 1;
+  }
+  .ovd-tray[data-inview] .ovd-rung {
+    animation: ovd-draw 0.4s ease-out calc(var(--at) + var(--k) * 0.12s) backwards;
+  }
+
+  /* Hover replays (a second, identical set of keyframes restarts the animation). */
+  .ovd-tray[data-inview] .ovd-tile:hover .ovd-fill {
+    animation: ovd-fill2 1.2s var(--ease-out-expo);
+  }
+  .ovd-tray[data-inview] .ovd-tile:hover .ovd-sweep {
+    animation: ovd-sweep2 1.4s ease-in-out;
+  }
+  .ovd-tray[data-inview] .ovd-tile:hover .ovd-slice {
+    animation: ovd-fan2 0.9s var(--ease-out-expo) calc(var(--k) * 0.06s) backwards;
+  }
+  .ovd-tray[data-inview] .ovd-tile:hover .ovd-rung {
+    animation: ovd-draw2 0.4s ease-out calc(var(--k) * 0.12s) backwards;
+  }
+}
+
+@keyframes ovd-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes ovd-draw2 {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes ovd-light {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+@keyframes ovd-fill {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes ovd-fill2 {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes ovd-sweep {
+  0% {
+    transform: rotate(-38deg);
+  }
+  50% {
+    transform: rotate(38deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes ovd-sweep2 {
+  0% {
+    transform: rotate(-38deg);
+  }
+  50% {
+    transform: rotate(38deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes ovd-fan {
+  from {
+    transform: none;
+    opacity: 0.3;
+  }
+}
+@keyframes ovd-fan2 {
+  from {
+    transform: none;
+    opacity: 0.3;
+  }
+}

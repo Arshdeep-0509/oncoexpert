@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import type { AppointmentService } from "@/content/site";
 import { Button, type ButtonVariant } from "@/components/ui/Button";
 import { bookingHref } from "@/lib/booking";
+import { track, type AnalyticsEvent } from "@/lib/analytics";
 import { useAppointment } from "@/components/layout/AppointmentProvider";
 
 /**
@@ -19,6 +20,8 @@ type AppointmentButtonProps = {
   note?: string;
   /** Analytics label (cta_click) when the visible label repeats within a section. Default: `label`. */
   cta?: string;
+  /** An extra analytics event sent on click (a plain object, so server components can pass it). */
+  event?: AnalyticsEvent;
   variant?: ButtonVariant;
   /** Bare link with these classes instead of a Button (label + optional arrow). */
   look?: LinkLook;
@@ -38,14 +41,17 @@ export function AppointmentButton({
   service,
   note,
   cta = label,
+  event,
   arrow = false,
   look,
   ...props
 }: AppointmentButtonProps) {
-  const { openAppointment } = useAppointment();
-  const href = bookingHref(service, note);
+  const { openAppointment, defaultService } = useAppointment();
+  // The link names the page's default service too, so it preselects without JavaScript as well.
+  const href = bookingHref(service ?? defaultService, note);
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    if (event) track(event);
     openAppointment(service, note);
   };
 

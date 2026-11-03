@@ -1,0 +1,67 @@
+/* ==================================================================
+   Ovarian #understanding "the silent killer". Plain CSS, prefix ovu- (class names in
+   Understanding). ScrollVar writes --p (0–1); the words read it, no React re-renders.
+   - Word i brightens from 0.12 to 1 as --p passes its threshold: thresholds are spread over
+     [--a, --a + --b] by the word's index (--i of --n). The emphasis words end in the gradient.
+   - The second sentence rises, and the flat line hands over to the wave, near the end.
+   - Desktop: the section pins for 1.6 screens (the box is 1.6 screens taller than the stage).
+     Below 1024px: no pin; --p follows the section through the screen (ScrollVar "view").
+   Without JavaScript, and with reduced motion, everything is fully visible (--p defaults to 1).
+   Opacity and transform only.
+   ================================================================== */
+
+.ovu-grad {
+  background-image: var(--grad-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ovu-wave {
+  opacity: 1;
+}
+.ovu-flat {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Where the words light up along --p: phones/tablets (view-linked) vs desktop (pinned). */
+  .ovu-pin {
+    --a: 0.2;
+    --b: 0.35;
+    --rest: 0.62;
+    --wave: 0.68;
+  }
+  .ovu-word {
+    --t: calc(var(--a) + var(--i) / var(--n) * var(--b));
+    opacity: clamp(0.12, calc(0.12 + (var(--p, 1) - var(--t)) * 14), 1);
+  }
+  .ovu-rest {
+    opacity: clamp(0, calc((var(--p, 1) - var(--rest)) * 10), 1);
+    transform: translateY(calc(clamp(0, calc(1 - (var(--p, 1) - var(--rest)) * 10), 1) * 24px));
+  }
+  .ovu-wave {
+    opacity: clamp(0, calc((var(--p, 1) - var(--wave)) * 8), 1);
+  }
+  .ovu-flat {
+    opacity: clamp(0, calc(1 - (var(--p, 1) - var(--wave)) * 8), 1);
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .ovu-pin {
+    height: 260svh;
+    --a: 0.05;
+    --b: 0.5;
+    --rest: 0.62;
+    --wave: 0.72;
+  }
+  .ovu-stage {
+    position: sticky;
+    top: 0;
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: var(--header-h);
+  }
+}

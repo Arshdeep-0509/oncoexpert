@@ -5,6 +5,7 @@ import { pageList } from "@/content/pages";
 export default function sitemap(): MetadataRoute.Sitemap {
   return pageList.map((page) => ({
     url: page.meta.canonical,
+    lastModified: page.lastModified,
     changeFrequency: "monthly",
     priority: page.sitemapPriority ?? 0.8,
   }));

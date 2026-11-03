@@ -62,7 +62,8 @@
   .exp-zoom {
     animation: exp-zoom 14s ease-in-out infinite alternate;
   }
-  :is(.exp-side, .exp-panel):is(:hover, :focus-within) .exp-zoom {
+  :is(.exp-side, .exp-panel):is(:hover, :focus-within) .exp-zoom,
+  [data-offscreen] .exp-zoom {
     animation-play-state: paused;
   }
 }

@@ -9,6 +9,7 @@ import { PrecisionDetails } from "@/components/pages/endometrial-cancer/Precisio
 import { PrecisionSwitch } from "@/components/pages/endometrial-cancer/PrecisionSwitch";
 import { styles } from "@/components/pages/endometrial-cancer/precision-styles";
 import "@/components/pages/endometrial-cancer/precision.css";
+import { OffscreenFlag } from "@/components/shared/technique-compare/OffscreenFlag";
 
 const image = (key: keyof typeof endometrialImages) => {
   const img = endometrialImages[key];
@@ -25,6 +26,7 @@ const images = { robotic: image(precision.robotic.image), laparoscopic: image(pr
 export function Precision() {
   return (
     <Section id="precision" tone="alt" aria-labelledby="precision-title">
+      <OffscreenFlag />
       <Reveal>
         <SectionHeading
           id="precision-title"

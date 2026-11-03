@@ -83,9 +83,7 @@ function PhotoTile({ card }: { card: Card }) {
           <TileIcon icon={card.icon} />
           <span className="font-display text-xl leading-tight font-bold md:text-2xl">{card.title}</span>
         </span>
-        <span
-          className={cn("mt-3 block text-[15px] leading-relaxed text-white/80 md:text-base", wide && "max-w-[56ch]")}
-        >
+        <span className={cn("mt-3 block text-base leading-relaxed text-white/80", wide && "max-w-[56ch]")}>
           {card.body}
         </span>
         <span className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-white">

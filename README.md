@@ -10,6 +10,9 @@ Navalgund in Bengaluru:
 - **About Us**: `/about-us/`
 - **Colorectal Cancer**: `/colon-cancer-treatment-bangalore/` (the live address)
 - **Endometrial Cancer**: `/endometrial-cancer-treatment-bangalore/`
+- **Lung Cancer**: `/lung-cancer-in-bangalore/` (the live address)
+- **Ovarian Cancer**: `/ovarian-cancer-treatment/` (the live address)
+- **Thyroid Cancer**: `/thyroid-cancer/` (the live address)
 
 Next.js 16 · TypeScript · Tailwind CSS 4 · Motion · Embla. Developers: read
 **[docs/PROJECT.md](docs/PROJECT.md)** (folder map, theme system, components, rules).
@@ -63,6 +66,9 @@ Components contain no text. Everything visitors read is in `content/`:
 | `content/pages/about-us.ts`             | Every section of the About Us page                              |
 | `content/pages/colorectal-cancer.ts`    | Every section of the Colorectal Cancer page                     |
 | `content/pages/endometrial-cancer.ts`   | Every section of the Endometrial Cancer page                    |
+| `content/pages/lung-cancer.ts`          | Every section of the Lung Cancer page                           |
+| `content/pages/ovarian-cancer.ts`       | Every section of the Ovarian Cancer page                        |
+| `content/pages/thyroid-cancer.ts`       | Every section of the Thyroid Cancer page                        |
 | `content/site.ts`                       | Menu, phone, email, address, clinics, socials, footer, WhatsApp |
 
 Every block is tagged with where it came from. Keep the tags when you edit:
@@ -119,6 +125,83 @@ on Google, including the reviewer's spelling.
 first one is shown large. Titles and thumbnails come from YouTube automatically.
 
 **Clinics, phone, email, socials**: `content/site.ts`.
+
+---
+
+## Edit the Lung, Ovarian and Thyroid pages
+
+Each page's words and numbers are in one file: `content/pages/lung-cancer.ts`, `ovarian-cancer.ts` and
+`thyroid-cancer.ts`. Search the file for the name in the left column. Prices are plain rupee numbers
+(`115000`, shown as "₹1,15,000"), percentages are plain numbers (`94`, the `%` is the `unit` or
+`suffix`), and totals are calculated, never typed in.
+
+| To change     | Lung                                                                                           | Ovarian                                                                                                                                                           | Thyroid                                                                                                                               |
+| ------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Prices        | (no prices)                                                                                    | `packages.items`: `price` per package; the chemotherapy price is `chemoPerCycle` (the card and the cycle estimator both use it)                                   | `packages.items`: `price` per package, `asterisk: "*"` after it; `packages.footnote` under the cards                                  |
+| Packages      | (none)                                                                                         | `packages.items`: `name`, `lead` ("from"), `inclusions`, `cta`; `featured: true` on one card (with its `ribbon`); `showCycleEstimator` turns the estimator off/on | `packages.items`: `name`, `inclusions`, `cta`; `featured: true` on one card                                                           |
+| Survival rows | `survival.rows` (`label`, `value`); Stage I is `stageISurvival` (also in `stageIV.stats`)      | `outcomes.survival.rows`; the 96% ring is `outcomes.stats`                                                                                                        | `outcomes.stages`; the overall 98.5% is `outcomes.overall.value` (stated, not calculated); the dashboard gauges are `dashboard.stats` |
+| Volume counts | `volume.counts` (`value`, `label`); the total is calculated and hidden until `showTotal` is on | the "500+" is `outcomes.stats`                                                                                                                                    | "10,000+ Surgeries" is `surgeries`; the hero's 100% / 0% are `completeRemoval` / `voiceChange` (shown in the hero and the dashboard)  |
+| Symptoms      | `diagnosis.symptoms` (`title`, `when`)                                                         | `warningSigns.items` (`title`) and `warningSigns.result`                                                                                                          | `symptoms.items` (`title`, `body`, `image`) and `symptoms.note`                                                                       |
+| Treatments    | `surgery.explorer` (the lobe options), `techniques.sides` (VATS vs robotic), `stageIV`         | `treatments.items` (`title`, `body`, `bullets`)                                                                                                                   | `modalities.items` (treatments) and `modalities.strengths` (Why OncoXpert)                                                            |
+
+- To add a row or card, copy an existing `{ … },` entry inside the same `[ … ]` and change its words.
+  Give it a new `key` where the entries have one.
+- A new photo goes in the page's `.images.ts` file (`npm run images <page>` downloads the Pexels ones).
+- Run `npm run build` after an edit: if it fails, the error names the file and line.
+
+---
+
+## Edit the Colorectal and Endometrial pages
+
+Same rules as above, in `content/pages/colorectal-cancer.ts` and `endometrial-cancer.ts`.
+
+| To change     | Colorectal                                                                                                                                     | Endometrial                                                                                                |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Prices        | (no prices)                                                                                                                                    | `packages.packages`: `amount` per package; `packages.priceLabel` ("Starting at") and `packages.disclaimer` |
+| Packages      | (none)                                                                                                                                         | `packages.packages`: `name`, `body`, `features`, `cta`; `featured: true` on one card                       |
+| Stage counts  | `outcomes.dashboard.stages` (`label`, `cases`): the "Total" is their sum; `totalSource: "live"` shows the live page's 78 instead (`liveTotal`) | (none)                                                                                                     |
+| Survival rows | `outcomes.survival.items` (`stage`, `rate`, `body`); the stoma bars are `qualityOfLife.stoma`; the stage IV figure is `advancedCases.stat`     | `clinical.stats` (Stage I survival, minimally invasive share)                                              |
+| Symptoms      | (none on the page)                                                                                                                             | `symptoms.items` (`title`, `body`, `image`)                                                                |
+| Treatments    | `approach.cards`, `techniques.robotic` / `techniques.laparoscopic`, `recoveryPath.steps`                                                       | `precision.robotic` / `precision.laparoscopic`, `sentinel`                                                 |
+
+## Booking options
+
+The services people can choose ("Service Required") are `appointmentServices` in `content/site.ts`:
+Consultation, Second Opinion, Consultation For Surgery, Follow Up. Each page's buttons preselect one
+(`service` on each button in the page's content file; the header's button uses the page's
+`defaultAppointmentService`). Adding an option: add it to the list, then it can be used in a button's
+`service`; its link slug is the name in lower case with hyphens (`?service=follow-up`).
+
+## About Us timeline
+
+`journey.stages` in `content/pages/about-us.ts`: each step has a `stage` (the small capitals label),
+a `title` and a `body`. The order in the file is the order on the page.
+
+## Quick answers, definitions and the "Medically reviewed" line (waiting for the doctor)
+
+Every cancer page has a NEW "Quick answers" block, a one-sentence definition under its H1 and a
+"Medically reviewed by Dr. Sunil Navalgund · Last reviewed <date>" line. They are written, built and
+tested, but switched off until the doctor approves them.
+
+- The words: `content/pages/<page>.seo.ts` (`definition`, `quickAnswers`: each `question` and `answer`;
+  answers are 40–60 words and start with the direct answer; figures and prices are filled in from the
+  page's content, so they never go out of date). Booking and About have their definition in
+  `book-appointment.seo.ts` / `about-us.seo.ts`.
+- The switches: `content/shared/approvals.ts`. Set `quickAnswers: true` to show the answers (Google
+  then also gets them as FAQPage data); `definitions: true` for the definitions; `medicalReview: true`
+  with `lastReviewed: "YYYY-MM-DD"` only once Dr. Sunil has reviewed the pages; `packageOffers: true`
+  once the prices are confirmed.
+- To see everything before switching it on: `NEXT_PUBLIC_SHOW_PENDING=1 npm run build` then
+  `npm run start` (never set that variable on the live site).
+
+## llms.txt (for AI answer engines)
+
+`/llms.txt` and `/llms-full.txt` are generated from the page list and the content files by
+`lib/llms.ts` at build time: the practice, the doctor, phone, clinics, one line per page, and in the
+full file each cancer page's symptoms and treatments (plus the quick answers once approved). Edit the
+facts in the content files, not in lib/llms.ts; the one-line page descriptions are `purpose` in each
+`.seo.ts` file. Whether AI crawlers may read the site is set in `app/robots.ts` (allowed for now,
+pending the doctor's decision).
 
 ---
 
@@ -259,13 +342,15 @@ checklist in [docs/PROJECT.md](docs/PROJECT.md#add-a-page).
 Google Tag Manager (`GTM-PBNWCFV7`, set in `content/site.ts`) loads on the visitor's first interaction
 or after 12 s, so it never delays the first paint. `dataLayer` events:
 
-| Event            | When                    | Fields                  |
-| ---------------- | ----------------------- | ----------------------- |
-| `phone_click`    | any `tel:` link         | `location` (section id) |
-| `whatsapp_click` | any WhatsApp link       | `location`              |
-| `cta_click`      | any CTA button          | `label`, `location`     |
-| `form_submit`    | appointment form submit | `status`, `service`     |
+| Event              | When                                                                        | Fields                                                    |
+| ------------------ | --------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `phone_click`      | any `tel:` link                                                             | `location` (section id)                                   |
+| `whatsapp_click`   | any WhatsApp link                                                           | `location`                                                |
+| `cta_click`        | any CTA button                                                              | `label` (`<page>:<section>:<action>`), `text`, `location` |
+| `form_step`        | a booking-form field left filled in (once each)                             | `step`, `field`, `page`                                   |
+| `form_submit`      | appointment form submit                                                     | `status`, `service`, `page`                               |
+| interaction events | toggles, tabs, symptom cards, the checklist, explorers, packages, estimator | see docs/PROJECT.md, "Analytics events"                   |
 
-`label` is the button's text. Where the same text repeats in one section, the label names the item:
-on Home the service cards send "Chemotherapy: Book a Consultation" and so on, and the specialty tiles
-send the cancer's name.
+`label` always reads `<page>:<section>:<action>`, e.g. `lung:hero:book-consultation`; `text` keeps the
+button's own label. Where the same text repeats in one section, `text` names the item: on Home the service cards send
+"Chemotherapy: Book a Consultation" and the specialty tiles send the cancer's name.

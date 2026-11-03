@@ -1,0 +1,120 @@
+/* ==================================================================
+   Shared PackageCards. Plain CSS, prefix pkc- (class names in the package-cards folder).
+   - Cards lift on hover; the featured card is raised 12px from lg and a soft light sweeps across it
+     every 8s (stops on hover / focus and while the section is off-screen: data-offscreen).
+   - Inclusion checks draw once in view (InView).
+   - The estimator's range slider has a 48px thumb.
+   Transform and opacity only, plus the check draws.
+   ================================================================== */
+
+.pkc-card,
+.pkc-featured {
+  transition:
+    transform 0.4s var(--ease-out-expo),
+    box-shadow 0.4s var(--ease-out-expo);
+}
+@media (min-width: 1024px) {
+  .pkc-featured {
+    transform: translateY(-12px);
+  }
+}
+.pkc-sweep {
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    color-mix(in srgb, var(--accent-glow) 22%, transparent) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+}
+.pkc-check path {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 0;
+}
+
+/* The range slider: a teal track, a 48px thumb. */
+.pkc-range {
+  appearance: none;
+  height: 48px;
+  background: transparent;
+  cursor: pointer;
+}
+.pkc-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+}
+.pkc-range::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+}
+.pkc-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 48px;
+  height: 48px;
+  margin-top: -20px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 6px solid var(--surface);
+  box-shadow: var(--shadow-md, 0 4px 12px rgb(0 0 0 / 0.15));
+}
+.pkc-range::-moz-range-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 6px solid var(--surface);
+}
+.pkc-range:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pkc-card:hover {
+    transform: translateY(-4px);
+  }
+  .pkc-featured:hover {
+    transform: translateY(-4px);
+  }
+  @media (min-width: 1024px) {
+    .pkc-featured:hover {
+      transform: translateY(-16px);
+    }
+  }
+  .pkc-featured .pkc-card:hover {
+    transform: none;
+  }
+
+  .pkc-sweep {
+    animation: pkc-sweep 8s ease-in-out 2s infinite;
+  }
+  .pkc-featured:is(:hover, :focus-within) .pkc-sweep,
+  section[data-offscreen] .pkc-sweep {
+    animation-play-state: paused;
+  }
+
+  .pkc-list:not([data-inview]) .pkc-check path {
+    stroke-dashoffset: 30;
+  }
+  .pkc-list[data-inview] .pkc-check path {
+    animation: pkc-draw 0.5s ease-out calc(0.2s + var(--k) * 0.15s) backwards;
+  }
+}
+
+@keyframes pkc-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  22%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+@keyframes pkc-draw {
+  from {
+    stroke-dashoffset: 30;
+  }
+}

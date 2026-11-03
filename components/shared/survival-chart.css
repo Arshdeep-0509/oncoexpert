@@ -1,0 +1,28 @@
+/* ==================================================================
+   Shared SurvivalChart. Plain CSS, prefix svc- (class names in SurvivalChart.tsx).
+   - Each bar is full width, scaled to its share along X (--v, 0–1): transform only, never width.
+   - Once in view (InView) the bars scale out from 0, one after another (--i).
+   - Hovering or focusing a row dims the others.
+   Reduced motion: the bars are drawn at once.
+   ================================================================== */
+
+.svc-bar {
+  transform-origin: 0 50%;
+  transform: scaleX(var(--v));
+}
+.svc-row {
+  transition: opacity 0.3s var(--ease-out-expo);
+}
+.svc-chart:has(.svc-row:is(:hover, :focus-visible)) .svc-row:not(:is(:hover, :focus-visible)) {
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .svc-chart:not([data-inview]) .svc-bar {
+    transform: scaleX(0);
+  }
+  .svc-chart[data-inview] .svc-bar {
+    transition: transform 1.1s var(--ease-out-expo);
+    transition-delay: calc(0.2s + var(--i) * 0.18s);
+  }
+}

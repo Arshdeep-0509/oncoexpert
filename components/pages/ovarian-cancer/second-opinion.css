@@ -1,0 +1,76 @@
+/* ==================================================================
+   Ovarian #second-opinion. Plain CSS, prefix ovs- (class names in SecondOpinion).
+   Once in view the question's words rise in their masks; then the question mark fades and shrinks
+   while a check draws in its place (once). The default (and reduced motion) shows the question
+   mark; the check appears only as the end of the animation.
+   Transform and opacity only, plus the check's stroke draw.
+   ================================================================== */
+
+.ovs-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.ovs-word {
+  display: inline-block;
+}
+.ovs-markWrap {
+  position: relative;
+  display: inline-block;
+}
+.ovs-check {
+  position: absolute;
+  left: -0.05em;
+  bottom: 0.08em;
+  width: 0.85em;
+  height: 0.85em;
+  opacity: 0;
+}
+.ovs-check path {
+  stroke-dasharray: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ovs-q:not([data-inview]) .ovs-word {
+    transform: translateY(110%);
+  }
+  .ovs-q[data-inview] .ovs-word {
+    animation: ovs-rise 0.8s var(--ease-out-expo) backwards;
+    animation-delay: calc(var(--i) * 0.1s);
+  }
+  .ovs-q[data-inview] .ovs-mark {
+    display: inline-block;
+    animation: ovs-dissolve 0.5s ease-in 1.1s forwards;
+  }
+  .ovs-q[data-inview] .ovs-check {
+    animation: ovs-show 0.01s linear 1.35s forwards;
+  }
+  .ovs-q[data-inview] .ovs-check path {
+    stroke-dashoffset: 1;
+    animation: ovs-draw 0.6s ease-out 1.35s forwards;
+  }
+}
+
+@keyframes ovs-rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes ovs-dissolve {
+  to {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+@keyframes ovs-show {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ovs-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

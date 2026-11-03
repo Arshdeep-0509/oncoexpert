@@ -16,7 +16,8 @@
 /* ------------------------------------------------------------------ */
 
 /** One file per theme in styles/themes/<name>.css. */
-export type ThemeName = "home" | "breast" | "robotic" | "care" | "colorectal" | "endometrial";
+export type ThemeName =
+  "home" | "breast" | "robotic" | "care" | "colorectal" | "endometrial" | "lung" | "ovarian" | "thyroid";
 
 /**
  * Header bar sizes and layout (components/layout/header/header-variants.ts), named after the hero
@@ -54,6 +55,8 @@ export type PageEntry = {
   themeColor: string;
   /** app/sitemap.ts priority. Default 0.8. */
   sitemapPriority?: number;
+  /** When the page's content last changed (YYYY-MM-DD): the sitemap's lastmod. Update it with the page. */
+  lastModified: string;
   meta: PageMeta;
 };
 
@@ -128,4 +131,116 @@ export type SectionCopy = {
   title: string;
   emphasis?: string;
   intro?: string;
+};
+
+/* ------------------------------------------------------------------ */
+/* Shared comparison and chart sections                                */
+/* ------------------------------------------------------------------ */
+
+/** Icons of TechniqueCompare's points (components/shared/TechniqueCompare.tsx). */
+export type TechniqueIcon = "view" | "instruments" | "access" | "incisions" | "recovery" | "complications";
+
+/**
+ * One side of TechniqueCompare, as a page's content file writes it. `Img` is the page's image key
+ * (the page resolves it to a PageImage before passing the side on).
+ */
+export type TechniqueSideContent<Img = PageImage> = {
+  /** Stable key (tabs, analytics). */
+  key: string;
+  /** The tab's label below lg. */
+  label: string;
+  title: string;
+  body?: string;
+  points: readonly { icon: TechniqueIcon; title: string; text?: string }[];
+  image: Img;
+  /** A link under the points, e.g. to /robotic-surgery/. `cta`: analytics label. */
+  link?: { label: string; href: string; cta?: string };
+  /** The photo drifts slowly (12s loop; stops on hover, off-screen, reduced motion). */
+  drift?: boolean;
+};
+
+/** One bar of SurvivalChart (components/shared/SurvivalChart.tsx). */
+export type ChartRow = { label: string; value: number };
+
+/** Icons of SymptomGrid's cards (components/shared/SymptomGrid.tsx). */
+export type SymptomIcon = "bloating" | "pelvic" | "full" | "urination" | "lump" | "cough" | "voice" | "swallow";
+
+/** One card of SymptomGrid. `body` is shown by the "disclose" mode; `image` puts a photo on top. */
+export type SymptomItem = {
+  key: string;
+  icon: SymptomIcon;
+  title: string;
+  body?: string;
+  image?: { src: string; alt: string; focal: string };
+};
+
+/** One card of PackageCards (components/shared/PackageCards.tsx). */
+export type PackageItem = {
+  name: string;
+  /** Small text above the price, e.g. "from", "per cycle from". */
+  lead?: string;
+  /** Rupees, as a number; it counts up, en-IN grouping. */
+  price: number;
+  prefix?: string;
+  suffix?: string;
+  /** e.g. "*" after the price (its footnote is the cards' `footnote`). */
+  asterisk?: string;
+  inclusions: readonly string[];
+  cta: { label: string; service: import("@/content/site").AppointmentService; note?: string };
+  featured?: boolean;
+  /** The featured card's ribbon. */
+  ribbon?: string;
+};
+
+/** PackageCards' optional cycle estimator: "{n}", "{price}", "{total}" fill `sentence`. */
+export type PackageEstimator = {
+  title: string;
+  label: string;
+  sentence: string;
+  unitPrice: number;
+  min: number;
+  max: number;
+  initial: number;
+};
+
+/** What a page's content file gives PackageCards. */
+export type PackageCardsContent = {
+  items: readonly PackageItem[];
+  footnote?: string;
+  estimator?: PackageEstimator;
+};
+
+/* ------------------------------------------------------------------ */
+/* Search and answer engines (the pages' .seo.ts files)                */
+/* ------------------------------------------------------------------ */
+
+/** One "Quick answers" item: the answer leads with the direct answer, 40–60 words. */
+export type QuickAnswer = { question: string; answer: string };
+
+/** A figure written once as a self-contained sentence, with its source and date when known. */
+export type CitableStat = { sentence: string; source: string; date: string | null };
+
+/** The condition a cancer page is about (schema.org MedicalCondition), from the page's own words. */
+export type ConditionFacts = {
+  name: string;
+  alternateName: readonly string[];
+  possibleTreatment: readonly string[];
+  signOrSymptom: readonly string[];
+};
+
+/** A package price for schema.org Offer (`from`: the price is a starting price). */
+export type OfferFacts = { name: string; price: number; from: boolean };
+
+/** Search and answer-engine facts for one cancer page (content/pages/<page>.seo.ts). */
+export type CancerPageSeo = {
+  /** The page's name in breadcrumbs and the related strip, e.g. "Lung Cancer". */
+  name: string;
+  /** NEW: one sentence under the H1 that answers who, what and where. */
+  definition: string;
+  condition: ConditionFacts;
+  quickAnswers: readonly QuickAnswer[];
+  stats: readonly CitableStat[];
+  offers: readonly OfferFacts[];
+  /** One line for llms.txt: what the page is for. */
+  purpose: string;
 };

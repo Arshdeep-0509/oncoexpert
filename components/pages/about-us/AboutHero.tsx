@@ -1,4 +1,6 @@
 import { ArrowRight } from "lucide-react";
+import { aboutSeo } from "@/content/pages/about-us.seo";
+import { Definition } from "@/components/shared/Definition";
 import { hero } from "@/content/pages/about-us";
 import { aboutImages } from "@/content/pages/about-us.images";
 import { cn } from "@/lib/utils";
@@ -40,6 +42,7 @@ export function AboutHero() {
         <div className={styles.areaPortrait}>
           <DoctorRing
             hero
+            bare
             stats={hero.stats}
             label={hero.a11y.stats}
             photo={aboutImages[hero.image]}
@@ -60,11 +63,18 @@ export function AboutHero() {
             {hero.subtitle}
           </p>
           <p
+            data-speakable
             className={cn(styles.step, styles.fadeUp, "mt-5 measure text-base text-white/75 md:text-lg")}
             style={at(T.body)}
           >
             {hero.body}
           </p>
+          <Definition
+            text={aboutSeo.definition}
+            onDark
+            className={cn(styles.step, styles.fadeUp, "mt-3")}
+            style={at(T.body)}
+          />
           <div className={cn(styles.step, styles.fadeUp, "mt-9 flex flex-wrap items-center gap-3")} style={at(T.ctas)}>
             <Button
               href={hero.ctas.primary.href}

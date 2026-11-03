@@ -5,6 +5,7 @@ import { appointmentSection as copy } from "@/content/shared/sections";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Definition } from "@/components/shared/Definition";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { buttonClasses } from "@/components/ui/Button";
@@ -62,6 +63,8 @@ type AppointmentSectionProps = {
   formStyles?: FormStyles;
   /** Level of "Need Clarity?": "h1" on the booking page (the page's heading), "h2" by default. */
   heading?: "h1" | "h2";
+  /** The booking page's NEW one-sentence definition under its H1 (shown once approved). */
+  definition?: string;
   className?: string;
 };
 
@@ -77,6 +80,7 @@ export function AppointmentSection({
   page,
   formStyles = softFormStyles,
   heading = "h2",
+  definition,
   className,
 }: AppointmentSectionProps) {
   const s = looks[look];
@@ -125,6 +129,7 @@ export function AppointmentSection({
         ) : (
           <Reveal className="lg:col-span-5">
             <SectionHeading as={heading} id={titleId} eyebrow={copy.eyebrow} title={copy.heading} intro={copy.body} />
+            {definition ? <Definition text={definition} className="mt-3" /> : null}
             {cards}
           </Reveal>
         )}

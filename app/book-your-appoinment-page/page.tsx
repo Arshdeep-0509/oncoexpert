@@ -1,9 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { pageName, pageSlug } from "@/content/pages/book-appointment";
+import { meta, pageName, pageSlug } from "@/content/pages/book-appointment";
+import { bookSeo } from "@/content/pages/book-appointment.seo";
+import { bookingGraph } from "@/lib/jsonld";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
 import { AppointmentSection } from "@/components/shared/AppointmentSection";
+import { JsonLd } from "@/components/shared/JsonLd";
+
+// One @graph: WebPage, MedicalClinic with a ReserveAction (this form), BreadcrumbList.
+const graph = bookingGraph(meta);
 
 const page = pages[pageSlug];
 
@@ -19,11 +25,15 @@ export function generateViewport(): Viewport {
 // preselecting the service and carrying the note (lib/booking.ts).
 export default function BookAppointmentPage() {
   return (
-    <AppointmentSection
-      page={pageName}
-      tone="surface"
-      heading="h1"
-      className="pt-[calc(var(--header-h)+40px)] md:pt-[calc(var(--header-h)+64px)]"
-    />
+    <>
+      <JsonLd graph={graph} />
+      <AppointmentSection
+        page={pageName}
+        definition={bookSeo.definition}
+        tone="surface"
+        heading="h1"
+        className="pt-[calc(var(--header-h)+40px)] md:pt-[calc(var(--header-h)+64px)]"
+      />
+    </>
   );
 }

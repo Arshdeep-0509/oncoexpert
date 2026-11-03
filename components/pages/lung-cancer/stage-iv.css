@@ -1,0 +1,71 @@
+/* ==================================================================
+   Lung #stage-iv. Plain CSS, prefix lu-iv- (class names in StageIV and ImmuneCells).
+   - The heading's lines rise in their masks once in view.
+   - The immune-cell sequence plays once in view (4s, never loops): eight cells travel in from
+     --dx / --dy over ~2.6s, one after another; the tumour then settles smaller and dimmer.
+   Transform and opacity only; the default is the final picture (reduced motion too).
+   ================================================================== */
+
+.lu-iv-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.lu-iv-line {
+  display: inline-block;
+}
+.lu-iv-tumour {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transform: scale(0.82);
+  opacity: 0.7;
+}
+.lu-iv-cell {
+  transform-box: view-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :not([data-inview]) > .lu-iv-head .lu-iv-line {
+    transform: translateY(110%);
+  }
+  [data-inview] > .lu-iv-head .lu-iv-line {
+    animation: lu-iv-rise 0.9s var(--ease-out-expo) backwards;
+    animation-delay: calc(var(--i) * 0.14s);
+  }
+
+  .lu-iv-cells:not([data-inview]) .lu-iv-cell {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy));
+  }
+  .lu-iv-cells[data-inview] .lu-iv-cell {
+    animation: lu-iv-gather 1.6s var(--ease-out-expo) backwards;
+    animation-delay: calc(var(--i) * 0.14s);
+  }
+  .lu-iv-cells:not([data-inview]) .lu-iv-tumour {
+    transform: none;
+    opacity: 1;
+  }
+  .lu-iv-cells[data-inview] .lu-iv-tumour {
+    animation: lu-iv-settle 1.4s var(--ease-out-expo) 2.6s backwards;
+  }
+}
+
+@keyframes lu-iv-rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes lu-iv-gather {
+  from {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy));
+  }
+}
+@keyframes lu-iv-settle {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+}

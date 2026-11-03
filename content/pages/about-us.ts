@@ -32,13 +32,15 @@ const intro =
 
 export const meta = {
   // SOURCE: EXISTING (the live title, kept for SEO)
+  // PENDING DOCTOR: a better title, not used yet:
+  //   "About Dr. Sunil Navalgund, Surgical Oncologist in Bangalore | OncoXpert"
   title: "About US - oncoxpert.in",
-  // SOURCE: EXISTING (words: the intro paragraph, verbatim). The live description is
-  // an automatic excerpt of the page that starts with the header button and runs words together
-  // ("For Appointment Leading Surgical Oncologist Meet Dr. SunilNavalgund MCh …"), so the intro
-  // the excerpt was trying to quote is used instead.
-  // PENDING DOCTOR: the years mismatch (see intro).
-  description: intro,
+  // SOURCE: NEW (152 characters). The live page has no written description: its meta description
+  // is the SEO plugin's automatic excerpt, which starts with the header button and runs words
+  // together ("For Appointment Leading Surgical Oncologist Meet Dr. SunilNavalgund MCh …").
+  // PENDING DOCTOR: approve the description.
+  description:
+    "Meet Dr. Sunil Navalgund, surgical oncologist in Bengaluru: his training, robotic and laparoscopic cancer surgery, experience and the OncoXpert clinics.",
   canonical: "https://oncoxpert.in/about-us/",
   ogImage: aboutOgImage,
 } as const satisfies PageMeta;

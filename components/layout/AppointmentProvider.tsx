@@ -32,6 +32,8 @@ type AppointmentContextValue = AppointmentState & {
    * the Name field.
    */
   openAppointment: (service?: AppointmentService, note?: string) => void;
+  /** The page's default service (SiteShell), for links that name none. */
+  defaultService?: AppointmentService;
 };
 
 function headerOffset() {
@@ -106,7 +108,10 @@ export function AppointmentProvider({ defaultService, children }: AppointmentPro
     [router, defaultService],
   );
 
-  const value = React.useMemo(() => ({ ...state, openAppointment }), [state, openAppointment]);
+  const value = React.useMemo(
+    () => ({ ...state, defaultService, openAppointment }),
+    [state, defaultService, openAppointment],
+  );
   return <AppointmentContext.Provider value={value}>{children}</AppointmentContext.Provider>;
 }
 

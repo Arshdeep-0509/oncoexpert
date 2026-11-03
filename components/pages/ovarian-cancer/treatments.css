@@ -1,0 +1,182 @@
+/* ==================================================================
+   Ovarian #treatments: the treatment explorer. Plain CSS, prefix ovt- (class names in
+   TreatmentExplorer, TreatmentPanel and TreatmentArt).
+   - Layouts: desktop vertical tabs with a sliding indicator (--i); tablets a pill row; phones an
+     accordion (TreatmentExplorer renders both; this file shows one).
+   - Each illustration plays once when its panel mounts (the panel is keyed by the choice): the
+     ring sweeps and the dots go; the droplets circle 3 laps while the thermometer fills; the shield
+     closes and the seedling grows; three drops fall; the cells dock and the lock opens. The
+     bullets' checks draw.
+   Transform and opacity only, plus stroke draws. The default is every illustration's last frame.
+   ================================================================== */
+
+/* Layouts ------------------------------------------------------------- */
+
+@media (min-width: 1024px) {
+  .ovt-indicator {
+    transform: translateY(calc(var(--i, 0) * 72px));
+  }
+}
+
+/* Final frames (also reduced motion) ---------------------------------- */
+
+.ovt-dot {
+  opacity: 0;
+}
+.ovt-sweep,
+.ovt-orbit {
+  transform-box: view-box;
+  transform-origin: 100px 84px;
+}
+.ovt-orbit {
+  transform-origin: 100px 81px;
+}
+.ovt-thermo {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.ovt-stem,
+.ovt-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.ovt-leaf {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+}
+.ovt-drop {
+  transform: translateY(40px);
+  opacity: 0;
+}
+.ovt-cell {
+  transform-box: view-box;
+}
+.ovt-shackle {
+  transform-box: fill-box;
+  transform-origin: 100% 100%;
+  transform: translateY(-5px) rotate(18deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ovt-indicator {
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  .ovt-dot {
+    animation: ovt-vanish 0.5s ease-in calc(0.5s + var(--k) * 0.22s) backwards;
+  }
+  .ovt-sweep {
+    animation: ovt-spin 1.9s var(--ease-out-expo) 0.2s backwards;
+  }
+
+  .ovt-orbit {
+    animation: ovt-spin 2.2s linear 0.3s 3;
+  }
+  .ovt-thermo {
+    animation: ovt-fill 6.6s ease-out 0.3s backwards;
+  }
+
+  .ovt-shieldL {
+    animation: ovt-closeL 0.9s var(--ease-out-expo) 0.2s backwards;
+  }
+  .ovt-shieldR {
+    animation: ovt-closeR 0.9s var(--ease-out-expo) 0.2s backwards;
+  }
+  .ovt-stem {
+    animation: ovt-draw 0.8s ease-out 0.9s backwards;
+  }
+  .ovt-leaf {
+    animation: ovt-grow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) calc(1.5s + var(--k) * 0.2s) backwards;
+  }
+
+  .ovt-drop {
+    animation: ovt-fall 0.9s ease-in calc(0.3s + var(--k) * 0.7s) backwards;
+  }
+
+  .ovt-cell {
+    animation: ovt-dock 1s var(--ease-out-expo) calc(0.2s + var(--k) * 0.18s) backwards;
+  }
+  .ovt-shackle {
+    animation: ovt-unlock 0.6s var(--ease-out-expo) 1.3s backwards;
+  }
+
+  .ovt-check path {
+    animation: ovt-draw 0.5s ease-out calc(0.4s + var(--k) * 0.15s) backwards;
+  }
+  .ovt-panelIn {
+    animation: ovt-in 0.5s var(--ease-out-expo) backwards;
+  }
+}
+
+@keyframes ovt-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes ovt-vanish {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+@keyframes ovt-spin {
+  from {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes ovt-fill {
+  from {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes ovt-closeL {
+  from {
+    transform: translateX(-22px);
+    opacity: 0;
+  }
+}
+@keyframes ovt-closeR {
+  from {
+    transform: translateX(22px);
+    opacity: 0;
+  }
+}
+@keyframes ovt-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes ovt-grow {
+  from {
+    transform: scale(0);
+  }
+}
+@keyframes ovt-fall {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+@keyframes ovt-dock {
+  from {
+    transform: translate(var(--dx), var(--dy));
+    opacity: 0.4;
+  }
+}
+@keyframes ovt-unlock {
+  from {
+    transform: none;
+  }
+}

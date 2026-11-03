@@ -8,6 +8,7 @@ import { InView } from "@/components/ui/InView";
 import { Counter } from "@/components/ui/Counter";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
 import "@/components/pages/colorectal-cancer/hope.css";
+import { OffscreenFlag } from "@/components/shared/technique-compare/OffscreenFlag";
 
 /** The title in two lines (a layout split only; the words are the content's). */
 const words = advancedCases.title.split(" ");
@@ -31,6 +32,7 @@ export function HopeBand() {
       data-tone="ink"
       className="cxh-band relative isolate overflow-hidden bg-ink py-(--section-y) text-white"
     >
+      <OffscreenFlag />
       {/* a deep teal light behind the figure */}
       <span
         aria-hidden="true"

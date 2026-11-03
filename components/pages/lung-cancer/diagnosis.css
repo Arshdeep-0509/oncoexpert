@@ -1,0 +1,110 @@
+/* ==================================================================
+   Lung #diagnosis. Plain CSS, prefix lud- (class names in the components).
+   - Symptom cards (SymptomCard): hover cards. Devices that can hover show a hint; hover or focus
+     slides the "when to see a doctor" panel over the card. Touch screens show the line in place.
+   - Diagnostic lens (DiagnosticLens): the ring turns by --turn (thirds); the art crossfades and
+     settles; the caption re-enters.
+   - "Did you know?" band: the stage bar fills once in view (InView).
+   Transform and opacity only; reduced motion shows every final state at once.
+   ================================================================== */
+
+/* Symptom cards ------------------------------------------------------ */
+
+/* Touch screens (and the default): the line under the title, no hint. */
+.lud-hint {
+  display: none;
+}
+.lud-when {
+  color: var(--muted);
+}
+.lud-whenLabel {
+  color: var(--accent);
+}
+
+/* From 768px, on devices that can hover: a hint on the card; the line on an accent panel that slides over it on
+   hover or keyboard focus. */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .lud-hint {
+    display: flex;
+  }
+  .lud-when {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem;
+    background: var(--accent);
+    color: var(--white);
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .lud-whenLabel {
+    color: var(--white);
+  }
+  .lud-sym:is(:hover, :focus-visible) .lud-when {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lud-when {
+    transition:
+      opacity 0.35s var(--ease-out-expo),
+      transform 0.45s var(--ease-out-expo);
+  }
+}
+
+/* Lens ----------------------------------------------------------------- */
+
+.lud-ring {
+  transform: rotate(var(--turn, 0deg));
+}
+.lud-art {
+  opacity: 0;
+}
+.lud-art[data-active] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lud-ring {
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .lud-art {
+    transform: scale(0.94) rotate(-6deg);
+    transition:
+      opacity 0.5s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
+  }
+  .lud-art[data-active] {
+    transform: none;
+  }
+  .lud-caption {
+    animation: lud-in 0.5s var(--ease-out-expo) both;
+  }
+}
+
+/* Did you know? -------------------------------------------------------- */
+
+.lud-fill {
+  transform-origin: 0 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lud-band:not([data-inview]) .lud-fill {
+    transform: scaleX(0);
+  }
+  .lud-band[data-inview] .lud-fill {
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+  }
+}
+
+@keyframes lud-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

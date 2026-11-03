@@ -56,7 +56,7 @@ export function Credentials() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-2 heading-3 text-ink">{item.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted">{item.body}</p>
+                <p className="mt-3 text-base leading-relaxed text-muted">{item.body}</p>
               </article>
             </div>
           );

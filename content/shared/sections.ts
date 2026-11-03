@@ -111,3 +111,36 @@ export const finalCtaSection = {
   text: "Call 8002 8002 95 For Appointments",
   href: "tel:+918002800295",
 } as const;
+
+/* ------------------------------------------------------------------ */
+/* Related treatments, quick answers, medical review line              */
+/* (the five rebuilt cancer pages, before the final call band)         */
+/* ------------------------------------------------------------------ */
+
+// SOURCE: NEW (headings, link labels, screen-reader labels). The page names in the strip are the
+// menu's labels (site.nav, EXISTING).
+// PENDING DOCTOR: approve the wording.
+export const relatedSection = {
+  title: "Related treatments",
+  intro: "Other cancers Dr. Sunil Navalgund treats at OncoXpert.",
+  about: "About Dr. Sunil Navalgund",
+  book: "Book an appointment",
+  home: "OncoXpert home",
+  more: "More from OncoXpert",
+} as const;
+
+// SOURCE: NEW. Shown only once approved (content/shared/approvals.ts).
+export const quickAnswersSection = {
+  title: "Quick answers",
+  intro: "Short answers drawn from this page.",
+  figures: "Figures and their sources",
+} as const;
+
+// SOURCE: NEW. "{date}" is filled in. Shown only once approved (content/shared/approvals.ts).
+export const medicalReviewLine = {
+  reviewedBy: "Medically reviewed by",
+  lastReviewed: "Last reviewed {date}",
+} as const;
+
+// SOURCE: NEW (column headings of the screen-reader price tables behind the package cards).
+export const priceTableLabels = { package: "Package", price: "Price", includes: "Includes" } as const;

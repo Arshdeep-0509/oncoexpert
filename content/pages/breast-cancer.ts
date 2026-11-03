@@ -653,6 +653,8 @@ export type SurgeonContent = {
   emphasis: string;
   badges: readonly { icon: "badge-check" | "award"; label: string }[];
   cta: AppointmentCta;
+  /** The name links to the profile page (DoctorCard `profile`). */
+  profile: { href: string; cta: string };
   image: { src: string; alt: string; width: number; height: number };
 };
 
@@ -669,6 +671,8 @@ export const surgeon = {
   ],
   // SOURCE: EXISTING (button label from the robotic page)
   cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
+  // SOURCE: NEW (the name links to About Us; analytics label)
+  profile: { href: "/about-us/", cta: "breast:surgeon:profile" },
   image: {
     src: "/images/brand/dr-sunil-navalgund.png",
     // SOURCE: NEW
@@ -685,6 +689,10 @@ export const surgeon = {
 /* ------------------------------------------------------------------ */
 
 export const pageSlug = "breast-cancer-treatment-bangalore";
+
+/** Buttons that name no service (header, menu, FAQ card) preselect this one. */
+// SOURCE: NEW (choice; the first of the live "Service Required" options)
+export const defaultAppointmentService: AppointmentService = "Consultation";
 
 /** Structured data (JSON-LD): the condition this page is about. Not visible on the page. */
 export const structuredData = { pageAbout: "Breast cancer" } as const;

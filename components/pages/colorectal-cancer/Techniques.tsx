@@ -10,6 +10,7 @@ import { TechniqueDetails } from "@/components/pages/colorectal-cancer/Technique
 import { TechniqueSwitch } from "@/components/pages/colorectal-cancer/TechniqueSwitch";
 import { styles } from "@/components/pages/colorectal-cancer/techniques-styles";
 import "@/components/pages/colorectal-cancer/techniques.css";
+import { OffscreenFlag } from "@/components/shared/technique-compare/OffscreenFlag";
 
 const image = (key: keyof typeof colorectalImages) => {
   const img = colorectalImages[key];
@@ -25,6 +26,7 @@ export function Techniques() {
   const arms = colorectalImages[techniques.robotic.image];
   return (
     <Section id="techniques" tone="warm" aria-labelledby="techniques-title">
+      <OffscreenFlag />
       <Reveal>
         <SectionHeading
           id="techniques-title"

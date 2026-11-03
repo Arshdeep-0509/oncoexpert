@@ -1,0 +1,59 @@
+/* ==================================================================
+   Thyroid #dashboard. Plain CSS, prefix tyd- (class names in Dashboard, Gauge and VoiceWave).
+   - Each gauge's arc is a stroke of pathLength 1, ending at its share (--v, 0–1).
+   - Once the panel is in view (InView) the arcs draw from the left, one after another (--d),
+     the 0% card's check settles in, then its voice line draws (flat, then steady), once.
+   - The cards rise in turn.
+   Reduced motion: everything is shown drawn. Opacity, transform and stroke draws only.
+   ================================================================== */
+
+.tyd-arc {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: calc(1 - var(--v));
+}
+.tyd-wave {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tyd-panel:not([data-inview]) .tyd-card {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  .tyd-panel[data-inview] .tyd-card {
+    transition:
+      opacity 0.6s var(--ease-out-expo),
+      transform 0.6s var(--ease-out-expo);
+  }
+  .tyd-panel[data-inview] .tyd-card:nth-child(2) {
+    transition-delay: 0.12s;
+  }
+  .tyd-panel[data-inview] .tyd-card:nth-child(3) {
+    transition-delay: 0.24s;
+  }
+
+  .tyd-panel:not([data-inview]) .tyd-arc {
+    stroke-dashoffset: 1;
+  }
+  .tyd-panel[data-inview] .tyd-arc {
+    transition: stroke-dashoffset 1.3s var(--ease-out-expo) var(--d);
+  }
+
+  .tyd-panel:not([data-inview]) .tyd-check {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  .tyd-panel[data-inview] .tyd-check {
+    transition:
+      opacity 0.5s var(--ease-out-expo) 0.5s,
+      transform 0.5s var(--ease-out-expo) 0.5s;
+  }
+
+  .tyd-panel:not([data-inview]) .tyd-wave {
+    stroke-dashoffset: 1;
+  }
+  .tyd-panel[data-inview] .tyd-wave {
+    transition: stroke-dashoffset 1.6s cubic-bezier(0.45, 0, 0.55, 1) 0.8s;
+  }
+}

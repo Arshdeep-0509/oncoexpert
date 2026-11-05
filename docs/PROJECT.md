@@ -919,9 +919,9 @@ over 5s pause on hover / focus or with the hero's 48px pause button, and stop of
   the cancer pages (404 status, noindex; NEW copy in content/pages/not-found.ts).
 - Route rename (4 Nov 2026). Four URLs now say "hospital" instead of "treatment":
   `/breast-cancer-hospital-bangalore/`, `/colon-cancer-hospital-bangalore/`,
-  `/endometrial-cancer-hospital-bangalore/`, `/ovarian-cancer-hospital/`. The old URLs redirect permanently
-  (`redirects` in `next.config.ts`); keep those redirects, the old URLs are indexed and linked. Earlier
-  entries and the SOURCE notes still name the old URLs, as they were at the time.
+  `/endometrial-cancer-hospital-bangalore/`, `/ovarian-cancer-hospital/`. No redirects from the old URLs (the
+  client review, 5 Nov 2026): they are 404s. Earlier entries and the SOURCE notes still name the old URLs, as they
+  were at the time.
 - Breast review (4 Nov 2026). Hero: the visible breadcrumb is gone (its BreadcrumbList moved into
   BreastJsonLd, `breadcrumbNode`), the eyebrow says "Hospital". #overview: MultimodalityDiagram rebuilt
   (care-plan.css, prefix `cplan-`): one layout at every size, connectors measured from the tiles, each

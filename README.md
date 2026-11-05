@@ -310,7 +310,7 @@ checklist in [docs/PROJECT.md](docs/PROJECT.md#add-a-page).
 3. **Register** the page in `content/pages/index.ts` (slug, title, description, theme, theme colour).
    The sitemap and robots file pick it up.
 4. **Route**:
-   - `app/colorectal-cancer-treatment-bangalore/layout.tsx`: `<SiteShell theme="colorectal" headerVariant="light">`.
+   - `app/colon-cancer-hospital-bangalore/layout.tsx`: `<SiteShell theme="colorectal" headerVariant="light">`.
    - `page.tsx`: metadata, viewport and the list of sections.
 5. **Sections**:
    - Reuse the shared ones from `components/shared/`: Reviews, Videos, Faq, AppointmentSection, Locations,

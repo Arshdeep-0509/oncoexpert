@@ -10,7 +10,7 @@ export function pageMetadata({ meta }: PageEntry, ogType: "article" | "website" 
     alternates: { canonical: meta.canonical },
     openGraph: {
       type: ogType,
-      locale: "en_US",
+      locale: "en_IN",
       url: meta.canonical,
       title: meta.title,
       description: meta.description,

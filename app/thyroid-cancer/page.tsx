@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
 import { defaultAppointmentService, meta, pageSlug, shared, surgeon } from "@/content/pages/thyroid-cancer";
@@ -41,8 +40,8 @@ const portrait = thyroidImages[surgeon.image];
 const finalImage = thyroidImages[shared.finalImage];
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, thyroid theme).
-// Every section after the hero sits in its own <Suspense> boundary, so React hydrates them one by
-// one and yields between them (shorter main-thread tasks; no visual difference).
+// Sections stay inline (no <Suspense>): React would move them into hidden blocks after the footer,
+// where crawlers that do not run JavaScript cannot read them.
 // One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
 // and Offers once approved): lib/jsonld.ts.
 const graph = cancerPageGraph({
@@ -50,7 +49,6 @@ const graph = cancerPageGraph({
   seo: thyroidSeo,
   breadcrumb: [
     { label: "Home", href: "/" },
-    { label: "Our Services", href: "/our-services/" },
     { label: thyroidSeo.name, href: new URL(meta.canonical).pathname },
   ],
   physicianDescription: surgeon.bio,
@@ -61,71 +59,45 @@ export default function ThyroidCancerPage() {
     <>
       <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero             lilac gradient */}
-      <Suspense>
-        <Understanding /> {/* 2  #understanding    surface */}
-      </Suspense>
-      <Suspense>
-        <Symptoms /> {/* 3  #symptoms         alt */}
-      </Suspense>
-      <Suspense>
-        <EarlyDetection /> {/* 4  #early-detection  surface */}
-      </Suspense>
-      <Suspense>
-        <Modalities /> {/* 5  #modalities       warm (blush) */}
-      </Suspense>
-      <Suspense>
-        <Dashboard /> {/* 6  #dashboard       indigo band */}
-      </Suspense>
-      <Suspense>
-        <Outcomes /> {/* 7  #outcomes        alt */}
-      </Suspense>
-      <Suspense>
-        <Packages /> {/* 8  #packages        warm (hidden on the live page: PENDING DOCTOR) */}
-      </Suspense>
+      <Understanding /> {/* 2  #understanding    surface */}
+      <Symptoms /> {/* 3  #symptoms         alt */}
+      <EarlyDetection /> {/* 4  #early-detection  surface */}
+      <Modalities /> {/* 5  #modalities       warm (blush) */}
+      <Dashboard /> {/* 6  #dashboard       indigo band */}
+      <Outcomes /> {/* 7  #outcomes        alt */}
+      <Packages /> {/* 8  #packages        warm (hidden on the live page: PENDING DOCTOR) */}
       {/* 9 #surgeon: the shared DoctorCard with the live thyroid profile */}
-      <Suspense>
-        <DoctorCard
-          id="surgeon"
-          tone="surface"
-          label={surgeon.role}
-          name={surgeon.name}
-          bio={surgeon.bio}
-          badges={surgeon.badges}
-          cta={surgeon.cta}
-          link={surgeon.link}
-          image={{ src: portrait.src, alt: portrait.alt }}
-        />
-      </Suspense>
-      <Suspense>
-        <SecondOpinion /> {/* 10 #second-opinion  indigo band */}
-      </Suspense>
+      <DoctorCard
+        id="surgeon"
+        tone="surface"
+        label={surgeon.role}
+        name={surgeon.name}
+        bio={surgeon.bio}
+        badges={surgeon.badges}
+        cta={surgeon.cta}
+        link={surgeon.link}
+        image={{ src: portrait.src, alt: portrait.alt }}
+      />
+      <SecondOpinion /> {/* 10 #second-opinion  indigo band */}
       {/* 11–14: shared sections (soft look), re-themed by the thyroid theme */}
-      <Suspense>
-        <Reviews
-          tone="alt"
-          title={reviewsSection.title}
-          reviews={reviewsFor(pageSlug, shared.reviewOrder)}
-          link={reviewsSection.link}
-        />
-      </Suspense>
-      <Suspense>
-        <Videos
-          tone="surface"
-          eyebrow={videosSection.eyebrow}
-          title={keepLastWords(videosSection.title)}
-          ids={videosSection.ids}
-          labels={videosSection.a11y}
-        />
-      </Suspense>
-      <Suspense>
-        <Locations tone="warm" />
-      </Suspense>
+      <Reviews
+        tone="alt"
+        title={reviewsSection.title}
+        reviews={reviewsFor(pageSlug, shared.reviewOrder)}
+        link={reviewsSection.link}
+      />
+      <Videos
+        tone="surface"
+        eyebrow={videosSection.eyebrow}
+        title={keepLastWords(videosSection.title)}
+        ids={videosSection.ids}
+        labels={videosSection.a11y}
+      />
+      <Locations tone="warm" />
       {/* NEW: quick answers (once approved) and the related treatments strip */}
       <QuickAnswers items={thyroidSeo.quickAnswers} stats={thyroidSeo.stats} />
       <RelatedTreatments path={new URL(meta.canonical).pathname} page="thyroid" service={defaultAppointmentService} />
-      <Suspense>
-        <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
-      </Suspense>
+      <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );
 }

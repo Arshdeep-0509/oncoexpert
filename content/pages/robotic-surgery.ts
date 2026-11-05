@@ -13,7 +13,6 @@
 import type { AppointmentService } from "@/content/site";
 import { googleReviews } from "@/content/shared/reviews";
 import { youtubeVideos } from "@/content/shared/videos";
-import { organization } from "@/content/shared/organization";
 
 /* ------------------------------------------------------------------ */
 /* Metadata                                                            */
@@ -22,13 +21,14 @@ import { organization } from "@/content/shared/organization";
 // SOURCE: EXISTING (identical to live page for SEO)
 export const meta = {
   title: "Robotic Cancer Surgery in Bangalore | OncoXpert",
+  // SOURCE: NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR: approve.
   description:
-    "Robotic cancer surgery in Bangalore at OncoXpert, offering minimally invasive procedures, precision surgery and personalized cancer care.",
+    "Robotic cancer surgery in Bangalore at OncoXpert, offering minimally invasive procedures, precision surgery and personalized cancer care. Book a consultation.",
   canonical: "https://oncoxpert.in/robotic-surgery/",
   ogImage: {
-    src: "/images/brand/oncoxpert-logo-square.png",
-    width: 216,
-    height: 217,
+    src: "/images/robotic/og.jpg",
+    width: 1200,
+    height: 630,
   },
 } as const;
 
@@ -514,7 +514,7 @@ export const cancers = {
     {
       title: "Stomach",
       body: "Advanced gastrectomy through small ports, facilitating quicker return to oral nutrition.",
-      href: "/stomach-cancer/",
+      href: null,
       countKey: "stomach",
       icon: "soup",
       image: "/images/robotic/cancer-stomach.jpg",
@@ -675,7 +675,4 @@ export const reviews = {
 
 export const structuredData = {
   pageAbout: "Robotic surgery",
-  // Shared with every page: content/shared/organization.ts
-  physician: organization.physician,
-  clinic: organization.clinic,
 } as const;

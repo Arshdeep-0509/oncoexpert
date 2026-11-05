@@ -229,13 +229,13 @@ export const expertise = {
   // SOURCE: EXISTING
   title: "Surgical Expertise",
   intro: "Comprehensive oncology services powered by advanced surgical science.",
-  // SOURCE: EXISTING (label). SOURCE: NEW (target: on the live page it is not a link; this is the
-  // menu's "Our Services" page).
-  all: { label: "View All Services", href: "/our-services/" },
+  // SOURCE: EXISTING (label). SOURCE: NEW (target: on the live page it is not a link; this is Home's
+  // services section).
+  all: { label: "View All Services", href: "/#services" },
   // SOURCE: EXISTING (titles, text, "Learn more"). SOURCE: NEW (targets: on the live page the
   // "Learn more" labels are not links). Breast and Robotic point to their rebuilt pages.
-  // PENDING DOCTOR: GI Oncology and Uro-Oncology have no rebuilt page yet; they point to the live
-  // menu's Colorectal Cancer and Urology pages. Confirm (or name the pages they should open).
+  // PENDING DOCTOR: GI Oncology and Uro-Oncology have no rebuilt page yet; they point to the
+  // Colorectal Cancer page and Home's services section. Confirm (or name the pages they should open).
   cards: [
     {
       icon: "breast",
@@ -255,7 +255,7 @@ export const expertise = {
       icon: "uro",
       title: "Uro-Oncology",
       body: "Advanced management of prostate, bladder, and kidney malignancies.",
-      link: { label: "Learn more", href: "/urology/" },
+      link: { label: "Learn more", href: "/#services" },
       image: "expertiseUro",
     },
     {

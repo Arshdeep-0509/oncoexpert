@@ -14,6 +14,7 @@ export function HeroHeadline() {
 
       <h1
         id="hero-title"
+        data-speakable
         className="mt-5 font-display text-[clamp(2.1rem,8.5vw,2.6rem)] leading-[1.04] tracking-[-0.02em] [overflow-wrap:normal] [hyphens:manual] text-ink md:mt-6 md:text-[clamp(2.4rem,5.6vw,4.6rem)]"
       >
         {lines.map((text, i) => {

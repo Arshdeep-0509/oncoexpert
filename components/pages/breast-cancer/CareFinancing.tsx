@@ -7,6 +7,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
 import { PriceCards } from "@/components/pages/breast-cancer/PriceCards";
+import { PriceTable } from "@/components/shared/PriceTable";
+import { formatRupees } from "@/lib/format";
 
 /** 10 · #pricing */
 export function CareFinancing() {
@@ -24,6 +26,10 @@ export function CareFinancing() {
 
       <Reveal className="mt-10 md:mt-12" delay={0.05}>
         <PriceCards cards={cards} />
+        <PriceTable
+          caption={pricing.title}
+          rows={cards.map((c) => ({ name: c.name, price: `${formatRupees(c.amount)} ${c.unit}`, includes: [c.body] }))}
+        />
       </Reveal>
 
       {/* Plan CTA: ribbon-minimal as a soft background, white overlay on the text side */}

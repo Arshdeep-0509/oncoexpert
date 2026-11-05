@@ -60,7 +60,14 @@ export default function BreastCancerPage() {
       <LeadSurgeon /> {/* 12 #surgeon      surface-warm */}
       {/* 13–17: shared sections, driven by this page's content */}
       <Videos tone="surface" eyebrow={videos.eyebrow} title={videos.title} ids={youtubeVideos} labels={videos.a11y} />
-      <Faq tone="alt" title={faq.title} contactTitle={faq.contactTitle} items={faq.items} locations={site.locations} />
+      <Faq
+        tone="alt"
+        title={faq.title}
+        contactTitle={faq.contactTitle}
+        items={faq.items}
+        locations={site.locations}
+        structuredData={false}
+      />
       <Locations tone="surface" />
       <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>

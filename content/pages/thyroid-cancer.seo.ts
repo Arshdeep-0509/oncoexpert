@@ -41,7 +41,7 @@ export const thyroidSeo = {
     },
     {
       question: "Will thyroid surgery affect my voice?",
-      answer: `OncoXpert uses nerve monitors to ensure vocal cord safety during every thyroid operation. The recurrent laryngeal nerves run just behind the thyroid and move the vocal cords. The practice's clinical record shows zero permanent recurrent laryngeal nerve injuries: ${voice.value}${voice.suffix} permanent voice change after surgery.`,
+      answer: `In OncoXpert's clinical record, no: zero permanent recurrent laryngeal nerve injuries, ${voice.value}${voice.suffix} permanent voice change after surgery. Nerve monitors ensure vocal cord safety during every thyroid operation. The recurrent laryngeal nerves run just behind the thyroid and move the vocal cords.`,
     },
     {
       question: "What is a thyroidectomy?",

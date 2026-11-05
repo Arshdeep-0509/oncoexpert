@@ -40,20 +40,17 @@ export const site = {
     { label: "Robotic Surgery", href: "/robotic-surgery/" },
     {
       label: "Our Services",
-      href: "/our-services/",
+      href: "/#services",
       children: [
         { label: "Breast Cancer", href: "/breast-cancer-hospital-bangalore/", icon: "breast" },
         { label: "Colorectal Cancer", href: "/colon-cancer-hospital-bangalore/", icon: "colorectal" },
         { label: "Endometrial Cancer", href: "/endometrial-cancer-hospital-bangalore/", icon: "endometrial" },
         { label: "Lung Cancer", href: "/lung-cancer-in-bangalore/", icon: "lung" },
-        { label: "Urology", href: "/urology/", icon: "urology" },
-        { label: "Stomach Cancer", href: "/stomach-cancer/", icon: "stomach" },
         { label: "Ovarian Cancer", href: "/ovarian-cancer-hospital/", icon: "ovarian" },
         { label: "Thyroid Cancer", href: "/thyroid-cancer/", icon: "thyroid" },
       ],
     },
     { label: "About Us", href: "/about-us/" },
-    { label: "Blogs", href: "/blog-1/" },
   ] satisfies readonly NavItem[],
 
   // SOURCE: EXISTING

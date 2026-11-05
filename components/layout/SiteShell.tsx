@@ -18,7 +18,7 @@ type SiteShellProps = {
   headerVariant: HeaderVariant;
   /** Tone of the hero under the transparent header (white text over "dark"). Defaults to headerVariant. */
   heroTone?: HeroTone;
-  /** Nav item to mark as current, e.g. "/breast-cancer-treatment-bangalore/". Defaults to the URL. */
+  /** Nav item to mark as current, e.g. "/breast-cancer-hospital-bangalore/". Defaults to the URL. */
   activeHref?: string;
   /**
    * Where "For Appointment" points. Default: the booking page, with `defaultService` preselected. The

@@ -83,7 +83,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | about-us.ts | title | EXISTING (titles, text, "Learn more"). SOURCE: NEW (targets: on the… | Robotic Surgery |
 | about-us.ts | body | EXISTING (titles, text, "Learn more"). SOURCE: NEW (targets: on the… | Minimally invasive approach for complex abdominal and pelvic cancers. |
 | about-us.ts | list | NEW (screen-reader label of the phone swipe row) | Surgical expertise |
-| about-us.ts | label | EXISTING (shown as "10+") | Years of Specialized Oncological Experience |
+| about-us.ts | label | DOCTOR (the client review, 5 Nov 2026; was 10+) | Years of Specialized Oncological Experience |
 | about-us.ts | pause | NEW (screen-reader labels of the ring's pause button) | Pause animation |
 | about-us.ts | play | NEW (screen-reader labels of the ring's pause button) | Play animation |
 | about-us.ts | title | EXISTING ("Dr. Sunil Navalgund" is the line the live page sets in b… | Why Patients Trust Dr. Sunil Navalgund |
@@ -182,11 +182,11 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | colorectal-cancer.ts | image | EXISTING (titles, text); NEW (icon keys, photos) | anatomyModel |
 | colorectal-cancer.ts | body | EXISTING (titles, text); NEW (icon keys, photos) | Full body mapping |
 | colorectal-cancer.ts | body | EXISTING (titles, text); NEW (icon keys, photos) | MDT Review & Planning |
-| colorectal-cancer.ts | image | EXISTING (titles, text); NEW (icon keys, photos) | consultationReport |
 | colorectal-cancer.ts | body | EXISTING (titles, text); NEW (icon keys, photos) | Pre-op optimization |
+| colorectal-cancer.ts | image | EXISTING (titles, text); NEW (icon keys, photos) | stepPlanning |
 | colorectal-cancer.ts | body | EXISTING (titles, text); NEW (icon keys, photos) | Robotic/Laparoscopic |
 | colorectal-cancer.ts | body | EXISTING (titles, text); NEW (icon keys, photos) | ERAS Protocol Support |
-| colorectal-cancer.ts | image | EXISTING (titles, text); NEW (icon keys, photos) | recoveryWalk |
+| colorectal-cancer.ts | image | EXISTING (titles, text); NEW (icon keys, photos) | stepRecovery |
 | colorectal-cancer.ts | steps | NEW (screen-reader labels) | Your path to recovery, step by step |
 | colorectal-cancer.ts | milestones | NEW (screen-reader labels) | Go to a step |
 | colorectal-cancer.ts | progress | NEW (screen-reader labels) | Progress through the steps |
@@ -466,7 +466,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | endometrial-cancer.ts | label | EXISTING (label); NEW (the service it preselects) | Book Appointment with Dr. Sunil |
 | endometrial-cancer.ts | service | EXISTING (label); NEW (the service it preselects) | Consultation |
 | endometrial-cancer.ts | cta | NEW (the name links to About Us; analytics label) | endometrial:surgeon:profile |
-| endometrial-cancer.ts | finalImage | NEW (order): the live order, without the colon cancer review unless… | motherDaughter |
 | endometrial-cancer.seo.ts | name | NEW | Endometrial Cancer |
 | endometrial-cancer.seo.ts |  | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats endometrial (uterine) cancer at OncoXpert with robotic and laparoscopic surgery and sentinel lym… |
 | endometrial-cancer.seo.ts | name | NEW | Endometrial cancer |
@@ -516,7 +515,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Doctor to confirm the three starting prices and approve the pricing note
 - Care packages
 - endometrial:surgeon:profile
-- motherDaughter
 - Endometrial Cancer
 - Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats endometrial (uterine) cancer at OncoXpert with robotic and laparoscopic surgery and sentinel lymph node biopsy.
 - Endometrial cancer
@@ -614,9 +612,10 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Bronchoscopy or CT Guided diagnostic sample. |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Precise staging to map the cancer's spread. |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Multidisciplinary tumor board review. |
+| lung-cancer.ts | image | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | stepPlanning |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Surgery, Immunotherapy, or combination care. |
 | lung-cancer.ts | body | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | Post-op care and long-term surveillance. |
-| lung-cancer.ts | image | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | breathingCalm |
+| lung-cancer.ts | image | EXISTING. The live section is hidden on phones (elementor-hidden-mo… | stepRecovery |
 | lung-cancer.ts | label | NEW (the button after the last step; label as the hero's) | Book Consultation |
 | lung-cancer.ts | service | NEW (the button after the last step; label as the hero's) | Consultation |
 | lung-cancer.ts | cta | NEW (the button after the last step; label as the hero's) | lung:pathway:book-consultation |
@@ -848,7 +847,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | ovarian-cancer.ts | service | EXISTING (button labels); NEW (the service each one preselects, ana… | Second Opinion |
 | ovarian-cancer.ts | cta | EXISTING (button labels); NEW (the service each one preselects, ana… | ovarian:hero:second-opinion |
 | ovarian-cancer.ts |  | NEW (the steps of the hero illustration; the live hero shows the po… | Cytoreductive Surgery |
-| ovarian-cancer.ts |  | NEW (screen-reader labels) | Illustration: a teal ribbon outlines the ovaries; tumour deposits on one ovary are removed, warm waves wash through the abdomen, and a check marks recovery |
 | ovarian-cancer.ts | steps | NEW (screen-reader labels) | Treatment steps |
 | ovarian-cancer.ts | pause | NEW (screen-reader labels) | Pause the hero animation |
 | ovarian-cancer.ts | play | NEW (screen-reader labels) | Play the hero animation |
@@ -966,7 +964,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | ovarian-cancer.ts | label | NEW (the live block has no buttons; labels as on the endometrial an… | Book Appointment with Dr. Sunil |
 | ovarian-cancer.ts | service | NEW (the live block has no buttons; labels as on the endometrial an… | Consultation |
 | ovarian-cancer.ts | label | NEW (the live block has no buttons; labels as on the endometrial an… | View Full Profile |
-| ovarian-cancer.ts | finalImage | NEW (order): the live order, without the colon cancer review unless… | friendsLaughing |
+| ovarian-cancer.ts | finalImage | NEW (order): the live order, without the colon cancer review unless… | finalFriends |
 | ovarian-cancer.seo.ts | name | NEW | Ovarian Cancer |
 | ovarian-cancer.seo.ts | definition | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert. |
 | ovarian-cancer.seo.ts | name | NEW | Ovarian cancer |
@@ -1006,7 +1004,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Consultation
 - Personalized Surgical Oncology Care
 - Cytoreductive Surgery
-- Illustration: a teal ribbon outlines the ovaries; tumour deposits on one ovary are removed, warm waves wash through the abdomen, and a check marks recovery
 - Treatment steps
 - Pause the hero animation
 - Play the hero animation
@@ -1044,7 +1041,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Book Appointment with Dr. Sunil
 - Consultation
 - View Full Profile
-- friendsLaughing
+- finalFriends
 - Ovarian Cancer
 - Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert.
 - Ovarian cancer
@@ -1136,11 +1133,13 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | thyroid-cancer.ts | body | NEW (card titles: the four symptoms named in the live sentence, in … | A lump at the front of the neck that you can feel or see, usually without pain. |
 | thyroid-cancer.ts | title | NEW (card titles: the four symptoms named in the live sentence, in … | Persistent cough |
 | thyroid-cancer.ts | body | NEW (card titles: the four symptoms named in the live sentence, in … | A cough that lingers for weeks without a cold or infection to explain it. |
+| thyroid-cancer.ts | image | NEW (card titles: the four symptoms named in the live sentence, in … | symptomCough |
 | thyroid-cancer.ts | title | NEW (card titles: the four symptoms named in the live sentence, in … | Voice changes |
 | thyroid-cancer.ts | body | NEW (card titles: the four symptoms named in the live sentence, in … | Hoarseness or a change in your voice that does not settle within a few weeks. |
+| thyroid-cancer.ts | image | NEW (card titles: the four symptoms named in the live sentence, in … | symptomVoice |
 | thyroid-cancer.ts | title | NEW (card titles: the four symptoms named in the live sentence, in … | Difficulty swallowing |
 | thyroid-cancer.ts | body | NEW (card titles: the four symptoms named in the live sentence, in … | A feeling that food or drink catches, or pressure in the throat when you swallow. |
-| thyroid-cancer.ts | image | NEW (card titles: the four symptoms named in the live sentence, in … | glassOfWater |
+| thyroid-cancer.ts | image | NEW (card titles: the four symptoms named in the live sentence, in … | symptomSwallow |
 | thyroid-cancer.ts | label | NEW (the button by the note, analytics label) | Book Consultation |
 | thyroid-cancer.ts | service | NEW (the button by the note, analytics label) | Consultation |
 | thyroid-cancer.ts | cta | NEW (the button by the note, analytics label) | thyroid:symptoms:book-consultation |
@@ -1227,6 +1226,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | thyroid-cancer.ts |  | NEW (a checklist beside the band; the live block has none) | Your scans (CT, MRI, ultrasound) |
 | thyroid-cancer.ts |  | NEW (a checklist beside the band; the live block has none) | Your pathology report |
 | thyroid-cancer.ts |  | NEW (a checklist beside the band; the live block has none) | Recent blood tests |
+| thyroid-cancer.ts | finalImage | NEW (order): the live order, without the colon cancer review unless… | finalPortrait |
 | thyroid-cancer.seo.ts |  | NEW | ${n}${outcomes.unit} |
 | thyroid-cancer.seo.ts | name | NEW | Thyroid Cancer |
 | thyroid-cancer.seo.ts |  | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats thyroid cancer at OncoXpert with thyroidectomy and neck dissection under nerve monitoring, radio… |
@@ -1283,11 +1283,13 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - A lump at the front of the neck that you can feel or see, usually without pain.
 - Persistent cough
 - A cough that lingers for weeks without a cold or infection to explain it.
+- symptomCough
 - Voice changes
 - Hoarseness or a change in your voice that does not settle within a few weeks.
+- symptomVoice
 - Difficulty swallowing
 - A feeling that food or drink catches, or pressure in the throat when you swallow.
-- glassOfWater
+- symptomSwallow
 - Book Consultation
 - Consultation
 - thyroid:symptoms:book-consultation
@@ -1311,6 +1313,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Your scans (CT, MRI, ultrasound)
 - Your pathology report
 - Recent blood tests
+- finalPortrait
 - ${n}${outcomes.unit}
 - Thyroid Cancer
 - Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats thyroid cancer at OncoXpert with thyroidectomy and neck dissection under nerve monitoring, radioiodine therapy and long-term follow-up.
@@ -1356,7 +1359,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - (thyroid-cancer.ts) "2% Hypocalcemia … Significantly lower than global average": which global average (source, figure)? Temporary or permanent hypocalcemia? Over how many cases?
 - (thyroid-cancer.ts) "98.5% Overall 5-Year Survival": confirm the figure, its source and period.
 - (thyroid-cancer.ts) show the packages on the rebuilt page? Confirm the three prices (₹85,000* · ₹1,15,000* · ₹98,000*) and what each includes. The live order lists the ₹1,15,000 package before the ₹98,000 one: keep that order?
-- (thyroid-cancer.ts) "10,000+ Surgeries": confirm the count (Home and About say "3,000+ PATIENTS TREATED").
 - (thyroid-cancer.ts) "over a decade" here and on the ovarian page, "10+" on About Us, "15+" on the colorectal and endometrial pages, "Over 25 years" on the booking page. Which is right?
 - (thyroid-cancer.ts) what patients should bring for a second opinion.
 - (thyroid-cancer.ts) the live page shows Vasudeva Murthy's review, which is about colon cancer surgery. Hidden on this page by default; set showColonReview to true to show it.

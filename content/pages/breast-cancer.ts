@@ -1,5 +1,5 @@
 /**
- * Every word on /breast-cancer-treatment-bangalore/.
+ * Every word on /breast-cancer-hospital-bangalore/.
  *
  * SOURCE tags (see docs/PROJECT.md):
  *   EXISTING → copied from the live page. Render exactly.
@@ -30,7 +30,7 @@ export const meta = {
   title: "Breast Cancer Treatment & Surgery in Bangalore | OncoXpert",
   description:
     "Get personalized breast cancer treatment in Bangalore with expert oncology care, surgery and multidisciplinary treatment options. Consult OncoXpert for trusted, affordable cancer care.",
-  canonical: "https://oncoxpert.in/breast-cancer-treatment-bangalore/",
+  canonical: "https://oncoxpert.in/breast-cancer-hospital-bangalore/",
   ogImage: breastOgImage,
 } as const satisfies PageMeta;
 
@@ -64,7 +64,12 @@ export type HeroContent = {
 export type OverviewContent = Required<Pick<SectionCopy, "eyebrow" | "title" | "emphasis">> & {
   paragraphs: readonly string[];
   image: BreastImageKey;
-  diagram: { label: string; centre: string; nodes: readonly { key: Treatment; label: string }[] };
+  diagram: {
+    label: string;
+    centre: string;
+    nodes: readonly { key: Treatment; label: string }[];
+    a11y: { pause: string; play: string };
+  };
 };
 
 /* ------------------------------------------------------------------ */
@@ -72,8 +77,8 @@ export type OverviewContent = Required<Pick<SectionCopy, "eyebrow" | "title" | "
 /* ------------------------------------------------------------------ */
 
 export const hero = {
-  // SOURCE: EXISTING
-  eyebrow: "Advanced Breast Cancer Center",
+  // SOURCE: DOCTOR (the client review, 4 Nov 2026: "Center" → "Hospital")
+  eyebrow: "Advanced Breast Cancer Hospital",
   // SOURCE: EXISTING (one string per line)
   headline: ["Precision, Personalized & Comprehensive", "Breast Cancer", "Treatment"],
   emphasisLine: 1,
@@ -108,13 +113,13 @@ export const hero = {
   },
 } as const satisfies HeroContent;
 
-// SOURCE: NEW (breadcrumb; also published as BreadcrumbList JSON-LD)
+// SOURCE: NEW (published only as BreadcrumbList JSON-LD; the visible trail was removed, the client
+// review, 4 Nov 2026)
 export const breadcrumb = {
-  label: "Breadcrumb",
   items: [
     { label: "Home", href: "/" },
     { label: "Our Services", href: "/our-services/" },
-    { label: "Breast Cancer", href: "/breast-cancer-treatment-bangalore/" },
+    { label: "Breast Cancer", href: "/breast-cancer-hospital-bangalore/" },
   ],
 } as const;
 
@@ -143,6 +148,7 @@ export const overview = {
       { key: "immunotherapy", label: "Immunotherapy" },
       { key: "radiotherapy", label: "Radiotherapy" },
     ],
+    a11y: { pause: "Pause animation", play: "Play animation" },
   },
 } as const satisfies OverviewContent;
 
@@ -195,9 +201,10 @@ export const whyTrust = {
     {
       icon: "heart-handshake",
       title: "Proven Outcomes",
-      body: "Consistent 98% satisfaction rates across 5,000+ successful patient transformations.",
-      // PENDING DOCTOR: confirm the 98% satisfaction rate and the 5,000+ patients claim.
-      pendingApproval: "Doctor to confirm: 98% satisfaction rate and 5,000+ patients",
+      body: "Consistent 98% satisfaction rates across 500+ successful patient transformations.",
+      // SOURCE: DOCTOR for 500+ (the client review, 4 Nov 2026; was 5,000+).
+      // PENDING DOCTOR: confirm the 98% satisfaction rate.
+      pendingApproval: "Doctor to confirm: 98% satisfaction rate",
     },
   ],
   band: {
@@ -411,7 +418,7 @@ export const journey = {
     { title: "Targeted Therapy", body: "Executing treatment using advanced chemo and immunotherapy agents." },
     { title: "Holistic Recovery", body: "Continuous monitoring and support during your return to full health." },
   ],
-  images: { main: "recoveryWalk", inset: "recoveryFamily" },
+  images: { main: "recoveryPark", inset: "recoveryFamily" },
   // SOURCE: NEW (screen-reader label)
   a11y: { steps: "Your care journey, step by step" },
 } as const satisfies JourneyContent;
@@ -651,7 +658,6 @@ export type SurgeonContent = {
   bio: string;
   /** Phrase of the bio set in italic accent. */
   emphasis: string;
-  badges: readonly { icon: "badge-check" | "award"; label: string }[];
   cta: AppointmentCta;
   /** The name links to the profile page (DoctorCard `profile`). */
   profile: { href: string; cta: string };
@@ -662,13 +668,10 @@ export const surgeon = {
   // SOURCE: EXISTING
   label: "LEAD SURGEON",
   name: "Dr. Sunil Navalgund",
-  title: "Surgical Oncologist & Breast Care Specialist",
-  bio: "With over 15 years of dedicated practice in surgical oncology, Dr. Sunil Navalgund has performed thousands of successful breast cancer procedures. His philosophy centers on ‘Precision and Preservation’ ensuring complete cancer removal while respecting the physical and emotional integrity of his patients. He is a pioneer in minimally invasive keyhole surgery in the region.",
+  // SOURCE: DOCTOR (title, opening of the bio, no badges: the client review, 4 Nov 2026)
+  title: "Lead Surgical Oncologist and Breast Surgeon",
+  bio: "Leading surgical oncologist in Bangalore with over 15 years of dedicated practice in surgical oncology, Dr. Sunil Navalgund has performed thousands of successful breast cancer procedures. His philosophy centers on ‘Precision and Preservation’ ensuring complete cancer removal while respecting the physical and emotional integrity of his patients. He is a pioneer in minimally invasive keyhole surgery in the region.",
   emphasis: "‘Precision and Preservation’",
-  badges: [
-    { icon: "badge-check", label: "Board Certified" },
-    { icon: "award", label: "Award Winning" },
-  ],
   // SOURCE: EXISTING (button label from the robotic page)
   cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
   // SOURCE: NEW (the name links to About Us; analytics label)
@@ -676,7 +679,7 @@ export const surgeon = {
   image: {
     src: "/images/brand/dr-sunil-navalgund.png",
     // SOURCE: NEW
-    alt: "Dr. Sunil Navalgund, Surgical Oncologist and Breast Care Specialist",
+    alt: "Dr. Sunil Navalgund, Lead Surgical Oncologist and Breast Surgeon",
     width: 886,
     height: 1024,
   },
@@ -688,7 +691,7 @@ export const surgeon = {
     appointment, locations, final band: content/shared/sections.ts)    */
 /* ------------------------------------------------------------------ */
 
-export const pageSlug = "breast-cancer-treatment-bangalore";
+export const pageSlug = "breast-cancer-hospital-bangalore";
 
 /** Buttons that name no service (header, menu, FAQ card) preselect this one. */
 // SOURCE: NEW (choice; the first of the live "Service Required" options)
@@ -701,7 +704,7 @@ export const reviews = {
   // SOURCE: EXISTING. Set in two lines (the client's review, 30 Oct 2026): the break is layout.
   title: ["Every Patient Story Reflects", "Our Commitment To Clinical Excellence."],
   // Breast page order. PENDING DOCTOR: Vasudeva Murthy's review is about colon cancer;
-  // add excludeOn: ["breast-cancer-treatment-bangalore"] to it in content/shared/reviews.ts to hide it here.
+  // add excludeOn: ["breast-cancer-hospital-bangalore"] to it in content/shared/reviews.ts to hide it here.
   order: [
     "muralidharan-chinnusamy",
     "veena-iyer",

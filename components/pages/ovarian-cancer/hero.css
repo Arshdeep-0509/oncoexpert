@@ -1,14 +1,14 @@
 /* ==================================================================
-   Ovarian hero "THE TEAL RIBBON". Plain CSS, prefix ov- (hero-styles.ts). The ribbon draws, then the
-   treatment story inside it plays once (HeroStory); the default CSS is its end state.
-   - The teal line draws over 2.2s; the arch outline draws, then the portrait rises behind a cover
-     that slides off (the portrait is the LCP image: painted from the first frame, never faded).
-   - Then a bright shimmer segment travels the line every 10s, and five seeds pop in and float on a
-     7s loop. The pause button (data-paused) and leaving the screen (data-offscreen) stop both, and
-     the button shine; hover / focus stops the shine.
+   Ovarian hero "THE OVARIES". Plain CSS, prefix ov- (hero-styles.ts). A 3D render of the uterus,
+   tubes and ovaries floats in a soft halo; the treatment story loops over it (HeroVisual).
+   - One 12s loop, a third per step, each lighting its chip: surgery (focus rings draw around the
+     ovaries), HIPEC (a warm glow), recovery (the ovaries glow teal, light runs along the tubes).
+   - The art floats, and a thin ring turns. The pause button (data-paused) and leaving the screen
+     (data-offscreen) stop all of it, and the button shine; hover / focus stops the shine.
    - Every entrance waits for the intro (--intro), scaled by --pace (quicker on phones).
-   Transform and opacity only, plus the stroke draws. The default styles are the final state; all
-   motion lives in prefers-reduced-motion: no-preference.
+   - The render is the LCP image: painted from the first frame, never faded.
+   Transform and opacity only, plus the stroke draws and the chips' colour. The default styles are
+   the final state; all motion lives in prefers-reduced-motion: no-preference.
    ================================================================== */
 
 .ov-hero {
@@ -67,40 +67,64 @@
 
 /* The art ------------------------------------------------------------- */
 
-.ov-line,
-.ov-uterus,
-.ov-wave,
-.ov-checkMark {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
+/* A soft halo behind the organs, and a thin dashed ring around them */
+.ov-halo {
+  position: absolute;
+  inset: 4%;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-bright) 22%, transparent), transparent);
+  pointer-events: none;
 }
-/* The treatment story's end state (HeroStory): deposits gone, ring put away, glow, check. */
-.ov-tumour,
-.ov-ring {
+.ov-orbit {
+  position: absolute;
+  inset: 3% 12%;
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 999px;
+  pointer-events: none;
+}
+.ov-orbit::before,
+.ov-orbit::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+}
+.ov-orbit::before {
+  top: -5px;
+  left: calc(50% - 4.5px);
+  background: var(--accent);
+}
+.ov-orbit::after {
+  bottom: -5px;
+  left: calc(50% - 4.5px);
+  background: var(--highlight);
+}
+
+/* The story's end state: rings and warmth put away, the ovaries glowing */
+.ov-scan,
+.ov-warm,
+.ov-bead {
   opacity: 0;
 }
-.ov-tumour,
-.ov-check,
-.ov-glow {
+.ov-scan,
+.ov-calm,
+.ov-warm {
   transform-box: fill-box;
   transform-origin: 50% 50%;
 }
-.ov-ring {
+.ov-scan {
+  rotate: -90deg;
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
 }
-.ov-glow {
-  opacity: 0.35;
+.ov-calm {
+  opacity: 0.8;
 }
-/* The shimmer: a short bright dash, parked off the line's start until it travels. */
-.ov-shimmer {
-  stroke-dasharray: 0.07 0.93;
-  stroke-dashoffset: 0.07;
-  opacity: 0;
-}
-.ov-seed {
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
+/* A short bright dash, parked at the tube's start until it travels. */
+.ov-bead {
+  stroke-dasharray: 0.1 2;
+  stroke-dashoffset: 0.1;
 }
 
 .ov-shine {
@@ -136,67 +160,52 @@
     animation-delay: calc(var(--intro) + (1.3s + var(--u, 0s)) * var(--pace));
   }
 
-  .ov-line {
-    animation: ov-draw calc(2.2s * var(--pace)) cubic-bezier(0.45, 0, 0.25, 1) both;
-    animation-delay: calc(var(--intro) + 0.3s * var(--pace));
+  /* The story: 12s, starting once the words are in. */
+  .ov-scan,
+  .ov-warm,
+  .ov-calm,
+  .ov-bead {
+    animation-duration: 12s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-delay: calc(var(--intro) + 1.6s * var(--pace));
+    animation-fill-mode: both;
   }
-  /* The treatment story (desktop seconds × --pace): uterus 1.0s; deposits appear 2.4s, the ring
-     finds them 3.0s, each is removed in turn (~4s); waves 4.6s; check and glow 6.0s; the step
-     chips light at 3.0, 4.6 and 6.2s. */
-  .ov-uterus {
-    animation: ov-draw calc(1s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
-    animation-delay: calc(var(--intro) + 1s * var(--pace));
+  .ov-scan {
+    animation-name: ov-scan;
   }
-  .ov-tumour {
-    animation: ov-tumour calc(2.6s * var(--pace)) ease-in-out both;
-    animation-delay: calc(var(--intro) + (2.4s + var(--i) * 0.22s) * var(--pace));
+  .ov-warm {
+    animation-name: ov-warm;
   }
-  .ov-ring {
-    animation: ov-ring calc(2.4s * var(--pace)) ease-in-out both;
-    animation-delay: calc(var(--intro) + 3s * var(--pace));
+  .ov-calm {
+    animation-name: ov-calm;
   }
-  .ov-wave {
-    animation: ov-draw calc(1.2s * var(--pace)) cubic-bezier(0.45, 0, 0.25, 1) both;
-    animation-delay: calc(var(--intro) + (4.6s + var(--i) * 0.15s) * var(--pace));
-  }
-  .ov-waves {
-    animation: ov-drift 6s ease-in-out infinite;
-    animation-delay: calc(var(--intro) + 6s * var(--pace));
-  }
-  .ov-glow {
-    animation: ov-glowIn calc(1.4s * var(--pace)) cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(var(--intro) + 6s * var(--pace));
-  }
-  .ov-check {
-    animation: ov-pop calc(0.6s * var(--pace)) cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    animation-delay: calc(var(--intro) + 6s * var(--pace));
-  }
-  .ov-checkMark {
-    animation: ov-draw calc(0.6s * var(--pace)) ease-out both;
-    animation-delay: calc(var(--intro) + 6.4s * var(--pace));
+  .ov-bead {
+    animation-name: ov-bead;
   }
   .ov-storyStep {
-    animation: ov-fadeUp calc(0.6s * var(--pace)) cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(var(--intro) + (3s + var(--s) * 1.6s) * var(--pace));
-  }
-  .ov-seed {
     animation:
-      ov-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both,
-      ov-float 7s ease-in-out infinite;
+      ov-fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both,
+      ov-chip 12s ease-in-out infinite both;
     animation-delay:
-      calc(var(--intro) + (2.4s + var(--i) * 0.12s) * var(--pace)),
-      calc(var(--intro) + (3s + var(--i) * 0.6s) * var(--pace));
+      calc(var(--intro) + (1.2s + var(--s) * 0.12s) * var(--pace)),
+      calc(var(--intro) + 1.6s * var(--pace) + var(--s) * 4s);
   }
-  .ov-shimmer {
-    animation: ov-shimmer 10s linear infinite;
-    animation-delay: calc(var(--intro) + 2.6s * var(--pace));
+
+  .ov-art {
+    animation: ov-float 8s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 1s * var(--pace));
+  }
+  .ov-orbit {
+    animation: ov-turn 60s linear infinite;
   }
   .ov-shine::after {
     animation: ov-shine 6s ease-in-out infinite;
     animation-delay: calc(var(--intro) + 3s);
   }
 
-  .ov-hero:is([data-paused], [data-offscreen]) :is(.ov-seed, .ov-shimmer, .ov-waves),
+  .ov-hero:is([data-paused], [data-offscreen])
+    :is(.ov-scan, .ov-warm, .ov-calm, .ov-bead, .ov-storyStep, .ov-art, .ov-orbit),
   .ov-hero:is([data-paused], [data-offscreen]) .ov-shine::after,
   .ov-shine:is(:hover, :focus-visible)::after {
     animation-play-state: paused;
@@ -225,81 +234,104 @@
     stroke-dashoffset: 1;
   }
 }
-@keyframes ov-tumour {
+/* Each third of the 12s loop: surgery, then HIPEC, then recovery. */
+@keyframes ov-scan {
   0% {
     opacity: 0;
-    scale: 0.3;
+    stroke-dashoffset: 1;
   }
-  14%,
-  58% {
-    opacity: 1;
-    scale: 1;
-  }
-  80%,
-  100% {
-    opacity: 0;
-    scale: 0;
-  }
-}
-@keyframes ov-ring {
-  0% {
+  4% {
     opacity: 1;
     stroke-dashoffset: 1;
   }
-  35%,
-  85% {
+  20%,
+  28% {
     opacity: 1;
     stroke-dashoffset: 0;
   }
+  33%,
   100% {
     opacity: 0;
     stroke-dashoffset: 0;
   }
 }
-@keyframes ov-glowIn {
-  from {
-    opacity: 0;
-    scale: 0.5;
-  }
-}
-@keyframes ov-drift {
+@keyframes ov-warm {
   0%,
-  100% {
-    translate: 0 0;
+  33% {
+    opacity: 0;
+    scale: 0.8;
   }
-  50% {
-    translate: 10px 0;
+  46%,
+  56% {
+    opacity: 1;
+    scale: 1.05;
+  }
+  66%,
+  100% {
+    opacity: 0;
+    scale: 0.8;
   }
 }
-@keyframes ov-pop {
-  from {
+@keyframes ov-calm {
+  0%,
+  62% {
     opacity: 0;
-    scale: 0.3;
+    scale: 0.7;
+  }
+  76%,
+  92% {
+    opacity: 1;
+    scale: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 0.7;
+  }
+}
+@keyframes ov-bead {
+  0%,
+  66% {
+    opacity: 0;
+    stroke-dashoffset: 0.1;
+  }
+  69% {
+    opacity: 0.65;
+  }
+  88% {
+    opacity: 0.65;
+  }
+  92%,
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -1;
+  }
+}
+/* A chip is lit for its own third; each runs this with its step's delay. */
+@keyframes ov-chip {
+  0%,
+  33%,
+  100% {
+    background-color: color-mix(in srgb, var(--surface) 90%, transparent);
+    color: var(--ink);
+  }
+  3%,
+  30% {
+    background-color: var(--accent-soft);
+    color: var(--accent);
   }
 }
 @keyframes ov-float {
   0%,
   100% {
-    translate: 0 -5px;
+    translate: 0 -6px;
   }
   50% {
-    translate: 0 5px;
+    translate: 0 6px;
   }
 }
-/* The dash travels the line in the first 40% of the 10s, then rests out of sight. */
-@keyframes ov-shimmer {
-  0% {
-    opacity: 1;
-    stroke-dashoffset: 0.07;
-  }
-  40% {
-    opacity: 1;
-    stroke-dashoffset: -0.93;
-  }
-  41%,
-  100% {
-    opacity: 0;
-    stroke-dashoffset: -0.93;
+@keyframes ov-turn {
+  to {
+    rotate: 360deg;
   }
 }
 @keyframes ov-shine {

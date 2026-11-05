@@ -1,5 +1,5 @@
 /**
- * Search and answer-engine facts for /ovarian-cancer-treatment/ (see lung-cancer.seo.ts). Built only
+ * Search and answer-engine facts for /ovarian-cancer-hospital/ (see lung-cancer.seo.ts). Built only
  * from facts already on the page (content/pages/ovarian-cancer.ts); figures and prices imported.
  *
  * SOURCE: NEW (every sentence here). PENDING DOCTOR: the definition, every quick answer and the

@@ -16,6 +16,48 @@ const BASE = "/images/thyroid-cancer";
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const thyroidImages = {
+  // #symptoms: AI-generated (Higgsfield, gpt_image_2_5), the client review, 5 Nov 2026. Not real patients.
+  symptomLump: {
+    file: "symptom-lump.jpg",
+    src: `${BASE}/symptom-lump.jpg`,
+    alt: "Woman feeling the front of her neck with her fingertips",
+    focal: "50% 30%",
+    width: 1024,
+    height: 688,
+  },
+  symptomCough: {
+    file: "symptom-cough.jpg",
+    src: `${BASE}/symptom-cough.jpg`,
+    alt: "Man coughing into his closed hand at home",
+    focal: "55% 25%",
+    width: 1024,
+    height: 688,
+  },
+  symptomVoice: {
+    file: "symptom-voice.jpg",
+    src: `${BASE}/symptom-voice.jpg`,
+    alt: "Woman with a hand on her throat, speaking with difficulty",
+    focal: "50% 30%",
+    width: 1024,
+    height: 688,
+  },
+  symptomSwallow: {
+    file: "symptom-swallow.jpg",
+    src: `${BASE}/symptom-swallow.jpg`,
+    alt: "Woman holding a glass of water, touching her throat as she swallows",
+    focal: "50% 30%",
+    width: 1024,
+    height: 688,
+  },
+  // #final-cta: AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. Not real patients.
+  finalPortrait: {
+    file: "final-portrait.jpg",
+    src: `${BASE}/final-portrait.jpg`,
+    alt: "Confident smiling woman in a periwinkle kurta on a bright balcony",
+    focal: "75% 8%",
+    width: 2000,
+    height: 1131,
+  },
   /* Own photos, reused ---------------------------------------------- */
 
   doctor: {

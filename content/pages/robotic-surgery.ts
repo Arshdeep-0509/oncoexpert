@@ -500,14 +500,16 @@ export const cancers = {
   // SOURCE: EXISTING
   heading: "Cancers We Treat with Keyhole",
   intro: "Advanced minimally invasive solutions for various oncology needs.",
-  // SOURCE: EXISTING (title, body). Links reuse site URLs; counts come from surgeryNumbers.
+  // SOURCE: EXISTING (title, body). Links reuse site URLs; counts come from surgeryNumbers. Images:
+  // AI-generated (Higgsfield, gpt_image_2_5), the client review, 5 Nov 2026. PENDING DOCTOR: the anatomy.
   items: [
     {
       title: "Colon & Rectal",
       body: "Precise resection of colorectal tumors preserving normal function and nerve pathways.",
-      href: "/colon-cancer-treatment-bangalore/",
+      href: "/colon-cancer-hospital-bangalore/",
       countKey: "colorectal",
       icon: "waves",
+      image: "/images/robotic/cancer-colon.jpg",
     },
     {
       title: "Stomach",
@@ -515,6 +517,7 @@ export const cancers = {
       href: "/stomach-cancer/",
       countKey: "stomach",
       icon: "soup",
+      image: "/images/robotic/cancer-stomach.jpg",
     },
     {
       title: "Esophageal",
@@ -522,13 +525,15 @@ export const cancers = {
       href: null,
       countKey: "esophagus",
       icon: "spline",
+      image: "/images/robotic/cancer-esophagus.jpg",
     },
     {
       title: "Gynecological",
       body: "Hysterectomies and nodal dissections for uterine and cervical cancers with minimal scarring.",
-      href: "/endometrial-cancer-treatment-bangalore/",
+      href: "/endometrial-cancer-hospital-bangalore/",
       countKey: "endometrium",
       icon: "venus",
+      image: "/images/robotic/cancer-gyn.jpg",
     },
     {
       title: "Thoracic",
@@ -536,8 +541,16 @@ export const cancers = {
       href: "/lung-cancer-in-bangalore/",
       countKey: "lung",
       icon: "wind",
+      image: "/images/robotic/cancer-lungs.jpg",
     },
-  ] satisfies { title: string; body: string; href: string | null; countKey: SurgeryKey; icon: string }[],
+  ] satisfies {
+    title: string;
+    body: string;
+    href: string | null;
+    countKey: SurgeryKey;
+    icon: string;
+    image: string;
+  }[],
   // SOURCE: EXISTING
   other: {
     title: "Other Indications?",
@@ -553,17 +566,53 @@ export const cancers = {
 /* ------------------------------------------------------------------ */
 
 export const benefits = {
-  // SOURCE: EXISTING
+  // SOURCE: EXISTING. Images: AI-generated (Higgsfield, gpt_image_2_5), the client review, 5 Nov 2026.
+  // Not real patients.
   heading: "Benefits of Keyhole Surgery",
   items: [
-    { title: "Less Pain", body: "Significantly reduced post-op trauma", icon: "smile" },
-    { title: "Faster Recovery", body: "Return to daily life in days, not weeks", icon: "timer" },
-    { title: "Minimal Scars", body: "Tiny incisions heal with minimal marks", icon: "sparkles" },
-    { title: "Low Blood Loss", body: "Less exposure of internal organs", icon: "droplet-off" },
-    { title: "Shorter Hospital Stay", body: "Most patients leave within 48-72 hours", icon: "house" },
-    { title: "Earlier Adjuvant Therapy", body: "Start Chemo/Radiation sooner if needed", icon: "calendar-check" },
+    {
+      title: "Less Pain",
+      body: "Significantly reduced post-op trauma",
+      icon: "smile",
+      image: "/images/robotic/benefit-pain.jpg",
+      focal: "55% 40%",
+    },
+    {
+      title: "Faster Recovery",
+      body: "Return to daily life in days, not weeks",
+      icon: "timer",
+      image: "/images/robotic/benefit-faster.jpg",
+      focal: "40% 30%",
+    },
+    {
+      title: "Minimal Scars",
+      body: "Tiny incisions heal with minimal marks",
+      icon: "sparkles",
+      image: "/images/robotic/benefit-scars.jpg",
+      focal: "50% 60%",
+    },
+    {
+      title: "Low Blood Loss",
+      body: "Less exposure of internal organs",
+      icon: "droplet-off",
+      image: "/images/robotic/benefit-blood.jpg",
+      focal: "50% 55%",
+    },
+    {
+      title: "Shorter Hospital Stay",
+      body: "Most patients leave within 48-72 hours",
+      icon: "house",
+      image: "/images/robotic/benefit-stay.jpg",
+      focal: "50% 30%",
+    },
+    {
+      title: "Earlier Adjuvant Therapy",
+      body: "Start Chemo/Radiation sooner if needed",
+      icon: "calendar-check",
+      image: "/images/robotic/benefit-adjuvant.jpg",
+      focal: "50% 35%",
+    },
   ],
-  image: images.xFrontWhite,
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -577,7 +626,7 @@ export const doctor = {
   lead: "Dr. Sunil Navalgund is a pioneer in minimally invasive cancer surgery.",
   bio: "With thousands of successful robotic and laparoscopic procedures, he brings a level of precision that ensures the best possible clinical outcomes for his patients.",
   credentials: [
-    { label: "Education", value: "MCH Surgical Oncology, FIAGES", icon: "graduation-cap" },
+    { label: "Education", value: "MCH Surgical Oncology", icon: "graduation-cap" },
     { label: "Expertise", value: "Robotic & GI Oncology", icon: "stethoscope" },
   ],
   cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },

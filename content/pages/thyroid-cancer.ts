@@ -15,7 +15,7 @@
  * `mark`). Shared copy is reused, not repeated here: reviews, videos, locations and the final call
  * band (content/shared/sections.ts). Images: content/pages/thyroid-cancer.images.ts.
  */
-import type { ChartRow, PackageItem, PageMeta, Stat, SymptomIcon } from "@/content/types";
+import type { ChartRow, PackageItem, PageMeta, SymptomIcon } from "@/content/types";
 import type { ThyroidImageKey } from "@/content/pages/thyroid-cancer.images";
 import { thyroidOgImage } from "@/content/pages/thyroid-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -178,28 +178,28 @@ export const symptoms = {
       icon: "lump",
       title: "Painless lumps in the neck",
       body: "A lump at the front of the neck that you can feel or see, usually without pain.",
-      image: "neckExam",
+      image: "symptomLump",
     },
     {
       key: "cough",
       icon: "cough",
       title: "Persistent cough",
       body: "A cough that lingers for weeks without a cold or infection to explain it.",
-      image: "cough",
+      image: "symptomCough",
     },
     {
       key: "voice",
       icon: "voice",
       title: "Voice changes",
       body: "Hoarseness or a change in your voice that does not settle within a few weeks.",
-      image: "conversation",
+      image: "symptomVoice",
     },
     {
       key: "swallow",
       icon: "swallow",
       title: "Difficulty swallowing",
       body: "A feeling that food or drink catches, or pressure in the throat when you swallow.",
-      image: "glassOfWater",
+      image: "symptomSwallow",
     },
   ],
   // SOURCE: NEW (the button by the note, analytics label)
@@ -448,11 +448,6 @@ export const packages = {
 /* 9 · #surgeon                                                        */
 /* ------------------------------------------------------------------ */
 
-// SOURCE: EXISTING
-// PENDING DOCTOR: "10,000+ Surgeries": confirm the count (Home and About say "3,000+ PATIENTS
-// TREATED").
-const surgeries = 10000;
-
 export const surgeon = {
   // SOURCE: EXISTING
   name: "Dr. Sunil Navalgund",
@@ -460,8 +455,6 @@ export const surgeon = {
   // PENDING DOCTOR: "over a decade" here and on the ovarian page, "10+" on About Us, "15+" on the
   // colorectal and endometrial pages, "Over 25 years" on the booking page. Which is right?
   bio: "Specializing in high-precision head and neck oncology, Dr. Navalgund has spent over a decade perfecting surgical techniques that prioritize organ function preservation. His approach to Thyroid Cancer integrates robotic-assisted technology with traditional surgical wisdom to deliver outcomes that go beyond mere survival.",
-  // SOURCE: EXISTING ("10,000+ Surgeries": the figure counts up, "Surgeries" under it)
-  stats: [{ value: surgeries, suffix: "+", label: "Surgeries" }],
   // SOURCE: EXISTING (label); NEW (icon key)
   badges: [{ icon: "award", label: "Robotic Oncology Fellow" }],
   // SOURCE: NEW (the live block has no buttons; labels as on the lung and ovarian pages)
@@ -472,7 +465,6 @@ export const surgeon = {
   name: string;
   role: string;
   bio: string;
-  stats: readonly Stat[];
   badges: readonly { icon: "award"; label: string }[];
   cta: AppointmentCta;
   link: { label: string; href: string };
@@ -518,5 +510,5 @@ export const shared = {
   // SOURCE: NEW (order): the live order, without the colon cancer review unless the doctor wants it.
   reviewOrder: reviewsSection.order.filter((id) => showColonReview || id !== "vasudeva-murthy"),
   // The final call band's photo.
-  finalImage: "womanSaree",
+  finalImage: "finalPortrait",
 } as const satisfies { reviewOrder: readonly ReviewId[]; finalImage: ThyroidImageKey };

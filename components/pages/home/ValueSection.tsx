@@ -1,4 +1,4 @@
-import { ReceiptText, ShieldCheck, Wallet, type LucideIcon } from "lucide-react";
+import { BadgePercent, ReceiptText, ShieldCheck, Wallet, type LucideIcon } from "lucide-react";
 import { value, type ValueContent, type ValueIcon } from "@/content/pages/home";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -11,12 +11,13 @@ const icons: Record<ValueIcon, LucideIcon> = {
   wallet: Wallet,
   receipt: ReceiptText,
   "shield-check": ShieldCheck,
+  "badge-percent": BadgePercent,
 };
 
 /**
  * 6 · #value "Where Excellence, Compassion, Trust & Affordability Come Together": a blush-to-white
  * band with one slow-drifting glow. "30–40%" as a huge number (counts to 30, then "–40%" fades
- * in) beside the three other items as cards; "Request a Treatment Estimate" opens the form
+ * in) beside the other items as cards; "Request a Treatment Estimate" opens the form
  * with the note "Estimate request".
  */
 export function ValueSection() {

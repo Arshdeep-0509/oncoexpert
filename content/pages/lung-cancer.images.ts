@@ -17,6 +17,39 @@ const BASE = "/images/lung-cancer";
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const lungImages = {
+  // #pathway: AI-generated (Higgsfield, gpt_image_2_5), the client review, 5 Nov 2026. Not real patients or staff.
+  stepBiopsy: {
+    file: "step-biopsy.jpg",
+    src: `${BASE}/step-biopsy.jpg`,
+    alt: "Gloved hands holding a flexible bronchoscope in a procedure room",
+    focal: "45% 40%",
+    width: 1024,
+    height: 688,
+  },
+  stepPetct: {
+    file: "step-pet-ct.jpg",
+    src: `${BASE}/step-pet-ct.jpg`,
+    alt: "Radiographer reassuring a patient on a PET-CT scanner table",
+    focal: "55% 45%",
+    width: 1024,
+    height: 688,
+  },
+  stepPlanning: {
+    file: "step-planning.jpg",
+    src: `${BASE}/step-planning.jpg`,
+    alt: "Doctors reviewing a chest CT scan together at a tumor board",
+    focal: "55% 30%",
+    width: 1024,
+    height: 688,
+  },
+  stepRecovery: {
+    file: "step-recovery.jpg",
+    src: `${BASE}/step-recovery.jpg`,
+    alt: "Man on a morning walk in a park with his wife, breathing deeply",
+    focal: "45% 20%",
+    width: 1024,
+    height: 688,
+  },
   /* Own photos, reused ---------------------------------------------- */
 
   // The live hero and #surgeon both show the portrait.

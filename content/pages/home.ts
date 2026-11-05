@@ -53,8 +53,6 @@ export type HeroContent = {
   /** The specialties the ticker cycles through, in this order (names: `specialties.items`). */
   specialties: readonly SpecialtyKey[];
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
-  /** "Or call" + the clinic phone number (content/site.ts). */
-  phone: { lead: string };
   /** The trust strip along the bottom edge. */
   trust: readonly string[];
   a11y: { trust: string; pause: string; play: string; scroll: string };
@@ -123,7 +121,7 @@ export type ApproachContent = {
 };
 
 /** Icon keys for the value cards. */
-export type ValueIcon = "wallet" | "receipt" | "shield-check";
+export type ValueIcon = "wallet" | "receipt" | "shield-check" | "badge-percent";
 
 /** A value item; `range` renders before the title: { from: 30, to: 40, suffix: "%" } → "30–40% …". */
 type ValueItem = { title: string; icon?: ValueIcon; range?: { from: number; to: number; suffix: string } };
@@ -159,8 +157,6 @@ export const hero = {
     primary: { label: "Book Appointment", service: "Consultation" },
     secondary: { label: "Get Second Opinion", service: "Second Opinion" },
   },
-  // SOURCE: NEW
-  phone: { lead: "Or call" },
   // SOURCE: NEW (wording); every fact is EXISTING: M.Ch at Tata Memorial Hospital, former
   // consultant at Apollo Hospitals, senior consultant at Sparsh Hospitals, the Da Vinci system,
   // and the clinic count (computed from the clinic list in content/site.ts).
@@ -273,21 +269,21 @@ export const specialties = {
       key: "breast",
       name: "Breast Cancer",
       body: "Advanced diagnosis and personalized surgical treatment for benign and malignant breast conditions.",
-      href: "/breast-cancer-treatment-bangalore/",
+      href: "/breast-cancer-hospital-bangalore/",
       image: "specialtyBreast",
     },
     {
       key: "colorectal",
       name: "Colorectal Cancer",
       body: "Comprehensive treatment for colon and colorectal cancers using minimally invasive and robotic surgery.",
-      href: "/colon-cancer-treatment-bangalore/",
+      href: "/colon-cancer-hospital-bangalore/",
       image: "specialtyColorectal",
     },
     {
       key: "endometrial",
       name: "Endometrial Cancer",
       body: "Specialized care for uterine and endometrial cancers with evidence-based surgical treatment.",
-      href: "/endometrial-cancer-treatment-bangalore/",
+      href: "/endometrial-cancer-hospital-bangalore/",
       image: "specialtyEndometrial",
     },
     {
@@ -308,7 +304,7 @@ export const specialties = {
       key: "ovarian",
       name: "Ovarian Cancer",
       body: "Comprehensive diagnosis and advanced surgical treatment for ovarian and gynecologic cancers.",
-      href: "/ovarian-cancer-treatment/",
+      href: "/ovarian-cancer-hospital/",
       image: "specialtyOvarian",
     },
   ],
@@ -392,6 +388,9 @@ export const value = {
     // Renders "30–40% Cost Savings", as on the live page (the big animated number).
     // PENDING DOCTOR: confirm the 30–40% cost savings claim, and what it is compared with.
     { title: "Cost Savings", range: { from: 30, to: 40, suffix: "%" } },
+    // SOURCE: DOCTOR (the client review, 5 Nov 2026).
+    // PENDING DOCTOR: this says 50% and the large figure says 30–40%; confirm both and the basis.
+    { title: "50% Cost Savings Compared to Major Corporate Hospitals", icon: "badge-percent" },
     { title: "Transparent Pricing, No Hidden Charges", icon: "receipt" },
     { title: "Cashless Insurance Assistance", icon: "shield-check" },
   ],

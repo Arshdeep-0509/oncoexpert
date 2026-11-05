@@ -1,5 +1,5 @@
 /**
- * Every word on /ovarian-cancer-treatment/ (Ovarian Cancer).
+ * Every word on /ovarian-cancer-hospital/ (Ovarian Cancer).
  *
  * SOURCE tags (see docs/PROJECT.md):
  *   EXISTING → copied from the live page (https://oncoxpert.in/ovarian-cancer-treatment/, raw HTML
@@ -58,11 +58,11 @@ export const meta = {
   description:
     "Ovarian cancer treatment in Bangalore at OncoXpert: cytoreductive surgery, HIPEC, fertility-preserving options, chemotherapy and immunotherapy, planned for you.",
   h1: heroLines.join(" "),
-  canonical: "https://oncoxpert.in/ovarian-cancer-treatment/",
+  canonical: "https://oncoxpert.in/ovarian-cancer-hospital/",
   ogImage: ovarianOgImage,
 } as const satisfies PageMeta & { h1: string };
 
-export const pageSlug = "ovarian-cancer-treatment";
+export const pageSlug = "ovarian-cancer-hospital";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
 // SOURCE: NEW (choice; the first of the live "Service Required" options)
@@ -86,8 +86,6 @@ export const hero = {
   story: ["Cytoreductive Surgery", "HIPEC", "Recovery"],
   // SOURCE: NEW (screen-reader labels)
   a11y: {
-    visual:
-      "Illustration: a teal ribbon outlines the ovaries; tumour deposits on one ovary are removed, warm waves wash through the abdomen, and a check marks recovery",
     steps: "Treatment steps",
     pause: "Pause the hero animation",
     play: "Play the hero animation",
@@ -99,7 +97,7 @@ export const hero = {
   body: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   story: readonly string[];
-  a11y: { visual: string; steps: string; pause: string; play: string };
+  a11y: { steps: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -500,5 +498,5 @@ export const shared = {
   // SOURCE: NEW (order): the live order, without the colon cancer review unless the doctor wants it.
   reviewOrder: reviewsSection.order.filter((id) => showColonReview || id !== "vasudeva-murthy"),
   // The final call band's photo.
-  finalImage: "friendsLaughing",
+  finalImage: "finalFriends",
 } as const satisfies { reviewOrder: readonly ReviewId[]; finalImage: OvarianImageKey };

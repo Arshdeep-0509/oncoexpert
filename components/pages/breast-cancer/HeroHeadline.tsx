@@ -1,16 +1,14 @@
-import { breadcrumb, hero } from "@/content/pages/breast-cancer";
+import { hero } from "@/content/pages/breast-cancer";
 import { cn } from "@/lib/utils";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { Breadcrumb } from "@/components/shared/Breadcrumb";
 import { at, styles } from "@/components/pages/breast-cancer/hero-styles";
 
-/** Breadcrumb, eyebrow and the H1: lines rise in turn; the emphasis line gets a drawn underline. */
+/** Eyebrow and the H1: lines rise in turn; the emphasis line gets a drawn underline. */
 export function HeroHeadline() {
   const lines = hero.headline;
   return (
     <div className="md:col-start-1 md:row-start-2 lg:col-span-6">
       <div className={cn(styles.step, styles.fadeDown)} style={at(0.1)}>
-        <Breadcrumb label={breadcrumb.label} items={breadcrumb.items} className="mb-5 max-md:sr-only" />
         <Eyebrow>{hero.eyebrow}</Eyebrow>
       </div>
 

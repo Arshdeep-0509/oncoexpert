@@ -7,10 +7,10 @@ import { styles } from "@/components/pages/about-us/about-styles";
 import "@/components/pages/about-us/about.css";
 
 /**
- * #experience: the "10+" as a giant number that counts up on a navy band, with its label. Behind
+ * #experience: the "15+" as a giant number that counts up on a navy band, with its label. Behind
  * it, the logo ring motif: two faint conic rings turning slowly in opposite directions (transform
  * only), stopped by the band's pause button, off screen and while the number is hovered.
- * PENDING DOCTOR: the years (10+ here, 15+ on Home, 25 on the booking page).
+ * PENDING DOCTOR: the years (15+ here and on Home, 25 on the booking page).
  */
 export function Experience() {
   const { stat } = experience;

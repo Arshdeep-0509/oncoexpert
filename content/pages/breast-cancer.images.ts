@@ -1,5 +1,5 @@
 /**
- * Image manifest for /breast-cancer-treatment-bangalore/.
+ * Image manifest for /breast-cancer-hospital-bangalore/.
  *
  * Files live in public/images/breast-cancer/ and are produced by `npm run images`
  * (scripts/fetch-images.mjs reads `file` + `pexelsId` from this file).
@@ -135,15 +135,15 @@ export const breastImages = {
     width: 1125,
     height: 2000,
   },
-  recoveryWalk: {
-    file: "recovery-walk.jpg",
-    src: `${BASE}/recovery-walk.jpg`,
-    pexelsId: 32648375,
-    alt: "Woman on a morning walk in a park",
-    credit: { photographer: "David Kanigan", url: pexels(32648375) },
-    focal: "50% 50%",
-    width: 2000,
-    height: 1333,
+  // Holistic Recovery (#journey): AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026.
+  // Not a real patient. No pexelsId: the script only checks that it exists.
+  recoveryPark: {
+    file: "recovery-park.jpg",
+    src: `${BASE}/recovery-park.jpg`,
+    alt: "Smiling woman with short hair on a morning walk in a green park",
+    focal: "74% 30%",
+    width: 1024,
+    height: 688,
   },
   petalsTexture: {
     file: "petals-texture.jpg",

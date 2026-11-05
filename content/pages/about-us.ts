@@ -241,14 +241,14 @@ export const expertise = {
       icon: "breast",
       title: "Breast Cancer",
       body: "Specializing in breast conserving surgeries and sentinel lymph node biopsies.",
-      link: { label: "Learn more", href: "/breast-cancer-treatment-bangalore/" },
+      link: { label: "Learn more", href: "/breast-cancer-hospital-bangalore/" },
       image: "specialtyBreast",
     },
     {
       icon: "gi",
       title: "GI Oncology",
       body: "Expertise in esophageal,stomach, and colorectal cancer resections.",
-      link: { label: "Learn more", href: "/colon-cancer-treatment-bangalore/" },
+      link: { label: "Learn more", href: "/colon-cancer-hospital-bangalore/" },
       image: "expertiseGi",
     },
     {
@@ -275,9 +275,9 @@ export const expertise = {
 /* ------------------------------------------------------------------ */
 
 export const experience = {
-  // SOURCE: EXISTING (shown as "10+")
+  // SOURCE: DOCTOR (the client review, 5 Nov 2026; was 10+)
   // PENDING DOCTOR: the years mismatch (see intro).
-  stat: { value: 10, suffix: "+", label: "Years of Specialized Oncological Experience" },
+  stat: { value: 15, suffix: "+", label: "Years of Specialized Oncological Experience" },
   // SOURCE: NEW (screen-reader labels of the ring's pause button)
   a11y: { pause: "Pause animation", play: "Play animation" },
 } as const satisfies ExperienceContent;

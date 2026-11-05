@@ -1,5 +1,5 @@
 /* ==================================================================
-   Endometrial Cancer theme: /endometrial-cancer-treatment-bangalore/
+   Endometrial Cancer theme: /endometrial-cancer-hospital-bangalore/
    Soft, warm and reassuring. Peach and coral (the uterine cancer awareness
    colours) on light bands, warm plum ink for headings and the dark bands.
    Coral is deepened for buttons and links so white text stays readable;
@@ -86,13 +86,18 @@
   --tracer: #22b573;
 }
 
-/* Two shared headings, fitted on this page only (as on the colorectal page): the reviews title's
-   wrapper (26ch of the body font) is widened so the title is not six lines on desktop, and "Our
-   Clinical Locations" fits one line on the smallest phones. */
-@media (min-width: 768px) {
-  [data-theme="endometrial"] #reviews div:has(> #reviews-title) {
-    max-width: 34rem;
-  }
+/* Two shared headings, fitted on this page only. The reviews title stays on its two lines at every
+   width (the client review, 5 Nov 2026): its wrapper is released and the type scales down so the
+   longer line (18.72em) fits the column. "Our Clinical Locations" fits one line on the smallest
+   phones. */
+[data-theme="endometrial"] #reviews div:has(> #reviews-title) {
+  max-width: none;
+}
+[data-theme="endometrial"] #reviews-title {
+  font-size: min(clamp(2rem, 4.4vw, 3.25rem), calc((100vw - 2 * var(--gutter)) / 18.9));
+}
+[data-theme="endometrial"] #reviews-title span {
+  white-space: nowrap;
 }
 @media (max-width: 389px) {
   [data-theme="endometrial"] #locations h2 {

@@ -1,5 +1,5 @@
 /**
- * Search and answer-engine facts for /endometrial-cancer-treatment-bangalore/ (see
+ * Search and answer-engine facts for /endometrial-cancer-hospital-bangalore/ (see
  * lung-cancer.seo.ts). Built only from facts already on the page (content/pages/endometrial-cancer.ts);
  * figures and prices imported.
  *

@@ -1,10 +1,10 @@
-import { meta, structuredData, surgeon } from "@/content/pages/breast-cancer";
+import { breadcrumb, meta, structuredData, surgeon } from "@/content/pages/breast-cancer";
 import { organization as org } from "@/content/shared/organization";
-import { clinicNode, jsonLdHtml, physicianNode } from "@/lib/jsonld";
+import { breadcrumbNode, clinicNode, jsonLdHtml, physicianNode } from "@/lib/jsonld";
 
 /**
- * MedicalWebPage (about: the page's MedicalCondition) + Physician + MedicalClinic,
- * linked in one @graph. BreadcrumbList (hero) and FAQPage (#faq) are emitted by those sections.
+ * MedicalWebPage (about: the page's MedicalCondition) + BreadcrumbList + Physician + MedicalClinic,
+ * linked in one @graph. FAQPage (#faq) is emitted by that section.
  */
 export function BreastJsonLd() {
   const graph = {
@@ -18,9 +18,11 @@ export function BreastJsonLd() {
         description: meta.description,
         inLanguage: "en-IN",
         about: { "@type": "MedicalCondition", name: structuredData.pageAbout },
+        breadcrumb: { "@id": `${meta.canonical}#breadcrumb` },
         reviewedBy: { "@id": org.physicianId },
         publisher: { "@id": org.clinicId },
       },
+      breadcrumbNode(meta.canonical, breadcrumb.items),
       physicianNode(surgeon.bio),
       clinicNode(),
     ],

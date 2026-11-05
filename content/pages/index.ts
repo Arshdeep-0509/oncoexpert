@@ -35,10 +35,10 @@ export const pages = {
     themeColor: "#000000",
     meta: roboticMeta,
   },
-  "breast-cancer-treatment-bangalore": {
-    slug: "breast-cancer-treatment-bangalore",
+  "breast-cancer-hospital-bangalore": {
+    slug: "breast-cancer-hospital-bangalore",
     lastModified: "2026-11-02",
-    path: "/breast-cancer-treatment-bangalore/",
+    path: "/breast-cancer-hospital-bangalore/",
     title: breastMeta.title,
     theme: "breast",
     themeColor: "#FFF5F7",
@@ -64,19 +64,19 @@ export const pages = {
     meta: aboutMeta,
   },
   // The live URL ("colon", while the page and the menu say "Colorectal"): kept for SEO.
-  "colon-cancer-treatment-bangalore": {
-    slug: "colon-cancer-treatment-bangalore",
+  "colon-cancer-hospital-bangalore": {
+    slug: "colon-cancer-hospital-bangalore",
     lastModified: "2026-11-03",
-    path: "/colon-cancer-treatment-bangalore/",
+    path: "/colon-cancer-hospital-bangalore/",
     title: colorectalMeta.title,
     theme: "colorectal",
     themeColor: "#F4F8FC",
     meta: colorectalMeta,
   },
-  "endometrial-cancer-treatment-bangalore": {
-    slug: "endometrial-cancer-treatment-bangalore",
+  "endometrial-cancer-hospital-bangalore": {
+    slug: "endometrial-cancer-hospital-bangalore",
     lastModified: "2026-11-03",
-    path: "/endometrial-cancer-treatment-bangalore/",
+    path: "/endometrial-cancer-hospital-bangalore/",
     title: endometrialMeta.title,
     theme: "endometrial",
     themeColor: "#FFF7F2",
@@ -92,10 +92,10 @@ export const pages = {
     themeColor: "#EAF4FB",
     meta: lungMeta,
   },
-  "ovarian-cancer-treatment": {
-    slug: "ovarian-cancer-treatment",
+  "ovarian-cancer-hospital": {
+    slug: "ovarian-cancer-hospital",
     lastModified: "2026-11-03",
-    path: "/ovarian-cancer-treatment/",
+    path: "/ovarian-cancer-hospital/",
     title: ovarianMeta.title,
     theme: "ovarian",
     themeColor: "#FBF6EE",

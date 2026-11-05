@@ -67,7 +67,7 @@ export const jsonLdHtml = (data: unknown) => JSON.stringify(data).replace(/</g, 
 const abs = (href: string) => new URL(href, site.url).toString();
 
 /** BreadcrumbList for a page: `items` from Home to the page itself. */
-function breadcrumbNode(pageUrl: string, items: readonly { label: string; href: string }[]) {
+export function breadcrumbNode(pageUrl: string, items: readonly { label: string; href: string }[]) {
   return {
     "@type": "BreadcrumbList",
     "@id": `${pageUrl}#breadcrumb`,

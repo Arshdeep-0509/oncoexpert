@@ -224,11 +224,11 @@ export const pathway = {
   // The live step numbers are 1–6: the list order. NEW (photo per step, for the design).
   steps: [
     { title: "Symptoms", body: "Identification of persistent cough or discomfort.", image: "cough" },
-    { title: "Biopsy", body: "Bronchoscopy or CT Guided diagnostic sample.", image: "xrayReview" },
-    { title: "PET-CT", body: "Precise staging to map the cancer's spread.", image: "chestXray" },
-    { title: "Planning", body: "Multidisciplinary tumor board review.", image: "consultation" },
+    { title: "Biopsy", body: "Bronchoscopy or CT Guided diagnostic sample.", image: "stepBiopsy" },
+    { title: "PET-CT", body: "Precise staging to map the cancer's spread.", image: "stepPetct" },
+    { title: "Planning", body: "Multidisciplinary tumor board review.", image: "stepPlanning" },
     { title: "Treatment", body: "Surgery, Immunotherapy, or combination care.", image: "roboticArms" },
-    { title: "Recovery", body: "Post-op care and long-term surveillance.", image: "breathingCalm" },
+    { title: "Recovery", body: "Post-op care and long-term surveillance.", image: "stepRecovery" },
   ],
   // SOURCE: NEW (the button after the last step; label as the hero's)
   cta: { label: "Book Consultation", service: "Consultation", cta: "lung:pathway:book-consultation" },

@@ -28,8 +28,9 @@ import { reviewsSection } from "@/content/shared/sections";
 // SOURCE: EXISTING (identical to the live page, keeps the SEO)
 export const meta = {
   title: "Endometrial Cancer Treatment in Bangalore | OncoXpert",
+  // SOURCE: NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR: approve.
   description:
-    "Looking for endometrial cancer treatment in Bangalore? OncoXpert offers personalized surgical oncology care, including minimally invasive and robotic surgery options.",
+    "Looking for endometrial cancer treatment in Bangalore? OncoXpert offers personalized surgical oncology care, including minimally invasive and robotic surgery.",
   canonical: "https://oncoxpert.in/endometrial-cancer-hospital-bangalore/",
   ogImage: endometrialOgImage,
 } as const satisfies PageMeta;
@@ -171,7 +172,6 @@ export const breadcrumb = {
   label: "Breadcrumb",
   items: [
     { label: "Home", href: "/" },
-    { label: "Our Services", href: "/our-services/" },
     { label: "Endometrial Cancer", href: "/endometrial-cancer-hospital-bangalore/" },
   ],
 } as const;

@@ -1,12 +1,9 @@
 import { doctor, meta, structuredData } from "@/content/pages/robotic-surgery";
-import { site } from "@/content/site";
+import { organization as org } from "@/content/shared/organization";
+import { clinicNode, jsonLdHtml, physicianNode, review, speakable } from "@/lib/jsonld";
 
 /** MedicalWebPage + Physician + MedicalClinic, linked in one @graph. */
 export function RoboticJsonLd() {
-  const clinicId = `${site.url}/#clinic`;
-  const physicianId = `${site.url}/#dr-sunil-navalgund`;
-  const { clinic, physician } = structuredData;
-
   const graph = {
     "@context": "https://schema.org",
     "@graph": [
@@ -18,42 +15,14 @@ export function RoboticJsonLd() {
         description: meta.description,
         inLanguage: "en-IN",
         about: { "@type": "MedicalProcedure", name: structuredData.pageAbout },
-        reviewedBy: { "@id": physicianId },
-        publisher: { "@id": clinicId },
+        speakable,
+        publisher: { "@id": org.clinicId },
+        ...review(),
       },
-      {
-        "@type": "Physician",
-        "@id": physicianId,
-        name: physician.name,
-        jobTitle: physician.jobTitle,
-        medicalSpecialty: physician.specialty,
-        description: `${doctor.lead} ${doctor.bio}`,
-        hasCredential: physician.qualifications,
-        image: `${site.url}${doctor.image.src}`,
-        telephone: clinic.telephone,
-        worksFor: { "@id": clinicId },
-      },
-      {
-        "@type": "MedicalClinic",
-        "@id": clinicId,
-        name: clinic.name,
-        url: site.url,
-        logo: `${site.url}${meta.ogImage.src}`,
-        telephone: clinic.telephone,
-        email: site.contact.email,
-        address: { "@type": "PostalAddress", ...clinic.address },
-        medicalSpecialty: physician.specialty,
-        sameAs: site.socials.links.map((s) => s.href),
-        hasMap: site.mainClinic.mapHref,
-      },
+      physicianNode(`${doctor.lead} ${doctor.bio}`),
+      clinicNode(),
     ],
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      // JSON.stringify output; "<" escaped so the payload can never close the script tag.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(graph).replace(/</g, "\\u003c") }}
-    />
-  );
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(graph) }} />;
 }

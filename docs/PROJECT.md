@@ -431,7 +431,7 @@ content files, so a figure changed there changes everywhere.
 | Booking                                         | WebPage (speakable: the H1) · MedicalClinic + ReserveAction (target: the form) · BreadcrumbList                                                                                                                                                                                                                                                                                                                                   |
 | About                                           | ProfilePage (mainEntity: the Physician) · Physician · MedicalClinic · BreadcrumbList                                                                                                                                                                                                                                                                                                                                              |
 | Colorectal, Endometrial, Lung, Ovarian, Thyroid | MedicalWebPage (about the MedicalCondition, speakable, audience Patient; `reviewedBy` + `lastReviewed` once approved) · MedicalCondition (name, alternateName, possibleTreatment, signOrSymptom: from the page only) · Physician · MedicalClinic · BreadcrumbList · FAQPage (only while the quick answers render) · Offer per package (INR; a starting price as `priceSpecification.minPrice`; only once the prices are approved) |
-| Home, Robotic, Breast                           | unchanged graphs (they share the updated clinic and physician nodes)                                                                                                                                                                                                                                                                                                                                                              |
+| Home, Robotic, Breast                           | their own graphs from the shared nodes in lib/jsonld.ts; speakable; `reviewedBy` + `lastReviewed` once approved (Robotic, Breast)                                                                                                                                                                                                                                                                                                 |
 
 **Waiting for the doctor (approvals.ts, all false)**: the definitions under each H1, the quick answers
 (and with them FAQPage), the "Medically reviewed by … · Last reviewed <date>" line (and `reviewedBy` /
@@ -455,10 +455,9 @@ figure sentences. Each one is built, previewed and audited; flipping its switch 
 
 **AI crawlers**: robots.ts allows GPTBot, Google-Extended, PerplexityBot and ClaudeBot by name
 (PENDING DOCTOR: the policy). **Raw HTML order**: React moves large Suspense boundaries into
-`<div hidden>` blocks after the footer and reattaches them with a script. Lung, Ovarian and Thyroid
-wrap each section in `<Suspense>` (selective hydration for TBT), so crawlers that do not run
-JavaScript read those sections hidden and after the footer; Google renders them correctly. The other
-pages keep their sections inline. Decision pending: see Status.
+`<div hidden>` blocks after the footer and reattaches them with a script, so crawlers that do not run
+JavaScript would read those sections hidden and after the footer. Keep every page's sections inline: no
+`<Suspense>` around sections.
 
 ## Analytics events
 
@@ -917,6 +916,15 @@ over 5s pause on hover / focus or with the hero's 48px pause button, and stop of
   pain reuses the endometrial photo); 5-year survival as number tiles (no bars; the sr-only table kept).
   New app/not-found.tsx: "This page is under construction" with the site shell, a booking button, home and
   the cancer pages (404 status, noindex; NEW copy in content/pages/not-found.ts).
+- SEO audit fixes (5 Nov 2026; report: .qa/seo-part-a/REPORT.md). Next.js 16.4.5 (security). Redirects
+  in next.config.ts: the four old "treatment" URLs, /our-services/, /about/, /home-2/ and /contact/ (301);
+  /urology/ and /stomach-cancer/ (temporary, to the nearest content, until those pages are built).
+  THIS REVERSES the "no redirects" note of the client review below: confirm with the client. Menu: Urology,
+  Stomach Cancer and Blogs removed (no rebuilt pages); "Our Services" goes to Home's #services; the
+  Our Services breadcrumb is gone. Suspense wrappers removed from Lung, Ovarian and Thyroid. Robotic and
+  Breast: reviewedBy gated by approvals, shared nodes, speakable; Breast: one @graph, sr-only price table.
+  Physician is typed ["Physician", "Person"]. Five meta descriptions edited to 150–160 characters (NEW,
+  PENDING DOCTOR). Robotic og.jpg 1200 × 630. og:locale en_IN.
 - Route rename (4 Nov 2026). Four URLs now say "hospital" instead of "treatment":
   `/breast-cancer-hospital-bangalore/`, `/colon-cancer-hospital-bangalore/`,
   `/endometrial-cancer-hospital-bangalore/`, `/ovarian-cancer-hospital/`. No redirects from the old URLs (the

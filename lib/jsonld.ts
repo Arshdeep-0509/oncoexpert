@@ -12,7 +12,8 @@ import { site } from "@/content/site";
 export function physicianNode(description: string) {
   const { physician, clinic } = org;
   return {
-    "@type": "Physician",
+    // Person too: jobTitle and worksFor are Person properties, which Physician alone does not have.
+    "@type": ["Physician", "Person"],
     "@id": org.physicianId,
     name: physician.name,
     jobTitle: physician.jobTitle,
@@ -126,10 +127,10 @@ function offerNodes(pageUrl: string, offers: readonly OfferFacts[]) {
 }
 
 /** Speakable parts of a page: elements marked data-speakable (hero summary, quick answers). */
-const speakable = { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] };
+export const speakable = { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] };
 
 /** The "Medically reviewed" facts, only once the doctor has reviewed the page (approvals). */
-const review = () =>
+export const review = () =>
   approvals.medicalReview && approvals.lastReviewed
     ? { reviewedBy: { "@id": org.physicianId }, lastReviewed: approvals.lastReviewed }
     : {};

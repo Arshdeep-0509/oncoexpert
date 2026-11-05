@@ -36,7 +36,7 @@ export function HeroText() {
 
   return (
     <div className="md:grid md:grid-cols-2 md:items-start md:gap-x-10 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:block">
-      <h1 id="hero-title" className="type-h1 text-white md:col-start-1">
+      <h1 data-speakable id="hero-title" className="type-h1 text-white md:col-start-1">
         {words.map((word, i) => (
           <React.Fragment key={`${word}-${i}`}>
             <span className="inline-block overflow-hidden pb-[0.1em] align-bottom">

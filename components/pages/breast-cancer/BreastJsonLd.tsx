@@ -1,10 +1,11 @@
-import { breadcrumb, meta, structuredData, surgeon } from "@/content/pages/breast-cancer";
+import { breadcrumb, faq, meta, structuredData, surgeon } from "@/content/pages/breast-cancer";
 import { organization as org } from "@/content/shared/organization";
-import { breadcrumbNode, clinicNode, jsonLdHtml, physicianNode } from "@/lib/jsonld";
+import { site } from "@/content/site";
+import { breadcrumbNode, clinicNode, faqQuestions, jsonLdHtml, physicianNode, review, speakable } from "@/lib/jsonld";
 
 /**
- * MedicalWebPage (about: the page's MedicalCondition) + BreadcrumbList + Physician + MedicalClinic,
- * linked in one @graph. FAQPage (#faq) is emitted by that section.
+ * MedicalWebPage (about: the page's MedicalCondition) + BreadcrumbList + Physician + MedicalClinic +
+ * FAQPage (the #faq section's questions), linked in one @graph.
  */
 export function BreastJsonLd() {
   const graph = {
@@ -19,12 +20,19 @@ export function BreastJsonLd() {
         inLanguage: "en-IN",
         about: { "@type": "MedicalCondition", name: structuredData.pageAbout },
         breadcrumb: { "@id": `${meta.canonical}#breadcrumb` },
-        reviewedBy: { "@id": org.physicianId },
+        speakable,
         publisher: { "@id": org.clinicId },
+        ...review(),
       },
       breadcrumbNode(meta.canonical, breadcrumb.items),
       physicianNode(surgeon.bio),
       clinicNode(),
+      {
+        "@type": "FAQPage",
+        "@id": `${meta.canonical}#faq`,
+        isPartOf: { "@id": `${meta.canonical}#webpage` },
+        mainEntity: faqQuestions(faq.items, site.locations),
+      },
     ],
   };
 

@@ -56,8 +56,9 @@ const heroLines = ["Advanced Lung", "Cancer Treatment", "Focused On Recovery,", 
 // headings are styled divs): `h1` is the hero heading, which becomes the page's one <h1>.
 export const meta = {
   title: "Lung Cancer Treatment in Bangalore | OncoXpert",
+  // SOURCE: NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR: approve.
   description:
-    "Get lung cancer treatment in Bangalore at OncoXpert, with robotic surgery, VATS, immunotherapy and personalized surgical oncology care.",
+    "Get lung cancer treatment in Bangalore at OncoXpert, with robotic surgery, VATS, immunotherapy and personalized surgical oncology care. Book a consultation.",
   h1: heroLines.join(" "),
   canonical: "https://oncoxpert.in/lung-cancer-in-bangalore/",
   ogImage: lungOgImage,

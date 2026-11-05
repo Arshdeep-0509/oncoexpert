@@ -28,8 +28,9 @@ import { bookingHref } from "@/lib/booking";
 // SOURCE: EXISTING (identical to the live page, keeps the SEO)
 export const meta = {
   title: "Breast Cancer Treatment & Surgery in Bangalore | OncoXpert",
+  // SOURCE: NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR: approve.
   description:
-    "Get personalized breast cancer treatment in Bangalore with expert oncology care, surgery and multidisciplinary treatment options. Consult OncoXpert for trusted, affordable cancer care.",
+    "Personalized breast cancer treatment in Bangalore with oncology care, surgery and multidisciplinary options. Consult OncoXpert for trusted, affordable care.",
   canonical: "https://oncoxpert.in/breast-cancer-hospital-bangalore/",
   ogImage: breastOgImage,
 } as const satisfies PageMeta;
@@ -118,7 +119,6 @@ export const hero = {
 export const breadcrumb = {
   items: [
     { label: "Home", href: "/" },
-    { label: "Our Services", href: "/our-services/" },
     { label: "Breast Cancer", href: "/breast-cancer-hospital-bangalore/" },
   ],
 } as const;

@@ -19,7 +19,8 @@ export const ovarianSeo = {
   name: "Ovarian Cancer",
   // Short: the hero paragraph above it already lists the treatments (and the phone hero must keep
   // both buttons on the first screen).
-  definition: "Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert.",
+  definition:
+    "Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert with cytoreductive surgery, HIPEC, fertility-preserving options, chemotherapy and immunotherapy.",
   condition: {
     name: "Ovarian cancer",
     alternateName: [],

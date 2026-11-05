@@ -56,6 +56,7 @@ export function HomeHero() {
 
           <div className={cn(styles.areaBody, styles.scrollText, "mt-7 md:mt-5")}>
             <p
+              data-speakable
               className={cn(styles.step, styles.fadeUp, "max-w-[52ch] text-base text-white/80 md:text-lg")}
               style={at(1)}
             >

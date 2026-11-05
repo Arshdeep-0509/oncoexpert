@@ -1,7 +1,7 @@
 import { faq, meta, surgeon } from "@/content/pages/home";
 import { organization as org } from "@/content/shared/organization";
 import { site } from "@/content/site";
-import { clinicNode, faqQuestions, jsonLdHtml, physicianNode } from "@/lib/jsonld";
+import { clinicNode, faqQuestions, jsonLdHtml, physicianNode, speakable } from "@/lib/jsonld";
 
 /**
  * Home's structured data, all in one @graph: WebSite, the page itself as an FAQPage (its
@@ -30,6 +30,7 @@ export function HomeJsonLd() {
         inLanguage: "en-IN",
         isPartOf: { "@id": websiteId },
         about: { "@id": org.clinicId },
+        speakable,
         mainEntity: faqQuestions(faq.items, site.locations),
       },
       clinicNode(),

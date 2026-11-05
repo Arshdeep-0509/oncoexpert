@@ -8,8 +8,8 @@ export function isActivePath(pathname: string | null, href: string) {
   return target === "/" ? current === "/" : current.startsWith(target);
 }
 
-/** The pages this app serves (the registry's paths, content/pages/index.ts). Links to any other path go to
- *  the live site's pages, which aren't built here, so only these are prefetched. */
+/** The pages this app serves (the registry's paths, content/pages/index.ts). Any other path is a redirect
+ *  (next.config.ts), so only these are prefetched. */
 const builtPaths = new Set([
   "/",
   "/robotic-surgery/",

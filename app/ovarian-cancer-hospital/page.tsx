@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
 import { defaultAppointmentService, meta, pageSlug, shared, surgeon } from "@/content/pages/ovarian-cancer";
@@ -41,8 +40,8 @@ const portrait = ovarianImages[surgeon.image];
 const finalImage = ovarianImages[shared.finalImage];
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, ovarian theme).
-// Every section after the hero sits in its own <Suspense> boundary, so React hydrates them one by
-// one and yields between them (shorter main-thread tasks; no visual difference).
+// Sections stay inline (no <Suspense>): React would move them into hidden blocks after the footer,
+// where crawlers that do not run JavaScript cannot read them.
 // Tones alternate: sand and sea-glass bands between white ones, the teal band and the final band.
 // One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
 // and Offers once approved): lib/jsonld.ts.
@@ -51,7 +50,6 @@ const graph = cancerPageGraph({
   seo: ovarianSeo,
   breadcrumb: [
     { label: "Home", href: "/" },
-    { label: "Our Services", href: "/our-services/" },
     { label: ovarianSeo.name, href: new URL(meta.canonical).pathname },
   ],
   physicianDescription: surgeon.bio,
@@ -62,75 +60,49 @@ export default function OvarianCancerPage() {
     <>
       <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero           sand gradient */}
-      <Suspense>
-        <Features /> {/* 2  #features       surface */}
-      </Suspense>
-      <Suspense>
-        <Understanding /> {/* 3  #understanding  alt (sea-glass) */}
-      </Suspense>
-      <Suspense>
-        <WarningSigns /> {/* 4  #warning-signs  surface */}
-      </Suspense>
-      <Suspense>
-        <Diagnostics /> {/* 5  #diagnostics    warm (sand) */}
-      </Suspense>
-      <Suspense>
-        <Treatments /> {/* 6  #treatments     surface */}
-      </Suspense>
-      <Suspense>
-        <SecondOpinion /> {/* 7  #second-opinion teal band */}
-      </Suspense>
-      <Suspense>
-        <Outcomes /> {/* 8  #outcomes       alt */}
-      </Suspense>
-      <Suspense>
-        <Packages /> {/* 9  #packages       warm */}
-      </Suspense>
+      <Features /> {/* 2  #features       surface */}
+      <Understanding /> {/* 3  #understanding  alt (sea-glass) */}
+      <WarningSigns /> {/* 4  #warning-signs  surface */}
+      <Diagnostics /> {/* 5  #diagnostics    warm (sand) */}
+      <Treatments /> {/* 6  #treatments     surface */}
+      <SecondOpinion /> {/* 7  #second-opinion teal band */}
+      <Outcomes /> {/* 8  #outcomes       alt */}
+      <Packages /> {/* 9  #packages       warm */}
       {/* 10 #surgeon: the shared DoctorCard with the live ovarian profile */}
-      <Suspense>
-        <DoctorCard
-          id="surgeon"
-          tone="surface"
-          label={surgeon.label}
-          name={surgeon.lines.join(" ")}
-          bio={surgeon.bio}
-          stats={surgeon.stats}
-          badges={[
-            ...surgeon.badges,
-            ...surgeon.facts.map((fact) => ({ icon: fact.icon, label: `${fact.label}: ${fact.value}` })),
-          ]}
-          cta={surgeon.cta}
-          link={surgeon.link}
-          image={{ src: portrait.src, alt: portrait.alt }}
-        />
-      </Suspense>
+      <DoctorCard
+        id="surgeon"
+        tone="surface"
+        label={surgeon.label}
+        name={surgeon.lines.join(" ")}
+        bio={surgeon.bio}
+        stats={surgeon.stats}
+        badges={[
+          ...surgeon.badges,
+          ...surgeon.facts.map((fact) => ({ icon: fact.icon, label: `${fact.label}: ${fact.value}` })),
+        ]}
+        cta={surgeon.cta}
+        link={surgeon.link}
+        image={{ src: portrait.src, alt: portrait.alt }}
+      />
       {/* 11–14: shared sections (soft look), re-themed by the ovarian theme */}
-      <Suspense>
-        <Reviews
-          tone="alt"
-          title={reviewsSection.title}
-          reviews={reviewsFor(pageSlug, shared.reviewOrder)}
-          link={reviewsSection.link}
-        />
-      </Suspense>
-      <Suspense>
-        <Videos
-          tone="surface"
-          eyebrow={videosSection.eyebrow}
-          title={keepLastWords(videosSection.title)}
-          ids={videosSection.ids}
-          labels={videosSection.a11y}
-        />
-      </Suspense>
-      <Suspense>
-        <Locations tone="warm" />
-      </Suspense>
+      <Reviews
+        tone="alt"
+        title={reviewsSection.title}
+        reviews={reviewsFor(pageSlug, shared.reviewOrder)}
+        link={reviewsSection.link}
+      />
+      <Videos
+        tone="surface"
+        eyebrow={videosSection.eyebrow}
+        title={keepLastWords(videosSection.title)}
+        ids={videosSection.ids}
+        labels={videosSection.a11y}
+      />
+      <Locations tone="warm" />
       {/* NEW: quick answers (once approved) and the related treatments strip */}
       <QuickAnswers items={ovarianSeo.quickAnswers} stats={ovarianSeo.stats} />
       <RelatedTreatments path={new URL(meta.canonical).pathname} page="ovarian" service={defaultAppointmentService} />
-      <Suspense>
-        <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
-      </Suspense>
+      <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );
 }

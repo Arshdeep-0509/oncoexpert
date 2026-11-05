@@ -28,8 +28,9 @@ import { sumBy } from "@/lib/utils";
 // SOURCE: EXISTING (identical to the live page, keeps the SEO)
 export const meta = {
   title: "Colorectal Cancer Treatment & Surgery in Bangalore | OncoXpert",
+  // SOURCE: NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR: approve.
   description:
-    "Get colorectal cancer treatment in Bangalore at OncoXpert, with advanced surgery, robotic procedures, and personalized surgical oncology care.",
+    "Get colorectal cancer treatment in Bangalore at OncoXpert, with advanced surgery, robotic procedures, and personalized surgical oncology care. Book a visit.",
   canonical: "https://oncoxpert.in/colon-cancer-hospital-bangalore/",
   ogImage: colorectalOgImage,
 } as const satisfies PageMeta;
@@ -224,7 +225,6 @@ export const breadcrumb = {
   label: "Breadcrumb",
   items: [
     { label: "Home", href: "/" },
-    { label: "Our Services", href: "/our-services/" },
     { label: "Colorectal Cancer", href: "/colon-cancer-hospital-bangalore/" },
   ],
 } as const;

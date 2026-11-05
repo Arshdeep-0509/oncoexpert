@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
 import { defaultAppointmentService, meta, pageSlug, shared, surgeon } from "@/content/pages/lung-cancer";
@@ -41,8 +40,8 @@ const portrait = lungImages[surgeon.image];
 const finalImage = lungImages[shared.finalImage];
 
 // Header, footer and mobile action bar come from ./layout.tsx (SiteShell, lung theme).
-// Every section after the hero sits in its own <Suspense> boundary, so React hydrates them one by
-// one and yields between them (shorter main-thread tasks; no visual difference).
+// Sections stay inline (no <Suspense>): React would move them into hidden blocks after the footer,
+// where crawlers that do not run JavaScript cannot read them.
 // Tones alternate so no two tints touch: ice and mint bands between pearl ones, the navy bands
 // (#stage-iv, the final band) between light ones.
 // One @graph: MedicalWebPage, MedicalCondition, Physician, MedicalClinic, BreadcrumbList (+ FAQPage
@@ -52,7 +51,6 @@ const graph = cancerPageGraph({
   seo: lungSeo,
   breadcrumb: [
     { label: "Home", href: "/" },
-    { label: "Our Services", href: "/our-services/" },
     { label: lungSeo.name, href: new URL(meta.canonical).pathname },
   ],
   physicianDescription: surgeon.bio,
@@ -63,73 +61,47 @@ export default function LungCancerPage() {
     <>
       <JsonLd graph={graph} />
       <Hero /> {/* 1  #hero        dawn-sky gradient */}
-      <Suspense>
-        <Highlights /> {/* 2  #highlights  surface, overlapping the hero on desktop */}
-      </Suspense>
-      <Suspense>
-        <Diagnosis /> {/* 3  #diagnosis   alt */}
-      </Suspense>
-      <Suspense>
-        <Pathway /> {/* 4  #pathway     surface */}
-      </Suspense>
-      <Suspense>
-        <Surgery /> {/* 5  #surgery     warm (mint) */}
-      </Suspense>
-      <Suspense>
-        <Techniques /> {/* 6  #techniques  surface */}
-      </Suspense>
-      <Suspense>
-        <StageIV /> {/* 7  #stage-iv    navy band */}
-      </Suspense>
-      <Suspense>
-        <Survival /> {/* 8  #survival    alt */}
-      </Suspense>
-      <Suspense>
-        <Volume /> {/* 9  #volume      surface */}
-      </Suspense>
+      <Highlights /> {/* 2  #highlights  surface, overlapping the hero on desktop */}
+      <Diagnosis /> {/* 3  #diagnosis   alt */}
+      <Pathway /> {/* 4  #pathway     surface */}
+      <Surgery /> {/* 5  #surgery     warm (mint) */}
+      <Techniques /> {/* 6  #techniques  surface */}
+      <StageIV /> {/* 7  #stage-iv    navy band */}
+      <Survival /> {/* 8  #survival    alt */}
+      <Volume /> {/* 9  #volume      surface */}
       {/* 10 #surgeon: the shared DoctorCard with the live lung profile */}
-      <Suspense>
-        <DoctorCard
-          id="surgeon"
-          tone="warm"
-          label={surgeon.label}
-          name={surgeon.name}
-          title={surgeon.title}
-          bio={surgeon.bio}
-          stats={surgeon.stats}
-          badges={surgeon.facts.map((fact) => ({ icon: fact.icon, label: `${fact.label}: ${fact.value}` }))}
-          cta={surgeon.cta}
-          link={surgeon.link}
-          image={{ src: portrait.src, alt: portrait.alt }}
-        />
-      </Suspense>
+      <DoctorCard
+        id="surgeon"
+        tone="warm"
+        label={surgeon.label}
+        name={surgeon.name}
+        title={surgeon.title}
+        bio={surgeon.bio}
+        stats={surgeon.stats}
+        badges={surgeon.facts.map((fact) => ({ icon: fact.icon, label: `${fact.label}: ${fact.value}` }))}
+        cta={surgeon.cta}
+        link={surgeon.link}
+        image={{ src: portrait.src, alt: portrait.alt }}
+      />
       {/* 11–14: shared sections (soft look), re-themed by the lung theme */}
-      <Suspense>
-        <Reviews
-          tone="alt"
-          title={reviewsSection.title}
-          reviews={reviewsFor(pageSlug, shared.reviewOrder)}
-          link={reviewsSection.link}
-        />
-      </Suspense>
-      <Suspense>
-        <Videos
-          tone="surface"
-          eyebrow={videosSection.eyebrow}
-          title={keepLastWords(videosSection.title)}
-          ids={videosSection.ids}
-          labels={videosSection.a11y}
-        />
-      </Suspense>
-      <Suspense>
-        <Locations tone="alt" />
-      </Suspense>
+      <Reviews
+        tone="alt"
+        title={reviewsSection.title}
+        reviews={reviewsFor(pageSlug, shared.reviewOrder)}
+        link={reviewsSection.link}
+      />
+      <Videos
+        tone="surface"
+        eyebrow={videosSection.eyebrow}
+        title={keepLastWords(videosSection.title)}
+        ids={videosSection.ids}
+        labels={videosSection.a11y}
+      />
+      <Locations tone="alt" />
       {/* NEW: quick answers (once approved) and the related treatments strip */}
       <QuickAnswers items={lungSeo.quickAnswers} stats={lungSeo.stats} />
       <RelatedTreatments path={new URL(meta.canonical).pathname} page="lung" service={defaultAppointmentService} />
-      <Suspense>
-        <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
-      </Suspense>
+      <FinalCta image={{ src: finalImage.src, focal: finalImage.focal }} />
     </>
   );
 }

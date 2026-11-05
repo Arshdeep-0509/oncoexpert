@@ -18,7 +18,7 @@ import { meta as thyroidMeta } from "@/content/pages/thyroid-cancer";
 export const pages = {
   home: {
     slug: "home",
-    lastModified: "2026-11-01",
+    lastModified: "2026-11-05",
     path: "/",
     title: homeMeta.title,
     theme: "home",
@@ -28,7 +28,7 @@ export const pages = {
   },
   "robotic-surgery": {
     slug: "robotic-surgery",
-    lastModified: "2026-11-02",
+    lastModified: "2026-11-05",
     path: "/robotic-surgery/",
     title: roboticMeta.title,
     theme: "robotic",
@@ -37,7 +37,7 @@ export const pages = {
   },
   "breast-cancer-hospital-bangalore": {
     slug: "breast-cancer-hospital-bangalore",
-    lastModified: "2026-11-02",
+    lastModified: "2026-11-05",
     path: "/breast-cancer-hospital-bangalore/",
     title: breastMeta.title,
     theme: "breast",
@@ -47,7 +47,7 @@ export const pages = {
   // The live URL, misspelling included ("appoinment"): it is indexed and linked site-wide.
   "book-your-appoinment-page": {
     slug: "book-your-appoinment-page",
-    lastModified: "2026-11-03",
+    lastModified: "2026-11-05",
     path: "/book-your-appoinment-page/",
     title: bookMeta.title,
     theme: "care",
@@ -56,7 +56,7 @@ export const pages = {
   },
   "about-us": {
     slug: "about-us",
-    lastModified: "2026-11-03",
+    lastModified: "2026-11-05",
     path: "/about-us/",
     title: aboutMeta.title,
     theme: "care",
@@ -66,7 +66,7 @@ export const pages = {
   // The live URL ("colon", while the page and the menu say "Colorectal"): kept for SEO.
   "colon-cancer-hospital-bangalore": {
     slug: "colon-cancer-hospital-bangalore",
-    lastModified: "2026-11-03",
+    lastModified: "2026-11-05",
     path: "/colon-cancer-hospital-bangalore/",
     title: colorectalMeta.title,
     theme: "colorectal",
@@ -75,7 +75,7 @@ export const pages = {
   },
   "endometrial-cancer-hospital-bangalore": {
     slug: "endometrial-cancer-hospital-bangalore",
-    lastModified: "2026-11-03",
+    lastModified: "2026-11-05",
     path: "/endometrial-cancer-hospital-bangalore/",
     title: endometrialMeta.title,
     theme: "endometrial",
@@ -85,7 +85,7 @@ export const pages = {
   // The live URLs, kept for SEO (the menu already links them).
   "lung-cancer-in-bangalore": {
     slug: "lung-cancer-in-bangalore",
-    lastModified: "2026-11-03",
+    lastModified: "2026-11-05",
     path: "/lung-cancer-in-bangalore/",
     title: lungMeta.title,
     theme: "lung",
@@ -94,7 +94,7 @@ export const pages = {
   },
   "ovarian-cancer-hospital": {
     slug: "ovarian-cancer-hospital",
-    lastModified: "2026-11-03",
+    lastModified: "2026-11-05",
     path: "/ovarian-cancer-hospital/",
     title: ovarianMeta.title,
     theme: "ovarian",
@@ -103,7 +103,7 @@ export const pages = {
   },
   "thyroid-cancer": {
     slug: "thyroid-cancer",
-    lastModified: "2026-11-03",
+    lastModified: "2026-11-05",
     path: "/thyroid-cancer/",
     title: thyroidMeta.title,
     theme: "thyroid",

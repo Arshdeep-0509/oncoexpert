@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   alternates: { canonical: meta.canonical },
   openGraph: {
     type: "article",
-    locale: "en_US",
+    locale: "en_IN",
     url: meta.canonical,
     title: meta.title,
     description: meta.description,

@@ -1,5 +1,5 @@
 /**
- * Search and answer-engine facts for /colon-cancer-treatment-bangalore/ (see lung-cancer.seo.ts).
+ * Search and answer-engine facts for /colon-cancer-hospital-bangalore/ (see lung-cancer.seo.ts).
  * Built only from facts already on the page (content/pages/colorectal-cancer.ts); figures imported.
  * The page names no symptoms, so the condition lists none.
  *

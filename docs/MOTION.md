@@ -42,9 +42,6 @@ properties and are not listed.
 | `.cxa-card:is(:hover, [data-active]) .cxa-isrLower` | cxa-isrLower-again (approach.css) | an interaction (state change) | 4.2s | no | n/a (runs once) | final state (no animation) |
 | `.cxa-card:is(:hover, [data-active]) .cxa-isrBowel` | cxa-isrBowel-again (approach.css) | an interaction (state change) | 4.2s | no | n/a (runs once) | final state (no animation) |
 | `.cxa-card:is(:hover, [data-active]) .cxa-isrDone` | cxa-isrDone-again (approach.css) | an interaction (state change) | 4.2s | no | n/a (runs once) | final state (no animation) |
-| `.cx-photoCover` | cx-cover (hero.css) | page load (after the intro) | 1s | no | n/a (runs once) | final state (no animation) |
-| `.cx-colonLine` | cx-draw (hero.css) | page load (after the intro) | 2s | no | n/a (runs once) | final state (no animation) |
-| `.cx-colonHalo` | cx-draw (hero.css) | page load (after the intro) | 2.2s | no | n/a (runs once) | final state (no animation) |
 | `.cx-underline path` | cx-draw (hero.css) | page load (after the intro) | 0.8s | no | n/a (runs once) | final state (no animation) |
 | `.cx-float` | cx-float (hero.css) | page load (after the intro) | 7s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
 | `.cx-shine::after` | cx-shine (hero.css) | page load (after the intro) | 6s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
@@ -110,18 +107,9 @@ properties and are not listed.
 | `.ovd-tray[data-inview] .ovd-tile:hover .ovd-slice` | ovd-fan2 (diagnostics.css) | scrolled into view | 0.9s | no | n/a (runs once) | final state (no animation) |
 | `.ovd-tray[data-inview] .ovd-tile:hover .ovd-rung` | ovd-draw2 (diagnostics.css) | scrolled into view | 0.4s | no | n/a (runs once) | final state (no animation) |
 | `.ov-underline path` | ov-draw (hero.css) | page load (after the intro) | 0.8s | no | n/a (runs once) | final state (no animation) |
-| `.ov-line` | ov-draw (hero.css) | page load (after the intro) | 2.2s | no | n/a (runs once) | final state (no animation) |
-| `.ov-uterus` | ov-draw (hero.css) | page load (after the intro) | 1s | no | n/a (runs once) | final state (no animation) |
-| `.ov-tumour` | ov-tumour (hero.css) | page load (after the intro) | 2.6s | no | n/a (runs once) | final state (no animation) |
-| `.ov-ring` | ov-ring (hero.css) | page load (after the intro) | 2.4s | no | n/a (runs once) | final state (no animation) |
-| `.ov-wave` | ov-draw (hero.css) | page load (after the intro) | 1.2s | no | n/a (runs once) | final state (no animation) |
-| `.ov-waves` | ov-drift (hero.css) | page load (after the intro) | 6s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
-| `.ov-glow` | ov-glowIn (hero.css) | page load (after the intro) | 1.4s | no | n/a (runs once) | final state (no animation) |
-| `.ov-check` | ov-pop (hero.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |
-| `.ov-checkMark` | ov-draw (hero.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |
-| `.ov-storyStep` | ov-fadeUp (hero.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |
-| `.ov-seed` | ov-pop (hero.css) | page load (after the intro) | 0.5s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
-| `.ov-shimmer` | ov-shimmer (hero.css) | page load (after the intro) | 10s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
+| `.ov-storyStep` | ov-fadeUp (hero.css) | page load (after the intro) | 0.6s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
+| `.ov-art` | ov-float (hero.css) | page load (after the intro) | 8s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
+| `.ov-orbit` | ov-turn (hero.css) | page load (after the intro) | 60s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
 | `.ov-shine::after` | ov-shine (hero.css) | page load (after the intro) | 6s | yes | pause button (48px), hover / focus, off-screen | final state (no animation) |
 | `.ovs-q[data-inview] .ovs-word` | ovs-rise (second-opinion.css) | scrolled into view | 0.8s | no | n/a (runs once) | final state (no animation) |
 | `.ovs-q[data-inview] .ovs-mark` | ovs-dissolve (second-opinion.css) | scrolled into view | 0.5s | no | n/a (runs once) | final state (no animation) |

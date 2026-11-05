@@ -11,9 +11,9 @@ import { at, styles } from "@/components/pages/ovarian-cancer/hero-styles";
 import "@/components/pages/ovarian-cancer/hero.css";
 
 /**
- * 1 · #hero "THE TEAL RIBBON". Server-rendered; the pause button and the parallax are the only
- * client code. Desktop: text left, the ribbon and portrait right. Tablet: text, then the visual.
- * Phones: the H1 and full-width buttons first, then the visual (max 360px).
+ * 1 · #hero "THE OVARIES". Server-rendered; the pause button and the parallax are the only client
+ * code. Desktop: text left, the ovaries render right. Tablet: text, then the visual. Phones: the
+ * H1 and full-width buttons first, then the visual (max 400px).
  */
 export function Hero() {
   return (

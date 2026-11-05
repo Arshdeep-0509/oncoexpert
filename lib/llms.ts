@@ -19,10 +19,10 @@ import { site } from "@/content/site";
  */
 
 const cancer: Partial<Record<keyof typeof pages, CancerPageSeo>> = {
-  "colon-cancer-treatment-bangalore": colorectalSeo,
-  "endometrial-cancer-treatment-bangalore": endometrialSeo,
+  "colon-cancer-hospital-bangalore": colorectalSeo,
+  "endometrial-cancer-hospital-bangalore": endometrialSeo,
   "lung-cancer-in-bangalore": lungSeo,
-  "ovarian-cancer-treatment": ovarianSeo,
+  "ovarian-cancer-hospital": ovarianSeo,
   "thyroid-cancer": thyroidSeo,
 };
 
@@ -31,7 +31,7 @@ const purposes: Partial<Record<keyof typeof pages, string>> = {
   home: "The practice: services, robotic surgery, the doctor, outcomes, reviews, videos, FAQs and clinic locations.",
   "robotic-surgery":
     "Robotic cancer surgery with the da Vinci system: benefits, the cancers it treats, recovery and surgery numbers.",
-  "breast-cancer-treatment-bangalore":
+  "breast-cancer-hospital-bangalore":
     "Breast cancer treatment: diagnosis, surgery options, outcomes, care financing, the surgeon and FAQs.",
   "book-your-appoinment-page": bookSeo.purpose,
   "about-us": aboutSeo.purpose,

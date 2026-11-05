@@ -13,11 +13,6 @@ export const styles = {
   gradWord: "cx-gradWord",
   phrase: "cx-phrase",
   underline: "cx-underline",
-  colon: "cx-colon",
-  colonHalo: "cx-colonHalo",
-  colonLine: "cx-colonLine",
-  dot: "cx-dot",
-  photoCover: "cx-photoCover",
   float: "cx-float",
   shine: "cx-shine",
 } as const;

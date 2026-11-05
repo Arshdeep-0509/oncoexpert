@@ -13,13 +13,13 @@ export function isActivePath(pathname: string | null, href: string) {
 const builtPaths = new Set([
   "/",
   "/robotic-surgery/",
-  "/breast-cancer-treatment-bangalore/",
+  "/breast-cancer-hospital-bangalore/",
   "/book-your-appoinment-page/",
   "/about-us/",
-  "/colon-cancer-treatment-bangalore/",
-  "/endometrial-cancer-treatment-bangalore/",
+  "/colon-cancer-hospital-bangalore/",
+  "/endometrial-cancer-hospital-bangalore/",
   "/lung-cancer-in-bangalore/",
-  "/ovarian-cancer-treatment/",
+  "/ovarian-cancer-hospital/",
   "/thyroid-cancer/",
 ]);
 

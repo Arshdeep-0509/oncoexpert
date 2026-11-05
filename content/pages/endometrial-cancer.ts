@@ -1,5 +1,5 @@
 /**
- * Every word on /endometrial-cancer-treatment-bangalore/ (Endometrial Cancer).
+ * Every word on /endometrial-cancer-hospital-bangalore/ (Endometrial Cancer).
  *
  * SOURCE tags (see docs/PROJECT.md):
  *   EXISTING → copied from the live page (https://oncoxpert.in/endometrial-cancer-treatment-bangalore/,
@@ -30,11 +30,11 @@ export const meta = {
   title: "Endometrial Cancer Treatment in Bangalore | OncoXpert",
   description:
     "Looking for endometrial cancer treatment in Bangalore? OncoXpert offers personalized surgical oncology care, including minimally invasive and robotic surgery options.",
-  canonical: "https://oncoxpert.in/endometrial-cancer-treatment-bangalore/",
+  canonical: "https://oncoxpert.in/endometrial-cancer-hospital-bangalore/",
   ogImage: endometrialOgImage,
 } as const satisfies PageMeta;
 
-export const pageSlug = "endometrial-cancer-treatment-bangalore";
+export const pageSlug = "endometrial-cancer-hospital-bangalore";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
 // SOURCE: NEW (choice; the first of the live "Service Required" options)
@@ -172,7 +172,7 @@ export const breadcrumb = {
   items: [
     { label: "Home", href: "/" },
     { label: "Our Services", href: "/our-services/" },
-    { label: "Endometrial Cancer", href: "/endometrial-cancer-treatment-bangalore/" },
+    { label: "Endometrial Cancer", href: "/endometrial-cancer-hospital-bangalore/" },
   ],
 } as const;
 
@@ -419,5 +419,5 @@ export const shared = {
   // SOURCE: NEW (order): the live order, without the colon cancer review unless the doctor wants it.
   reviewOrder: reviewsSection.order.filter((id) => showColonReview || id !== "vasudeva-murthy"),
   // The final call band's photo.
-  finalImage: "motherDaughter",
+  finalImage: "finalTea",
 } as const satisfies { reviewOrder: readonly ReviewId[]; finalImage: EndometrialImageKey };

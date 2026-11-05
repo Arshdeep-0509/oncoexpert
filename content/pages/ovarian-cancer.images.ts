@@ -1,5 +1,5 @@
 /**
- * Image manifest for /ovarian-cancer-treatment/ (Ovarian Cancer).
+ * Image manifest for /ovarian-cancer-hospital/ (Ovarian Cancer).
  *
  * New stock photos live in public/images/ovarian-cancer/ and are produced by `npm run images ovarian`
  * (scripts/fetch-images.mjs reads `file`, `src` + `pexelsId` from this file). Photos reused from other
@@ -16,6 +16,25 @@ const BASE = "/images/ovarian-cancer";
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const ovarianImages = {
+  // #hero: AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. Transparent; cropped
+  // to the uterus, tubes and ovaries, its lower edge faded. PENDING DOCTOR: check the anatomy.
+  heroOvaries: {
+    file: "hero-ovaries.webp",
+    src: `${BASE}/hero-ovaries.webp`,
+    alt: "3D illustration of the uterus, fallopian tubes and both ovaries",
+    focal: "50% 50%",
+    width: 1400,
+    height: 735,
+  },
+  // #final-cta: AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. Not real patients.
+  finalFriends: {
+    file: "final-friends.jpg",
+    src: `${BASE}/final-friends.jpg`,
+    alt: "Two women friends laughing together on a garden bench",
+    focal: "75% 25%",
+    width: 2000,
+    height: 1131,
+  },
   /* Own photos, reused ---------------------------------------------- */
 
   // The live hero and #surgeon both show the portrait.

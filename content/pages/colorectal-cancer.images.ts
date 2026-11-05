@@ -1,5 +1,5 @@
 /**
- * Image manifest for /colon-cancer-treatment-bangalore/ (Colorectal Cancer).
+ * Image manifest for /colon-cancer-hospital-bangalore/ (Colorectal Cancer).
  *
  * New stock photos live in public/images/colorectal-cancer/ and are produced by
  * `npm run images colorectal` (scripts/fetch-images.mjs reads `file`, `src` + `pexelsId` from this
@@ -16,6 +16,66 @@ const BASE = "/images/colorectal-cancer";
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const colorectalImages = {
+  // #hero: the first frame of /videos/colorectal-hero.mp4 (AI-generated: Higgsfield, Kling), its still.
+  // PENDING DOCTOR: check the anatomy.
+  heroColon: {
+    file: "hero-colon.webp",
+    src: `${BASE}/hero-colon.webp`,
+    alt: "3D illustration of the human colon and rectum",
+    focal: "50% 50%",
+    width: 960,
+    height: 960,
+  },
+  // #path steps 2–6 and #advanced-cases: AI-generated (Higgsfield, gpt_image_2_5), the client review,
+  // 5 Nov 2026. Not real patients or staff.
+  stepPet: {
+    file: "step-pet-ct.jpg",
+    src: `${BASE}/step-pet-ct.jpg`,
+    alt: "Radiologist studying a whole-body PET-CT scan on a monitor",
+    focal: "60% 40%",
+    width: 1024,
+    height: 688,
+  },
+  stepStaging: {
+    file: "step-staging.jpg",
+    src: `${BASE}/step-staging.jpg`,
+    alt: "Doctors reviewing an abdominal CT scan together at a team meeting",
+    focal: "50% 30%",
+    width: 1024,
+    height: 688,
+  },
+  stepPlanning: {
+    file: "step-planning.jpg",
+    src: `${BASE}/step-planning.jpg`,
+    alt: "Nurse checking a patient's blood pressure before surgery",
+    focal: "50% 30%",
+    width: 1024,
+    height: 688,
+  },
+  stepSurgery: {
+    file: "step-surgery.jpg",
+    src: `${BASE}/step-surgery.jpg`,
+    alt: "Surgical team working with a robotic system in an operating theatre",
+    focal: "55% 35%",
+    width: 1024,
+    height: 688,
+  },
+  stepRecovery: {
+    file: "step-recovery.jpg",
+    src: `${BASE}/step-recovery.jpg`,
+    alt: "Patient walking along a hospital corridor with a nurse soon after surgery",
+    focal: "35% 30%",
+    width: 1024,
+    height: 688,
+  },
+  hopeSunrise: {
+    file: "hope-sunrise.jpg",
+    src: `${BASE}/hope-sunrise.jpg`,
+    alt: "Woman with her face lifted towards the sunrise, smiling with hope",
+    focal: "60% 25%",
+    width: 896,
+    height: 1120,
+  },
   /* Own photos, reused ---------------------------------------------- */
 
   doctor: {

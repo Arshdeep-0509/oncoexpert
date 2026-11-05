@@ -1,5 +1,5 @@
 /**
- * Every word on /colon-cancer-treatment-bangalore/ (Colorectal Cancer).
+ * Every word on /colon-cancer-hospital-bangalore/ (Colorectal Cancer).
  *
  * SOURCE tags (see docs/PROJECT.md):
  *   EXISTING → copied from the live page (https://oncoxpert.in/colon-cancer-treatment-bangalore/,
@@ -30,11 +30,11 @@ export const meta = {
   title: "Colorectal Cancer Treatment & Surgery in Bangalore | OncoXpert",
   description:
     "Get colorectal cancer treatment in Bangalore at OncoXpert, with advanced surgery, robotic procedures, and personalized surgical oncology care.",
-  canonical: "https://oncoxpert.in/colon-cancer-treatment-bangalore/",
+  canonical: "https://oncoxpert.in/colon-cancer-hospital-bangalore/",
   ogImage: colorectalOgImage,
 } as const satisfies PageMeta;
 
-export const pageSlug = "colon-cancer-treatment-bangalore";
+export const pageSlug = "colon-cancer-hospital-bangalore";
 
 /** Buttons that name no service (header, menu, action bar) preselect this one. */
 // SOURCE: NEW (choice; the first of the live "Service Required" options)
@@ -65,7 +65,6 @@ export type HeroContent = {
   /** Short labels under the buttons. */
   trust: readonly { icon: TrustIcon; label: string }[];
   /** The photo card in front of the colon line art. */
-  image: ColorectalImageKey;
   a11y: { pause: string; play: string; trust: string };
 };
 
@@ -216,7 +215,6 @@ export const hero = {
     { icon: "laparoscopic", label: "Laparoscopic" },
     { icon: "preservation", label: "Organ preservation" },
   ],
-  image: "consultation",
   // SOURCE: NEW (control and screen-reader labels)
   a11y: { pause: "Pause animation", play: "Play animation", trust: "Surgical approaches" },
 } as const satisfies HeroContent;
@@ -227,7 +225,7 @@ export const breadcrumb = {
   items: [
     { label: "Home", href: "/" },
     { label: "Our Services", href: "/our-services/" },
-    { label: "Colorectal Cancer", href: "/colon-cancer-treatment-bangalore/" },
+    { label: "Colorectal Cancer", href: "/colon-cancer-hospital-bangalore/" },
   ],
 } as const;
 
@@ -312,11 +310,11 @@ export const recoveryPath = {
   // SOURCE: EXISTING (titles, text); NEW (icon keys, photos)
   steps: [
     { icon: "colonoscopy", title: "Colonoscopy", body: "Initial biopsy & imaging", image: "anatomyModel" },
-    { icon: "scan", title: "PET-CT Scan", body: "Full body mapping", image: "imagingScan" },
-    { icon: "staging", title: "Staging", body: "MDT Review & Planning", image: "consultationReport" },
-    { icon: "planning", title: "Planning", body: "Pre-op optimization", image: "doctor" },
-    { icon: "surgery", title: "Surgery", body: "Robotic/Laparoscopic", image: "laparoscopy" },
-    { icon: "recovery", title: "Recovery", body: "ERAS Protocol Support", image: "recoveryWalk" },
+    { icon: "scan", title: "PET-CT Scan", body: "Full body mapping", image: "stepPet" },
+    { icon: "staging", title: "Staging", body: "MDT Review & Planning", image: "stepStaging" },
+    { icon: "planning", title: "Planning", body: "Pre-op optimization", image: "stepPlanning" },
+    { icon: "surgery", title: "Surgery", body: "Robotic/Laparoscopic", image: "stepSurgery" },
+    { icon: "recovery", title: "Recovery", body: "ERAS Protocol Support", image: "stepRecovery" },
   ],
   // SOURCE: NEW (screen-reader labels)
   a11y: {
@@ -460,7 +458,7 @@ export const advancedCases = {
   stat: { value: 60, suffix: "%", label: "survival chance for selected cases" },
   // SOURCE: EXISTING (label); NEW (the service it preselects and the note sent with the form)
   cta: { label: "Discuss Curative Strategy", service: "Second Opinion", note: "Curative strategy" },
-  image: "hopeSmile",
+  image: "hopeSunrise",
 } as const satisfies AdvancedCasesContent;
 
 /* ------------------------------------------------------------------ */

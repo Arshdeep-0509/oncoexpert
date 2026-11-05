@@ -47,7 +47,7 @@ export type PageMeta = {
 /** One entry in content/pages/index.ts. */
 export type PageEntry = {
   slug: string;
-  /** URL path with trailing slash, e.g. "/breast-cancer-treatment-bangalore/". */
+  /** URL path with trailing slash, e.g. "/breast-cancer-hospital-bangalore/". */
   path: string;
   title: string;
   theme: ThemeName;

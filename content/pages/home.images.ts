@@ -16,6 +16,15 @@ const BASE = "/images/home";
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const homeImages = {
+  // #final-cta: AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. Not real patients.
+  finalFamily: {
+    file: "final-family.jpg",
+    src: `${BASE}/final-family.jpg`,
+    alt: "Grandmother, daughter and granddaughter laughing together on a sunlit terrace",
+    focal: "72% 30%",
+    width: 2000,
+    height: 1131,
+  },
   /* Own photos, reused ---------------------------------------------- */
 
   // Transparent PNG: sits on the theme's portrait backdrop (the #surgeon ring, SurgeonRing).
@@ -101,55 +110,50 @@ export const homeImages = {
     width: 2000,
     height: 1333,
   },
+  // AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. PENDING DOCTOR: check the anatomy.
   specialtyColorectal: {
-    file: "specialty-colorectal-model.jpg",
-    src: `${BASE}/specialty-colorectal-model.jpg`,
-    pexelsId: 8471918,
-    alt: "Anatomical model of the abdomen showing the intestines",
-    credit: { photographer: "MART PRODUCTION", url: pexels(8471918) },
-    focal: "50% 60%",
-    width: 2000,
-    height: 1333,
+    file: "specialty-colorectal-anatomy.jpg",
+    src: `${BASE}/specialty-colorectal-anatomy.jpg`,
+    alt: "3D illustration of the human colon and rectum",
+    focal: "50% 20%",
+    width: 1024,
+    height: 688,
   },
+  // AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. PENDING DOCTOR: check the anatomy.
   specialtyEndometrial: {
-    file: "specialty-endometrial.jpg",
-    src: `${BASE}/specialty-endometrial.jpg`,
-    pexelsId: 7108415,
-    alt: "Doctor performing an abdominal ultrasound scan on a woman",
-    credit: { photographer: "Pavel Danilyuk", url: pexels(7108415) },
-    focal: "50% 50%",
-    width: 2000,
-    height: 1335,
+    file: "specialty-endometrial-anatomy.jpg",
+    src: `${BASE}/specialty-endometrial-anatomy.jpg`,
+    alt: "3D illustration of the uterus with its lining highlighted",
+    focal: "50% 20%",
+    width: 1024,
+    height: 688,
   },
+  // AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. PENDING DOCTOR: check the anatomy.
   specialtyLung: {
-    file: "specialty-lung.jpg",
-    src: `${BASE}/specialty-lung.jpg`,
-    pexelsId: 7579819,
-    alt: "Doctor reviewing a chest X-ray of the lungs",
-    credit: { photographer: "cottonbro studio", url: pexels(7579819) },
-    focal: "55% 35%",
-    width: 2000,
-    height: 1333,
+    file: "specialty-lung-anatomy.jpg",
+    src: `${BASE}/specialty-lung-anatomy.jpg`,
+    alt: "3D illustration of the human lungs and airways",
+    focal: "50% 25%",
+    width: 1024,
+    height: 688,
   },
+  // AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. PENDING DOCTOR: check the anatomy.
   specialtyThyroid: {
-    file: "specialty-thyroid.jpg",
-    src: `${BASE}/specialty-thyroid.jpg`,
-    pexelsId: 3985305,
-    alt: "Doctor examining a smiling woman's neck",
-    credit: { photographer: "Gustavo Fring", url: pexels(3985305) },
-    focal: "55% 35%",
-    width: 2000,
-    height: 1333,
+    file: "specialty-thyroid-anatomy.jpg",
+    src: `${BASE}/specialty-thyroid-anatomy.jpg`,
+    alt: "3D illustration of the thyroid gland on the windpipe",
+    focal: "50% 25%",
+    width: 1024,
+    height: 688,
   },
+  // AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. PENDING DOCTOR: check the anatomy.
   specialtyOvarian: {
-    file: "specialty-ovarian-diagram.jpg",
-    src: `${BASE}/specialty-ovarian-diagram.jpg`,
-    pexelsId: 7467100,
-    alt: "Illustration of the female reproductive system: the uterus and both ovaries",
-    credit: { photographer: "Nadezhda Moryak", url: pexels(7467100) },
-    focal: "50% 50%",
-    width: 2000,
-    height: 1333,
+    file: "specialty-ovarian-anatomy.jpg",
+    src: `${BASE}/specialty-ovarian-anatomy.jpg`,
+    alt: "3D illustration of an ovary with its fallopian tube",
+    focal: "50% 30%",
+    width: 1024,
+    height: 688,
   },
 
   /* Final call band ----------------------------------------------- */
@@ -186,24 +190,6 @@ export const heroSlides = [
     width: 2400,
     height: 1600,
   },
-  // Dr. Sunil at the patient cart, beside the draped robotic arms
-  {
-    file: "hero-robotic-arms-wide.jpg",
-    src: `${BASE}/hero-robotic-arms-wide.jpg`,
-    alt: "",
-    decorative: true,
-    width: 2400,
-    height: 1600,
-  },
-  // Dr. Sunil at the da Vinci surgeon console, smiling at the camera
-  {
-    file: "hero-davinci-console.jpg",
-    src: `${BASE}/hero-davinci-console.jpg`,
-    alt: "",
-    decorative: true,
-    width: 2400,
-    height: 1600,
-  },
   // A patient and her family with the doctor (blue shirt, his back to the camera) in the clinic
   // corridor (the client's photo, 1 Nov 2026: a 1080Ã—556 video still, so softer than the others).
   // The full width (only a black strip trimmed off the top), so it is wider than 3:2: fine with
@@ -218,6 +204,15 @@ export const heroSlides = [
     width: 1600,
     height: 815,
   },
+  // Dr. Sunil at the patient cart, beside the draped robotic arms
+  {
+    file: "hero-robotic-arms-wide.jpg",
+    src: `${BASE}/hero-robotic-arms-wide.jpg`,
+    alt: "",
+    decorative: true,
+    width: 2400,
+    height: 1600,
+  },
   // Dr. Sunil listening to a survivor's story (the client's photo, 1 Nov 2026; cropped to 3:2)
   {
     file: "hero-patient-talk.jpg",
@@ -227,6 +222,15 @@ export const heroSlides = [
     fit: "right",
     width: 1600,
     height: 1067,
+  },
+  // Dr. Sunil at the da Vinci surgeon console, smiling at the camera
+  {
+    file: "hero-davinci-console.jpg",
+    src: `${BASE}/hero-davinci-console.jpg`,
+    alt: "",
+    decorative: true,
+    width: 2400,
+    height: 1600,
   },
 ] as const satisfies readonly (Omit<PageImage, "focal"> & {
   /** Desktop: "right" shows the whole photo in the hero's right half instead of at full height. */

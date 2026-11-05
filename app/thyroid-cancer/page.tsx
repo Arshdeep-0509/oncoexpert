@@ -90,7 +90,6 @@ export default function ThyroidCancerPage() {
           label={surgeon.role}
           name={surgeon.name}
           bio={surgeon.bio}
-          stats={surgeon.stats}
           badges={surgeon.badges}
           cta={surgeon.cta}
           link={surgeon.link}

@@ -1,6 +1,4 @@
-import { Phone } from "lucide-react";
 import { hero, heroTicker } from "@/content/pages/home";
-import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { AppointmentButton } from "@/components/shared/AppointmentButton";
@@ -94,18 +92,6 @@ export function HomeHero() {
                 fullWidthOnMobile
                 className="min-h-[52px] px-6 text-white ring-1 ring-white/30 ring-inset hover:bg-white/10 hover:text-white md:min-h-12"
               />
-              <a
-                href={site.contact.phoneHref}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-pill px-2 text-[15px] text-white/80 transition-colors hover:text-white md:justify-start"
-              >
-                <Phone className="size-4 text-accent-glow" strokeWidth={1.75} aria-hidden="true" />
-                <span>
-                  {hero.phone.lead}{" "}
-                  <span className="font-semibold whitespace-nowrap text-white tabular-nums">
-                    {site.contact.phoneDisplay}
-                  </span>
-                </span>
-              </a>
             </div>
           </div>
         </Container>

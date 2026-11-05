@@ -52,13 +52,13 @@ export function track(payload: AnalyticsEvent) {
 const PAGE_KEYS: Record<string, string> = {
   "/": "home",
   "/robotic-surgery/": "robotic",
-  "/breast-cancer-treatment-bangalore/": "breast",
+  "/breast-cancer-hospital-bangalore/": "breast",
   "/book-your-appoinment-page/": "book",
   "/about-us/": "about",
-  "/colon-cancer-treatment-bangalore/": "colorectal",
-  "/endometrial-cancer-treatment-bangalore/": "endometrial",
+  "/colon-cancer-hospital-bangalore/": "colorectal",
+  "/endometrial-cancer-hospital-bangalore/": "endometrial",
   "/lung-cancer-in-bangalore/": "lung",
-  "/ovarian-cancer-treatment/": "ovarian",
+  "/ovarian-cancer-hospital/": "ovarian",
   "/thyroid-cancer/": "thyroid",
 };
 

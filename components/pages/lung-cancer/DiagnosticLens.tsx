@@ -116,8 +116,8 @@ export function DiagnosticLens({ tests, labels }: DiagnosticLensProps) {
           {[0, 120, 240].map((deg) => (
             <circle
               key={deg}
-              cx={160 + 156 * Math.sin((deg * Math.PI) / 180)}
-              cy={160 - 156 * Math.cos((deg * Math.PI) / 180)}
+              cx={Number((160 + 156 * Math.sin((deg * Math.PI) / 180)).toFixed(2))}
+              cy={Number((160 - 156 * Math.cos((deg * Math.PI) / 180)).toFixed(2))}
               r="5"
               style={{ fill: "var(--accent-bright)" }}
             />
@@ -138,7 +138,7 @@ export function DiagnosticLens({ tests, labels }: DiagnosticLensProps) {
         role="tablist"
         aria-label={labels.tests}
         onKeyDown={onKeyDown}
-        className="mt-6 grid grid-cols-3 gap-1.5 rounded-pill bg-surface p-1.5 ring-1 shadow-soft-sm ring-line"
+        className="mt-6 grid grid-cols-[auto_auto_auto] gap-1 rounded-pill bg-surface p-1.5 ring-1 shadow-soft-sm ring-line max-[289px]:grid-cols-1 max-[289px]:rounded-2xl min-[440px]:grid-cols-3 min-[440px]:gap-1.5"
       >
         {tests.map((t, i) => (
           <button
@@ -154,7 +154,7 @@ export function DiagnosticLens({ tests, labels }: DiagnosticLensProps) {
             tabIndex={i === index ? 0 : -1}
             onClick={() => choose(i)}
             className={cn(
-              "min-h-12 rounded-pill px-2 text-[14px] leading-tight font-semibold transition-colors md:text-[15px]",
+              "min-h-12 rounded-pill px-1 text-[13px] leading-tight font-semibold transition-colors min-[440px]:px-2 min-[440px]:text-[14px] md:text-[15px]",
               i === index ? "bg-accent text-white shadow-soft-sm" : "text-ink hover:bg-accent-soft",
             )}
           >

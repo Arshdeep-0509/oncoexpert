@@ -1,5 +1,5 @@
 /* ==================================================================
-   Colorectal Cancer theme: /colon-cancer-treatment-bangalore/
+   Colorectal Cancer theme: /colon-cancer-hospital-bangalore/
    Calm, clinical and steady. Deep blue (the colorectal awareness colour)
    for ink, buttons and the dark bands; teal as the second colour, for
    decoration and the second stop of gradients. Cool mist and sea-glass
@@ -79,13 +79,18 @@
 [data-theme="colorectal"] :is(h1, h2, h3) {
   text-wrap: balance;
 }
-/* Two shared headings, fitted on this page only. The reviews title's wrapper is 26ch of the body
-   font (~324px), which runs the title to six lines on desktop, more than balance handles: widen
-   it. "Our Clinical Locations" fits one line on the smallest phones. */
-@media (min-width: 768px) {
-  [data-theme="colorectal"] #reviews div:has(> #reviews-title) {
-    max-width: 34rem;
-  }
+/* Two shared headings, fitted on this page only. The reviews title stays on its two lines at every
+   width (the client review, 5 Nov 2026): its wrapper is released and the type scales down so the
+   longer line (18.83em) fits the column. "Our Clinical Locations" fits one line on the smallest
+   phones. */
+[data-theme="colorectal"] #reviews div:has(> #reviews-title) {
+  max-width: none;
+}
+[data-theme="colorectal"] #reviews-title {
+  font-size: min(clamp(2rem, 4.4vw, 3.25rem), calc((100vw - 2 * var(--gutter)) / 19));
+}
+[data-theme="colorectal"] #reviews-title span {
+  white-space: nowrap;
 }
 @media (max-width: 389px) {
   [data-theme="colorectal"] #locations h2 {

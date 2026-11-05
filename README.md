@@ -5,13 +5,13 @@ Navalgund in Bengaluru:
 
 - **Home**: `/`
 - **Robotic Surgery**: `/robotic-surgery/`
-- **Breast Cancer**: `/breast-cancer-treatment-bangalore/`
+- **Breast Cancer**: `/breast-cancer-hospital-bangalore/`
 - **Book Appointment**: `/book-your-appoinment-page/` (the live address, misspelling included)
 - **About Us**: `/about-us/`
-- **Colorectal Cancer**: `/colon-cancer-treatment-bangalore/` (the live address)
-- **Endometrial Cancer**: `/endometrial-cancer-treatment-bangalore/`
+- **Colorectal Cancer**: `/colon-cancer-hospital-bangalore/`
+- **Endometrial Cancer**: `/endometrial-cancer-hospital-bangalore/`
 - **Lung Cancer**: `/lung-cancer-in-bangalore/` (the live address)
-- **Ovarian Cancer**: `/ovarian-cancer-treatment/` (the live address)
+- **Ovarian Cancer**: `/ovarian-cancer-hospital/`
 - **Thyroid Cancer**: `/thyroid-cancer/` (the live address)
 
 Next.js 16 · TypeScript · Tailwind CSS 4 · Motion · Embla. Developers: read
@@ -118,7 +118,7 @@ on Google, including the reviewer's spelling.
 - The breast page shows the ids listed in `reviews.order` in `content/pages/breast-cancer.ts`. Add the
   new `id` there in the position you want.
 - To hide a review on one page, add `excludeOn: ["<page slug>"]` to it, for example
-  `excludeOn: ["breast-cancer-treatment-bangalore"]`.
+  `excludeOn: ["breast-cancer-hospital-bangalore"]`.
 - The star average and the review count are calculated.
 
 **Videos**: YouTube IDs in `content/shared/videos.ts`. An ID is the part after `watch?v=`, and the
@@ -236,7 +236,7 @@ The **"30–40%" cost saving** is `value.items` (`range: { from: 30, to: 40, suf
 
 - The first entry is the large tile on desktop. Breast is first because it has the rebuilt page.
 - When a specialty gets its rebuilt page, change its `href` to the new path, e.g.
-  `"/colon-cancer-treatment-bangalore/"`.
+  `"/colon-cancer-hospital-bangalore/"`.
 - The hero line "Expert care for ___ cancer" cycles through `hero.specialties` (the same keys, in the
   order the ticker shows them).
 - **Adding a cancer**: add its key to `SpecialtyKey` at the top of `home.ts`, an entry to

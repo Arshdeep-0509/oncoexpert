@@ -1,13 +1,13 @@
 import { SiteShell } from "@/components/layout/SiteShell";
 import { defaultAppointmentService } from "@/content/pages/ovarian-cancer";
 
-// The live URL: /ovarian-cancer-treatment/.
-export default function OvarianCancerLayout({ children }: LayoutProps<"/ovarian-cancer-treatment">) {
+// The URL: /ovarian-cancer-hospital/.
+export default function OvarianCancerLayout({ children }: LayoutProps<"/ovarian-cancer-hospital">) {
   return (
     <SiteShell
       theme="ovarian"
       headerVariant="light"
-      activeHref="/ovarian-cancer-treatment/"
+      activeHref="/ovarian-cancer-hospital/"
       defaultService={defaultAppointmentService}
     >
       {children}

@@ -31,7 +31,7 @@ export function generateViewport(): Viewport {
   return pageViewport(page);
 }
 
-const finalImage = homeImages.finalCouple;
+const finalImage = homeImages.finalFamily;
 
 /*
  * Why the shell is here and not in a layout: every other page puts <SiteShell> in its own

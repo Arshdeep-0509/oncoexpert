@@ -1,5 +1,5 @@
 /**
- * Image manifest for /endometrial-cancer-treatment-bangalore/ (Endometrial Cancer).
+ * Image manifest for /endometrial-cancer-hospital-bangalore/ (Endometrial Cancer).
  *
  * New stock photos live in public/images/endometrial-cancer/ and are produced by
  * `npm run images endometrial` (scripts/fetch-images.mjs reads `file`, `src` + `pexelsId` from this
@@ -16,6 +16,15 @@ const BASE = "/images/endometrial-cancer";
 const pexels = (id: number) => `https://www.pexels.com/photo/${id}/`;
 
 export const endometrialImages = {
+  // #final-cta: AI-generated (Higgsfield, gpt_image_2_5), the client review, 4 Nov 2026. Not real patients.
+  finalTea: {
+    file: "final-tea.jpg",
+    src: `${BASE}/final-tea.jpg`,
+    alt: "Woman in a coral saree smiling over a cup of tea, her daughter beside her",
+    focal: "72% 25%",
+    width: 2000,
+    height: 1131,
+  },
   /* Own photos, reused ---------------------------------------------- */
 
   doctor: {

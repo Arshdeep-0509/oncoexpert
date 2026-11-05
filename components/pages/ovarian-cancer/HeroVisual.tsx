@@ -1,64 +1,104 @@
 import type * as React from "react";
+import Image from "next/image";
 import { hero } from "@/content/pages/ovarian-cancer";
+import { ovarianImages } from "@/content/pages/ovarian-cancer.images";
 import { cn } from "@/lib/utils";
 import { MotionToggle } from "@/components/ui/MotionToggle";
-import { HeroStory } from "@/components/pages/ovarian-cancer/HeroStory";
-import { RIBBON_BOX, RIBBON_PATH, SEEDS } from "@/components/pages/ovarian-cancer/ribbon-art";
 import { at, styles } from "@/components/pages/ovarian-cancer/hero-styles";
 
+/** The overlays' coordinates: the render's own, so they stay on the organs at every size. */
+const ART = { width: 800, height: 420 } as const;
+const OVARIES = [
+  { cx: 155, cy: 262 },
+  { cx: 645, cy: 262 },
+] as const;
+const TUBES = [
+  "M 62 215 C 30 130, 70 52, 130 44 C 185 38, 205 84, 268 96",
+  "M 738 215 C 770 130, 730 52, 670 44 C 615 38, 595 84, 532 96",
+] as const;
+
+const viewBox = `0 0 ${ART.width} ${ART.height}`;
+
 /**
- * The teal ribbon (ribbon-art.ts) whose line outlines the tubes and ovaries, with the treatment
- * story drawn inside it (HeroStory) and, under the art, its three steps lighting up in turn. The
- * box keeps the art's proportions (CLS 0); the art carries data-depth for the pointer parallax.
+ * A 3D render of the uterus, tubes and ovaries, floating in a soft halo inside a slow ring. The
+ * three treatment steps loop over it, each lighting its chip below: surgery (focus rings draw
+ * around the ovaries), HIPEC (a warm glow), recovery (the ovaries glow teal, light runs along the
+ * tubes). The photo is the LCP image: painted from the start, it only ever moves. The default CSS
+ * is the calm end state; the art carries data-depth for the pointer parallax.
  */
 export function HeroVisual() {
+  const art = ovarianImages.heroOvaries;
+
   return (
-    <div className="relative mx-auto w-full max-w-[360px] md:max-w-[440px] lg:mr-0 lg:max-w-[520px]">
-      <div className="relative" style={{ aspectRatio: `${RIBBON_BOX.width} / ${RIBBON_BOX.height}` }}>
-        <div data-depth="5" role="img" aria-label={hero.a11y.visual} className="pointer-events-none absolute inset-0">
-          <svg viewBox={`0 0 ${RIBBON_BOX.width} ${RIBBON_BOX.height}`} className="size-full overflow-visible">
-            <defs>
-              <linearGradient id="ov-ribbon-grad" x1="0" y1="1" x2="1" y2="0">
-                <stop offset="0" style={{ stopColor: "var(--accent)" }} />
-                <stop offset="0.6" style={{ stopColor: "var(--accent-bright)" }} />
-                <stop offset="1" style={{ stopColor: "var(--accent-glow)" }} />
-              </linearGradient>
-            </defs>
-            <HeroStory />
-            <path
-              d={RIBBON_PATH}
-              pathLength={1}
-              fill="none"
-              stroke="url(#ov-ribbon-grad)"
-              strokeWidth="7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={styles.line}
+    <div className="relative mx-auto w-full max-w-[400px] md:max-w-[480px] lg:mr-0 lg:max-w-[600px]">
+      <div className="relative aspect-[10/8]">
+        <span aria-hidden="true" className={styles.halo} />
+        <span aria-hidden="true" className={styles.orbit} />
+
+        <div data-depth="5" className="pointer-events-none absolute inset-0 grid place-items-center">
+          <div className={cn(styles.art, "relative w-full")} style={{ aspectRatio: `${ART.width} / ${ART.height}` }}>
+            {/* Behind the organs */}
+            <svg aria-hidden="true" viewBox={viewBox} className="absolute inset-0 size-full overflow-visible">
+              <defs>
+                <radialGradient id="ov-grad-warm">
+                  <stop offset="0" style={{ stopColor: "var(--highlight)", stopOpacity: 0.6 }} />
+                  <stop offset="1" style={{ stopColor: "var(--highlight)", stopOpacity: 0 }} />
+                </radialGradient>
+                <radialGradient id="ov-grad-calm">
+                  <stop offset="0" style={{ stopColor: "var(--accent-bright)", stopOpacity: 0.7 }} />
+                  <stop offset="1" style={{ stopColor: "var(--accent-bright)", stopOpacity: 0 }} />
+                </radialGradient>
+              </defs>
+              <ellipse cx="400" cy="200" rx="400" ry="250" fill="url(#ov-grad-warm)" className={styles.warm} />
+              {OVARIES.map((o) => (
+                <circle key={o.cx} cx={o.cx} cy={o.cy} r="125" fill="url(#ov-grad-calm)" className={styles.calm} />
+              ))}
+            </svg>
+
+            <Image
+              src={art.src}
+              alt={art.alt}
+              width={art.width}
+              height={art.height}
+              preload
+              fetchPriority="high"
+              sizes="(max-width: 767px) 400px, (max-width: 1023px) 480px, 600px"
+              className="relative size-full select-none"
             />
-            <path
-              d={RIBBON_PATH}
-              pathLength={1}
-              fill="none"
-              style={{ stroke: "var(--white)" }}
-              strokeWidth="7"
-              strokeLinecap="round"
-              strokeOpacity="0.85"
-              className={styles.shimmer}
-            />
-            {SEEDS.map(([cx, cy, r], i) => (
-              <circle
-                key={`${cx}-${cy}`}
-                cx={cx}
-                cy={cy}
-                r={r}
-                className={styles.seed}
-                style={{ fill: i % 2 ? "var(--highlight)" : "var(--accent-bright)", "--i": i } as React.CSSProperties}
-              />
-            ))}
-          </svg>
+
+            {/* Over the organs */}
+            <svg aria-hidden="true" viewBox={viewBox} className="absolute inset-0 size-full overflow-visible">
+              {OVARIES.map((o) => (
+                <circle
+                  key={o.cx}
+                  cx={o.cx}
+                  cy={o.cy}
+                  r="86"
+                  pathLength={1}
+                  fill="none"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  style={{ stroke: "var(--accent)" }}
+                  className={styles.scan}
+                />
+              ))}
+              {TUBES.map((d) => (
+                <path
+                  key={d}
+                  d={d}
+                  pathLength={1}
+                  fill="none"
+                  strokeWidth="7"
+                  strokeLinecap="round"
+                  style={{ stroke: "var(--white)" }}
+                  className={styles.bead}
+                />
+              ))}
+            </svg>
+          </div>
         </div>
 
-        <div className={cn(styles.step, styles.fadeUp, "absolute right-0 bottom-[6%] z-10")} style={at(1.8)}>
+        <div className={cn(styles.step, styles.fadeUp, "absolute right-0 bottom-0 z-10")} style={at(1.8)}>
           <MotionToggle
             pause={hero.a11y.pause}
             play={hero.a11y.play}

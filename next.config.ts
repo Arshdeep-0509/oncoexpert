@@ -30,6 +30,12 @@ const nextConfig: NextConfig = {
     // YouTube thumbnails for the video facades
     remotePatterns: [{ protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" }],
   },
+  experimental: {
+    // Hostinger's build hung at "Creating an optimized production build": keep the CSS loader in
+    // worker threads (the default is a child-process pool over sockets) and limit the build workers.
+    turbopackPluginRuntimeStrategy: "workerThreads",
+    cpus: 2,
+  },
   turbopack: {
     rules: {
       "*.css": {

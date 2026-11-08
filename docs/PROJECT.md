@@ -117,7 +117,7 @@ content/
   pages/<page>.seo.ts        search / answer-engine facts (cancer pages: condition, definition, quick answers,
                              figure sentences, offers, llms.txt purpose; booking and about: definition, purpose)
 lib/
-  appointment.ts             Server Action + email delivery (Resend): submitAppointment
+  appointment.ts             Server Action + delivery (Resend email, Google Sheet row): submitAppointment
   appointment-schema.ts      zod schema shared by the form and the server
   seo.ts                     metadata / viewport helpers
   jsonld.ts                  JSON-LD: shared nodes (Physician, MedicalClinic, FAQ questions) and one-@graph builders:
@@ -265,8 +265,11 @@ the same values as `variant`.
   itself the header's button scrolls to the form instead.
 - The form reads `?service=` (preselects), `?note=` (hidden note) and `?from=` (the page the visitor
   came from: the hidden page field becomes "Book Appointment via /colon-…/"). The server action emails
-  "New appointment request - <page> page". Needs `RESEND_API_KEY` (+ `APPOINTMENT_TO_EMAIL`,
-  `APPOINTMENT_FROM_EMAIL`). The form needs JavaScript (react-hook-form, Radix Select).
+  "New appointment request - <page> page" (`RESEND_API_KEY`, `APPOINTMENT_TO_EMAIL`,
+  `APPOINTMENT_FROM_EMAIL`) and, in parallel, adds a row to the Google Sheet (Name | Contact Number |
+  Service Required | Date) through the Apps Script web app `scripts/google-sheets/appointments.gs`
+  (`GOOGLE_SHEETS_WEBHOOK_URL`, `GOOGLE_SHEETS_WEBHOOK_SECRET`; setup in README "Google Sheet"). Sent
+  when either stored it. The form needs JavaScript (react-hook-form, Radix Select).
 - Every page with a hero gives it `id="hero"`; the booking page's form section is `id="appointment"`.
 
 ## Primitives (components/ui)

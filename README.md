@@ -325,11 +325,30 @@ checklist in [docs/PROJECT.md](docs/PROJECT.md#add-a-page).
 ## Appointment form
 
 - Validation: react-hook-form + zod (`lib/appointment-schema.ts`, shared with the server).
-- Submission and delivery: the Server Action in `lib/appointment.ts` emails each request via Resend
-  ("New appointment request - <page> page"). To send to Google Sheets or a CRM instead, replace
-  `deliverAppointment` in that file; nothing else changes.
-- Without `RESEND_API_KEY` the form shows its error message and asks people to call. It never pretends
-  a request was sent.
+- Submission and delivery: the Server Action in `lib/appointment.ts` sends each request, in parallel,
+  by email via Resend ("New appointment request - <page> page") and as a row in the Google Sheet. It
+  counts as sent when at least one of them stored it; a failed one is logged by name only.
+- With neither set up (no `RESEND_API_KEY`, no Google Sheet variables) the form shows its error message
+  and asks people to call. It never pretends a request was sent.
+
+### Google Sheet
+
+Each request adds a row: **Name | Contact Number | Service Required | Date** (the header row is
+written on the first request; the date is a real date cell, empty when none was chosen).
+
+1. Open the sheet → **Extensions → Apps Script**. Replace `Code.gs` with
+   `scripts/google-sheets/appointments.gs` and save.
+2. **Project Settings** (gear) → **Script Properties** → add `WEBHOOK_SECRET` with a long random value
+   (for example the output of `node -e "console.log(crypto.randomUUID()+crypto.randomUUID())"`).
+3. **Deploy → New deployment** → type **Web app**; Execute as **Me**; Who has access **Anyone**.
+   Authorize and copy the Web app URL (it ends in `/exec`).
+4. Set `GOOGLE_SHEETS_WEBHOOK_URL` (that URL) and `GOOGLE_SHEETS_WEBHOOK_SECRET` (the same secret) in
+   `.env.local` and in the hosting provider's environment variables, then redeploy.
+
+"Anyone" only means the URL needs no Google login: requests without the secret are refused, and the
+script only adds rows (it never returns the sheet). After changing the script: **Deploy → Manage
+deployments → Edit → Version: New version**, so the URL stays the same.
+
 - Spam: a hidden honeypot field. Filled-in submissions are dropped silently.
 - The form lives on one page, `/book-your-appoinment-page/`: Name, Contact Number, Service Required and
   Date. Every appointment button on the site opens that page. Link to it with a service already chosen:

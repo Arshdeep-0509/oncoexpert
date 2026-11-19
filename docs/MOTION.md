@@ -158,7 +158,11 @@ properties and are not listed.
 
 | Element | Animation | Trigger | Duration | Loop | Pause / stop | Reduced motion |
 | --- | --- | --- | --- | --- | --- | --- |
-| `.uro-portrait` | uro-settle (hero.css) | page load (after the intro) | 1.1s | no | n/a (runs once) | final state (no animation) |
+| `.uro-line` | uro-draw (hero.css) | page load (after the intro) | 0.7s | no | n/a (runs once) | final state (no animation) |
+| `.uro-fill` | uro-fill (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
+| `.uro-pulse` | uro-pulse (hero.css) | page load (after the intro) | 3.6s | yes | pause button (48px), off-screen | final state (no animation) |
+| `.uro-line.uro-kidney` | uro-draw (hero.css) | page load (after the intro) | 0.7s | yes | pause button (48px), off-screen | final state (no animation) |
+| `.uro-fill .uro-kidney` | uro-kidney (hero.css) | page load (after the intro) | 7s | yes | pause button (48px), off-screen | final state (no animation) |
 | `.uro-ring` | uro-draw (hero.css) | page load (after the intro) | 1.4s | no | n/a (runs once) | final state (no animation) |
 | `.uro-tick` | uro-draw (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
 | `.uro-chipFloat` | uro-float (hero.css) | page load (after the intro) | 8s | yes | pause button (48px), off-screen | final state (no animation) |
@@ -172,7 +176,10 @@ properties and are not listed.
 
 | Element | Animation | Trigger | Duration | Loop | Pause / stop | Reduced motion |
 | --- | --- | --- | --- | --- | --- | --- |
-| `.gastro-photo` | gastro-settle (hero.css) | page load (after the intro) | 1.3s | no | n/a (runs once) | final state (no animation) |
-| `.gastro-curl` | gastro-rise (hero.css) | page load (after the intro) | var(--t, 8s) | yes | pause button (48px), off-screen | final state (no animation) |
+| `.gastro-line` | gastro-draw (hero.css) | page load (after the intro) | 0.7s | no | n/a (runs once) | final state (no animation) |
+| `.gastro-fill` | gastro-fade (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
+| `.gastro-line.gastro-fold` | gastro-draw (hero.css) | page load (after the intro) | 0.7s | yes | pause button (48px), off-screen | final state (no animation) |
+| `.gastro-flow` | gastro-flow (hero.css) | page load (after the intro) | 4.5s | yes | pause button (48px), off-screen | final state (no animation) |
+| `.gastro-glow` | gastro-breathe (hero.css) | page load (after the intro) | 8s | yes | pause button (48px), off-screen | final state (no animation) |
 | `.gastro-speck` | gastro-drift (hero.css) | page load (after the intro) | var(--t, 20s) | yes | pause button (48px), off-screen | final state (no animation) |
 | `.sgx-check[aria-checked="true"] .sgx-box` | sgx-bounce (symptom-grid.css) | an interaction (state change) | 0.45s | no | n/a (runs once) | final state (no animation) |

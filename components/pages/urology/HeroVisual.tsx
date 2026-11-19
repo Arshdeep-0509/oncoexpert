@@ -1,110 +1,142 @@
 import type * as React from "react";
-import Image from "next/image";
 import { hero, specialties } from "@/content/pages/urology";
-import { urologyImages } from "@/content/pages/urology.images";
 import { cn } from "@/lib/utils";
 import { MotionToggle } from "@/components/ui/MotionToggle";
+import { SHAPES } from "@/components/pages/urology/specialty-map";
 import { at, styles } from "@/components/pages/urology/hero-styles";
 
-const portrait = urologyImages[hero.portrait];
 const chips = hero.chips.map((key) => specialties.items.find((item) => item.key === key)!);
 
-/* Chip positions around the stage: phones (the first two only), then from md. */
+/* Chip positions around the art: phones (the first two only, in opposite corners), then from md. */
 const CHIP_POSITIONS = [
-  "left-3 bottom-[34%] md:-left-6 md:top-[16%] md:bottom-auto lg:-left-10",
-  "right-3 bottom-4 md:-right-4 md:top-[44%] md:bottom-auto lg:-right-6",
-  "md:-left-4 md:bottom-[18%] lg:-left-12",
-  "md:right-6 md:-bottom-5",
+  "left-0 top-[4%] md:-left-6 md:top-[14%] lg:-left-10",
+  "right-0 bottom-[2%] md:-right-4 md:top-[44%] md:bottom-auto lg:-right-6",
+  "md:left-0 md:bottom-[14%] lg:-left-8",
+  "md:right-6 md:bottom-[2%]",
 ] as const;
 
-/* The rings behind the head and the gauge ticks (stage coordinates, 400 × 436). */
-const RINGS = [
-  { r: 150, opacity: 0.5, delay: 0 },
-  { r: 118, opacity: 0.35, delay: 0.15 },
-] as const;
-const TICKS = Array.from({ length: 13 }, (_, i) => {
-  const a = (-200 + i * 18.33) * (Math.PI / 180);
-  const r1 = 172;
-  const r2 = i % 3 === 0 ? 184 : 179;
-  return `M${200 + r1 * Math.cos(a)} ${168 + r1 * Math.sin(a)} L${200 + r2 * Math.cos(a)} ${168 + r2 * Math.sin(a)}`;
+/* The gauge ring and its ticks (400 × 400). */
+const TICKS = Array.from({ length: 25 }, (_, i) => {
+  const a = (-90 + i * 15) * (Math.PI / 180);
+  const r1 = 176;
+  const r2 = i % 6 === 0 ? 190 : 184;
+  const p = (r: number) => `${(200 + r * Math.cos(a)).toFixed(1)} ${(200 + r * Math.sin(a)).toFixed(1)}`;
+  return `M${p(r1)} L${p(r2)}`;
 }).join(" ");
 
+/* The urinary tract (the specialties map's shapes, 360 × 450), drawn in turn. */
+const DRAW = [
+  ...SHAPES.kidneys.map((d) => ({ d, at: 0.3, w: 3.5, kidney: true })),
+  ...SHAPES.adrenals.map((d) => ({ d, at: 0.75, w: 3, kidney: false })),
+  ...SHAPES.ureters.map((d) => ({ d, at: 0.95, w: 3, kidney: false })),
+  { d: SHAPES.bladder, at: 1.25, w: 3.5, kidney: false },
+  { d: SHAPES.urethra, at: 1.7, w: 3, kidney: false },
+];
+const { prostate } = SHAPES;
+/* The flow: from each kidney down its ureter, then out through the urethra. */
+const FLOW = [...SHAPES.ureters, SHAPES.urethra] as const;
+
 /**
- * The doctor on a soft rounded stage (his cutout is the LCP image: preloaded, high priority, on
- * screen from the first paint; it only settles upward), with rings and gauge ticks drawn around his
- * head and the floating dashboard chips (ICD-10 code · organ, tabular figures, a live dot). The
- * stage's aspect ratio is fixed, so nothing shifts while the page loads. Phones: a shorter stage
- * (~70% of the desktop height) and two chips.
+ * The hero's visual (no photo): the urinary tract in kidney-green line art drawing itself in, the
+ * organs filling softly, then marigold pulses flowing down the ureters and the kidneys breathing,
+ * inside a sage glow with a gauge ring; the four dashboard chips (ICD-10 code · organ) float around
+ * it. The box is square, so nothing shifts while the page loads. Phones: smaller, two chips.
  */
 export function HeroVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-[460px] md:max-w-[560px] lg:mr-0 lg:max-w-[520px] xl:max-w-[540px]">
-      <div
-        className={cn(
-          styles.stage,
-          "relative isolate aspect-[4/3] overflow-hidden rounded-[1.75rem] ring-1 shadow-soft-lg ring-line md:aspect-[5/4] md:rounded-[2.25rem] lg:aspect-[11/12]",
-        )}
-      >
-        {/* Rings and gauge ticks behind the head */}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 400 436"
-          preserveAspectRatio="xMidYMin slice"
-          className="absolute inset-0 -z-10 size-full"
-        >
-          {RINGS.map((ring) => (
-            <circle
-              key={ring.r}
-              cx="200"
-              cy="168"
-              r={ring.r}
-              pathLength={1}
-              fill="none"
-              stroke="var(--accent)"
-              strokeOpacity={ring.opacity}
-              strokeWidth={1}
-              transform="rotate(-90 200 168)"
-              className={styles.ring}
-              style={{ "--r": `${ring.delay}s` } as React.CSSProperties}
-            />
-          ))}
+    <div className="relative mx-auto aspect-square w-[88%] max-w-[420px] md:w-[78%] md:max-w-[520px] lg:mr-0 lg:w-full lg:max-w-[540px]">
+      {/* Backdrop: glow, gauge ring, ticks */}
+      <div aria-hidden="true" className={cn(styles.step, styles.pop, "absolute inset-0")} style={at(0.1)}>
+        <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(circle,var(--surface)_0%,color-mix(in_srgb,var(--accent-soft)_85%,transparent)_45%,transparent_70%)]" />
+        <svg viewBox="0 0 400 400" className="absolute inset-0 size-full overflow-visible">
+          <circle cx="200" cy="200" r="196" fill="none" stroke="var(--line)" strokeWidth={1.5} strokeDasharray="2 7" />
+          <circle
+            cx="200"
+            cy="200"
+            r="168"
+            pathLength={1}
+            fill="none"
+            stroke="var(--accent)"
+            strokeOpacity={0.25}
+            strokeWidth={1.25}
+            transform="rotate(-90 200 200)"
+            className={styles.ring}
+          />
           <path
             d={TICKS}
             pathLength={1}
             fill="none"
             stroke="var(--accent)"
-            strokeOpacity={0.55}
+            strokeOpacity={0.5}
             strokeWidth={1.5}
             strokeLinecap="round"
             className={styles.tick}
           />
-          <circle cx="200" cy="168" r="196" fill="none" stroke="var(--line)" strokeWidth={1} strokeDasharray="2 6" />
         </svg>
+      </div>
 
-        <Image
-          src={portrait.src}
-          alt={portrait.alt}
-          width={portrait.width}
-          height={portrait.height}
-          preload
-          fetchPriority="high"
-          sizes="(max-width: 767px) 320px, (max-width: 1023px) 380px, 460px"
-          className={cn(
-            styles.portrait,
-            "absolute bottom-0 left-1/2 w-[66%] max-w-none -translate-x-1/2 select-none md:w-[64%] lg:w-[86%]",
-          )}
-        />
-
-        <div
-          className={cn(styles.step, styles.fadeUp, "absolute top-3 right-3 z-10 md:top-4 md:right-4")}
-          style={at(1.8)}
-        >
-          <MotionToggle
-            pause={hero.a11y.pause}
-            play={hero.a11y.play}
-            className="size-12 bg-surface/90 shadow-soft-sm"
+      {/* The urinary tract */}
+      <svg
+        role="img"
+        aria-label={hero.a11y.visual}
+        viewBox="60 50 240 390"
+        className="absolute inset-x-[16%] inset-y-[5%] h-[90%] w-[68%] overflow-visible"
+      >
+        <defs>
+          <linearGradient id="uro-hero-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="var(--accent)" />
+            <stop offset="1" stopColor="var(--accent-bright)" />
+          </linearGradient>
+        </defs>
+        {/* Soft fills, after the lines */}
+        <g className={styles.fill}>
+          {SHAPES.kidneys.map((d) => (
+            <path key={d} d={d} fill="var(--surface)" className={styles.kidney} />
+          ))}
+          <path d={SHAPES.bladder} fill="var(--surface)" />
+          <ellipse {...prostate} fill="var(--petal)" />
+        </g>
+        {DRAW.map((s) => (
+          <path
+            key={s.d}
+            d={s.d}
+            pathLength={1}
+            fill="none"
+            stroke="url(#uro-hero-grad)"
+            strokeWidth={s.w}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={cn(styles.line, s.kidney && styles.kidney)}
+            style={{ "--d": `${s.at}s` } as React.CSSProperties}
           />
-        </div>
+        ))}
+        <ellipse
+          {...prostate}
+          pathLength={1}
+          fill="none"
+          stroke="url(#uro-hero-grad)"
+          strokeWidth={3}
+          className={styles.line}
+          style={{ "--d": "1.5s" } as React.CSSProperties}
+        />
+        {/* The flow */}
+        {FLOW.map((d, i) => (
+          <path
+            key={`flow-${d}`}
+            d={d}
+            pathLength={1}
+            fill="none"
+            stroke="var(--highlight)"
+            strokeWidth={4}
+            strokeLinecap="round"
+            className={styles.pulse}
+            style={{ "--s": `${2.4 + i * 0.6}s` } as React.CSSProperties}
+          />
+        ))}
+      </svg>
+
+      <div className={cn(styles.step, styles.fadeUp, "absolute top-0 right-0 z-10")} style={at(1.8)}>
+        <MotionToggle pause={hero.a11y.pause} play={hero.a11y.play} className="size-12 bg-surface/90 shadow-soft-sm" />
       </div>
 
       {/* Dashboard chips (words from the specialties) */}
@@ -119,7 +151,7 @@ export function HeroVisual() {
               CHIP_POSITIONS[i],
               i >= hero.phoneChips && styles.phoneHidden,
             )}
-            style={at(1.5 + i * 0.15)}
+            style={at(1.9 + i * 0.15)}
           >
             <span
               className={cn(

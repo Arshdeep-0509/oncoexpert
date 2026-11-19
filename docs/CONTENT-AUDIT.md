@@ -1383,7 +1383,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts | service | EXISTING (button labels); NEW (the service each one preselects, ana… | Second Opinion |
 | urology.ts | cta | EXISTING (button labels); NEW (the service each one preselects, ana… | urology:hero:second-opinion |
 | urology.ts | emphasis | EXISTING (the live heading colours "Precision & Compassion" in its … | Precision & Compassion |
-| urology.ts | portrait | EXISTING (the live heading colours "Precision & Compassion" in its … | doctorCutout |
+| urology.ts | visual | NEW (screen-reader labels) | Illustration: the kidneys, ureters, bladder and prostate in line art, with a gentle flow |
 | urology.ts | chips | NEW (screen-reader labels) | Specialties at a glance |
 | urology.ts | pause | NEW (screen-reader labels) | Pause the hero animation |
 | urology.ts | play | NEW (screen-reader labels) | Play the hero animation |
@@ -1530,6 +1530,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 - Uro-oncology in Bangalore at OncoXpert: robotic and keyhole surgery for kidney, prostate, bladder, testicular and penile cancers, with organ-preserving care.
 - Consultation
+- Illustration: the kidneys, ureters, bladder and prostate in line art, with a gentle flow
 - Specialties at a glance
 - Pause the hero animation
 - Play the hero animation
@@ -1641,6 +1642,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts | label | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Surgeries Performed |
 | stomach-cancer.ts | note | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Global standards of care in Bangalore |
 | stomach-cancer.ts | emphasis | NEW (choice: the words set in the accent, Fraunces italic). The liv… | Personalized Care |
+| stomach-cancer.ts | visual | NEW (screen-reader labels) | Illustration: the stomach in warm line art, with nourishment flowing gently through it |
 | stomach-cancer.ts | pause | NEW (screen-reader labels) | Pause the hero animation |
 | stomach-cancer.ts | play | NEW (screen-reader labels) | Play the hero animation |
 | stomach-cancer.ts |  | NEW (screen-reader labels) | Understanding Stomach (Gastric) Cancer |
@@ -1698,12 +1700,16 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | Harnessing the body’s immune system to fight advanced gastric cancers using PD-L1 inhibitors. |
 | stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Personalized genetics |
 | stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Longer-term response |
-| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | Where each treatment fits |
-| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | FLOT before surgery |
-| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | D2 Gastrectomy or Robotic Surgery |
-| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | FLOT after surgery |
-| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | Immunotherapy for advanced disease |
-| stomach-cancer.ts | cards | NEW (the cards' swipe row name on phones) | Treatment modalities |
+| stomach-cancer.ts | label | NEW (the treatment journey: the four cards placed in the order care… | Your treatment journey |
+| stomach-cancer.ts | label | NEW (the treatment journey: the four cards placed in the order care… | Before surgery |
+| stomach-cancer.ts | note | NEW (the treatment journey: the four cards placed in the order care… | Shrinks the tumour first |
+| stomach-cancer.ts | note | NEW (the treatment journey: the four cards placed in the order care… | Removes the tumour and the nearby lymph nodes |
+| stomach-cancer.ts | gastrectomy | NEW (the treatment journey: the four cards placed in the order care… | The operation |
+| stomach-cancer.ts | robotic | NEW (the treatment journey: the four cards placed in the order care… | The technique |
+| stomach-cancer.ts | label | NEW (the treatment journey: the four cards placed in the order care… | After surgery |
+| stomach-cancer.ts | note | NEW (the treatment journey: the four cards placed in the order care… | Helps keep the cancer from coming back |
+| stomach-cancer.ts | label | NEW (the treatment journey: the four cards placed in the order care… | For advanced disease |
+| stomach-cancer.ts | note | NEW (the treatment journey: the four cards placed in the order care… | The body's own immune system joins the fight |
 | stomach-cancer.ts | title | NEW (the live block has no heading; the section needs one for the o… | Robotic Precision vs Laparoscopic Expertise |
 | stomach-cancer.ts | tabs | NEW (the live block has no heading; the section needs one for the o… | Surgical technique |
 | stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Robotic Precision |
@@ -1767,6 +1773,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 - Consultation
 - Personalized Care
+- Illustration: the stomach in warm line art, with nourishment flowing gently through it
 - Pause the hero animation
 - Play the hero animation
 - Understanding Stomach (Gastric) Cancer
@@ -1783,12 +1790,16 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Warning signs
 - Your checklist
 - Comprehensive Treatment Modalites
-- Where each treatment fits
-- FLOT before surgery
-- D2 Gastrectomy or Robotic Surgery
-- FLOT after surgery
-- Immunotherapy for advanced disease
-- Treatment modalities
+- Your treatment journey
+- Before surgery
+- Shrinks the tumour first
+- Removes the tumour and the nearby lymph nodes
+- The operation
+- The technique
+- After surgery
+- Helps keep the cancer from coming back
+- For advanced disease
+- The body's own immune system joins the fight
 - Robotic Precision vs Laparoscopic Expertise
 - Surgical technique
 - Book Appointment with Dr. Sunil
@@ -1830,6 +1841,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - (stomach-cancer.ts) (or client): "Personalized Care" or "Precision"?
 - (stomach-cancer.ts) the two lines (gentle guidance, never a diagnosis).
 - (stomach-cancer.ts) where should "Explore All Procedures" lead? On the live page it links to "#". For now: the robotic page's #techniques. Options: that, Home's services, or the booking page.
+- (stomach-cancer.ts) the phase labels, the notes and the roles; is this order right for most patients?
 - (stomach-cancer.ts) "a pioneer in robotic-assisted stomach cancer surgeries in India": can this claim be backed up (first cases, year)? Also "International Fellowship trained": which fellowship (see content/shared/organization.ts)?
 - (stomach-cancer.ts) the live page shows Vasudeva Murthy's review, which is about colon cancer surgery. Hidden on this page by default (as on the other cancer pages); set showColonReview to true to show it. (A GI page could reasonably show it: the doctor's call.)
 

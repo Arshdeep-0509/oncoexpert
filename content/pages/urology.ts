@@ -114,16 +114,15 @@ export const hero = {
   // SOURCE: EXISTING (the live heading colours "Precision & Compassion" in its second colour: the
   // span starts inside the second line and runs to the end)
   emphasis: "Precision & Compassion",
-  // The live hero shows the doctor's cutout (on its stage). heroMan (a confident older man) is kept
-  // for a later section.
-  image: "heroMan",
-  portrait: "doctorCutout",
-  // SOURCE: NEW (choice: the specialties shown as floating dashboard chips around the portrait, in
-  // order; phones show the first two). Their words come from `specialties`.
+  // The live hero shows the doctor's cutout; the rebuilt hero shows animated line art of the urinary
+  // tract instead (the client's choice, 19 Nov 2026).
+  // SOURCE: NEW (choice: the specialties shown as floating dashboard chips around the art, in order;
+  // phones show the first two). Their words come from `specialties`.
   chips: ["kidney", "prostate", "bladder", "adrenal"],
   phoneChips: 2,
   // SOURCE: NEW (screen-reader labels)
   a11y: {
+    visual: "Illustration: the kidneys, ureters, bladder and prostate in line art, with a gentle flow",
     chips: "Specialties at a glance",
     pause: "Pause the hero animation",
     play: "Play the hero animation",
@@ -134,11 +133,9 @@ export const hero = {
   body: string;
   emphasis: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
-  image: UrologyImageKey;
-  portrait: UrologyImageKey;
   chips: readonly SpecialtyKey[];
   phoneChips: number;
-  a11y: { chips: string; pause: string; play: string };
+  a11y: { visual: string; chips: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */

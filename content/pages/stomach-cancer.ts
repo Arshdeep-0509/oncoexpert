@@ -109,22 +109,26 @@ export const hero = {
     label: "Surgeries Performed",
     note: "Global standards of care in Bangalore",
   },
-  image: "heroMeal",
   // SOURCE: NEW (choice: the words set in the accent, Fraunces italic). The live heading colours
   // "Precision" instead; set `emphasis: "Precision"` to match it.
   // PENDING DOCTOR (or client): "Personalized Care" or "Precision"?
   emphasis: "Personalized Care",
   // SOURCE: NEW (screen-reader labels)
-  a11y: { pause: "Pause the hero animation", play: "Play the hero animation" },
+  // The hero shows animated line art of the stomach instead of a photo (the client's choice,
+  // 19 Nov 2026); heroMeal (the family dinner) remains only as og.jpg's source.
+  a11y: {
+    visual: "Illustration: the stomach in warm line art, with nourishment flowing gently through it",
+    pause: "Pause the hero animation",
+    play: "Play the hero animation",
+  },
 } as const satisfies {
   eyebrow: string;
   lines: readonly string[];
   body: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   card: { value: number; suffix: string; label: string; note: string };
-  image: StomachImageKey;
   emphasis: string;
-  a11y: { pause: string; play: string };
+  a11y: { visual: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -279,29 +283,56 @@ export const treatments = {
       ],
     },
   ],
-  // SOURCE: NEW (the care pathway rail above the cards: where each treatment sits on one line; it
-  // restates the live text's "peri-operative" (before and after surgery) and "advanced"; nothing
-  // beyond it). Each stop names the card(s) it lights. PENDING DOCTOR: the stop labels.
-  pathway: {
-    label: "Where each treatment fits",
-    stops: [
-      { key: "before", label: "FLOT before surgery", cards: ["flot"] },
-      { key: "surgery", label: "D2 Gastrectomy or Robotic Surgery", cards: ["gastrectomy", "robotic"] },
-      { key: "after", label: "FLOT after surgery", cards: ["flot"] },
-      { key: "advanced", label: "Immunotherapy for advanced disease", cards: ["immunotherapy"] },
+  // SOURCE: NEW (the treatment journey: the four cards placed in the order care usually follows.
+  // The phase labels and one-line notes restate the live text: "peri-operative" (before and after
+  // surgery), "to shrink tumors", "extensive lymph node clearance", "prevent recurrence", "the body's
+  // immune system to fight advanced gastric cancers"; nothing beyond it. `roles` names what each
+  // surgery card is; `reminder`: the FLOT card shown again in short.)
+  // PENDING DOCTOR: the phase labels, the notes and the roles; is this order right for most patients?
+  journey: {
+    label: "Your treatment journey",
+    phases: [
+      { key: "before", step: 1, label: "Before surgery", note: "Shrinks the tumour first", cards: ["flot"] },
+      {
+        key: "surgery",
+        step: 2,
+        label: "Surgery",
+        note: "Removes the tumour and the nearby lymph nodes",
+        cards: ["gastrectomy", "robotic"],
+        roles: { gastrectomy: "The operation", robotic: "The technique" },
+      },
+      {
+        key: "after",
+        step: 3,
+        label: "After surgery",
+        note: "Helps keep the cancer from coming back",
+        cards: ["flot"],
+        reminder: true,
+      },
     ],
+    advanced: {
+      label: "For advanced disease",
+      note: "The body's own immune system joins the fight",
+      cards: ["immunotherapy"],
+    },
   },
-  // SOURCE: NEW (the cards' swipe row name on phones)
-  a11y: { cards: "Treatment modalities" },
 } as const satisfies {
   lines: readonly string[];
   intro: string;
   link: { label: string; href: string; cta: string };
-  pathway: {
+  journey: {
     label: string;
-    stops: readonly { key: string; label: string; cards: readonly ModalityKey[] }[];
+    phases: readonly {
+      key: string;
+      step: number;
+      label: string;
+      note: string;
+      cards: readonly ModalityKey[];
+      roles?: Partial<Record<ModalityKey, string>>;
+      reminder?: boolean;
+    }[];
+    advanced: { label: string; note: string; cards: readonly ModalityKey[] };
   };
-  a11y: { cards: string };
   items: readonly {
     key: ModalityKey;
     tag: string;

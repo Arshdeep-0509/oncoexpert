@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
   // Keep the live URL shape: /robotic-surgery/
   trailingSlash: true,
   // Every live WordPress URL with a replacement here. The "treatment" pages moved to "hospital" URLs
-  // (indexed and linked: keep these). Urology and Stomach Cancer are not rebuilt yet, so they redirect
-  // temporarily to the nearest content; replace those two when the pages are built.
+  // (indexed and linked: keep these). /urology/ and /stomach-cancer/ are rebuilt on their live URLs
+  // (their temporary redirects are gone).
   redirects() {
     const moved = [
       ["/breast-cancer-treatment-bangalore", "/breast-cancer-hospital-bangalore/"],
@@ -19,11 +19,7 @@ const nextConfig: NextConfig = {
       ["/home-2", "/"],
       ["/contact", "/book-your-appoinment-page/"],
     ].map(([source, destination]) => ({ source, destination, permanent: true }));
-    const temporary = [
-      ["/urology", "/about-us/#expertise"],
-      ["/stomach-cancer", "/robotic-surgery/#cancers"],
-    ].map(([source, destination]) => ({ source, destination, permanent: false }));
-    return [...moved, ...temporary];
+    return moved;
   },
   images: {
     formats: ["image/avif", "image/webp"],

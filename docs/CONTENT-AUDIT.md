@@ -115,7 +115,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - (about-us.ts) "over a decade" here and "10+" (experience), "Over 25 years" on the booking page, "15+" on Home. Which number is right?
 - (about-us.ts) a better title, not used yet: "About Dr. Sunil Navalgund, Surgical Oncologist in Bangalore \| OncoXpert"
 - (about-us.ts) approve the description.
-- (about-us.ts) GI Oncology and Uro-Oncology have no rebuilt page yet; they point to the live menu's Colorectal Cancer and Urology pages. Confirm (or name the pages they should open).
+- (about-us.ts) GI Oncology points to the Colorectal Cancer page; now that Stomach Cancer is rebuilt too, keep Colorectal or point it at /stomach-cancer/?
 - (about-us.ts) the years mismatch (see intro).
 
 ## Colorectal
@@ -125,7 +125,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | File | Key | SOURCE | Text |
 | --- | --- | --- | --- |
 | colorectal-cancer.ts | title | EXISTING (identical to the live page, keeps the SEO) | Colorectal Cancer Treatment & Surgery in Bangalore \| OncoXpert |
-| colorectal-cancer.ts |  | EXISTING (identical to the live page, keeps the SEO) | Get colorectal cancer treatment in Bangalore at OncoXpert, with advanced surgery, robotic procedures, and personalized surgical oncology care. |
+| colorectal-cancer.ts |  | NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR… | Get colorectal cancer treatment in Bangalore at OncoXpert, with advanced surgery, robotic procedures, and personalized surgical oncology care. Book a visit. |
 | colorectal-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | Consultation |
 | colorectal-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | 78+ Complex Surgeries |
 | colorectal-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | Low Stoma Rates |
@@ -147,7 +147,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | colorectal-cancer.ts | pause | NEW (control and screen-reader labels) | Pause animation |
 | colorectal-cancer.ts | play | NEW (control and screen-reader labels) | Play animation |
 | colorectal-cancer.ts | trust | NEW (control and screen-reader labels) | Surgical approaches |
-| colorectal-cancer.ts | label | NEW (breadcrumb; also published as BreadcrumbList JSON-LD) | Our Services |
 | colorectal-cancer.ts | label | NEW (breadcrumb; also published as BreadcrumbList JSON-LD) | Colorectal Cancer |
 | colorectal-cancer.ts | title | EXISTING | Precision Surgery, Compassionate Care |
 | colorectal-cancer.ts | emphasis | NEW (styling only: these words in the serif italic accent) | Compassionate Care |
@@ -277,6 +276,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 ### NEW lines
 
+- Get colorectal cancer treatment in Bangalore at OncoXpert, with advanced surgery, robotic procedures, and personalized surgical oncology care. Book a visit.
 - Consultation
 - 78+ Complex Surgeries
 - Low Stoma Rates
@@ -288,7 +288,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Pause animation
 - Play animation
 - Surgical approaches
-- Our Services
 - Colorectal Cancer
 - Compassionate Care
 - Our multi-disciplinary approach focuses on the intersection of medical excellence and patient lifestyle.
@@ -356,7 +355,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | File | Key | SOURCE | Text |
 | --- | --- | --- | --- |
 | endometrial-cancer.ts | title | EXISTING (identical to the live page, keeps the SEO) | Endometrial Cancer Treatment in Bangalore \| OncoXpert |
-| endometrial-cancer.ts |  | EXISTING (identical to the live page, keeps the SEO) | Looking for endometrial cancer treatment in Bangalore? OncoXpert offers personalized surgical oncology care, including minimally invasive and robotic surgery op… |
+| endometrial-cancer.ts |  | NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR… | Looking for endometrial cancer treatment in Bangalore? OncoXpert offers personalized surgical oncology care, including minimally invasive and robotic surgery. |
 | endometrial-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | Consultation |
 | endometrial-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | STAGE I SURVIVAL · 100% · 5-Year |
 | endometrial-cancer.ts | eyebrow | EXISTING | Advanced Gynecologic Oncology Care |
@@ -374,7 +373,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | endometrial-cancer.ts | features | NEW (screen-reader and control labels) | What we offer |
 | endometrial-cancer.ts | pause | NEW (screen-reader and control labels) | Pause animation |
 | endometrial-cancer.ts | play | NEW (screen-reader and control labels) | Play animation |
-| endometrial-cancer.ts | label | NEW (breadcrumb; also published as BreadcrumbList JSON-LD) | Our Services |
 | endometrial-cancer.ts | label | NEW (breadcrumb; also published as BreadcrumbList JSON-LD) | Endometrial Cancer |
 | endometrial-cancer.ts | title | EXISTING | Clinical Excellence |
 | endometrial-cancer.ts | intro | EXISTING | Proven success rates across all clinical stages. |
@@ -498,6 +496,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 ### NEW lines
 
+- Looking for endometrial cancer treatment in Bangalore? OncoXpert offers personalized surgical oncology care, including minimally invasive and robotic surgery.
 - Consultation
 - STAGE I SURVIVAL · 100% · 5-Year
 - Robotic & Minimally Invasive
@@ -505,7 +504,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - What we offer
 - Pause animation
 - Play animation
-- Our Services
 - Endometrial Cancer
 - Noticing one of these signs is a reason to get checked, not a diagnosis. An early consultation brings clarity and peace of mind.
 - Compare surgical approaches
@@ -567,7 +565,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | lung-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). The liv… | Focused On Recovery, |
 | lung-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). The liv… | Breathing & Quality Of Life |
 | lung-cancer.ts | title | EXISTING (identical to the live page, keeps the SEO). The live page… | Lung Cancer Treatment in Bangalore \| OncoXpert |
-| lung-cancer.ts |  | EXISTING (identical to the live page, keeps the SEO). The live page… | Get lung cancer treatment in Bangalore at OncoXpert, with robotic surgery, VATS, immunotherapy and personalized surgical oncology care. |
+| lung-cancer.ts |  | NEW (lengthened or shortened to 150-160 characters). PENDING DOCTOR… | Get lung cancer treatment in Bangalore at OncoXpert, with robotic surgery, VATS, immunotherapy and personalized surgical oncology care. Book a consultation. |
 | lung-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | Consultation |
 | lung-cancer.ts | eyebrow | NEW (eyebrow; the live hero has none) | Lung Cancer Care · Bengaluru |
 | lung-cancer.ts | body | EXISTING | Personalized lung cancer treatment using robotic surgery, keyhole surgery, immunotherapy and multidisciplinary cancer care designed to maximize outcomes while m… |
@@ -724,6 +722,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 ### NEW lines
 
+- Get lung cancer treatment in Bangalore at OncoXpert, with robotic surgery, VATS, immunotherapy and personalized surgical oncology care. Book a consultation.
 - Consultation
 - Lung Cancer Care · Bengaluru
 - Care planned around every breath
@@ -966,7 +965,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | ovarian-cancer.ts | label | NEW (the live block has no buttons; labels as on the endometrial an… | View Full Profile |
 | ovarian-cancer.ts | finalImage | NEW (order): the live order, without the colon cancer review unless… | finalFriends |
 | ovarian-cancer.seo.ts | name | NEW | Ovarian Cancer |
-| ovarian-cancer.seo.ts | definition | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert. |
+| ovarian-cancer.seo.ts |  | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert with cytoreductive surgery, HIPEC, fertility-preserving options, che… |
 | ovarian-cancer.seo.ts | name | NEW | Ovarian cancer |
 | ovarian-cancer.seo.ts |  | NEW | Cytoreductive surgery |
 | ovarian-cancer.seo.ts |  | NEW | HIPEC (Heated Intraperitoneal Chemotherapy) |
@@ -1043,7 +1042,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - View Full Profile
 - finalFriends
 - Ovarian Cancer
-- Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert.
+- Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats ovarian cancer at OncoXpert with cytoreductive surgery, HIPEC, fertility-preserving options, chemotherapy and immunotherapy.
 - Ovarian cancer
 - Cytoreductive surgery
 - HIPEC (Heated Intraperitoneal Chemotherapy)
@@ -1246,7 +1245,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | thyroid-cancer.seo.ts | question | NEW | How much does thyroid surgery cost in Bangalore? |
 | thyroid-cancer.seo.ts | answer | NEW | At OncoXpert, indicative package prices are ${formatRupees(total.price)} for a total thyroidectomy, ${formatRupees(modified.price)} for a modified neck dissecti… |
 | thyroid-cancer.seo.ts | question | NEW | Will thyroid surgery affect my voice? |
-| thyroid-cancer.seo.ts | answer | NEW | OncoXpert uses nerve monitors to ensure vocal cord safety during every thyroid operation. The recurrent laryngeal nerves run just behind the thyroid and move th… |
+| thyroid-cancer.seo.ts | answer | NEW | In OncoXpert's clinical record, no: zero permanent recurrent laryngeal nerve injuries, ${voice.value}${voice.suffix} permanent voice change after surgery. Nerve… |
 | thyroid-cancer.seo.ts | question | NEW | What is a thyroidectomy? |
 | thyroid-cancer.seo.ts |  | NEW | A thyroidectomy is the precise removal of part or all of the thyroid gland. At OncoXpert it is done with nerve monitoring to protect the voice, and may be combi… |
 | thyroid-cancer.seo.ts | question | NEW | What happens after thyroid cancer treatment? |
@@ -1333,7 +1332,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - How much does thyroid surgery cost in Bangalore?
 - At OncoXpert, indicative package prices are ${formatRupees(total.price)} for a total thyroidectomy, ${formatRupees(modified.price)} for a modified neck dissection and ${formatRupees(neck.price)} for a neck dissection (levels 1–3). Prices are indicative and may vary based on co-morbidities and hospital choice. The thyroidectomy package includes nerve monitoring and a 2-day stay.
 - Will thyroid surgery affect my voice?
-- OncoXpert uses nerve monitors to ensure vocal cord safety during every thyroid operation. The recurrent laryngeal nerves run just behind the thyroid and move the vocal cords. The practice's clinical record shows zero permanent recurrent laryngeal nerve injuries: ${voice.value}${voice.suffix} permanent voice change after surgery.
+- In OncoXpert's clinical record, no: zero permanent recurrent laryngeal nerve injuries, ${voice.value}${voice.suffix} permanent voice change after surgery. Nerve monitors ensure vocal cord safety during every thyroid operation. The recurrent laryngeal nerves run just behind the thyroid and move the vocal cords.
 - What is a thyroidectomy?
 - A thyroidectomy is the precise removal of part or all of the thyroid gland. At OncoXpert it is done with nerve monitoring to protect the voice, and may be combined with a neck dissection, the expert clearance of lymph nodes to prevent regional spread and recurrence. Targeted RAI therapy can then eliminate residual microscopic cancer cells.
 - What happens after thyroid cancer treatment?
@@ -1362,6 +1361,294 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - (thyroid-cancer.ts) "over a decade" here and on the ovarian page, "10+" on About Us, "15+" on the colorectal and endometrial pages, "Over 25 years" on the booking page. Which is right?
 - (thyroid-cancer.ts) what patients should bring for a second opinion.
 - (thyroid-cancer.ts) the live page shows Vasudeva Murthy's review, which is about colon cancer surgery. Hidden on this page by default; set showColonReview to true to show it.
+
+## Urology
+
+### Every text block
+
+| File | Key | SOURCE | Text |
+| --- | --- | --- | --- |
+| urology.ts |  | EXISTING. The heading's three lines (<br> on the live page). | Advanced Uro-Oncology |
+| urology.ts |  | EXISTING. The heading's three lines (<br> on the live page). | Care with Precision & |
+| urology.ts | title | EXISTING title (identical to the live page, keeps the SEO). The liv… | Urology - oncoxpert.in |
+| urology.ts |  | NEW (157 characters) | Uro-oncology in Bangalore at OncoXpert: robotic and keyhole surgery for kidney, prostate, bladder, testicular and penile cancers, with organ-preserving care. |
+| urology.ts |  | NEW (choice; the first of the live "Service Required" options) | Consultation |
+| urology.ts | eyebrow | EXISTING | Tata Memorial Trained Specialist |
+| urology.ts | body | EXISTING | Comprehensive diagnosis, robotic-assisted surgery, and personalized treatment pathways for kidney, prostate, and bladder cancers led by Dr. Sunil Navalgund. |
+| urology.ts | label | EXISTING (button labels); NEW (the service each one preselects, ana… | Book Consultation |
+| urology.ts | service | EXISTING (button labels); NEW (the service each one preselects, ana… | Consultation |
+| urology.ts | cta | EXISTING (button labels); NEW (the service each one preselects, ana… | urology:hero:book-consultation |
+| urology.ts | label | EXISTING (button labels); NEW (the service each one preselects, ana… | Get Second Opinion |
+| urology.ts | service | EXISTING (button labels); NEW (the service each one preselects, ana… | Second Opinion |
+| urology.ts | cta | EXISTING (button labels); NEW (the service each one preselects, ana… | urology:hero:second-opinion |
+| urology.ts | portrait | EXISTING (button labels); NEW (the service each one preselects, ana… | doctorCutout |
+| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Oncological Specialties |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Comprehensive surgical and medical management of urological malignancies with a focus on functional preservation. |
+| urology.ts | badge | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | CLINICAL DASHBOARD V2.0 |
+| urology.ts | action | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | VIEW PROTOCOL |
+| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Kidney Cancer |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Specializing in Robotic Partial Nephrectomy (Organ Sparing) and Radical Nephrectomy for advanced RCC cases. |
+| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Prostate Cancer |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Precision Robotic Prostatectomy focusing on |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | early functional recovery, nerve sparing, and oncological clearance. |
+| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Bladder Cancer |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Comprehensive care spanning TURBT to Robotic Radical Cystectomy with Intracorporeal Urinary Diversion. |
+| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Testicular Cancer |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Multimodal approach including nerve-sparing Retroperitoneal Lymph Node Dissection (RPLND) for germ cell tumors. |
+| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Penile Cancer |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Specialized surgical protocols aiming for maximum organ preservation and aesthetic- functional restoration. |
+| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Urethral & Adrenal |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Expert management of adrenal masses and rare genitourinary tract tumors using advanced imaging and robotics. |
+| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | TECHNOLOGICAL EDGE |
+| urology.ts | eyebrow | EXISTING. "Da Vinci®" as on the live page. | TECHNOLOGICAL EDGE |
+| urology.ts |  | EXISTING. "Da Vinci®" as on the live page. | Advanced Robotic & Keyhole |
+| urology.ts |  | EXISTING. "Da Vinci®" as on the live page. | Surgical Excellence |
+| urology.ts | body | EXISTING. "Da Vinci®" as on the live page. | OncoXpert utilizes the latest Da Vinci® surgical platform to perform ultra-precise procedures that minimize trauma and accelerate healing. Our robotic-first app… |
+| urology.ts | title | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | Rapid Recovery |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | Patients typically experience |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | ${fasterReturn}% faster return to daily |
+| urology.ts | title | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | High Precision |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | Nerve preservation rates are |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | significantly higher than |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | traditional surgery. |
+| urology.ts | label | EXISTING (label). SOURCE: NEW (target: "#" on the live page; the ro… | Learn About Robotic Tech |
+| urology.ts | cta | EXISTING (label). SOURCE: NEW (target: "#" on the live page; the ro… | urology:technology:robotic |
+| urology.ts | label | EXISTING | SUCCESSFUL ROBOTIC CASES |
+| urology.ts |  | EXISTING | Clinical Philosophy |
+| urology.ts | title | EXISTING (title, intro and its line break, card titles, text); NEW … | Clinical Philosophy: Organ Preservation |
+| urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | At OncoXpert, our primary goal is to cure cancer while preserving organ function and |
+| urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | quality of life. |
+| urology.ts | title | EXISTING (title, intro and its line break, card titles, text); NEW … | Partial Nephrectomy |
+| urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | Removing only the renal tumor while sparing the healthy kidney tissue. Essential for long-term renal |
+| urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | health and avoiding dialysis risks. |
+| urology.ts | title | EXISTING (title, intro and its line break, card titles, text); NEW … | Bladder Sparing Protocols |
+| urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | Utilizing trimodal therapy (TMT) – surgery, chemotherapy, and radiation – to keep the natural bladder intact when oncologically viable. |
+| urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | Clinical Leadership & Infrastructure |
+| urology.ts | title | EXISTING | Clinical Leadership & Infrastructure |
+| urology.ts | title | EXISTING | Robotic Mastery |
+| urology.ts | body | EXISTING | Dr. Sunil Navalgund brings over ${yearsExperience} years of surgical excellence, specializing in high-complexity robotic cases that demand elite precision and e… |
+| urology.ts | badge | EXISTING (the two chips under the text; the live chip reads "15+ Ye… | FELLOWSHIP TRAINED |
+| urology.ts | title | EXISTING (the two chips under the text; the live chip reads "15+ Ye… | Integrated Tumor Board |
+| urology.ts | body | EXISTING (the two chips under the text; the live chip reads "15+ Ye… | Every case is reviewed by a multi-disciplinary team of oncologists, radiologists, and surgeons. |
+| urology.ts | title | EXISTING (the "Patient Outcome" panel: two figures) | Patient Outcome |
+| urology.ts | label | EXISTING (the "Patient Outcome" panel: two figures) | Survival Rate (5yr) |
+| urology.ts | label | EXISTING (the "Patient Outcome" panel: two figures) | Surgical Precision |
+| urology.ts | label | EXISTING. The live "5k+" is 5,000 shown compactly (`compact`: "5k+"). | PATIENTS TREATED |
+| urology.ts | label | EXISTING. The live "5k+" is 5,000 shown compactly (`compact`: "5k+"). | SATISFACTION SCORE |
+| urology.ts | label | EXISTING. The live "5k+" is 5,000 shown compactly (`compact`: "5k+"). | CONSULT TURNAROUND |
+| urology.ts | table | NEW (screen-reader labels for the figures table) | Patient outcome figures |
+| urology.ts |  | NEW (screen-reader labels for the figures table) | Transparent Pricing |
+| urology.ts | title | EXISTING. The live section is in the markup but hidden on every device | Transparent Pricing |
+| urology.ts | intro | EXISTING. The live section is in the markup but hidden on every device | Honest, upfront estimates for world-class surgical care. |
+| urology.ts | tier | EXISTING (tier, name, "From", price, "+", tagline, features, button… | STANDARD CARE |
+| urology.ts | name | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Open Surgery |
+| urology.ts | tagline | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Traditional clinical approach |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Proven Clinical Efficacy |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Multi-specialist Team |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Standard Recovery Time |
+| urology.ts | service | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consultation For Surgery |
+| urology.ts | note | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Plan: Open Surgery |
+| urology.ts | tier | EXISTING (tier, name, "From", price, "+", tagline, features, button… | MODERN STANDARD |
+| urology.ts | name | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Laparoscopic |
+| urology.ts | tagline | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Minimal Invasive Excellence |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Faster Recovery Window |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Minimal Surgical Scarring |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | HD 3D Visualization |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consult Specialist |
+| urology.ts | service | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consultation For Surgery |
+| urology.ts | note | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Plan: Laparoscopic |
+| urology.ts | tier | EXISTING (tier, name, "From", price, "+", tagline, features, button… | PREMIUM PRECISION |
+| urology.ts | name | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Robotic Surgery |
+| urology.ts | tagline | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Advanced Robotic Assistance |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Extreme Surgical Precision |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Best Cosmetic Outcomes |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Fastest Hospital Discharge |
+| urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | View Packages |
+| urology.ts | service | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consultation For Surgery |
+| urology.ts | note | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Plan: Robotic Surgery |
+| urology.ts |  | EXISTING (tier, name, "From", price, "+", tagline, features, button… | PRINCIPAL SPECIALIST |
+| urology.ts | label | EXISTING | PRINCIPAL SPECIALIST |
+| urology.ts | name | EXISTING | Dr. Sunil Navalgund |
+| urology.ts | bio | EXISTING | A pioneer in robotic uro-oncology, Dr. Sunil is dedicated to setting international benchmarks in cancer treatment. His work focuses on integrating surgical prec… |
+| urology.ts | label | EXISTING (labels); NEW (icon keys) | Fellowship: Robotic Surgery & Uro-Oncology (US Trained) |
+| urology.ts | label | EXISTING (labels); NEW (icon keys) | Diplomate of National Board & Fellow of International Societies |
+| urology.ts | label | EXISTING (label; "#" on the live page); NEW (service, analytics label) | Book Your Appointment |
+| urology.ts | service | EXISTING (label; "#" on the live page); NEW (service, analytics label) | Consultation |
+| urology.ts | cta | EXISTING (label; "#" on the live page); NEW (service, analytics label) | urology:specialist:book |
+| urology.ts | label | NEW (as on the other cancer pages) | View Full Profile |
+| urology.seo.ts |  | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats kidney, prostate, bladder, testicular and penile cancers at OncoXpert with robotic, keyhole and … |
+| urology.seo.ts | name | NEW | Urological cancers |
+| urology.seo.ts |  | NEW | Robotic Partial Nephrectomy |
+| urology.seo.ts |  | NEW | Radical Nephrectomy |
+| urology.seo.ts |  | NEW | Robotic Prostatectomy |
+| urology.seo.ts |  | NEW | Robotic Radical Cystectomy |
+| urology.seo.ts |  | NEW | Retroperitoneal Lymph Node Dissection (RPLND) |
+| urology.seo.ts |  | NEW | Trimodal therapy (bladder sparing) |
+| urology.seo.ts |  | NEW | Uro-oncology: kidney, prostate, bladder, testicular, penile and adrenal cancers; robotic and keyhole surgery, organ preservation, the tumour board, outcomes and… |
+
+### NEW lines
+
+- Uro-oncology in Bangalore at OncoXpert: robotic and keyhole surgery for kidney, prostate, bladder, testicular and penile cancers, with organ-preserving care.
+- Consultation
+- Patient outcome figures
+- Transparent Pricing
+- View Full Profile
+- Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats kidney, prostate, bladder, testicular and penile cancers at OncoXpert with robotic, keyhole and open surgery that preserves organ function.
+- Urological cancers
+- Robotic Partial Nephrectomy
+- Radical Nephrectomy
+- Robotic Prostatectomy
+- Robotic Radical Cystectomy
+- Retroperitoneal Lymph Node Dissection (RPLND)
+- Trimodal therapy (bladder sparing)
+- Uro-oncology: kidney, prostate, bladder, testicular, penile and adrenal cancers; robotic and keyhole surgery, organ preservation, the tumour board, outcomes and indicative prices.
+
+### PENDING DOCTOR
+
+- (urology.ts) "500+ SUCCESSFUL ROBOTIC CASES". content/pages/robotic-surgery.ts (SOURCE: DOCTOR) counts 229 robotic oncosurgeries in total, 12 of them kidney. Which is right, and does 500+ count urological cases only, or all robotic cases?
+- (urology.ts) "40% faster return to daily activities": compared with what (open surgery?), and from which data?
+- (urology.ts) "15+ Years Exp" (and "over 15 years" in the same card). Thyroid and Ovarian say "over a decade", About Us "15+", Colorectal and Endometrial "15+". One figure for the site?
+- (urology.ts) approve the description; a better title, not used yet: title: "Uro-Oncology: Kidney, Prostate & Bladder Cancer Surgery in Bangalore \| OncoXpert"
+- (urology.ts) where should "VIEW PROTOCOL" lead? On the live page it is not a link. Options: the booking page with the cancer as the note, a section of this page, or a future page per cancer.
+- (urology.ts) every figure in this block: "92%" 5-year survival (which cancers, stages, years, how many patients?), "99.8%" surgical precision (what is measured?), "5k+ PATIENTS TREATED" (Home says 3,000+), "98% SATISFACTION SCORE" (which survey?), "24h CONSULT TURNAROUND" (from what to what?). Also "FELLOWSHIP TRAINED": which fellowship (see #specialist)?
+- (urology.ts) show the prices on the rebuilt page? Confirm the three starting prices (₹1,60,000 · ₹3,50,000 · ₹5,00,000), what each includes, and whether one plan is featured. Show them as lakhs ("₹1.6L") as on the live page, or in full?
+- (urology.ts) "A pioneer in robotic uro-oncology" and the two badges. content/shared/ organization.ts lists "MCH Surgical Oncology, FIAGES", trained at Tata Memorial Hospital, Mumbai; About Us has a "Robotic & Minimal Access Fellowship", Thyroid "Robotic Oncology Fellow". Is there a US-trained "Fellowship: Robotic Surgery & Uro-Oncology", and is he a Diplomate of National Board (DNB)? Which international societies?
+- (urology.ts) the live page shows Vasudeva Murthy's review, which is about colon cancer surgery. Hidden on this page by default (as on the other cancer pages); set showColonReview to true to show it.
+
+## Stomach Cancer
+
+### Every text block
+
+| File | Key | SOURCE | Text |
+| --- | --- | --- | --- |
+| stomach-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). | Advanced Stomach |
+| stomach-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). | Cancer Treatment |
+| stomach-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). | with Precision & |
+| stomach-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). | Personalized Care |
+| stomach-cancer.ts | title | EXISTING title (identical to the live page, keeps the SEO). The liv… | Stomach Cancer Treatment in Bangalore \| OncoXpert |
+| stomach-cancer.ts |  | NEW (lengthened to 150-160 characters: 153). PENDING DOCTOR: approve. | Stomach cancer treatment in Bangalore at OncoXpert, with robotic and laparoscopic gastrectomy, minimally invasive surgery and personalized oncology care. |
+| stomach-cancer.ts |  | EXISTING (the live menu's label): breadcrumb and structured data name. | Stomach Cancer |
+| stomach-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | Consultation |
+| stomach-cancer.ts | eyebrow | EXISTING | EXPERT GASTRO-ONCOLOGY |
+| stomach-cancer.ts | body | EXISTING | Led by Dr. Sunil Navalgund, we specialize in robotic and laparoscopic gastrectomy, offering a minimally invasive path to recovery and healing. |
+| stomach-cancer.ts | label | EXISTING (button labels; both link to the booking page on the live … | Book Consultation |
+| stomach-cancer.ts | service | EXISTING (button labels; both link to the booking page on the live … | Consultation |
+| stomach-cancer.ts | cta | EXISTING (button labels; both link to the booking page on the live … | stomach:hero:book-consultation |
+| stomach-cancer.ts | label | EXISTING (button labels; both link to the booking page on the live … | Get Second Opinion |
+| stomach-cancer.ts | service | EXISTING (button labels; both link to the booking page on the live … | Second Opinion |
+| stomach-cancer.ts | cta | EXISTING (button labels; both link to the booking page on the live … | stomach:hero:second-opinion |
+| stomach-cancer.ts | label | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Surgeries Performed |
+| stomach-cancer.ts | note | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Global standards of care in Bangalore |
+| stomach-cancer.ts |  | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Understanding Stomach (Gastric) Cancer |
+| stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | Understanding Stomach |
+| stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | (Gastric) Cancer |
+| stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | Stomach cancer begins when cells in the stomach lining grow out of control. It is often a silent disease in its early stages, making expert evaluation critical … |
+| stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | At OncoXpert, we believe that understanding the biology of the tumor is the first step toward a cure. Our approach integrates advanced pathology,genomics, and c… |
+| stomach-cancer.ts | body | EXISTING (the two tiles: a large word over its line). The 70% is `c… | Diagnosis increases cure rate by ${cureRateIncrease}% |
+| stomach-cancer.ts | body | EXISTING (the two tiles: a large word over its line). The 70% is `c… | Disciplinary team approach for every case |
+| stomach-cancer.ts | title | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Warning Signs Not to Ignore |
+| stomach-cancer.ts | intro | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Persistent digestive issues should always be evaluated by a specialist oncologist. |
+| stomach-cancer.ts | title | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Persistent Pain |
+| stomach-cancer.ts | body | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Dull ache or sharp pain in the upper abdomen. |
+| stomach-cancer.ts | body | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Unexplained or rapid weight loss without dieting. |
+| stomach-cancer.ts | image | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | symptomWeight |
+| stomach-cancer.ts | title | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Appetite Loss |
+| stomach-cancer.ts | body | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Feeling full after eating only a small amount. |
+| stomach-cancer.ts | image | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | symptomAppetite |
+| stomach-cancer.ts | title | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Chronic Nausea |
+| stomach-cancer.ts | body | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Persistent nausea or vomiting after meals. |
+| stomach-cancer.ts | image | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | symptomNausea |
+| stomach-cancer.ts | label | NEW (the live block has no button; label as on the thyroid symptoms) | Book Consultation |
+| stomach-cancer.ts | service | NEW (the live block has no button; label as on the thyroid symptoms) | Consultation |
+| stomach-cancer.ts | cta | NEW (the live block has no button; label as on the thyroid symptoms) | stomach:warning-signs:book-consultation |
+| stomach-cancer.ts | group | NEW (the live block has no button; label as on the thyroid symptoms) | Warning signs |
+| stomach-cancer.ts |  | NEW (the live block has no button; label as on the thyroid symptoms) | Comprehensive Treatment Modalites |
+| stomach-cancer.ts |  | EXISTING. "Modalites" (sic) as on the live page. | Comprehensive Treatment |
+| stomach-cancer.ts | intro | EXISTING. "Modalites" (sic) as on the live page. | We offer cutting-edge surgical and oncological protocols tailored to the stage and location of the tumor. |
+| stomach-cancer.ts | label | EXISTING (label); NEW (target, until the doctor says) | Explore All Procedures |
+| stomach-cancer.ts | cta | EXISTING (label); NEW (target, until the doctor says) | stomach:treatments:explore |
+| stomach-cancer.ts | title | EXISTING (tag, title, text and its line breaks, the two points); NE… | D2 Gastrectomy |
+| stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | Removal of the tumor with |
+| stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | extensive lymph node |
+| stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | clearance, the gold standard for gastric cancer surgery. |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Superior nodal clearance |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Improved survival rates |
+| stomach-cancer.ts | tag | EXISTING (tag, title, text and its line breaks, the two points); NE… | MINIMAL INVASIVE |
+| stomach-cancer.ts | title | EXISTING (tag, title, text and its line breaks, the two points); NE… | Robotic Surgery |
+| stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | da Vinci robotic-assisted gastrectomy for unmatched precision and faster functional recovery. |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | 3D HD visualization |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Tremor filtration |
+| stomach-cancer.ts | title | EXISTING (tag, title, text and its line breaks, the two points); NE… | FLOT Chemotherapy |
+| stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | Modern peri-operative chemotherapy protocol to shrink tumors and prevent recurrence. |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Targeted delivery |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Side-effect management |
+| stomach-cancer.ts | title | EXISTING (tag, title, text and its line breaks, the two points); NE… | Immunotherapy |
+| stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | Harnessing the body’s immune system to fight advanced gastric cancers using PD-L1 inhibitors. |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Personalized genetics |
+| stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Longer-term response |
+| stomach-cancer.ts | title | NEW (the live block has no heading; the section needs one for the o… | Robotic Precision vs Laparoscopic Expertise |
+| stomach-cancer.ts | tabs | NEW (the live block has no heading; the section needs one for the o… | Surgical technique |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Robotic Precision |
+| stomach-cancer.ts | body | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | The pinnacle of surgical technology. Robotic instruments mimic the human wrist with 7 degrees of freedom, allowing for dissection in spaces too narrow for human… |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | EndoWrist Technology |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Superior dexterity for complex suturing. |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | 10x Magnification |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Crystal clear view of microscopic nerves and vessels. |
+| stomach-cancer.ts | label | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Learn about robotic surgery |
+| stomach-cancer.ts | cta | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | stomach:techniques:robotic |
+| stomach-cancer.ts | label | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Laparoscopic |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Laparoscopic Expertise |
+| stomach-cancer.ts | body | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Standard-of-care minimally invasive surgery. Uses specialized long instruments through tiny incisions to achieve radical cure with minimal trauma. |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Rapid Recovery |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Patients typically walk within 24 hours of surgery. |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Minimal Scarring |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | 5-10mm incisions instead of a large abdominal cut. |
+| stomach-cancer.ts |  | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Meet Dr. Sunil Navalgund |
+| stomach-cancer.ts | title | EXISTING | Meet Dr. Sunil Navalgund |
+| stomach-cancer.ts | name | EXISTING | Dr. Sunil Navalgund |
+| stomach-cancer.ts | role | EXISTING | Surgical Oncologist & GI Cancer Specialist |
+| stomach-cancer.ts |  | EXISTING | Dr. Sunil Navalgund is a pioneer in robotic-assisted stomach cancer surgeries in India. His patient-first philosophy ensures that clinical excellence is balance… |
+| stomach-cancer.ts |  | EXISTING | cancer journey. |
+| stomach-cancer.ts | label | EXISTING (labels; "International Fellowship <br> trained" on the li… | International Fellowship trained |
+| stomach-cancer.ts | label | EXISTING (labels; "International Fellowship <br> trained" on the li… | Multi-disciplinary approach |
+| stomach-cancer.ts | label | EXISTING (labels; "International Fellowship <br> trained" on the li… | Evidence-based protocols |
+| stomach-cancer.ts | label | EXISTING (labels; "International Fellowship <br> trained" on the li… | Compassionate care model |
+| stomach-cancer.ts | label | NEW (the live block has no buttons; labels as on the other cancer p… | Book Appointment with Dr. Sunil |
+| stomach-cancer.ts | service | NEW (the live block has no buttons; labels as on the other cancer p… | Consultation |
+| stomach-cancer.ts | cta | NEW (the live block has no buttons; labels as on the other cancer p… | stomach:surgeon:book |
+| stomach-cancer.ts | label | NEW (the live block has no buttons; labels as on the other cancer p… | View Full Profile |
+| stomach-cancer.seo.ts |  | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats stomach (gastric) cancer at OncoXpert with robotic and laparoscopic D2 gastrectomy, FLOT chemoth… |
+| stomach-cancer.seo.ts | name | NEW | Stomach cancer |
+| stomach-cancer.seo.ts |  | NEW | Gastric cancer |
+| stomach-cancer.seo.ts |  | NEW | Stomach (gastric) cancer: warning signs, D2 gastrectomy, robotic and laparoscopic surgery, FLOT chemotherapy, immunotherapy and the surgeon. |
+
+### NEW lines
+
+- Stomach cancer treatment in Bangalore at OncoXpert, with robotic and laparoscopic gastrectomy, minimally invasive surgery and personalized oncology care.
+- Consultation
+- Book Consultation
+- Consultation
+- stomach:warning-signs:book-consultation
+- Warning signs
+- Comprehensive Treatment Modalites
+- Robotic Precision vs Laparoscopic Expertise
+- Surgical technique
+- Book Appointment with Dr. Sunil
+- Consultation
+- stomach:surgeon:book
+- View Full Profile
+- Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats stomach (gastric) cancer at OncoXpert with robotic and laparoscopic D2 gastrectomy, FLOT chemotherapy and immunotherapy.
+- Stomach cancer
+- Gastric cancer
+- Stomach (gastric) cancer: warning signs, D2 gastrectomy, robotic and laparoscopic surgery, FLOT chemotherapy, immunotherapy and the surgeon.
+
+### PENDING DOCTOR
+
+- (stomach-cancer.ts) "5,000+ Surgeries Performed": all surgeries, or stomach cancer surgeries? Thyroid said "10,000+ Surgeries" (removed in the client review), Home "3,000+ patients".
+- (stomach-cancer.ts) "Early / Diagnosis increases cure rate by 70%": compared with what, and which source? (A relative figure like this is hard to back up; a stage-wise survival figure may read more clearly.)
+- (stomach-cancer.ts) where should "Explore All Procedures" lead? On the live page it links to "#". Options: the robotic surgery page, Home's services, or the booking page.
+- (stomach-cancer.ts) "a pioneer in robotic-assisted stomach cancer surgeries in India": can this claim be backed up (first cases, year)? Also "International Fellowship trained": which fellowship (see content/shared/organization.ts)?
+- (stomach-cancer.ts) the live page shows Vasudeva Murthy's review, which is about colon cancer surgery. Hidden on this page by default (as on the other cancer pages); set showColonReview to true to show it. (A GI page could reasonably show it: the doctor's call.)
 
 ## Shared (every page)
 

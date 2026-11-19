@@ -7,8 +7,8 @@ Pages so far: **Home** (`/`), **Robotic Surgery** (`/robotic-surgery/`), **Breas
 (`/breast-cancer-hospital-bangalore/`), **Book Appointment** (`/book-your-appoinment-page/`, the live
 URL's spelling, kept for SEO), **About Us** (`/about-us/`), **Colorectal Cancer**
 (`/colon-cancer-hospital-bangalore/`), **Endometrial Cancer** (`/endometrial-cancer-hospital-bangalore/`),
-**Lung Cancer** (`/lung-cancer-in-bangalore/`), **Ovarian Cancer** (`/ovarian-cancer-hospital/`) and
-**Thyroid Cancer** (`/thyroid-cancer/`).
+**Lung Cancer** (`/lung-cancer-in-bangalore/`), **Ovarian Cancer** (`/ovarian-cancer-hospital/`),
+**Thyroid Cancer** (`/thyroid-cancer/`), **Urology** (`/urology/`) and **Stomach Cancer** (`/stomach-cancer/`).
 They share one site shell and one set of section components; each page has its own theme, except booking
 and about, which share the `care` theme.
 
@@ -136,6 +136,7 @@ styles/
   themes/care.css            booking + about (one theme: same palette)
   themes/colorectal.css, themes/endometrial.css   one theme each
   themes/lung.css, themes/ovarian.css, themes/thyroid.css   one theme each
+  themes/urology.css, themes/stomach.css   one theme each
 scripts/
   fetch-images.mjs           npm run images [page]: reads content/pages/<page>.images.ts
   make-black-bg.mjs          one-off: black-background copy of a white product shot (robotic photos)
@@ -144,7 +145,7 @@ scripts/
   content-audit.mjs          npm run audit:content (SOURCE / NEW / PENDING per page)
 public/images/               brand/ locations/ home/ breast-cancer/ robotic/ book-appointment/ about-us/
                              colorectal-cancer/ endometrial-cancer/ lung-cancer/ ovarian-cancer/
-                             thyroid-cancer/
+                             thyroid-cancer/ urology/ stomach-cancer/
 ```
 
 ### Naming
@@ -429,12 +430,12 @@ content files, so a figure changed there changes everywhere.
 
 **Structured data per page** (every @id resolves; the clinic and physician @ids are shared site-wide)
 
-| Page                                            | @graph                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Booking                                         | WebPage (speakable: the H1) · MedicalClinic + ReserveAction (target: the form) · BreadcrumbList                                                                                                                                                                                                                                                                                                                                   |
-| About                                           | ProfilePage (mainEntity: the Physician) · Physician · MedicalClinic · BreadcrumbList                                                                                                                                                                                                                                                                                                                                              |
-| Colorectal, Endometrial, Lung, Ovarian, Thyroid | MedicalWebPage (about the MedicalCondition, speakable, audience Patient; `reviewedBy` + `lastReviewed` once approved) · MedicalCondition (name, alternateName, possibleTreatment, signOrSymptom: from the page only) · Physician · MedicalClinic · BreadcrumbList · FAQPage (only while the quick answers render) · Offer per package (INR; a starting price as `priceSpecification.minPrice`; only once the prices are approved) |
-| Home, Robotic, Breast                           | their own graphs from the shared nodes in lib/jsonld.ts; speakable; `reviewedBy` + `lastReviewed` once approved (Robotic, Breast)                                                                                                                                                                                                                                                                                                 |
+| Page                                                              | @graph                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Booking                                                           | WebPage (speakable: the H1) · MedicalClinic + ReserveAction (target: the form) · BreadcrumbList                                                                                                                                                                                                                                                                                                                                   |
+| About                                                             | ProfilePage (mainEntity: the Physician) · Physician · MedicalClinic · BreadcrumbList                                                                                                                                                                                                                                                                                                                                              |
+| Colorectal, Endometrial, Lung, Ovarian, Thyroid, Urology, Stomach | MedicalWebPage (about the MedicalCondition, speakable, audience Patient; `reviewedBy` + `lastReviewed` once approved) · MedicalCondition (name, alternateName, possibleTreatment, signOrSymptom: from the page only) · Physician · MedicalClinic · BreadcrumbList · FAQPage (only while the quick answers render) · Offer per package (INR; a starting price as `priceSpecification.minPrice`; only once the prices are approved) |
+| Home, Robotic, Breast                                             | their own graphs from the shared nodes in lib/jsonld.ts; speakable; `reviewedBy` + `lastReviewed` once approved (Robotic, Breast)                                                                                                                                                                                                                                                                                                 |
 
 **Waiting for the doctor (approvals.ts, all false)**: the definitions under each H1, the quick answers
 (and with them FAQPage), the "Medically reviewed by … · Last reviewed <date>" line (and `reviewedBy` /
@@ -959,3 +960,22 @@ over 5s pause on hover / focus or with the hero's 48px pause button, and stop of
   value card; slider order 1, 4, 2, 5, 3. About: 15+ years. Thyroid: the 10,000+ Surgeries stat is gone.
 - Favicon (5 Nov 2026). `app/favicon.ico` (16, 32, 48), `app/icon.png` and `app/apple-icon.png` are the preloader's logo mark. 16 and
   32 are a rounded white square without the ring, so the mark stays readable; 48 and up are the white disc with the gradient ring.
+- Urology + Stomach Cancer: foundation (19 Nov 2026). Routes on the live URLs (`/urology/`, `/stomach-cancer/`)
+  in the registry, the sitemap (12 pages), `builtPaths`, llms.txt and the content audit; their temporary redirects in
+  next.config.ts are gone. The Services menu (desktop, mobile, footer) lists both between Lung and Ovarian, the live
+  menu's order, so the Related strip on every cancer page now shows them; About Us's Uro-Oncology card and the
+  robotic page's Stomach card link to them. Every line of both live pages, verbatim and SOURCE-tagged (typos kept:
+  "Modalites", "pathology,genomics", "aesthetic- functional"), in `content/pages/urology.ts` /
+  `stomach-cancer.ts`; <br> breaks are string arrays. The urology #pricing is hidden on every device on the live page;
+  kept (PENDING DOCTOR), prices as rupee numbers (160000 · 350000 · 500000, "From … +"). Themes: `urology` ("clinical
+  flow": kidney green on sage, pine ink, marigold and prostate-blue decoration, Plus Jakarta Sans display ~700, the
+  only cancer page with a sans display; tabular figures for codes and stats) and `stomach` ("warm nourishment":
+  turmeric bronze on rice cream, espresso ink, the periwinkle ribbon as decoration only, Fraunces display ~560);
+  `--accent-bright` darkened on both so the action bar's middle stop keeps white text ≥ 4.5:1; contrast tables in
+  their headers. Images (`npm run images urology|stomach`: Pexels, since the Higgsfield account had no credits; an
+  og.jpg each; the portrait and cutout, the doctor's theatre and robotic photos, the colorectal consultation and
+  laparoscopy photos reused). `.seo.ts` files with the condition facts (quick answers to come); one @graph each;
+  `cancerPageGraph` adds FAQPage only when a page has answers. Each page is a placeholder hero (eyebrow, H1, lead,
+  two buttons) then the shared #reviews (colon review hidden), #videos, #locations, #related, #final-cta.
+  Sections to build: Urology #specialties, #technology, #organ-preservation, #leadership, #pricing, #specialist;
+  Stomach #understanding, #warning-signs, #treatments, #techniques, #surgeon.

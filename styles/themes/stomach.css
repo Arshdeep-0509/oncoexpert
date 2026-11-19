@@ -1,0 +1,87 @@
+/* ==================================================================
+   Stomach Cancer theme: /stomach-cancer/
+   "Warm nourishment": hopeful and warm, because recovery means eating
+   with family again. A turmeric-bronze accent (buttons, links, icons),
+   espresso ink, rice-cream surfaces, oat bands and a periwinkle-mist
+   band. Stomach cancer's periwinkle ribbon is a decoration colour only
+   (--highlight), because Thyroid already uses periwinkle as its accent.
+   The dark bands run espresso into cinnamon. Fraunces display (~560),
+   Plus Jakarta Sans body. Spice and cream, never the endometrial coral
+   on plum or the ovarian sand and gold.
+
+   Contrast (WCAG 2.x; "/80" = white at 80% over that background).
+   Text needs 4.5:1, CTAs included; non-text marks need 3:1.
+
+   Text on light        surface  surface-alt  surface-warm  accent-soft  petal  hero base
+     --ink    #2e1a10    16.14      14.99        14.90         13.95     13.05    15.66
+     --text   #2b211b    15.36      14.27        14.18         13.27     12.42    14.90
+     --muted  #6a5648     6.76       6.28         6.24          5.84      5.46     6.56
+     --accent #985212     5.78       5.37         5.33          4.99      4.67     5.61
+   (surface #fffcf7 rice cream, hero base #fff8ee.)
+
+   CTAs
+     white on --accent (primary button)                          5.91
+     white on --accent-hover (hover)                             8.18
+     white on --grad-cta stops (action bar: hover, accent,
+       accent/accent-bright mix #ac621c)                  8.18 · 5.91 · 4.65
+     --accent on white (secondary / outline button)              5.91
+     --accent on --accent-soft (chips, eyebrow pill)             4.99
+     ink on white (onDark button on the espresso bands)         16.52
+
+   Text on dark (--grad-plum)   ink #2e1a10   end #5a2f17
+     white                         16.52        11.33
+     white/80                      10.89         7.85
+     white/70                       8.61         6.45
+     --accent-glow #ffc98a         10.99         7.54
+     --gold #f3c56b                10.23         7.02
+
+   Decoration only (non-text, 3:1)
+     --highlight (periwinkle ribbon) on ink 6.19; on white 2.67 and surface-alt 2.42: dots,
+       underlines, glows and fills on light bands, never text and never the only edge of a control.
+     --petal (saffron tint) on white 1.27: fills only.
+     --accent-bright on white 3.72: gradient stop and large marks only, never body text
+       (darkened from #d9822b: 2.93 on white, and 4.08 under white text at the action bar's
+       middle stop).
+     --accent on ink 2.79: on the espresso bands the CTA is the white onDark pill.
+     --line on white 1.27: hairlines only.
+   ================================================================== */
+
+[data-theme="stomach"] {
+  --ink: #2e1a10; /* espresso: headings, dark bands */
+  --text: #2b211b; /* body text */
+  --muted: #6a5648; /* secondary text */
+  --surface: #fffcf7; /* rice cream */
+  --surface-alt: #fbf3e6; /* oat bands */
+  --surface-warm: #f4f2fb; /* periwinkle mist bands */
+  --accent: #985212; /* turmeric bronze: buttons, links, icons */
+  --accent-hover: #7a400b;
+  --accent-soft: #f8ead6; /* chips, icon tiles, eyebrow pills */
+  --accent-glow: #ffc98a; /* accent text and focus rings on the espresso bands */
+  --accent-bright: #bf7226; /* saffron: second stop of --grad-accent and --grad-cta */
+  --highlight: #8e9bdc; /* periwinkle ribbon: dots, underlines, glows only */
+  --petal: #f6e2c4; /* saffron tint decoration */
+  --gold: #f3c56b; /* tiny highlights on the espresso bands only */
+  --line: #eee3d3; /* borders */
+
+  /* Cream base with a saffron sunrise glow top-right and a periwinkle mist bottom-left. */
+  --grad-hero:
+    radial-gradient(55% 55% at 88% 8%, rgb(246 210 160 / 0.75), transparent 70%),
+    radial-gradient(50% 50% at 6% 92%, rgb(142 155 220 / 0.16), transparent 70%),
+    linear-gradient(180deg, #fff8ee, #fffcf7);
+  --grad-accent: linear-gradient(120deg, var(--accent), var(--accent-bright));
+  /* Dark bands (Section tone="plum"): espresso into cinnamon. */
+  --grad-plum: linear-gradient(160deg, #2e1a10, #5a2f17);
+
+  /* Type: Plus Jakarta Sans body, Fraunces display */
+  --font-display: var(--font-serif);
+  --display-weight: 560;
+  --display-tracking: -0.02em;
+
+  /* Shadows tinted with the espresso ink */
+  --shadow-rgb: 46 26 16;
+}
+
+/* Headings on this page wrap in balanced lines (no single orphaned word). */
+[data-theme="stomach"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}

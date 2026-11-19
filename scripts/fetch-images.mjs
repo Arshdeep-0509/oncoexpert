@@ -10,6 +10,8 @@
  *   npm run images lung         content/pages/lung-cancer.images.ts
  *   npm run images ovarian      content/pages/ovarian-cancer.images.ts
  *   npm run images thyroid      content/pages/thyroid-cancer.images.ts
+ *   npm run images urology      content/pages/urology.images.ts
+ *   npm run images stomach      content/pages/stomach-cancer.images.ts
  *   npm run images breast       a unique prefix of a manifest name works too
  *
  * Reads `file`, `src` and `pexelsId` from content/pages/<page>.images.ts (the single source of
@@ -249,6 +251,8 @@ const ogRecipes = {
   "lung-cancer": coverFrom("breathing-calm.jpg"),
   "ovarian-cancer": coverFrom("friends-laughing.jpg"),
   "thyroid-cancer": coverFrom("young-woman-smiling.jpg"),
+  urology: coverFrom("older-man-confident.jpg"),
+  "stomach-cancer": coverFrom("family-dinner.jpg"),
 };
 
 const ogDest = path.join(outDir, "og.jpg");

@@ -46,6 +46,8 @@ export const site = {
         { label: "Colorectal Cancer", href: "/colon-cancer-hospital-bangalore/", icon: "colorectal" },
         { label: "Endometrial Cancer", href: "/endometrial-cancer-hospital-bangalore/", icon: "endometrial" },
         { label: "Lung Cancer", href: "/lung-cancer-in-bangalore/", icon: "lung" },
+        { label: "Urology", href: "/urology/", icon: "urology" },
+        { label: "Stomach Cancer", href: "/stomach-cancer/", icon: "stomach" },
         { label: "Ovarian Cancer", href: "/ovarian-cancer-hospital/", icon: "ovarian" },
         { label: "Thyroid Cancer", href: "/thyroid-cancer/", icon: "thyroid" },
       ],

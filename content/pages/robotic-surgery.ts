@@ -514,7 +514,7 @@ export const cancers = {
     {
       title: "Stomach",
       body: "Advanced gastrectomy through small ports, facilitating quicker return to oral nutrition.",
-      href: null,
+      href: "/stomach-cancer/",
       countKey: "stomach",
       icon: "soup",
       image: "/images/robotic/cancer-stomach.jpg",

@@ -13,6 +13,8 @@ Navalgund in Bengaluru:
 - **Lung Cancer**: `/lung-cancer-in-bangalore/` (the live address)
 - **Ovarian Cancer**: `/ovarian-cancer-hospital/`
 - **Thyroid Cancer**: `/thyroid-cancer/` (the live address)
+- **Urology**: `/urology/` (the live address; foundation: hero placeholder and the shared sections)
+- **Stomach Cancer**: `/stomach-cancer/` (the live address; foundation: hero placeholder and the shared sections)
 
 Next.js 16 · TypeScript · Tailwind CSS 4 · Motion · Embla. Developers: read
 **[docs/PROJECT.md](docs/PROJECT.md)** (folder map, theme system, components, rules).
@@ -69,6 +71,8 @@ Components contain no text. Everything visitors read is in `content/`:
 | `content/pages/lung-cancer.ts`          | Every section of the Lung Cancer page                           |
 | `content/pages/ovarian-cancer.ts`       | Every section of the Ovarian Cancer page                        |
 | `content/pages/thyroid-cancer.ts`       | Every section of the Thyroid Cancer page                        |
+| `content/pages/urology.ts`              | Every section of the Urology page: text, prices, figures        |
+| `content/pages/stomach-cancer.ts`       | Every section of the Stomach Cancer page                        |
 | `content/site.ts`                       | Menu, phone, email, address, clinics, socials, footer, WhatsApp |
 
 Every block is tagged with where it came from. Keep the tags when you edit:

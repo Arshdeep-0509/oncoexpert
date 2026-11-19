@@ -13,6 +13,8 @@
 @import "../styles/themes/lung.css";
 @import "../styles/themes/ovarian.css";
 @import "../styles/themes/thyroid.css";
+@import "../styles/themes/urology.css";
+@import "../styles/themes/stomach.css";
 
 /* ------------------------------------------------------------------
    Token → utility map. `inline`: each utility reads the CSS variable

@@ -7,6 +7,8 @@ import { endometrialSeo } from "@/content/pages/endometrial-cancer.seo";
 import { lungSeo } from "@/content/pages/lung-cancer.seo";
 import { ovarianSeo } from "@/content/pages/ovarian-cancer.seo";
 import { thyroidSeo } from "@/content/pages/thyroid-cancer.seo";
+import { urologySeo } from "@/content/pages/urology.seo";
+import { stomachSeo } from "@/content/pages/stomach-cancer.seo";
 import { approvals } from "@/content/shared/approvals";
 import { organization as org } from "@/content/shared/organization";
 import { site } from "@/content/site";
@@ -24,6 +26,8 @@ const cancer: Partial<Record<keyof typeof pages, CancerPageSeo>> = {
   "lung-cancer-in-bangalore": lungSeo,
   "ovarian-cancer-hospital": ovarianSeo,
   "thyroid-cancer": thyroidSeo,
+  urology: urologySeo,
+  "stomach-cancer": stomachSeo,
 };
 
 // SOURCE: NEW (one line per page that has no .seo.ts file).

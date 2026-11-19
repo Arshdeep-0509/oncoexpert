@@ -1,7 +1,7 @@
 /**
- * Every word on the "page not found" screen (app/not-found.tsx). Pages that are linked from the
- * menu but not rebuilt yet (Urology, Stomach Cancer, Our Services, Blogs) land here, so it says the
- * page is being prepared rather than missing.
+ * Every word on the "page not found" screen (app/not-found.tsx). Any live address that is not
+ * rebuilt yet (and has no redirect in next.config.ts) lands here, so it says the page is being
+ * prepared rather than missing.
  *
  * SOURCE: NEW (all of it). PENDING DOCTOR: approve the wording.
  */

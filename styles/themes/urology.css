@@ -1,0 +1,89 @@
+/* ==================================================================
+   Urology theme: /urology/
+   "Clinical flow": precise, calm and technical, like the live page's
+   "CLINICAL DASHBOARD V2.0". The colours come from the uro-oncology
+   awareness ribbons: kidney (green and orange), bladder (marigold) and
+   prostate (light blue). A kidney-green accent (buttons, links, icons),
+   deep pine-graphite ink, sage-mint and marigold-cream bands, a marigold
+   highlight and a prostate-blue tint as decoration only. The dark bands
+   run pine into deep green. Plus Jakarta Sans display (~700, -0.025em):
+   the only cancer page with a sans display, for the dashboard tone; ICD
+   codes and figures use tabular figures (Tailwind `tabular-nums`). Green
+   on sage, never the ovarian teal on plum or the lung sky on navy.
+
+   Contrast (WCAG 2.x; "/80" = white at 80% over that background).
+   Text needs 4.5:1, CTAs included; non-text marks need 3:1.
+
+   Text on light        surface  surface-alt  surface-warm  accent-soft  petal  hero base
+     --ink    #0f2a22    14.96      13.86        14.31         13.08     12.60    14.17
+     --text   #1c2a25    14.61      13.54        13.98         12.78     12.30    13.84
+     --muted  #4f625a     6.37       5.90         6.09          5.57      5.37     6.03
+     --accent #17784a     5.38       4.99         5.15          4.70      4.53     5.10
+   (surface #fbfdfc, hero base #f1f8f4 sage. --accent on --petal is 4.53: large text and
+   links only there, prefer --accent-hover.)
+
+   CTAs
+     white on --accent (primary button)                          5.49
+     white on --accent-hover (hover)                             8.05
+     white on --grad-cta stops (action bar: hover, accent,
+       accent/accent-bright mix #218555)                  8.05 · 5.49 · 4.61
+     --accent on white (secondary / outline button)              5.49
+     --accent on --accent-soft (chips, eyebrow pill)             4.70
+     ink on white (onDark button on the pine bands)             15.28
+
+   Text on dark (--grad-plum)   ink #0f2a22   end #14513d
+     white                         15.28         9.23
+     white/80                      10.19         6.56
+     white/70                       8.15         5.46
+     --accent-glow #9be7c0         10.61         6.41
+     --gold #f5c76a                 9.65         5.83
+
+   Decoration only (non-text, 3:1)
+     --highlight (marigold) on ink 7.37; on white 2.07 and surface-alt 1.88: dots, underlines,
+       glows and fills on light bands, never text and never the only edge of a control.
+     --petal (prostate blue) on white 1.21: fills only.
+     --accent-bright on white 3.95: gradient stop and large marks only, never body text
+       (darkened from #2fa36b, which gave the action bar's middle stop 4.12 under white text).
+     --accent on ink 2.78: on the pine bands the CTA is the white onDark pill.
+     --line on white 1.25: hairlines only.
+   ================================================================== */
+
+[data-theme="urology"] {
+  --ink: #0f2a22; /* deep pine-graphite: headings, dark bands */
+  --text: #1c2a25; /* body text */
+  --muted: #4f625a; /* secondary text */
+  --surface: #fbfdfc;
+  --surface-alt: #edf6f1; /* sage-mint bands */
+  --surface-warm: #fdf7ea; /* marigold cream bands */
+  --accent: #17784a; /* kidney green: buttons, links, icons */
+  --accent-hover: #105c38;
+  --accent-soft: #e2f1e8; /* chips, icon tiles, eyebrow pills */
+  --accent-glow: #9be7c0; /* accent text and focus rings on the pine bands */
+  --accent-bright: #2a915f; /* lighter green: second stop of --grad-accent and --grad-cta */
+  --highlight: #f0a531; /* marigold (bladder ribbon): dots, underlines, glows only */
+  --petal: #d9ecf9; /* prostate-blue tint: decoration only */
+  --gold: #f5c76a; /* tiny highlights on the pine bands only */
+  --line: #dce9e2; /* borders */
+
+  /* Sage base with a prostate-blue light top-right and a marigold glow bottom-left. */
+  --grad-hero:
+    radial-gradient(55% 55% at 88% 8%, rgb(217 236 249 / 0.85), transparent 70%),
+    radial-gradient(50% 50% at 6% 92%, rgb(240 165 49 / 0.14), transparent 70%),
+    linear-gradient(180deg, #f1f8f4, #fbfdfc);
+  --grad-accent: linear-gradient(120deg, var(--accent), var(--accent-bright));
+  /* Dark bands (Section tone="plum"): pine into deep green. */
+  --grad-plum: linear-gradient(160deg, #0f2a22, #14513d);
+
+  /* Type: Plus Jakarta Sans for display and body */
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --display-weight: 700;
+  --display-tracking: -0.025em;
+
+  /* Shadows tinted with the pine ink */
+  --shadow-rgb: 15 42 34;
+}
+
+/* Headings on this page wrap in balanced lines (no single orphaned word). */
+[data-theme="urology"] :is(h1, h2, h3) {
+  text-wrap: balance;
+}

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { site } from "@/content/site";
 
 /**
  * Pause / play for a hero's loops: sets data-paused on the enclosing <section>, which the page's
@@ -15,11 +16,14 @@ export function MotionToggle({
   pause,
   play,
   onDark = false,
+  hero = false,
   className,
 }: {
   pause: string;
   play: string;
   onDark?: boolean;
+  /** A hero's button: hidden (still mounted) while site.heroPauseButton is false. */
+  hero?: boolean;
   /** Extra classes on the button (e.g. "size-12" for a 48px target). */
   className?: string;
 }) {
@@ -62,6 +66,7 @@ export function MotionToggle({
           ? "text-white/80 ring-white/25 hover:bg-white/10 hover:text-white"
           : "text-muted ring-line hover:bg-accent-soft hover:text-accent",
         className,
+        hero && !site.heroPauseButton && "hidden",
       )}
     >
       {paused ? (

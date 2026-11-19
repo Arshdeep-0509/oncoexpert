@@ -1071,3 +1071,10 @@ over 5s pause on hover / focus or with the hero's 48px pause button, and stop of
   the branch under step 3; phones a vertical timeline. Server-rendered; NEW phase labels and notes restating the live text
   (PENDING DOCTOR). `stomach_modality_select` is retired. Waiting for Higgsfield (not connected in this session): AI
   photos for both final bands and for the Stomach #approach sides.
+- Hero pause buttons hidden (client request, 19 Nov 2026) on Home, Robotic, Breast, About, Colorectal, Endometrial, Lung,
+  Ovarian, Thyroid, Urology and Stomach: one switch, `site.heroPauseButton` (content/site.ts, false). The buttons stay
+  mounted with `display: none` (not visible, not focusable): MotionToggle (`hero` prop), Home's HeroMotionToggle,
+  Endometrial's HeroToggle, the Breast HeroStage and Robotic HeroCarousel buttons. The hero loops still stop off-screen
+  (data-offscreen) and are off with reduced motion; the intro timing is unchanged. About's Experience band keeps its
+  button (not a hero). Set the switch to true to show them all again. Note: without a visible pause control, loops
+  longer than 5s miss WCAG 2.2.2 (Pause, Stop, Hide) for visitors who have not set reduced motion.

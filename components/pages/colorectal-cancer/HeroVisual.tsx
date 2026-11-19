@@ -33,7 +33,12 @@ export function HeroVisual() {
 
         {/* Pause / play for the film and the loops */}
         <div className={cn(styles.step, styles.fadeUp, "absolute top-3 right-3 z-10")} style={at(1.6)}>
-          <MotionToggle pause={hero.a11y.pause} play={hero.a11y.play} className="size-12 bg-white/85 shadow-soft-sm" />
+          <MotionToggle
+            hero
+            pause={hero.a11y.pause}
+            play={hero.a11y.play}
+            className="size-12 bg-white/85 shadow-soft-sm"
+          />
         </div>
       </div>
 

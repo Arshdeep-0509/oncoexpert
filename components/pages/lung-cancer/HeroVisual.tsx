@@ -30,6 +30,7 @@ export function HeroVisual() {
 
         <div className={cn(styles.step, styles.fadeUp, "absolute top-[14%] right-0 z-10")} style={at(1.8)}>
           <MotionToggle
+            hero
             pause={hero.a11y.pause}
             play={hero.a11y.play}
             className="size-12 bg-surface/80 shadow-soft-sm"

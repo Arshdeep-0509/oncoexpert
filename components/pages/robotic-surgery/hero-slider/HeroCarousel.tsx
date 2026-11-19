@@ -6,6 +6,7 @@ import { AnimatePresence, animate, useMotionValue, useReducedMotion } from "moti
 import { Pause, Play } from "lucide-react";
 import { hero } from "@/content/pages/robotic-surgery";
 import { site } from "@/content/site";
+import { cn } from "@/lib/utils";
 import { introRemainingSeconds } from "@/lib/intro";
 import { IMAGE_SIZES, SLIDE_SECONDS } from "@/components/pages/robotic-surgery/hero-slider/stage";
 import { SlideLayer } from "@/components/pages/robotic-surgery/hero-slider/SlideLayer";
@@ -147,7 +148,10 @@ export function HeroCarousel() {
             onClick={() => setUserPaused((p) => !p)}
             aria-label={userPaused ? hero.a11y.play : hero.a11y.pause}
             aria-pressed={userPaused}
-            className="grid size-11 place-items-center rounded-full border border-white/15 text-white/80 transition-colors hover:border-white/40 hover:text-white"
+            className={cn(
+              "grid size-11 place-items-center rounded-full border border-white/15 text-white/80 transition-colors hover:border-white/40 hover:text-white",
+              !site.heroPauseButton && "hidden",
+            )}
           >
             {userPaused ? (
               <Play className="size-4" strokeWidth={1.75} aria-hidden="true" />

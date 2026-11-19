@@ -138,6 +138,11 @@ export const site = {
     openLabel: "Open Chat",
   },
 
+  // SOURCE: NEW (switch, the client's request, 19 Nov 2026): the heroes' pause buttons are hidden
+  // (display: none: still mounted, so the hero loops still stop off-screen and the intro timing
+  // still works; not focusable). Set to true to show them again on every page.
+  heroPauseButton: false,
+
   // Mobile action bar (fixed to the bottom of the screen under 768px).
   actionBar: {
     // SOURCE: NEW

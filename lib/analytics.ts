@@ -29,7 +29,9 @@ export type AnalyticsEvent =
   | { event: "thyroid_detection_toggle"; label: string }
   | { event: "thyroid_modality_filter"; label: string }
   // Urology page: a specialty chosen on the clinical dashboard (organ, chip or card).
-  | { event: "urology_specialty_select"; label: string };
+  | { event: "urology_specialty_select"; label: string }
+  // Urology page: the "Spare vs Remove" kidney switch.
+  | { event: "urology_preservation_toggle"; label: string };
 
 declare global {
   interface Window {

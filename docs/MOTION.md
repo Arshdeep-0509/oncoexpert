@@ -165,3 +165,5 @@ properties and are not listed.
 | `.uro-live::after` | uro-breathe (hero.css) | page load (after the intro) | 2.4s | yes | pause button (48px), off-screen | final state (no animation) |
 | `.uro-flowDash` | uro-stream (hero.css) | page load (after the intro) | var(--t, 14s) | yes | pause button (48px), off-screen | final state (no animation) |
 | `.uro-drop` | uro-drift (hero.css) | page load (after the intro) | var(--t, 20s) | yes | pause button (48px), off-screen | final state (no animation) |
+| `[data-inview] .uro-ld-live::after` | uro-ld-breathe (leadership.css) | scrolled into view | 2.4s | repeats | n/a (runs once) | final state (no animation) |
+| `.uro-pv-spare[data-mode="spare"] .uro-pv-cut` | uro-pv-draw (preservation.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |

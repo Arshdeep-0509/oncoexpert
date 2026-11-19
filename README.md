@@ -155,6 +155,14 @@ Each page's words and numbers are in one file: `content/pages/lung-cancer.ts`, `
 
 ---
 
+## Edit the Urology page
+
+Everything is in `content/pages/urology.ts`. Prices: `pricing.plans` (`price` in rupees, `160000`; the cards show it
+as on the live page, "From ₹1.6L +"; the hidden price table gives "₹1,60,000"). To feature a plan, add
+`featured: true` and a `ribbon` to it. Figures: `leadership.outcome.figures` (the ring and the gauge),
+`leadership.tiles`, `technology.stat` (500+), and the constants at the top of the file. The specialties and their
+ICD-10 codes: `specialties.items`. Search answers: `content/pages/urology.seo.ts`.
+
 ## Edit the Colorectal and Endometrial pages
 
 Same rules as above, in `content/pages/colorectal-cancer.ts` and `endometrial-cancer.ts`.

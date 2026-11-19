@@ -200,7 +200,17 @@ export type PackageItem = {
   featured?: boolean;
   /** The featured card's ribbon. */
   ribbon?: string;
+  /** Optional small label above the name, e.g. "STANDARD CARE" (Urology). */
+  tier?: string;
+  /** Optional line under the price, e.g. "Traditional clinical approach" (Urology). */
+  tagline?: string;
+  /** Optional icon per inclusion (same order); without it every inclusion gets the check. */
+  inclusionIcons?: readonly PackageIcon[];
 };
+
+/** Inclusion icons of PackageCards (components/shared/package-cards/icons.ts). */
+export type PackageIcon =
+  "efficacy" | "team" | "recovery" | "scarring" | "visualization" | "precision" | "cosmetic" | "discharge";
 
 /** PackageCards' optional cycle estimator: "{n}", "{price}", "{total}" fill `sentence`. */
 export type PackageEstimator = {

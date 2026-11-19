@@ -1,0 +1,55 @@
+/* ==================================================================
+   Urology #leadership: the "Patient Outcome" monitor. Plain CSS, prefix uro-ld-.
+   A thin panel grid; once the monitor is in view the marigold live dot breathes six times (2.4s
+   each, then rests: no endless loop) and the precision gauge fills to its value (scaleX).
+   The default is the final state; motion in no-preference.
+   ================================================================== */
+
+.uro-ld-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.uro-ld-fill {
+  scale: var(--v, 1) 1;
+}
+
+.uro-ld-live {
+  position: relative;
+}
+.uro-ld-live::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 9999px;
+  background: var(--highlight);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .uro-ld-fill {
+    scale: 0 1;
+    transition: scale 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+  }
+  [data-inview] .uro-ld-fill {
+    scale: var(--v, 1) 1;
+  }
+  /* A short breathing run (6 × 2.4s) once the monitor is seen: no endless loop. */
+  [data-inview] .uro-ld-live::after {
+    animation: uro-ld-breathe 2.4s ease-out 6;
+  }
+}
+
+@keyframes uro-ld-breathe {
+  0% {
+    opacity: 0.45;
+    scale: 0.6;
+  }
+  70%,
+  100% {
+    opacity: 0;
+    scale: 1.7;
+  }
+}

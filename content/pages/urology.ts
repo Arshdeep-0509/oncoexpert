@@ -15,10 +15,11 @@
  * live "Need Clarity?" form is not rebuilt: every button opens the booking page. Images:
  * content/pages/urology.images.ts.
  *
- * Live order: #hero → #specialties → #robotic-edge → #organ-preservation → #leadership → #pricing
- * (hidden on every device on the live page) → #specialist → shared reviews, videos, locations.
+ * Live order: #hero → #specialties → #robotic-edge → #preservation → #leadership → #pricing
+ * (hidden on every device on the live page) → #surgeon (+ the quote band) → shared reviews, videos,
+ * locations.
  */
-import type { PageMeta } from "@/content/types";
+import type { PackageIcon, PageMeta } from "@/content/types";
 import type { UrologyImageKey } from "@/content/pages/urology.images";
 import { urologyOgImage } from "@/content/pages/urology.images";
 import type { AppointmentService } from "@/content/site";
@@ -40,9 +41,10 @@ export type SpecialtyKey = "kidney" | "prostate" | "bladder" | "testicular" | "p
 export type SpecialtyIcon = SpecialtyKey;
 export type FeatureIcon = "recovery" | "precision";
 export type PreservationIcon = "kidney" | "bladder";
-export type PlanFeatureIcon =
-  "efficacy" | "team" | "recovery" | "scarring" | "visualization" | "precision" | "cosmetic" | "discharge";
-export type SpecialistBadgeIcon = "fellowship" | "diplomate";
+/** The two states of the "Spare vs Remove" kidney visual. */
+export type SpareMode = "spare" | "remove";
+export type PlanFeatureIcon = PackageIcon;
+export type SpecialistBadgeIcon = "award" | "graduation-cap";
 
 /* ------------------------------------------------------------------ */
 /* Figures (PENDING DOCTOR: each one, see the notes)                   */
@@ -286,7 +288,7 @@ export const technology = {
 };
 
 /* ------------------------------------------------------------------ */
-/* 4 · #organ-preservation ("Clinical Philosophy")                     */
+/* 4 · #preservation ("Clinical Philosophy: Organ Preservation")       */
 /* ------------------------------------------------------------------ */
 
 export const organPreservation = {
@@ -310,10 +312,42 @@ export const organPreservation = {
       ],
     },
   ],
+  // SOURCE: NEW (the "Spare vs Remove" kidney visual on the Partial Nephrectomy card: the switch, the
+  // labels in the drawing, the caption per state, screen-reader labels)
+  // PENDING DOCTOR: the option labels and the two captions (general guidance, never a promise).
+  spare: {
+    group: "Compare kidney surgery",
+    options: { spare: "Spare", remove: "Remove" },
+    marks: { tumour: "Tumour", kept: "Healthy kidney kept", cut: "Cut line" },
+    captions: {
+      spare:
+        "Partial nephrectomy: only the tumour and a thin margin are removed; the healthy kidney stays and keeps working.",
+      remove: "Radical nephrectomy: the whole kidney is removed, for tumours that cannot be separated safely.",
+    },
+    a11y: {
+      spare: "Diagram: a kidney with a small tumour; only the wedge holding the tumour lifts away",
+      remove: "Diagram: the whole kidney, with its tumour, lifts away",
+    },
+  },
+  // SOURCE: EXISTING (the three words, from the Bladder Sparing card's text; "TMT" from "(TMT)");
+  // NEW (the ring, its screen-reader label)
+  trimodal: {
+    centre: "TMT",
+    parts: ["surgery", "chemotherapy", "radiation"],
+    a11y: "Trimodal therapy: surgery, chemotherapy and radiation, together",
+  },
 } as const satisfies {
   title: string;
   intro: readonly string[];
   cards: readonly { icon: PreservationIcon; title: string; body: readonly string[] }[];
+  spare: {
+    group: string;
+    options: Record<SpareMode, string>;
+    marks: Record<"tumour" | "kept" | "cut", string>;
+    captions: Record<SpareMode, string>;
+    a11y: Record<SpareMode, string>;
+  };
+  trimodal: { centre: string; parts: readonly [string, string, string]; a11y: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -357,15 +391,21 @@ export const leadership = {
     { value: 24, suffix: "h", label: "CONSULT TURNAROUND" },
   ],
   image: "consultation",
-  // SOURCE: NEW (screen-reader labels for the figures table)
-  a11y: { table: "Patient outcome figures", figure: "Figure", value: "Value" },
+  // SOURCE: NEW (screen-reader labels: the figures table, the ring and the gauge)
+  a11y: {
+    table: "Patient outcome figures",
+    figure: "Figure",
+    value: "Value",
+    ring: "92% five-year survival rate",
+    gauge: "99.8% surgical precision",
+  },
 } as const satisfies {
   title: string;
   cards: readonly { key: string; title: string; body: string; stat?: Figure; badge?: string }[];
   outcome: { title: string; figures: readonly Figure[] };
   tiles: readonly (Figure & { compact?: boolean })[];
   image: UrologyImageKey;
-  a11y: Record<"table" | "figure" | "value", string>;
+  a11y: Record<"table" | "figure" | "value" | "ring" | "gauge", string>;
 };
 
 /* ------------------------------------------------------------------ */
@@ -376,15 +416,18 @@ export const leadership = {
 // (elementor-hidden-desktop/-tablet/-mobile), as the thyroid and ovarian packages were. The live
 // prices read "₹1.6L", "₹3.5L" and "₹5.0L" after "From" with a "+" after them; here they are rupee
 // numbers (formatRupees shows "₹1,60,000"). The live buttons link to "#".
+// The cards show the live lakh shorthand ("From ₹1.6L +": PackageCards priceFormat "lakh"); the
+// screen-reader price table gives the full figures.
 // PENDING DOCTOR: show the prices on the rebuilt page? Confirm the three starting prices
-// (₹1,60,000 · ₹3,50,000 · ₹5,00,000), what each includes, and whether one plan is featured.
-// Show them as lakhs ("₹1.6L") as on the live page, or in full?
+// (₹1,60,000 · ₹3,50,000 · ₹5,00,000) and what each includes. Feature one plan? The live page
+// features none, so none is featured here (set `featured: true` and a `ribbon` on one plan).
+// Lakhs as on the live page, or in full?
 export const pricing = {
   title: "Transparent Pricing",
   intro: "Honest, upfront estimates for world-class surgical care.",
   // SOURCE: EXISTING (tier, name, "From", price, "+", tagline, features, button labels); NEW (icon
-  // keys, service + note each button sends with the form). "Minimal Surgical Scarring" has a <br>
-  // after "Surgical" on the live page (layout).
+  // keys, the service each button sends with the form; the note is "Package: <name>"). "Minimal
+  // Surgical Scarring" has a <br> after "Surgical" on the live page (layout).
   plans: [
     {
       key: "open",
@@ -400,7 +443,7 @@ export const pricing = {
         { icon: "team", label: "Multi-specialist Team" },
         { icon: "recovery", label: "Standard Recovery Time" },
       ],
-      cta: { label: "Select Plan", service: "Consultation For Surgery", note: "Plan: Open Surgery" },
+      cta: { label: "Select Plan", service: "Consultation For Surgery" },
     },
     {
       key: "laparoscopic",
@@ -416,7 +459,7 @@ export const pricing = {
         { icon: "scarring", label: "Minimal Surgical Scarring" },
         { icon: "visualization", label: "HD 3D Visualization" },
       ],
-      cta: { label: "Consult Specialist", service: "Consultation For Surgery", note: "Plan: Laparoscopic" },
+      cta: { label: "Consult Specialist", service: "Consultation For Surgery" },
     },
     {
       key: "robotic",
@@ -432,9 +475,11 @@ export const pricing = {
         { icon: "cosmetic", label: "Best Cosmetic Outcomes" },
         { icon: "discharge", label: "Fastest Hospital Discharge" },
       ],
-      cta: { label: "View Packages", service: "Consultation For Surgery", note: "Plan: Robotic Surgery" },
+      cta: { label: "View Packages", service: "Consultation For Surgery" },
     },
   ],
+  // SOURCE: NEW (the price table's caption and the phone swipe row's name)
+  a11y: { label: "Urological cancer surgery: starting prices" },
 } as const satisfies {
   title: string;
   intro: string;
@@ -450,10 +495,11 @@ export const pricing = {
     features: readonly { icon: PlanFeatureIcon; label: string }[];
     cta: AppointmentCta;
   }[];
+  a11y: { label: string };
 };
 
 /* ------------------------------------------------------------------ */
-/* 7 · #specialist ("PRINCIPAL SPECIALIST" + quote)                    */
+/* 7 · #surgeon ("PRINCIPAL SPECIALIST") + the quote band               */
 /* ------------------------------------------------------------------ */
 
 // PENDING DOCTOR: "A pioneer in robotic uro-oncology" and the two badges. content/shared/
@@ -466,15 +512,15 @@ export const surgeon = {
   label: "PRINCIPAL SPECIALIST",
   name: "Dr. Sunil Navalgund",
   bio: "A pioneer in robotic uro-oncology, Dr. Sunil is dedicated to setting international benchmarks in cancer treatment. His work focuses on integrating surgical precision with empathetic patient-centered care models.",
-  // SOURCE: EXISTING (labels); NEW (icon keys)
+  // SOURCE: EXISTING (labels); NEW (icon keys, DoctorCard's set)
   badges: [
-    { icon: "fellowship", label: "Fellowship: Robotic Surgery & Uro-Oncology (US Trained)" },
-    { icon: "diplomate", label: "Diplomate of National Board & Fellow of International Societies" },
+    { icon: "award", label: "Fellowship: Robotic Surgery & Uro-Oncology (US Trained)" },
+    { icon: "graduation-cap", label: "Diplomate of National Board & Fellow of International Societies" },
   ],
-  // SOURCE: EXISTING (label; "#" on the live page); NEW (service, analytics label)
-  cta: { label: "Book Your Appointment", service: "Consultation", cta: "urology:specialist:book" },
-  // SOURCE: NEW (as on the other cancer pages)
-  link: { label: "View Full Profile", href: "/about-us/" },
+  // SOURCE: EXISTING (label; "#" on the live page); NEW (service)
+  cta: { label: "Book Your Appointment", service: "Consultation" },
+  // SOURCE: NEW (the name links to the profile, analytics label; as on Breast and Endometrial)
+  profile: { href: "/about-us/", cta: "urology:surgeon:profile" },
   // SOURCE: EXISTING. The quote, its straight quotation marks and its line break as on the live page.
   quote: ['"Precision at the core, empathy at the', 'helm."'],
   image: "doctor",
@@ -484,7 +530,7 @@ export const surgeon = {
   bio: string;
   badges: readonly { icon: SpecialistBadgeIcon; label: string }[];
   cta: AppointmentCta;
-  link: { label: string; href: string };
+  profile: { href: string; cta: string };
   quote: readonly string[];
   image: UrologyImageKey;
 };

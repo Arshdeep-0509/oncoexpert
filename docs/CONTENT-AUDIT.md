@@ -1368,6 +1368,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 | File | Key | SOURCE | Text |
 | --- | --- | --- | --- |
+| urology.ts |  | — | Spare vs Remove |
 | urology.ts |  | EXISTING. The heading's three lines (<br> on the live page). | Advanced Uro-Oncology |
 | urology.ts |  | EXISTING. The heading's three lines (<br> on the live page). | Care with Precision & |
 | urology.ts | title | EXISTING title (identical to the live page, keeps the SEO). The liv… | Urology - oncoxpert.in |
@@ -1424,7 +1425,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts | cta | EXISTING (label). SOURCE: NEW (target: "#" on the live page; the ro… | urology:robotic-edge:robotic-tech |
 | urology.ts | label | EXISTING | SUCCESSFUL ROBOTIC CASES |
 | urology.ts | stat | NEW (screen-reader text for the figure: the counter itself is hidde… | ${roboticCases}+ successful robotic cases |
-| urology.ts |  | NEW (screen-reader text for the figure: the counter itself is hidde… | Clinical Philosophy |
+| urology.ts |  | NEW (screen-reader text for the figure: the counter itself is hidde… | Clinical Philosophy: Organ Preservation |
 | urology.ts | title | EXISTING (title, intro and its line break, card titles, text); NEW … | Clinical Philosophy: Organ Preservation |
 | urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | At OncoXpert, our primary goal is to cure cancer while preserving organ function and |
 | urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | quality of life. |
@@ -1433,7 +1434,14 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | health and avoiding dialysis risks. |
 | urology.ts | title | EXISTING (title, intro and its line break, card titles, text); NEW … | Bladder Sparing Protocols |
 | urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | Utilizing trimodal therapy (TMT) – surgery, chemotherapy, and radiation – to keep the natural bladder intact when oncologically viable. |
-| urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | Clinical Leadership & Infrastructure |
+| urology.ts | group | NEW (the "Spare vs Remove" kidney visual on the Partial Nephrectomy… | Compare kidney surgery |
+| urology.ts | kept | NEW (the "Spare vs Remove" kidney visual on the Partial Nephrectomy… | Healthy kidney kept |
+| urology.ts |  | NEW (the "Spare vs Remove" kidney visual on the Partial Nephrectomy… | Partial nephrectomy: only the tumour and a thin margin are removed; the healthy kidney stays and keeps working. |
+| urology.ts | remove | NEW (the "Spare vs Remove" kidney visual on the Partial Nephrectomy… | Radical nephrectomy: the whole kidney is removed, for tumours that cannot be separated safely. |
+| urology.ts | spare | NEW (the "Spare vs Remove" kidney visual on the Partial Nephrectomy… | Diagram: a kidney with a small tumour; only the wedge holding the tumour lifts away |
+| urology.ts | remove | NEW (the "Spare vs Remove" kidney visual on the Partial Nephrectomy… | Diagram: the whole kidney, with its tumour, lifts away |
+| urology.ts | a11y | EXISTING (the three words, from the Bladder Sparing card's text; "T… | Trimodal therapy: surgery, chemotherapy and radiation, together |
+| urology.ts |  | EXISTING (the three words, from the Bladder Sparing card's text; "T… | Clinical Leadership & Infrastructure |
 | urology.ts | title | EXISTING | Clinical Leadership & Infrastructure |
 | urology.ts | title | EXISTING | Robotic Mastery |
 | urology.ts | body | EXISTING | Dr. Sunil Navalgund brings over ${yearsExperience} years of surgical excellence, specializing in high-complexity robotic cases that demand elite precision and e… |
@@ -1446,8 +1454,10 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts | label | EXISTING. The live "5k+" is 5,000 shown compactly (`compact`: "5k+"). | PATIENTS TREATED |
 | urology.ts | label | EXISTING. The live "5k+" is 5,000 shown compactly (`compact`: "5k+"). | SATISFACTION SCORE |
 | urology.ts | label | EXISTING. The live "5k+" is 5,000 shown compactly (`compact`: "5k+"). | CONSULT TURNAROUND |
-| urology.ts | table | NEW (screen-reader labels for the figures table) | Patient outcome figures |
-| urology.ts |  | NEW (screen-reader labels for the figures table) | Transparent Pricing |
+| urology.ts | table | NEW (screen-reader labels: the figures table, the ring and the gauge) | Patient outcome figures |
+| urology.ts | ring | NEW (screen-reader labels: the figures table, the ring and the gauge) | 92% five-year survival rate |
+| urology.ts | gauge | NEW (screen-reader labels: the figures table, the ring and the gauge) | 99.8% surgical precision |
+| urology.ts |  | NEW (screen-reader labels: the figures table, the ring and the gauge) | Transparent Pricing |
 | urology.ts | title | EXISTING. The live section is in the markup but hidden on every device | Transparent Pricing |
 | urology.ts | intro | EXISTING. The live section is in the markup but hidden on every device | Honest, upfront estimates for world-class surgical care. |
 | urology.ts | tier | EXISTING (tier, name, "From", price, "+", tagline, features, button… | STANDARD CARE |
@@ -1457,7 +1467,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Multi-specialist Team |
 | urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Standard Recovery Time |
 | urology.ts | service | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consultation For Surgery |
-| urology.ts | note | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Plan: Open Surgery |
 | urology.ts | tier | EXISTING (tier, name, "From", price, "+", tagline, features, button… | MODERN STANDARD |
 | urology.ts | name | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Laparoscopic |
 | urology.ts | tagline | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Minimal Invasive Excellence |
@@ -1466,7 +1475,6 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | HD 3D Visualization |
 | urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consult Specialist |
 | urology.ts | service | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consultation For Surgery |
-| urology.ts | note | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Plan: Laparoscopic |
 | urology.ts | tier | EXISTING (tier, name, "From", price, "+", tagline, features, button… | PREMIUM PRECISION |
 | urology.ts | name | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Robotic Surgery |
 | urology.ts | tagline | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Advanced Robotic Assistance |
@@ -1475,26 +1483,48 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Fastest Hospital Discharge |
 | urology.ts | label | EXISTING (tier, name, "From", price, "+", tagline, features, button… | View Packages |
 | urology.ts | service | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Consultation For Surgery |
-| urology.ts | note | EXISTING (tier, name, "From", price, "+", tagline, features, button… | Plan: Robotic Surgery |
-| urology.ts |  | EXISTING (tier, name, "From", price, "+", tagline, features, button… | PRINCIPAL SPECIALIST |
+| urology.ts | label | NEW (the price table's caption and the phone swipe row's name) | Urological cancer surgery: starting prices |
+| urology.ts |  | NEW (the price table's caption and the phone swipe row's name) | PRINCIPAL SPECIALIST |
 | urology.ts | label | EXISTING | PRINCIPAL SPECIALIST |
 | urology.ts | name | EXISTING | Dr. Sunil Navalgund |
 | urology.ts | bio | EXISTING | A pioneer in robotic uro-oncology, Dr. Sunil is dedicated to setting international benchmarks in cancer treatment. His work focuses on integrating surgical prec… |
-| urology.ts | label | EXISTING (labels); NEW (icon keys) | Fellowship: Robotic Surgery & Uro-Oncology (US Trained) |
-| urology.ts | label | EXISTING (labels); NEW (icon keys) | Diplomate of National Board & Fellow of International Societies |
-| urology.ts | label | EXISTING (label; "#" on the live page); NEW (service, analytics label) | Book Your Appointment |
-| urology.ts | service | EXISTING (label; "#" on the live page); NEW (service, analytics label) | Consultation |
-| urology.ts | cta | EXISTING (label; "#" on the live page); NEW (service, analytics label) | urology:specialist:book |
-| urology.ts | label | NEW (as on the other cancer pages) | View Full Profile |
+| urology.ts | label | EXISTING (labels); NEW (icon keys, DoctorCard's set) | Fellowship: Robotic Surgery & Uro-Oncology (US Trained) |
+| urology.ts | label | EXISTING (labels); NEW (icon keys, DoctorCard's set) | Diplomate of National Board & Fellow of International Societies |
+| urology.ts | label | EXISTING (label; "#" on the live page); NEW (service) | Book Your Appointment |
+| urology.ts | service | EXISTING (label; "#" on the live page); NEW (service) | Consultation |
+| urology.ts | cta | NEW (the name links to the profile, analytics label; as on Breast a… | urology:surgeon:profile |
+| urology.seo.ts |  | NEW | ${f.value.toLocaleString("en-IN")}${f.suffix} |
 | urology.seo.ts |  | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats kidney, prostate, bladder, testicular and penile cancers at OncoXpert with robotic, keyhole and … |
 | urology.seo.ts | name | NEW | Urological cancers |
-| urology.seo.ts |  | NEW | Robotic Partial Nephrectomy |
-| urology.seo.ts |  | NEW | Radical Nephrectomy |
-| urology.seo.ts |  | NEW | Robotic Prostatectomy |
-| urology.seo.ts |  | NEW | Robotic Radical Cystectomy |
-| urology.seo.ts |  | NEW | Retroperitoneal Lymph Node Dissection (RPLND) |
+| urology.seo.ts |  | NEW | Robotic partial nephrectomy |
+| urology.seo.ts |  | NEW | Radical nephrectomy |
+| urology.seo.ts |  | NEW | Robotic prostatectomy |
+| urology.seo.ts |  | NEW | Robotic radical cystectomy |
+| urology.seo.ts |  | NEW | Retroperitoneal lymph node dissection (RPLND) |
 | urology.seo.ts |  | NEW | Trimodal therapy (bladder sparing) |
-| urology.seo.ts |  | NEW | Uro-oncology: kidney, prostate, bladder, testicular, penile and adrenal cancers; robotic and keyhole surgery, organ preservation, the tumour board, outcomes and… |
+| urology.seo.ts | question | NEW | Which urological cancers does OncoXpert treat? |
+| urology.seo.ts |  | NEW | OncoXpert treats kidney, prostate, bladder, testicular and penile cancers, as well as adrenal masses and rare genitourinary tract tumours. Care is led by Dr. Su… |
+| urology.seo.ts | question | NEW | What is a partial nephrectomy? |
+| urology.seo.ts |  | NEW | A partial nephrectomy removes only the renal tumour while sparing the healthy kidney tissue, which is essential for long-term renal health and avoiding dialysis… |
+| urology.seo.ts | question | NEW | Can bladder cancer be treated without removing the bladder? |
+| urology.seo.ts |  | NEW | Sometimes, yes. Bladder sparing protocols use trimodal therapy (TMT), combining surgery, chemotherapy and radiation, to keep the natural bladder intact when it … |
+| urology.seo.ts | question | NEW | How much does urological cancer surgery cost in Bangalore? |
+| urology.seo.ts | answer | NEW | At OncoXpert, urological cancer surgery starts from ${formatRupees(open.price)} for open surgery, ${formatRupees(laparoscopic.price)} for laparoscopic surgery a… |
+| urology.seo.ts | question | NEW | What are the benefits of robotic surgery for urological cancer? |
+| urology.seo.ts | answer | NEW | Robotic surgery allows ultra-precise procedures that minimise trauma and accelerate healing. At OncoXpert, patients typically experience a ${fasterReturn} retur… |
+| urology.seo.ts | question | NEW | What is robotic prostatectomy? |
+| urology.seo.ts |  | NEW | Robotic prostatectomy is the removal of the prostate with robotic assistance for prostate cancer. At OncoXpert, Dr. Sunil Navalgund performs precision robotic p… |
+| urology.seo.ts | question | NEW | Who leads uro-oncology care at OncoXpert? |
+| urology.seo.ts | answer | NEW | Dr. Sunil Navalgund, a Tata Memorial trained surgical oncologist, leads uro-oncology at OncoXpert in Bengaluru. He brings over ${years.value} years of surgical … |
+| urology.seo.ts | sentence | NEW | OncoXpert's 5-year survival rate in uro-oncology is ${fig(survival)}. |
+| urology.seo.ts | source | NEW | OncoXpert patient outcomes |
+| urology.seo.ts | sentence | NEW | OncoXpert reports ${fig(precision)} surgical precision in uro-oncology. |
+| urology.seo.ts | source | NEW | OncoXpert patient outcomes |
+| urology.seo.ts | sentence | NEW | OncoXpert has performed ${fig(technology.stat)} successful robotic cases. |
+| urology.seo.ts | source | NEW | OncoXpert surgical records |
+| urology.seo.ts | sentence | NEW | OncoXpert has treated ${fig(patients)} patients, with a ${fig(satisfaction)} satisfaction score and a ${fig(turnaround)} consult turnaround. |
+| urology.seo.ts | source | NEW | OncoXpert patient outcomes |
+| urology.seo.ts |  | NEW | Uro-oncology: kidney, prostate, bladder, testicular, penile and adrenal cancers; robotic and keyhole surgery, organ preservation (partial nephrectomy, bladder s… |
 
 ### NEW lines
 
@@ -1526,19 +1556,52 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Expert management of adrenal masses and rare genitourinary tract tumors using advanced imaging and robotics.
 - TECHNOLOGICAL EDGE
 - ${roboticCases}+ successful robotic cases
-- Clinical Philosophy
+- Clinical Philosophy: Organ Preservation
+- Compare kidney surgery
+- Healthy kidney kept
+- Partial nephrectomy: only the tumour and a thin margin are removed; the healthy kidney stays and keeps working.
+- Radical nephrectomy: the whole kidney is removed, for tumours that cannot be separated safely.
+- Diagram: a kidney with a small tumour; only the wedge holding the tumour lifts away
+- Diagram: the whole kidney, with its tumour, lifts away
 - Patient outcome figures
+- 92% five-year survival rate
+- 99.8% surgical precision
 - Transparent Pricing
-- View Full Profile
+- Urological cancer surgery: starting prices
+- PRINCIPAL SPECIALIST
+- urology:surgeon:profile
+- ${f.value.toLocaleString("en-IN")}${f.suffix}
 - Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats kidney, prostate, bladder, testicular and penile cancers at OncoXpert with robotic, keyhole and open surgery that preserves organ function.
 - Urological cancers
-- Robotic Partial Nephrectomy
-- Radical Nephrectomy
-- Robotic Prostatectomy
-- Robotic Radical Cystectomy
-- Retroperitoneal Lymph Node Dissection (RPLND)
+- Robotic partial nephrectomy
+- Radical nephrectomy
+- Robotic prostatectomy
+- Robotic radical cystectomy
+- Retroperitoneal lymph node dissection (RPLND)
 - Trimodal therapy (bladder sparing)
-- Uro-oncology: kidney, prostate, bladder, testicular, penile and adrenal cancers; robotic and keyhole surgery, organ preservation, the tumour board, outcomes and indicative prices.
+- Which urological cancers does OncoXpert treat?
+- OncoXpert treats kidney, prostate, bladder, testicular and penile cancers, as well as adrenal masses and rare genitourinary tract tumours. Care is led by Dr. Sunil Navalgund, a Tata Memorial trained surgical oncologist in Bengaluru, and covers diagnosis, robotic-assisted surgery and personalised treatment pathways with a focus on functional preservation.
+- What is a partial nephrectomy?
+- A partial nephrectomy removes only the renal tumour while sparing the healthy kidney tissue, which is essential for long-term renal health and avoiding dialysis risks. At OncoXpert, Dr. Sunil Navalgund performs robotic partial nephrectomy (organ sparing) for kidney cancer and radical nephrectomy for advanced renal cell carcinoma (RCC) cases.
+- Can bladder cancer be treated without removing the bladder?
+- Sometimes, yes. Bladder sparing protocols use trimodal therapy (TMT), combining surgery, chemotherapy and radiation, to keep the natural bladder intact when it is oncologically viable. When it is not, care at OncoXpert spans TURBT to robotic radical cystectomy with intracorporeal urinary diversion, and every case is reviewed by a multi-disciplinary tumour board.
+- How much does urological cancer surgery cost in Bangalore?
+- At OncoXpert, urological cancer surgery starts from ${formatRupees(open.price)} for open surgery, ${formatRupees(laparoscopic.price)} for laparoscopic surgery and ${formatRupees(robotic.price)} for robotic surgery. These are honest, upfront starting estimates. Robotic surgery offers extreme surgical precision, the best cosmetic outcomes and the fastest hospital discharge; laparoscopic surgery a faster recovery window and minimal scarring.
+- What are the benefits of robotic surgery for urological cancer?
+- Robotic surgery allows ultra-precise procedures that minimise trauma and accelerate healing. At OncoXpert, patients typically experience a ${fasterReturn} return to daily activities, and nerve preservation rates are significantly higher than with traditional surgery. OncoXpert uses the Da Vinci surgical platform, and its robotic-first approach is the gold standard for urological oncology.
+- What is robotic prostatectomy?
+- Robotic prostatectomy is the removal of the prostate with robotic assistance for prostate cancer. At OncoXpert, Dr. Sunil Navalgund performs precision robotic prostatectomy focusing on early functional recovery, nerve sparing and oncological clearance, on the Da Vinci surgical platform, which minimises trauma and accelerates healing compared with traditional surgery.
+- Who leads uro-oncology care at OncoXpert?
+- Dr. Sunil Navalgund, a Tata Memorial trained surgical oncologist, leads uro-oncology at OncoXpert in Bengaluru. He brings over ${years.value} years of surgical excellence, specialising in high-complexity robotic cases, and every case is reviewed by an integrated tumour board of oncologists, radiologists and surgeons before treatment is planned.
+- OncoXpert's 5-year survival rate in uro-oncology is ${fig(survival)}.
+- OncoXpert patient outcomes
+- OncoXpert reports ${fig(precision)} surgical precision in uro-oncology.
+- OncoXpert patient outcomes
+- OncoXpert has performed ${fig(technology.stat)} successful robotic cases.
+- OncoXpert surgical records
+- OncoXpert has treated ${fig(patients)} patients, with a ${fig(satisfaction)} satisfaction score and a ${fig(turnaround)} consult turnaround.
+- OncoXpert patient outcomes
+- Uro-oncology: kidney, prostate, bladder, testicular, penile and adrenal cancers; robotic and keyhole surgery, organ preservation (partial nephrectomy, bladder sparing), the tumour board, outcomes and starting prices.
 
 ### PENDING DOCTOR
 
@@ -1547,8 +1610,9 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - (urology.ts) "15+ Years Exp" (and "over 15 years" in the same card). Thyroid and Ovarian say "over a decade", About Us "15+", Colorectal and Endometrial "15+". One figure for the site?
 - (urology.ts) approve the description; a better title, not used yet: title: "Uro-Oncology: Kidney, Prostate & Bladder Cancer Surgery in Bangalore \| OncoXpert"
 - (urology.ts) where should "VIEW PROTOCOL" lead? On the live page it is not a link. For now it opens the booking page (Consultation) with "Protocol: <cancer>" as the note. Options: keep that, a section of this page, or a future page per cancer.
+- (urology.ts) the option labels and the two captions (general guidance, never a promise).
 - (urology.ts) every figure in this block: "92%" 5-year survival (which cancers, stages, years, how many patients?), "99.8%" surgical precision (what is measured?), "5k+ PATIENTS TREATED" (Home says 3,000+), "98% SATISFACTION SCORE" (which survey?), "24h CONSULT TURNAROUND" (from what to what?). Also "FELLOWSHIP TRAINED": which fellowship (see #specialist)?
-- (urology.ts) show the prices on the rebuilt page? Confirm the three starting prices (₹1,60,000 · ₹3,50,000 · ₹5,00,000), what each includes, and whether one plan is featured. Show them as lakhs ("₹1.6L") as on the live page, or in full?
+- (urology.ts) show the prices on the rebuilt page? Confirm the three starting prices (₹1,60,000 · ₹3,50,000 · ₹5,00,000) and what each includes. Feature one plan? The live page features none, so none is featured here (set `featured: true` and a `ribbon` on one plan). Lakhs as on the live page, or in full?
 - (urology.ts) "A pioneer in robotic uro-oncology" and the two badges. content/shared/ organization.ts lists "MCH Surgical Oncology, FIAGES", trained at Tata Memorial Hospital, Mumbai; About Us has a "Robotic & Minimal Access Fellowship", Thyroid "Robotic Oncology Fellow". Is there a US-trained "Fellowship: Robotic Surgery & Uro-Oncology", and is he a Diplomate of National Board (DNB)? Which international societies?
 - (urology.ts) the live page shows Vasudeva Murthy's review, which is about colon cancer surgery. Hidden on this page by default (as on the other cancer pages); set showColonReview to true to show it.
 

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
+import { Activity, BedDouble, Droplets, type LucideIcon } from "lucide-react";
 import { outcomes, type OutcomeItem } from "@/content/pages/robotic-surgery";
 import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -14,40 +15,55 @@ import { bleedFade } from "@/lib/image-fade";
 const glass = "rounded-[22px] border border-white/10 bg-white/[0.05] p-6 sm:p-7";
 const pct = (item: OutcomeItem) => Math.round((item.robotic / item.open) * 100);
 
-function Bar({
-  fill,
+const icons: Record<OutcomeItem["icon"], LucideIcon> = { blood: Droplets, stay: BedDouble, pain: Activity };
+
+/**
+ * One column of the comparison: a label over it (the value), the bar growing up from the base, the
+ * name under it. The robotic column also shows the part it saves, as a dashed box up to the open
+ * surgery level with "−75%" in it.
+ */
+function Column({
+  share,
   value,
   label,
   delay,
-  gradient,
+  robotic,
 }: {
-  fill: number;
+  share: number;
   value: number;
   label: string;
   delay: number;
-  gradient: boolean;
+  robotic: boolean;
 }) {
   const reduce = useReducedMotion();
+  const saved = 100 - value;
   return (
-    <div>
-      <div className="mb-1.5 flex items-baseline justify-between text-[13px] text-white/60">
-        <span>{label}</span>
-        <span className="tabular-nums">{value}%</span>
-      </div>
-      <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
+    <div className="flex flex-col items-center">
+      <div className="relative h-40 w-full max-w-[112px] sm:h-44">
+        {robotic && saved > 0 ? (
+          <div
+            className="absolute inset-x-0 top-0 flex items-center justify-center rounded-t-xl border border-dashed border-glow/45 bg-glow/[0.04]"
+            style={{ height: `${(1 - share) * 100}%` }}
+          >
+            <span className="text-sm font-semibold text-glow tabular-nums">−{saved}%</span>
+          </div>
+        ) : null}
         <motion.div
           className={
-            gradient
-              ? "h-full origin-left rounded-full bg-linear-to-r from-teal to-glow shadow-[0_0_14px_rgb(45_212_191/0.55)]"
-              : "h-full origin-left rounded-full bg-slate/80"
+            robotic
+              ? "absolute inset-x-0 bottom-0 flex origin-bottom items-start justify-center rounded-xl bg-linear-to-t from-teal to-glow pt-2 shadow-[0_0_18px_rgb(45_212_191/0.45)]"
+              : "absolute inset-x-0 bottom-0 flex origin-bottom items-start justify-center rounded-xl bg-slate/70 pt-2"
           }
-          style={{ width: `${fill * 100}%` }}
-          initial={reduce ? false : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
+          style={{ height: `${share * 100}%` }}
+          initial={reduce ? false : { scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
           viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1.2, ease: EASE_OUT_EXPO, delay }}
-        />
+          transition={{ duration: 1.1, ease: EASE_OUT_EXPO, delay }}
+        >
+          <span className={`text-sm font-bold tabular-nums ${robotic ? "text-ink" : "text-white"}`}>{value}%</span>
+        </motion.div>
       </div>
+      <p className="mt-3 text-center text-[13px] leading-snug text-white/70">{label}</p>
     </div>
   );
 }
@@ -55,17 +71,24 @@ function Bar({
 function BarCard({ item, index }: { item: OutcomeItem; index: number }) {
   const { barLabels } = outcomes;
   const delay = index * 0.15;
+  const Icon = icons[item.icon];
+  const saved = 100 - pct(item);
   return (
     <article className={`${glass} flex h-full flex-col`}>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-center gap-3">
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-glow/10 text-glow">
+          <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+        </span>
         <h3 className="type-h3 text-white">{item.label}</h3>
-        <p
-          aria-hidden="true"
-          className="font-display text-5xl leading-none font-bold tracking-[-0.03em] text-glow sm:text-6xl"
-        >
-          <Counter value={pct(item)} suffix="%" />
-        </p>
       </div>
+      {/* The headline: what robotic surgery saves, in plain words */}
+      <p aria-hidden="true" className="mt-6 flex flex-wrap items-baseline gap-x-2">
+        <span className="font-display text-5xl leading-none font-bold tracking-[-0.03em] text-glow sm:text-6xl">
+          <Counter value={saved} suffix="%" />
+        </span>
+        <span className="text-2xl font-semibold text-white">{outcomes.less}</span>
+        <span className="w-full pt-1 text-[15px] text-white/60">{outcomes.thanOpen}</span>
+      </p>
       {item.image ? (
         // Fills the card's spare height (it sits beside the taller scar card on tablet/desktop).
         // Screen blend drops the photo's black background on the dark glass card.
@@ -87,14 +110,17 @@ function BarCard({ item, index }: { item: OutcomeItem; index: number }) {
           </div>
         </div>
       ) : null}
-      <div aria-hidden="true" className="mt-auto grid gap-4 pt-8">
-        <Bar fill={1} value={item.open} label={barLabels.open} delay={delay} gradient={false} />
-        <Bar
-          fill={item.robotic / item.open}
-          value={item.robotic}
+      <div
+        aria-hidden="true"
+        className="mt-auto grid grid-cols-2 items-end gap-4 border-b border-white/10 pt-8 sm:gap-6"
+      >
+        <Column share={1} value={item.open} label={barLabels.open} delay={delay} robotic={false} />
+        <Column
+          share={item.robotic / item.open}
+          value={pct(item)}
           label={barLabels.robotic}
-          delay={delay + 0.15}
-          gradient
+          delay={delay + 0.2}
+          robotic
         />
       </div>
       <p className="pt-6 text-[15px] leading-relaxed text-white/70">{item.caption}</p>

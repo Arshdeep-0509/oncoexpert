@@ -29,14 +29,15 @@ export const urologyImages = {
     width: 886,
     height: 1024,
   },
-  // The head cut out of the portrait (the live page's hero and specialist block show a cutout).
+  // #hero: the portrait cut out of its studio backdrop, head to mid-torso (scripts/make-portrait-cutout.mjs
+  // with keep 0.86). The LCP image.
   doctorCutout: {
-    file: "dr-sunil-navalgund-head.png",
-    src: "/images/brand/dr-sunil-navalgund-head.png",
-    alt: "Dr. Sunil Navalgund",
-    focal: "50% 50%",
+    file: "dr-sunil-navalgund-cutout.png",
+    src: "/images/brand/dr-sunil-navalgund-cutout.png",
+    alt: "Dr. Sunil Navalgund, Surgical Oncologist",
+    focal: "50% 0%",
     width: 886,
-    height: 410,
+    height: 881,
   },
   // Home's hero slide: an operation under the theatre lights (the doctor's own photo).
   // #technology / #leadership.

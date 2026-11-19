@@ -27,7 +27,9 @@ export type AnalyticsEvent =
   | { event: "estimator_change"; cycles: number; page: string }
   // Thyroid page: the early / late switch, the modalities filter.
   | { event: "thyroid_detection_toggle"; label: string }
-  | { event: "thyroid_modality_filter"; label: string };
+  | { event: "thyroid_modality_filter"; label: string }
+  // Urology page: a specialty chosen on the clinical dashboard (organ, chip or card).
+  | { event: "urology_specialty_select"; label: string };
 
 declare global {
   interface Window {

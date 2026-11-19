@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { pages } from "@/content/pages";
-import { defaultAppointmentService, hero, meta, pageSlug, shared, surgeon } from "@/content/pages/urology";
+import { defaultAppointmentService, meta, pageSlug, shared, surgeon } from "@/content/pages/urology";
 import { urologySeo } from "@/content/pages/urology.seo";
 import { urologyImages } from "@/content/pages/urology.images";
 import { reviewsFor } from "@/content/shared/reviews";
@@ -9,8 +9,9 @@ import { cancerPageGraph } from "@/lib/jsonld";
 import { keepLastWords } from "@/lib/format";
 import { pageMetadata, pageViewport } from "@/lib/seo";
 
-import { Container } from "@/components/ui/Container";
-import { AppointmentButton } from "@/components/shared/AppointmentButton";
+import { Hero } from "@/components/pages/urology/Hero";
+import { Specialties } from "@/components/pages/urology/Specialties";
+import { RoboticEdge } from "@/components/pages/urology/RoboticEdge";
 import { Reviews } from "@/components/shared/Reviews";
 import { Videos } from "@/components/shared/Videos";
 import { Locations } from "@/components/shared/Locations";
@@ -44,36 +45,15 @@ const graph = cancerPageGraph({
   physicianDescription: surgeon.bio,
 });
 
-// Foundation: the hero is a placeholder (eyebrow, H1, lead, the two buttons); the page's own
-// sections come next, in the live order listed in content/pages/urology.ts.
+// Built so far: #hero, #specialties, #robotic-edge. Still to come, in the live order (content/pages/
+// urology.ts): #organ-preservation, #leadership, #pricing, #specialist.
 export default function UrologyPage() {
   return (
     <>
       <JsonLd graph={graph} />
-      {/* 1 #hero (sage gradient) */}
-      <section
-        id="hero"
-        aria-labelledby="hero-title"
-        className="bg-(image:--grad-hero) pt-[calc(var(--header-h)+56px)] pb-(--section-y) md:pt-[calc(var(--header-h)+96px)]"
-      >
-        <Container>
-          <p className="text-sm font-semibold tracking-[0.12em] text-accent uppercase">{hero.eyebrow}</p>
-          <h1 id="hero-title" className="mt-4 max-w-4xl heading-1 text-ink">
-            {hero.lines.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </h1>
-          <p data-speakable className="mt-6 measure text-lg text-muted">
-            {hero.body}
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <AppointmentButton {...hero.ctas.primary} arrow fullWidthOnMobile />
-            <AppointmentButton {...hero.ctas.secondary} variant="secondary" fullWidthOnMobile />
-          </div>
-        </Container>
-      </section>
+      <Hero /> {/* 1  #hero          sage gradient, the flow */}
+      <Specialties /> {/* 2  #specialties   surface: the clinical dashboard */}
+      <RoboticEdge /> {/* 3  #robotic-edge  pine band */}
       {/* Shared sections (soft look), re-themed by the urology theme */}
       <Reviews
         tone="alt"

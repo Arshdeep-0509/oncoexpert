@@ -1381,40 +1381,50 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | urology.ts | label | EXISTING (button labels); NEW (the service each one preselects, ana… | Get Second Opinion |
 | urology.ts | service | EXISTING (button labels); NEW (the service each one preselects, ana… | Second Opinion |
 | urology.ts | cta | EXISTING (button labels); NEW (the service each one preselects, ana… | urology:hero:second-opinion |
-| urology.ts | portrait | EXISTING (button labels); NEW (the service each one preselects, ana… | doctorCutout |
-| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Oncological Specialties |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Comprehensive surgical and medical management of urological malignancies with a focus on functional preservation. |
-| urology.ts | badge | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | CLINICAL DASHBOARD V2.0 |
-| urology.ts | action | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | VIEW PROTOCOL |
-| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Kidney Cancer |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Specializing in Robotic Partial Nephrectomy (Organ Sparing) and Radical Nephrectomy for advanced RCC cases. |
-| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Prostate Cancer |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Precision Robotic Prostatectomy focusing on |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | early functional recovery, nerve sparing, and oncological clearance. |
-| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Bladder Cancer |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Comprehensive care spanning TURBT to Robotic Radical Cystectomy with Intracorporeal Urinary Diversion. |
-| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Testicular Cancer |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Multimodal approach including nerve-sparing Retroperitoneal Lymph Node Dissection (RPLND) for germ cell tumors. |
-| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Penile Cancer |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Specialized surgical protocols aiming for maximum organ preservation and aesthetic- functional restoration. |
-| urology.ts | title | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Urethral & Adrenal |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | Expert management of adrenal masses and rare genitourinary tract tumors using advanced imaging and robotics. |
-| urology.ts |  | EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROT… | TECHNOLOGICAL EDGE |
+| urology.ts | emphasis | EXISTING (the live heading colours "Precision & Compassion" in its … | Precision & Compassion |
+| urology.ts | portrait | EXISTING (the live heading colours "Precision & Compassion" in its … | doctorCutout |
+| urology.ts | chips | NEW (screen-reader labels) | Specialties at a glance |
+| urology.ts | pause | NEW (screen-reader labels) | Pause the hero animation |
+| urology.ts | play | NEW (screen-reader labels) | Play the hero animation |
+| urology.ts | title | NEW (`short`: the organ's name on the map pins, hero chips and the … | Oncological Specialties |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | Comprehensive surgical and medical management of urological malignancies with a focus on functional preservation. |
+| urology.ts | badge | NEW (`short`: the organ's name on the map pins, hero chips and the … | CLINICAL DASHBOARD V2.0 |
+| urology.ts | action | NEW (`short`: the organ's name on the map pins, hero chips and the … | VIEW PROTOCOL |
+| urology.ts | map | NEW (`short`: the organ's name on the map pins, hero chips and the … | Line drawing of the urinary tract: kidneys with the adrenal glands, ureters, bladder, prostate and urethra, with markers for the testicular and penile regions |
+| urology.ts | organs | NEW (`short`: the organ's name on the map pins, hero chips and the … | Specialties on the map |
+| urology.ts | strip | NEW (`short`: the organ's name on the map pins, hero chips and the … | Choose a specialty |
+| urology.ts | cards | NEW (`short`: the organ's name on the map pins, hero chips and the … | Specialty cards |
+| urology.ts | title | NEW (`short`: the organ's name on the map pins, hero chips and the … | Kidney Cancer |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | Specializing in Robotic Partial Nephrectomy (Organ Sparing) and Radical Nephrectomy for advanced RCC cases. |
+| urology.ts | title | NEW (`short`: the organ's name on the map pins, hero chips and the … | Prostate Cancer |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | Precision Robotic Prostatectomy focusing on |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | early functional recovery, nerve sparing, and oncological clearance. |
+| urology.ts | title | NEW (`short`: the organ's name on the map pins, hero chips and the … | Bladder Cancer |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | Comprehensive care spanning TURBT to Robotic Radical Cystectomy with Intracorporeal Urinary Diversion. |
+| urology.ts | title | NEW (`short`: the organ's name on the map pins, hero chips and the … | Testicular Cancer |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | Multimodal approach including nerve-sparing Retroperitoneal Lymph Node Dissection (RPLND) for germ cell tumors. |
+| urology.ts | title | NEW (`short`: the organ's name on the map pins, hero chips and the … | Penile Cancer |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | Specialized surgical protocols aiming for maximum organ preservation and aesthetic- functional restoration. |
+| urology.ts | title | NEW (`short`: the organ's name on the map pins, hero chips and the … | Urethral & Adrenal |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | Expert management of adrenal masses and rare genitourinary tract tumors using advanced imaging and robotics. |
+| urology.ts |  | NEW (`short`: the organ's name on the map pins, hero chips and the … | TECHNOLOGICAL EDGE |
 | urology.ts | eyebrow | EXISTING. "Da Vinci®" as on the live page. | TECHNOLOGICAL EDGE |
 | urology.ts |  | EXISTING. "Da Vinci®" as on the live page. | Advanced Robotic & Keyhole |
 | urology.ts |  | EXISTING. "Da Vinci®" as on the live page. | Surgical Excellence |
 | urology.ts | body | EXISTING. "Da Vinci®" as on the live page. | OncoXpert utilizes the latest Da Vinci® surgical platform to perform ultra-precise procedures that minimize trauma and accelerate healing. Our robotic-first app… |
-| urology.ts | title | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | Rapid Recovery |
-| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | Patients typically experience |
-| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | ${fasterReturn}% faster return to daily |
-| urology.ts | title | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | High Precision |
-| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | Nerve preservation rates are |
-| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | significantly higher than |
-| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys). The 4… | traditional surgery. |
+| urology.ts | title | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | Rapid Recovery |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | Patients typically experience |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | ${fasterReturn}% faster return to daily |
+| urology.ts | emphasis | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | ${fasterReturn}% faster |
+| urology.ts | title | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | High Precision |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | Nerve preservation rates are |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | significantly higher than |
+| urology.ts |  | EXISTING (titles, text and its line breaks); NEW (icon keys; `empha… | traditional surgery. |
 | urology.ts | label | EXISTING (label). SOURCE: NEW (target: "#" on the live page; the ro… | Learn About Robotic Tech |
-| urology.ts | cta | EXISTING (label). SOURCE: NEW (target: "#" on the live page; the ro… | urology:technology:robotic |
+| urology.ts | cta | EXISTING (label). SOURCE: NEW (target: "#" on the live page; the ro… | urology:robotic-edge:robotic-tech |
 | urology.ts | label | EXISTING | SUCCESSFUL ROBOTIC CASES |
-| urology.ts |  | EXISTING | Clinical Philosophy |
+| urology.ts | stat | NEW (screen-reader text for the figure: the counter itself is hidde… | ${roboticCases}+ successful robotic cases |
+| urology.ts |  | NEW (screen-reader text for the figure: the counter itself is hidde… | Clinical Philosophy |
 | urology.ts | title | EXISTING (title, intro and its line break, card titles, text); NEW … | Clinical Philosophy: Organ Preservation |
 | urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | At OncoXpert, our primary goal is to cure cancer while preserving organ function and |
 | urology.ts |  | EXISTING (title, intro and its line break, card titles, text); NEW … | quality of life. |
@@ -1490,6 +1500,33 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 - Uro-oncology in Bangalore at OncoXpert: robotic and keyhole surgery for kidney, prostate, bladder, testicular and penile cancers, with organ-preserving care.
 - Consultation
+- Specialties at a glance
+- Pause the hero animation
+- Play the hero animation
+- Oncological Specialties
+- Comprehensive surgical and medical management of urological malignancies with a focus on functional preservation.
+- CLINICAL DASHBOARD V2.0
+- VIEW PROTOCOL
+- Line drawing of the urinary tract: kidneys with the adrenal glands, ureters, bladder, prostate and urethra, with markers for the testicular and penile regions
+- Specialties on the map
+- Choose a specialty
+- Specialty cards
+- Kidney Cancer
+- Specializing in Robotic Partial Nephrectomy (Organ Sparing) and Radical Nephrectomy for advanced RCC cases.
+- Prostate Cancer
+- Precision Robotic Prostatectomy focusing on
+- early functional recovery, nerve sparing, and oncological clearance.
+- Bladder Cancer
+- Comprehensive care spanning TURBT to Robotic Radical Cystectomy with Intracorporeal Urinary Diversion.
+- Testicular Cancer
+- Multimodal approach including nerve-sparing Retroperitoneal Lymph Node Dissection (RPLND) for germ cell tumors.
+- Penile Cancer
+- Specialized surgical protocols aiming for maximum organ preservation and aesthetic- functional restoration.
+- Urethral & Adrenal
+- Expert management of adrenal masses and rare genitourinary tract tumors using advanced imaging and robotics.
+- TECHNOLOGICAL EDGE
+- ${roboticCases}+ successful robotic cases
+- Clinical Philosophy
 - Patient outcome figures
 - Transparent Pricing
 - View Full Profile
@@ -1509,7 +1546,7 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - (urology.ts) "40% faster return to daily activities": compared with what (open surgery?), and from which data?
 - (urology.ts) "15+ Years Exp" (and "over 15 years" in the same card). Thyroid and Ovarian say "over a decade", About Us "15+", Colorectal and Endometrial "15+". One figure for the site?
 - (urology.ts) approve the description; a better title, not used yet: title: "Uro-Oncology: Kidney, Prostate & Bladder Cancer Surgery in Bangalore \| OncoXpert"
-- (urology.ts) where should "VIEW PROTOCOL" lead? On the live page it is not a link. Options: the booking page with the cancer as the note, a section of this page, or a future page per cancer.
+- (urology.ts) where should "VIEW PROTOCOL" lead? On the live page it is not a link. For now it opens the booking page (Consultation) with "Protocol: <cancer>" as the note. Options: keep that, a section of this page, or a future page per cancer.
 - (urology.ts) every figure in this block: "92%" 5-year survival (which cancers, stages, years, how many patients?), "99.8%" surgical precision (what is measured?), "5k+ PATIENTS TREATED" (Home says 3,000+), "98% SATISFACTION SCORE" (which survey?), "24h CONSULT TURNAROUND" (from what to what?). Also "FELLOWSHIP TRAINED": which fellowship (see #specialist)?
 - (urology.ts) show the prices on the rebuilt page? Confirm the three starting prices (₹1,60,000 · ₹3,50,000 · ₹5,00,000), what each includes, and whether one plan is featured. Show them as lakhs ("₹1.6L") as on the live page, or in full?
 - (urology.ts) "A pioneer in robotic uro-oncology" and the two badges. content/shared/ organization.ts lists "MCH Surgical Oncology, FIAGES", trained at Tata Memorial Hospital, Mumbai; About Us has a "Robotic & Minimal Access Fellowship", Thyroid "Robotic Oncology Fellow". Is there a US-trained "Fellowship: Robotic Surgery & Uro-Oncology", and is he a Diplomate of National Board (DNB)? Which international societies?

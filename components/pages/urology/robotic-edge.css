@@ -1,0 +1,78 @@
+/* ==================================================================
+   Urology #robotic-edge: the robotic arm line art. Plain CSS, prefix uro-re-.
+   Drawn once when the band is in view (InView sets data-inview): the base, then each segment
+   (stroke-dashoffset), each joint popping in (scale and opacity) as its segment arrives, the jaws,
+   then the dashed range arcs fading in. The default is the drawn state; motion in no-preference.
+   ================================================================== */
+
+.uro-re-art {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.uro-re-draw {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.72);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.uro-re-faint {
+  stroke: rgb(255 255 255 / 0.2);
+}
+.uro-re-glow {
+  stroke: var(--accent-glow);
+  stroke-width: 2;
+}
+.uro-re-arc {
+  fill: none;
+  stroke: var(--accent-glow);
+  stroke-opacity: 0.6;
+  stroke-width: 1.4;
+  stroke-dasharray: 3 5;
+  stroke-linecap: round;
+}
+.uro-re-joint {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.uro-re-jointRing {
+  fill: var(--ink);
+  stroke: var(--accent-glow);
+  stroke-width: 1.6;
+}
+.uro-re-jointCore {
+  fill: var(--accent-glow);
+}
+.uro-re-spark {
+  fill: var(--gold);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .uro-re-draw {
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .uro-re-joint,
+  .uro-re-arc {
+    opacity: 0;
+    scale: 0.6;
+    transition:
+      opacity 0.45s ease,
+      scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .uro-re-arc {
+    scale: 1;
+  }
+  [data-inview] .uro-re-draw {
+    stroke-dashoffset: 0;
+  }
+  [data-inview] :is(.uro-re-joint, .uro-re-arc) {
+    opacity: 1;
+    scale: 1;
+  }
+}

@@ -153,3 +153,15 @@ properties and are not listed.
 | `.sgx-check[aria-checked="true"] .sgx-box` | sgx-bounce (symptom-grid.css) | an interaction (state change) | 0.45s | no | n/a (runs once) | final state (no animation) |
 | `.pkc-sweep` | pkc-sweep (package-cards.css) | page load (after the intro) | 8s | yes | hover / focus, off-screen | final state (no animation) |
 | `.pkc-list[data-inview] .pkc-check path` | pkc-draw (package-cards.css) | scrolled into view | 0.5s | no | n/a (runs once) | final state (no animation) |
+
+## Urology
+
+| Element | Animation | Trigger | Duration | Loop | Pause / stop | Reduced motion |
+| --- | --- | --- | --- | --- | --- | --- |
+| `.uro-portrait` | uro-settle (hero.css) | page load (after the intro) | 1.1s | no | n/a (runs once) | final state (no animation) |
+| `.uro-ring` | uro-draw (hero.css) | page load (after the intro) | 1.4s | no | n/a (runs once) | final state (no animation) |
+| `.uro-tick` | uro-draw (hero.css) | page load (after the intro) | 0.9s | no | n/a (runs once) | final state (no animation) |
+| `.uro-chipFloat` | uro-float (hero.css) | page load (after the intro) | 8s | yes | pause button (48px), off-screen | final state (no animation) |
+| `.uro-live::after` | uro-breathe (hero.css) | page load (after the intro) | 2.4s | yes | pause button (48px), off-screen | final state (no animation) |
+| `.uro-flowDash` | uro-stream (hero.css) | page load (after the intro) | var(--t, 14s) | yes | pause button (48px), off-screen | final state (no animation) |
+| `.uro-drop` | uro-drift (hero.css) | page load (after the intro) | var(--t, 20s) | yes | pause button (48px), off-screen | final state (no animation) |

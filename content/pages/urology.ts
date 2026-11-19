@@ -15,7 +15,7 @@
  * live "Need Clarity?" form is not rebuilt: every button opens the booking page. Images:
  * content/pages/urology.images.ts.
  *
- * Live order: #hero → #specialties → #technology → #organ-preservation → #leadership → #pricing
+ * Live order: #hero → #specialties → #robotic-edge → #organ-preservation → #leadership → #pricing
  * (hidden on every device on the live page) → #specialist → shared reviews, videos, locations.
  */
 import type { PageMeta } from "@/content/types";
@@ -36,7 +36,8 @@ type AppointmentCta = { label: string; service: AppointmentService; note?: strin
 type Figure = { value: number; suffix: string; label: string };
 
 /** Icon keys, mapped to icons in components/pages/urology (built in a later step). */
-export type SpecialtyIcon = "kidney" | "prostate" | "bladder" | "testicular" | "penile" | "adrenal";
+export type SpecialtyKey = "kidney" | "prostate" | "bladder" | "testicular" | "penile" | "adrenal";
+export type SpecialtyIcon = SpecialtyKey;
 export type FeatureIcon = "recovery" | "precision";
 export type PreservationIcon = "kidney" | "bladder";
 export type PlanFeatureIcon =
@@ -108,16 +109,34 @@ export const hero = {
     primary: { label: "Book Consultation", service: "Consultation", cta: "urology:hero:book-consultation" },
     secondary: { label: "Get Second Opinion", service: "Second Opinion", cta: "urology:hero:second-opinion" },
   },
-  // The live hero shows the doctor's cutout; the rebuilt hero adds a confident older man (NEW).
+  // SOURCE: EXISTING (the live heading colours "Precision & Compassion" in its second colour: the
+  // span starts inside the second line and runs to the end)
+  emphasis: "Precision & Compassion",
+  // The live hero shows the doctor's cutout (on its stage). heroMan (a confident older man) is kept
+  // for a later section.
   image: "heroMan",
   portrait: "doctorCutout",
+  // SOURCE: NEW (choice: the specialties shown as floating dashboard chips around the portrait, in
+  // order; phones show the first two). Their words come from `specialties`.
+  chips: ["kidney", "prostate", "bladder", "adrenal"],
+  phoneChips: 2,
+  // SOURCE: NEW (screen-reader labels)
+  a11y: {
+    chips: "Specialties at a glance",
+    pause: "Pause the hero animation",
+    play: "Play the hero animation",
+  },
 } as const satisfies {
   eyebrow: string;
   lines: readonly string[];
   body: string;
+  emphasis: string;
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   image: UrologyImageKey;
   portrait: UrologyImageKey;
+  chips: readonly SpecialtyKey[];
+  phoneChips: number;
+  a11y: { chips: string; pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -127,8 +146,11 @@ export const hero = {
 // SOURCE: EXISTING (title, intro, badge, codes, card titles, text, "VIEW PROTOCOL"); NEW (icon keys).
 // `code` is shown after `scheme` ("ICD-10 C64") in tabular figures; the last card has a `tag`
 // ("RARE") instead. "aesthetic- functional" is kept as on the live page.
-// PENDING DOCTOR: where should "VIEW PROTOCOL" lead? On the live page it is not a link. Options:
-// the booking page with the cancer as the note, a section of this page, or a future page per cancer.
+// PENDING DOCTOR: where should "VIEW PROTOCOL" lead? On the live page it is not a link. For now it
+// opens the booking page (Consultation) with "Protocol: <cancer>" as the note. Options: keep that, a
+// section of this page, or a future page per cancer.
+// SOURCE: NEW (`short`: the organ's name on the map pins, hero chips and the phone strip; the map's
+// and the strip's screen-reader labels; the protocol note prefix).
 export const specialties = {
   title: "Oncological Specialties",
   intro:
@@ -136,9 +158,17 @@ export const specialties = {
   badge: "CLINICAL DASHBOARD V2.0",
   scheme: "ICD-10",
   action: "VIEW PROTOCOL",
+  protocolNote: "Protocol: ",
+  a11y: {
+    map: "Line drawing of the urinary tract: kidneys with the adrenal glands, ureters, bladder, prostate and urethra, with markers for the testicular and penile regions",
+    organs: "Specialties on the map",
+    strip: "Choose a specialty",
+    cards: "Specialty cards",
+  },
   items: [
     {
       key: "kidney",
+      short: "Kidney",
       icon: "kidney",
       code: "C64",
       title: "Kidney Cancer",
@@ -148,6 +178,7 @@ export const specialties = {
     },
     {
       key: "prostate",
+      short: "Prostate",
       icon: "prostate",
       code: "C61",
       title: "Prostate Cancer",
@@ -158,6 +189,7 @@ export const specialties = {
     },
     {
       key: "bladder",
+      short: "Bladder",
       icon: "bladder",
       code: "C67",
       title: "Bladder Cancer",
@@ -165,6 +197,7 @@ export const specialties = {
     },
     {
       key: "testicular",
+      short: "Testicular",
       icon: "testicular",
       code: "C62",
       title: "Testicular Cancer",
@@ -174,6 +207,7 @@ export const specialties = {
     },
     {
       key: "penile",
+      short: "Penile",
       icon: "penile",
       code: "C60",
       title: "Penile Cancer",
@@ -183,6 +217,7 @@ export const specialties = {
     },
     {
       key: "adrenal",
+      short: "Adrenal",
       icon: "adrenal",
       tag: "RARE",
       title: "Urethral & Adrenal",
@@ -197,13 +232,19 @@ export const specialties = {
   badge: string;
   scheme: string;
   action: string;
-  items: readonly ({ key: string; icon: SpecialtyIcon; title: string; body: readonly string[] } & (
-    { code: string } | { tag: string }
-  ))[];
+  protocolNote: string;
+  a11y: Record<"map" | "organs" | "strip" | "cards", string>;
+  items: readonly ({
+    key: SpecialtyKey;
+    short: string;
+    icon: SpecialtyIcon;
+    title: string;
+    body: readonly string[];
+  } & ({ code: string } | { tag: string }))[];
 };
 
 /* ------------------------------------------------------------------ */
-/* 3 · #technology ("TECHNOLOGICAL EDGE")                              */
+/* 3 · #robotic-edge ("TECHNOLOGICAL EDGE")                            */
 /* ------------------------------------------------------------------ */
 
 export const technology = {
@@ -211,12 +252,14 @@ export const technology = {
   eyebrow: "TECHNOLOGICAL EDGE",
   lines: ["Advanced Robotic & Keyhole", "Surgical Excellence"],
   body: "OncoXpert utilizes the latest Da Vinci® surgical platform to perform ultra-precise procedures that minimize trauma and accelerate healing. Our robotic-first approach is the gold standard for urological oncology.",
-  // SOURCE: EXISTING (titles, text and its line breaks); NEW (icon keys). The 40% is `fasterReturn`.
+  // SOURCE: EXISTING (titles, text and its line breaks); NEW (icon keys; `emphasis`: the words set
+  // in the accent). The 40% is `fasterReturn`.
   features: [
     {
       icon: "recovery",
       title: "Rapid Recovery",
       body: ["Patients typically experience", `${fasterReturn}% faster return to daily`, "activities."],
+      emphasis: `${fasterReturn}% faster`,
     },
     {
       icon: "precision",
@@ -225,18 +268,21 @@ export const technology = {
     },
   ],
   // SOURCE: EXISTING (label). SOURCE: NEW (target: "#" on the live page; the robotic surgery page).
-  link: { label: "Learn About Robotic Tech", href: "/robotic-surgery/", cta: "urology:technology:robotic" },
+  link: { label: "Learn About Robotic Tech", href: "/robotic-surgery/", cta: "urology:robotic-edge:robotic-tech" },
   // SOURCE: EXISTING
   stat: { value: roboticCases, suffix: "+", label: "SUCCESSFUL ROBOTIC CASES" },
   image: "theatre",
+  // SOURCE: NEW (screen-reader text for the figure: the counter itself is hidden from them)
+  a11y: { stat: `${roboticCases}+ successful robotic cases` },
 } as const satisfies {
   eyebrow: string;
   lines: readonly string[];
   body: string;
-  features: readonly { icon: FeatureIcon; title: string; body: readonly string[] }[];
+  features: readonly { icon: FeatureIcon; title: string; body: readonly string[]; emphasis?: string }[];
   link: { label: string; href: string; cta: string };
   stat: Figure;
   image: UrologyImageKey;
+  a11y: { stat: string };
 };
 
 /* ------------------------------------------------------------------ */

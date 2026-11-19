@@ -103,6 +103,10 @@ components/
                              Precision (+ PrecisionDetails, the island PrecisionSwitch; precision.css, prefix
                              `exp-`), SentinelNode (+ the island SentinelDiagram; sentinel.css, prefix `exn-`),
                              Packages (+ PackageCard; packages.css, prefix `epk-`)
+  pages/urology/             the urology page: Hero (+ HeroHeadline, HeroVisual, HeroFlow; hero.css, prefix
+                             `uro-`, hero-styles.ts), Specialties (+ the island SpecialtyDashboard, SpecialtyMap,
+                             SpecialtyCard, specialty-map.ts; specialties.css, prefix `uro-sp-`), RoboticEdge (+ ArmArt;
+                             robotic-edge.css, prefix `uro-re-`)
 content/
   types.ts                   shared content types (SectionTone, SectionLook, Review, …)
   site.ts                    nav, contact, socials, clinics, footer, WhatsApp, appointment services, a11y labels
@@ -468,27 +472,28 @@ JavaScript would read those sections hidden and after the footer. Keep every pag
 All go to `window.dataLayer` (Google Tag Manager). `cta_click.label` is always
 `<page>:<section>:<action>` (AnalyticsListener normalises older labels; `text` keeps the original).
 
-| Event                      | Fields                                               | Fired by                                                                          | Pages                         |
-| -------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------- |
-| `cta_click`                | label, text, location, section                       | any element with `data-cta` (AnalyticsListener)                                   | all                           |
-| `phone_click`              | location                                             | any `tel:` link                                                                   | all                           |
-| `whatsapp_click`           | location                                             | any `wa.me` link                                                                  | all                           |
-| `form_step`                | step (1–4), field (name, phone, service, date), page | leaving a booking-form field with a value, once per field                         | Booking                       |
-| `form_submit`              | status (success, error, invalid), service, page      | the booking form                                                                  | Booking                       |
-| `technique_switch`         | label, page                                          | CompareSwitch (lung), TechniqueSwitch (colorectal), PrecisionSwitch (endometrial) | Lung, Colorectal, Endometrial |
-| `lung_surgery_toggle`      | label                                                | LobeExplorer                                                                      | Lung                          |
-| `lung_symptom_open`        | label                                                | SymptomCard (lung)                                                                | Lung                          |
-| `symptom_open`             | label, page                                          | SymptomCard (endometrial)                                                         | Endometrial                   |
-| `symptom_check`            | page, count                                          | SymptomGrid "check" mode (the checklist)                                          | Ovarian                       |
-| `lung_test_select`         | label                                                | DiagnosticLens                                                                    | Lung                          |
-| `ovarian_test_open`        | label                                                | InstrumentTray                                                                    | Ovarian                       |
-| `lung_pathway_step`        | label, step                                          | AirwayJourney                                                                     | Lung                          |
-| `pathway_step`             | label, step, page                                    | PathTimeline (a step chosen)                                                      | Colorectal                    |
-| `ovarian_treatment_select` | label                                                | TreatmentExplorer                                                                 | Ovarian                       |
-| `thyroid_detection_toggle` | label                                                | DetectionSwitch                                                                   | Thyroid                       |
-| `thyroid_modality_filter`  | label                                                | ModalityFilter                                                                    | Thyroid                       |
-| `package_select`           | label, page                                          | PackageCta (shared PackageCards), endometrial PackageCard                         | Ovarian, Thyroid, Endometrial |
-| `estimator_change`         | cycles, page                                         | CycleEstimator                                                                    | Ovarian                       |
+| Event                      | Fields                                               | Fired by                                                                           | Pages                         |
+| -------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------- |
+| `cta_click`                | label, text, location, section                       | any element with `data-cta` (AnalyticsListener)                                    | all                           |
+| `phone_click`              | location                                             | any `tel:` link                                                                    | all                           |
+| `whatsapp_click`           | location                                             | any `wa.me` link                                                                   | all                           |
+| `form_step`                | step (1–4), field (name, phone, service, date), page | leaving a booking-form field with a value, once per field                          | Booking                       |
+| `form_submit`              | status (success, error, invalid), service, page      | the booking form                                                                   | Booking                       |
+| `technique_switch`         | label, page                                          | CompareSwitch (lung), TechniqueSwitch (colorectal), PrecisionSwitch (endometrial)  | Lung, Colorectal, Endometrial |
+| `lung_surgery_toggle`      | label                                                | LobeExplorer                                                                       | Lung                          |
+| `lung_symptom_open`        | label                                                | SymptomCard (lung)                                                                 | Lung                          |
+| `symptom_open`             | label, page                                          | SymptomCard (endometrial)                                                          | Endometrial                   |
+| `symptom_check`            | page, count                                          | SymptomGrid "check" mode (the checklist)                                           | Ovarian                       |
+| `lung_test_select`         | label                                                | DiagnosticLens                                                                     | Lung                          |
+| `ovarian_test_open`        | label                                                | InstrumentTray                                                                     | Ovarian                       |
+| `lung_pathway_step`        | label, step                                          | AirwayJourney                                                                      | Lung                          |
+| `pathway_step`             | label, step, page                                    | PathTimeline (a step chosen)                                                       | Colorectal                    |
+| `ovarian_treatment_select` | label                                                | TreatmentExplorer                                                                  | Ovarian                       |
+| `thyroid_detection_toggle` | label                                                | DetectionSwitch                                                                    | Thyroid                       |
+| `thyroid_modality_filter`  | label                                                | ModalityFilter                                                                     | Thyroid                       |
+| `urology_specialty_select` | label (the cancer)                                   | SpecialtyDashboard: a map pin or phone chip at once, a card hovered / focused 0.6s | Urology                       |
+| `package_select`           | label, page                                          | PackageCta (shared PackageCards), endometrial PackageCard                          | Ovarian, Thyroid, Endometrial |
+| `estimator_change`         | cycles, page                                         | CycleEstimator                                                                     | Ovarian                       |
 
 ## Motion
 
@@ -979,3 +984,25 @@ over 5s pause on hover / focus or with the hero's 48px pause button, and stop of
   two buttons) then the shared #reviews (colon review hidden), #videos, #locations, #related, #final-cta.
   Sections to build: Urology #specialties, #technology, #organ-preservation, #leadership, #pricing, #specialist;
   Stomach #understanding, #warning-signs, #treatments, #techniques, #surgeon.
+- Urology: #hero, #specialties and #robotic-edge built (19 Nov 2026). #hero "FLOW" (components/pages/urology, hero.css,
+  `uro-`): the eyebrow pill with a marigold live dot; the H1 on its three live lines with "Precision & Compassion" in
+  the accent, where the live page's second colour starts (mid-line); NEW definition (approval-gated), the lead
+  (`data-speakable`), Book Consultation / Get Second Opinion. The visual is the doctor's cutout
+  (`dr-sunil-navalgund-cutout.png`, head to mid-torso, from `scripts/make-portrait-cutout.mjs … 0.86`; the default
+  head cutout is byte-identical) on a rounded sage stage with rings and gauge ticks that draw in; it is the LCP image
+  (preload, high priority, settles 14px, never faded). Four dashboard chips from the specialties content (ICD-10 code ·
+  organ, tabular figures, breathing live dot; RARE in marigold) pop in and float; phones show two. Behind: five
+  streamlines with flowing pulses (stroke-dashoffset) and five droplets drifting (three of each on phones). The
+  48px MotionToggle and leaving the screen stop every loop; entrances wait for the intro; desktop is top-aligned
+  (no re-centring while streaming). #specialties: "CLINICAL DASHBOARD V2.0" heads the SpecialtyDashboard island: a
+  line-art map (kidneys with adrenal caps, ureters, bladder, prostate, urethra; testicular and penile as region
+  markers only), pins as buttons (aria-pressed, aria-controls), the six cards (ICD chip, or the marigold RARE chip;
+  VIEW PROTOCOL books Consultation with "Protocol: <cancer>", PENDING DOCTOR). A pin, or hovering / focusing a card,
+  lights the organ and lifts the card; the map is sticky beside the cards (one column, two from 1280px). Phones: a
+  3 × 2 strip of organ chips over a swipe row of the cards, synced both ways (chosen over a one-column stack: six
+  similar cards would run ~1,500px, and the strip keeps the dashboard idea in one screen; it fits on screen, so it
+  is not sticky). `urology_specialty_select`. #robotic-edge: the pine band; heading on its live lines, the body,
+  Rapid Recovery ("40% faster" in the accent) and High Precision cards (lucide Timer, Crosshair), Learn About
+  Robotic Tech → /robotic-surgery/ (onDark); a robotic-arm line drawing (ArmArt) draws in once in view, joints
+  popping in, with "500+" counting up (screen readers get one sentence). Checked at 360, 375, 768, 1024, 1280, 1440
+  and 1920: no horizontal scroll.

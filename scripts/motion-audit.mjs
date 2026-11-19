@@ -31,6 +31,10 @@ const PAGES = {
       "components/shared/survival-chart.css",
     ],
   },
+  Urology: {
+    dirs: ["components/pages/urology"],
+    shared: [],
+  },
 };
 
 const cssFiles = (p) => {

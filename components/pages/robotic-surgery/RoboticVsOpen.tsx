@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import { Activity, BedDouble, Droplets, type LucideIcon } from "lucide-react";
+import { Activity, BedDouble, BedSingle, Droplet, Droplets, Zap, type LucideIcon } from "lucide-react";
 import { outcomes, type OutcomeItem } from "@/content/pages/robotic-surgery";
 import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -15,55 +15,88 @@ import { bleedFade } from "@/lib/image-fade";
 const glass = "rounded-[22px] border border-white/10 bg-white/[0.05] p-6 sm:p-7";
 const pct = (item: OutcomeItem) => Math.round((item.robotic / item.open) * 100);
 
-const icons: Record<OutcomeItem["icon"], LucideIcon> = { blood: Droplets, stay: BedDouble, pain: Activity };
+/** The card's title icon and the unit each pictogram is built from. */
+const icons: Record<OutcomeItem["icon"], { title: LucideIcon; unit: LucideIcon }> = {
+  blood: { title: Droplets, unit: Droplet },
+  stay: { title: BedDouble, unit: BedSingle },
+  pain: { title: Activity, unit: Zap },
+};
+
+/** The fewest units that show `value`% exactly (25% → 1 of 4, 60% → 3 of 5, 30% → 3 of 10). */
+function unitsFor(value: number) {
+  const total = [4, 5, 10, 20].find((n) => Number.isInteger((value * n) / 100)) ?? 10;
+  return { total, filled: Math.round((value * total) / 100) };
+}
 
 /**
- * One column of the comparison: a label over it (the value), the bar growing up from the base, the
- * name under it. The robotic column also shows the part it saves, as a dashed box up to the open
- * surgery level with "−75%" in it.
+ * One side of the comparison: its name, a row of the card's unit icon (open surgery: every unit;
+ * robotic surgery: only its share lit, the units it saves left as faint outlines) and its figure.
  */
-function Column({
-  share,
-  value,
-  label,
-  delay,
+function Side({
+  item,
   robotic,
+  label,
+  value,
+  delay,
 }: {
-  share: number;
-  value: number;
-  label: string;
-  delay: number;
+  item: OutcomeItem;
   robotic: boolean;
+  label: string;
+  value: number;
+  delay: number;
 }) {
   const reduce = useReducedMotion();
-  const saved = 100 - value;
+  const Unit = icons[item.icon].unit;
+  const { total, filled } = unitsFor(pct(item));
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative h-40 w-full max-w-[112px] sm:h-44">
-        {robotic && saved > 0 ? (
-          <div
-            className="absolute inset-x-0 top-0 flex items-center justify-center rounded-t-xl border border-dashed border-glow/45 bg-glow/[0.04]"
-            style={{ height: `${(1 - share) * 100}%` }}
-          >
-            <span className="text-sm font-semibold text-glow tabular-nums">−{saved}%</span>
-          </div>
-        ) : null}
-        <motion.div
-          className={
-            robotic
-              ? "absolute inset-x-0 bottom-0 flex origin-bottom items-start justify-center rounded-xl bg-linear-to-t from-teal to-glow pt-2 shadow-[0_0_18px_rgb(45_212_191/0.45)]"
-              : "absolute inset-x-0 bottom-0 flex origin-bottom items-start justify-center rounded-xl bg-slate/70 pt-2"
-          }
-          style={{ height: `${share * 100}%` }}
-          initial={reduce ? false : { scaleY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1.1, ease: EASE_OUT_EXPO, delay }}
-        >
-          <span className={`text-sm font-bold tabular-nums ${robotic ? "text-ink" : "text-white"}`}>{value}%</span>
-        </motion.div>
-      </div>
-      <p className="mt-3 text-center text-[13px] leading-snug text-white/70">{label}</p>
+    <div
+      className={
+        robotic
+          ? "flex flex-col rounded-2xl bg-glow/[0.07] p-4 ring-1 ring-glow/30 sm:p-5"
+          : "flex flex-col rounded-2xl bg-white/[0.03] p-4 ring-1 ring-white/10 sm:p-5"
+      }
+    >
+      <p
+        className={`min-h-[2.6em] text-[13px] leading-tight font-semibold tracking-wide sm:min-h-0 ${robotic ? "text-glow" : "text-white/60"}`}
+      >
+        {label}
+      </p>
+      <ul
+        className="mt-3 grid gap-1.5 sm:gap-2"
+        style={{ gridTemplateColumns: `repeat(${Math.min(total, 5)}, minmax(0, 1fr))` }}
+      >
+        {Array.from({ length: total }, (_, i) => {
+          const lit = !robotic || i < filled;
+          return (
+            <motion.li
+              key={i}
+              className={
+                robotic
+                  ? lit
+                    ? "text-glow drop-shadow-[0_0_8px_rgb(45_212_191/0.6)]"
+                    : "text-white/15"
+                  : "text-white/45"
+              }
+              initial={reduce ? false : { opacity: 0, scale: 0.6 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.8 }}
+              transition={{ duration: 0.45, ease: EASE_OUT_EXPO, delay: delay + i * 0.06 }}
+            >
+              <Unit
+                className="aspect-square h-auto w-full max-w-8"
+                strokeWidth={1.75}
+                fill={lit ? "currentColor" : "none"}
+                fillOpacity={lit ? 0.25 : 0}
+              />
+            </motion.li>
+          );
+        })}
+      </ul>
+      <p
+        className={`mt-auto pt-4 font-display text-2xl font-bold tabular-nums ${robotic ? "text-white" : "text-white/70"}`}
+      >
+        {value}%
+      </p>
     </div>
   );
 }
@@ -71,7 +104,7 @@ function Column({
 function BarCard({ item, index }: { item: OutcomeItem; index: number }) {
   const { barLabels } = outcomes;
   const delay = index * 0.15;
-  const Icon = icons[item.icon];
+  const Icon = icons[item.icon].title;
   const saved = 100 - pct(item);
   return (
     <article className={`${glass} flex h-full flex-col`}>
@@ -110,18 +143,13 @@ function BarCard({ item, index }: { item: OutcomeItem; index: number }) {
           </div>
         </div>
       ) : null}
-      <div
-        aria-hidden="true"
-        className="mt-auto grid grid-cols-2 items-end gap-4 border-b border-white/10 pt-8 sm:gap-6"
-      >
-        <Column share={1} value={item.open} label={barLabels.open} delay={delay} robotic={false} />
-        <Column
-          share={item.robotic / item.open}
-          value={pct(item)}
-          label={barLabels.robotic}
-          delay={delay + 0.2}
-          robotic
-        />
+      {/* Open surgery vs robotic surgery, in picture units */}
+      <div aria-hidden="true" className="relative mt-auto grid grid-cols-2 gap-3 pt-8 sm:gap-4">
+        <Side item={item} robotic={false} label={barLabels.open} value={item.open} delay={delay} />
+        <Side item={item} robotic label={barLabels.robotic} value={pct(item)} delay={delay + 0.3} />
+        <span className="absolute top-1/2 left-1/2 mt-4 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-ink text-[11px] font-bold tracking-wider text-white/80 uppercase ring-1 ring-white/15">
+          {outcomes.vs}
+        </span>
       </div>
       <p className="pt-6 text-[15px] leading-relaxed text-white/70">{item.caption}</p>
     </article>

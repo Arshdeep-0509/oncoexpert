@@ -369,10 +369,12 @@ export const outcomes = {
   heading: "Robotic vs open surgery",
   // SOURCE: NEW
   barLabels: { open: "Open surgery", robotic: "Robotic surgery" },
-  // SOURCE: NEW (the headline over each chart: "75% less", computed from the doctor's figures, and
-  // the line under it; icon keys)
+  // SOURCE: NEW (the headline on each card: "75% less", computed from the doctor's figures, and the
+  // line under it; icon keys: the card's icon and the picture unit of its comparison)
   less: "less",
   thanOpen: "than open surgery",
+  // SOURCE: NEW (the badge between the two sides of each comparison)
+  vs: "vs",
   // SOURCE: DOCTOR (captions exactly as written)
   items: [
     {

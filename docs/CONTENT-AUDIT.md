@@ -1626,8 +1626,8 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). | Cancer Treatment |
 | stomach-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). | with Precision & |
 | stomach-cancer.ts |  | EXISTING. The heading's four lines (<br> on the live page). | Personalized Care |
-| stomach-cancer.ts | title | EXISTING title (identical to the live page, keeps the SEO). The liv… | Stomach Cancer Treatment in Bangalore \| OncoXpert |
-| stomach-cancer.ts |  | NEW (lengthened to 150-160 characters: 153). PENDING DOCTOR: approve. | Stomach cancer treatment in Bangalore at OncoXpert, with robotic and laparoscopic gastrectomy, minimally invasive surgery and personalized oncology care. |
+| stomach-cancer.ts | title | EXISTING title and description (both identical to the live page: th… | Stomach Cancer Treatment in Bangalore \| OncoXpert |
+| stomach-cancer.ts |  | EXISTING title and description (both identical to the live page: th… | Stomach cancer treatment in Bangalore at OncoXpert, with advanced surgery, minimally invasive procedures and personalized surgical oncology care. |
 | stomach-cancer.ts |  | EXISTING (the live menu's label): breadcrumb and structured data name. | Stomach Cancer |
 | stomach-cancer.ts |  | NEW (choice; the first of the live "Service Required" options) | Consultation |
 | stomach-cancer.ts | eyebrow | EXISTING | EXPERT GASTRO-ONCOLOGY |
@@ -1706,22 +1706,22 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts | cards | NEW (the cards' swipe row name on phones) | Treatment modalities |
 | stomach-cancer.ts | title | NEW (the live block has no heading; the section needs one for the o… | Robotic Precision vs Laparoscopic Expertise |
 | stomach-cancer.ts | tabs | NEW (the live block has no heading; the section needs one for the o… | Surgical technique |
-| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Robotic Precision |
-| stomach-cancer.ts | body | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | The pinnacle of surgical technology. Robotic instruments mimic the human wrist with 7 degrees of freedom, allowing for dissection in spaces too narrow for human… |
-| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | EndoWrist Technology |
-| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Superior dexterity for complex suturing. |
-| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | 10x Magnification |
-| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Crystal clear view of microscopic nerves and vessels. |
-| stomach-cancer.ts | label | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Learn about robotic surgery |
-| stomach-cancer.ts | cta | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | stomach:techniques:robotic |
-| stomach-cancer.ts | label | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Laparoscopic |
-| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Laparoscopic Expertise |
-| stomach-cancer.ts | body | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Standard-of-care minimally invasive surgery. Uses specialized long instruments through tiny incisions to achieve radical cure with minimal trauma. |
-| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Rapid Recovery |
-| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Patients typically walk within 24 hours of surgery. |
-| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Minimal Scarring |
-| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | 5-10mm incisions instead of a large abdominal cut. |
-| stomach-cancer.ts |  | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Meet Dr. Sunil Navalgund |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Robotic Precision |
+| stomach-cancer.ts | body | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | The pinnacle of surgical technology. Robotic instruments mimic the human wrist with 7 degrees of freedom, allowing for dissection in spaces too narrow for human… |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | EndoWrist Technology |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Superior dexterity for complex suturing. |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | 10x Magnification |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Crystal clear view of microscopic nerves and vessels. |
+| stomach-cancer.ts | label | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Learn about robotic surgery |
+| stomach-cancer.ts | cta | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | stomach:approach:robotic |
+| stomach-cancer.ts | label | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Laparoscopic |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Laparoscopic Expertise |
+| stomach-cancer.ts | body | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Standard-of-care minimally invasive surgery. Uses specialized long instruments through tiny incisions to achieve radical cure with minimal trauma. |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Rapid Recovery |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Patients typically walk within 24 hours of surgery. |
+| stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Minimal Scarring |
+| stomach-cancer.ts | text | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | 5-10mm incisions instead of a large abdominal cut. |
+| stomach-cancer.ts |  | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys f… | Meet Dr. Sunil Navalgund |
 | stomach-cancer.ts | title | EXISTING | Meet Dr. Sunil Navalgund |
 | stomach-cancer.ts | name | EXISTING | Dr. Sunil Navalgund |
 | stomach-cancer.ts | role | EXISTING | Surgical Oncologist & GI Cancer Specialist |
@@ -1731,18 +1731,40 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts | label | EXISTING (labels; "International Fellowship <br> trained" on the li… | Multi-disciplinary approach |
 | stomach-cancer.ts | label | EXISTING (labels; "International Fellowship <br> trained" on the li… | Evidence-based protocols |
 | stomach-cancer.ts | label | EXISTING (labels; "International Fellowship <br> trained" on the li… | Compassionate care model |
-| stomach-cancer.ts | label | NEW (the live block has no buttons; labels as on the other cancer p… | Book Appointment with Dr. Sunil |
-| stomach-cancer.ts | service | NEW (the live block has no buttons; labels as on the other cancer p… | Consultation |
-| stomach-cancer.ts | cta | NEW (the live block has no buttons; labels as on the other cancer p… | stomach:surgeon:book |
-| stomach-cancer.ts | label | NEW (the live block has no buttons; labels as on the other cancer p… | View Full Profile |
+| stomach-cancer.ts | label | NEW (the live block has no buttons; label as on the other cancer pa… | Book Appointment with Dr. Sunil |
+| stomach-cancer.ts | service | NEW (the live block has no buttons; label as on the other cancer pa… | Consultation |
+| stomach-cancer.ts | cta | NEW (the name links to the profile, analytics label) | stomach:surgeon:profile |
+| stomach-cancer.seo.ts |  | NEW | ${figures.surgeriesPerformed.toLocaleString("en-IN")}${hero.card.suffix} |
+| stomach-cancer.seo.ts |  | NEW | ${figures.cureRateIncrease}% |
 | stomach-cancer.seo.ts |  | NEW | Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats stomach (gastric) cancer at OncoXpert with robotic and laparoscopic D2 gastrectomy, FLOT chemoth… |
 | stomach-cancer.seo.ts | name | NEW | Stomach cancer |
 | stomach-cancer.seo.ts |  | NEW | Gastric cancer |
-| stomach-cancer.seo.ts |  | NEW | Stomach (gastric) cancer: warning signs, D2 gastrectomy, robotic and laparoscopic surgery, FLOT chemotherapy, immunotherapy and the surgeon. |
+| stomach-cancer.seo.ts |  | NEW | D2 gastrectomy |
+| stomach-cancer.seo.ts |  | NEW | Robotic gastrectomy |
+| stomach-cancer.seo.ts |  | NEW | Laparoscopic gastrectomy |
+| stomach-cancer.seo.ts |  | NEW | FLOT peri-operative chemotherapy |
+| stomach-cancer.seo.ts |  | NEW | Immunotherapy |
+| stomach-cancer.seo.ts | question | NEW | What are the warning signs of stomach cancer? |
+| stomach-cancer.seo.ts | answer | NEW | The warning signs of stomach cancer include ${signs.slice(0, -1).join(", ")} and ${signs.at(-1)}: an ache or pain in the upper abdomen, unexplained weight loss,… |
+| stomach-cancer.seo.ts | question | NEW | Is stomach cancer curable if found early? |
+| stomach-cancer.seo.ts | answer | NEW | Early diagnosis matters greatly: at OncoXpert, early diagnosis is reported to increase the cure rate by ${cureRate}. Stomach cancer is often a silent disease in… |
+| stomach-cancer.seo.ts | question | NEW | What is a D2 gastrectomy? |
+| stomach-cancer.seo.ts |  | NEW | A D2 gastrectomy is the removal of the stomach tumour with extensive lymph node clearance, the gold standard for gastric cancer surgery. Its strengths are super… |
+| stomach-cancer.seo.ts | question | NEW | Robotic or laparoscopic gastrectomy: what is the difference? |
+| stomach-cancer.seo.ts |  | NEW | Both are minimally invasive. Robotic surgery uses instruments that mimic the human wrist with 7 degrees of freedom and a 10x magnified view, allowing dissection… |
+| stomach-cancer.seo.ts | question | NEW | What is FLOT chemotherapy? |
+| stomach-cancer.seo.ts |  | NEW | FLOT is a modern peri-operative chemotherapy protocol for stomach cancer, given around surgery to shrink tumours and prevent recurrence. At OncoXpert it is part… |
+| stomach-cancer.seo.ts | question | NEW | How long is recovery after minimally invasive stomach cancer surgery? |
+| stomach-cancer.seo.ts |  | NEW | After laparoscopic surgery at OncoXpert, patients typically walk within 24 hours, and the 5-10mm incisions replace a large abdominal cut, so scarring is minimal… |
+| stomach-cancer.seo.ts | question | NEW | Why choose OncoXpert for stomach cancer treatment in Bangalore? |
+| stomach-cancer.seo.ts | answer | NEW | OncoXpert is led by Dr. Sunil Navalgund, a surgical oncologist and GI cancer specialist with ${surgeries} surgeries performed. Care combines robotic and laparos… |
+| stomach-cancer.seo.ts | sentence | NEW | Dr. Sunil Navalgund has performed ${surgeries} surgeries at OncoXpert. |
+| stomach-cancer.seo.ts | source | NEW | OncoXpert surgical records |
+| stomach-cancer.seo.ts | sentence | NEW | At OncoXpert, early diagnosis of stomach cancer is reported to increase the cure rate by ${cureRate}. |
+| stomach-cancer.seo.ts |  | NEW | Stomach (gastric) cancer: warning signs, early diagnosis, D2 gastrectomy, robotic and laparoscopic surgery, FLOT chemotherapy, immunotherapy, recovery and the s… |
 
 ### NEW lines
 
-- Stomach cancer treatment in Bangalore at OncoXpert, with robotic and laparoscopic gastrectomy, minimally invasive surgery and personalized oncology care.
 - Consultation
 - Personalized Care
 - Pause the hero animation
@@ -1771,12 +1793,35 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 - Surgical technique
 - Book Appointment with Dr. Sunil
 - Consultation
-- stomach:surgeon:book
-- View Full Profile
+- stomach:surgeon:profile
+- ${figures.surgeriesPerformed.toLocaleString("en-IN")}${hero.card.suffix}
+- ${figures.cureRateIncrease}%
 - Dr. Sunil Navalgund, a surgical oncologist in Bengaluru, treats stomach (gastric) cancer at OncoXpert with robotic and laparoscopic D2 gastrectomy, FLOT chemotherapy and immunotherapy.
 - Stomach cancer
 - Gastric cancer
-- Stomach (gastric) cancer: warning signs, D2 gastrectomy, robotic and laparoscopic surgery, FLOT chemotherapy, immunotherapy and the surgeon.
+- D2 gastrectomy
+- Robotic gastrectomy
+- Laparoscopic gastrectomy
+- FLOT peri-operative chemotherapy
+- Immunotherapy
+- What are the warning signs of stomach cancer?
+- The warning signs of stomach cancer include ${signs.slice(0, -1).join(", ")} and ${signs.at(-1)}: an ache or pain in the upper abdomen, unexplained weight loss, feeling full after a small amount, and nausea or vomiting after meals. Persistent digestive issues should always be evaluated by a specialist oncologist.
+- Is stomach cancer curable if found early?
+- Early diagnosis matters greatly: at OncoXpert, early diagnosis is reported to increase the cure rate by ${cureRate}. Stomach cancer is often a silent disease in its early stages, which is why expert evaluation is critical at the first sign of persistent symptoms. Every case is planned by a multi-disciplinary team.
+- What is a D2 gastrectomy?
+- A D2 gastrectomy is the removal of the stomach tumour with extensive lymph node clearance, the gold standard for gastric cancer surgery. Its strengths are superior nodal clearance and improved survival rates. At OncoXpert, Dr. Sunil Navalgund performs it robotically or laparoscopically, offering a minimally invasive path to recovery and healing.
+- Robotic or laparoscopic gastrectomy: what is the difference?
+- Both are minimally invasive. Robotic surgery uses instruments that mimic the human wrist with 7 degrees of freedom and a 10x magnified view, allowing dissection in spaces too narrow for human hands. Laparoscopic surgery, the standard of care, uses long instruments through 5-10mm incisions to achieve radical cure with minimal trauma.
+- What is FLOT chemotherapy?
+- FLOT is a modern peri-operative chemotherapy protocol for stomach cancer, given around surgery to shrink tumours and prevent recurrence. At OncoXpert it is part of a plan that can also include D2 gastrectomy, robotic surgery and, for advanced gastric cancers, immunotherapy with PD-L1 inhibitors, with attention to side-effect management throughout.
+- How long is recovery after minimally invasive stomach cancer surgery?
+- After laparoscopic surgery at OncoXpert, patients typically walk within 24 hours, and the 5-10mm incisions replace a large abdominal cut, so scarring is minimal. Robotic-assisted gastrectomy aims for faster functional recovery as well. Dr. Sunil Navalgund's team offers constant support throughout the cancer journey, from diagnosis to recovery.
+- Why choose OncoXpert for stomach cancer treatment in Bangalore?
+- OncoXpert is led by Dr. Sunil Navalgund, a surgical oncologist and GI cancer specialist with ${surgeries} surgeries performed. Care combines robotic and laparoscopic gastrectomy, a multi-disciplinary approach, evidence-based protocols and a compassionate care model, integrating pathology, genomics and clinical expertise to map a precise treatment plan for every patient.
+- Dr. Sunil Navalgund has performed ${surgeries} surgeries at OncoXpert.
+- OncoXpert surgical records
+- At OncoXpert, early diagnosis of stomach cancer is reported to increase the cure rate by ${cureRate}.
+- Stomach (gastric) cancer: warning signs, early diagnosis, D2 gastrectomy, robotic and laparoscopic surgery, FLOT chemotherapy, immunotherapy, recovery and the surgeon.
 
 ### PENDING DOCTOR
 

@@ -13,8 +13,8 @@ Navalgund in Bengaluru:
 - **Lung Cancer**: `/lung-cancer-in-bangalore/` (the live address)
 - **Ovarian Cancer**: `/ovarian-cancer-hospital/`
 - **Thyroid Cancer**: `/thyroid-cancer/` (the live address)
-- **Urology**: `/urology/` (the live address; foundation: hero placeholder and the shared sections)
-- **Stomach Cancer**: `/stomach-cancer/` (the live address; foundation: hero placeholder and the shared sections)
+- **Urology**: `/urology/` (the live address)
+- **Stomach Cancer**: `/stomach-cancer/` (the live address)
 
 Next.js 16 · TypeScript · Tailwind CSS 4 · Motion · Embla. Developers: read
 **[docs/PROJECT.md](docs/PROJECT.md)** (folder map, theme system, components, rules).
@@ -162,6 +162,13 @@ as on the live page, "From ₹1.6L +"; the hidden price table gives "₹1,60,000
 `featured: true` and a `ribbon` to it. Figures: `leadership.outcome.figures` (the ring and the gauge),
 `leadership.tiles`, `technology.stat` (500+), and the constants at the top of the file. The specialties and their
 ICD-10 codes: `specialties.items`. Search answers: `content/pages/urology.seo.ts`.
+
+## Edit the Stomach Cancer page
+
+Everything is in `content/pages/stomach-cancer.ts` (no prices on this page). Figures: the constants at the top
+(`surgeriesPerformed`, `cureRateIncrease`). The hero's accent words: `hero.emphasis`. Warning signs:
+`warningSigns.items`; treatments and the care pathway: `treatments.items` and `treatments.pathway.stops`.
+Search answers: `content/pages/stomach-cancer.seo.ts`.
 
 ## Edit the Colorectal and Endometrial pages
 

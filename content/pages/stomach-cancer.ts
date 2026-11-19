@@ -16,10 +16,10 @@
  * Clarity?" form is not rebuilt: every button opens the booking page. Images:
  * content/pages/stomach-cancer.images.ts.
  *
- * Live order: #hero → #understanding → #warning-signs → #modalities → #techniques → #surgeon →
+ * Live order: #hero → #understanding → #warning-signs → #modalities → #approach → #surgeon →
  * shared reviews, videos, locations.
  */
-import type { PageMeta, SymptomIcon } from "@/content/types";
+import type { PageMeta, SymptomIcon, TechniqueIcon } from "@/content/types";
 import type { StomachImageKey } from "@/content/pages/stomach-cancer.images";
 import { stomachOgImage } from "@/content/pages/stomach-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -37,9 +37,9 @@ type AppointmentCta = { label: string; service: AppointmentService; note?: strin
 export type WarningIcon = Extract<SymptomIcon, "pain" | "weight" | "full" | "nausea">;
 export type TreatmentPointIcon =
   "nodes" | "survival" | "visualization" | "tremor" | "targeted" | "side-effects" | "genetics" | "response";
-export type TechniquePointIcon = "wrist" | "magnification" | "recovery" | "scarring";
+export type TechniquePointIcon = TechniqueIcon;
 export type ModalityKey = "gastrectomy" | "robotic" | "flot" | "immunotherapy";
-export type SurgeonBadgeIcon = "fellowship" | "team" | "evidence" | "compassion";
+export type SurgeonBadgeIcon = "graduation-cap" | "stethoscope" | "badge-check" | "heart-handshake";
 
 /* ------------------------------------------------------------------ */
 /* Figures (PENDING DOCTOR: each one, see the notes)                   */
@@ -55,6 +55,9 @@ const surgeriesPerformed = 5000;
 // more clearly.)
 const cureRateIncrease = 70;
 
+/** The page's figures, for its .seo.ts sentences. */
+export const figures = { surgeriesPerformed, cureRateIncrease } as const;
+
 /* ------------------------------------------------------------------ */
 /* 1 · #hero                                                           */
 /* ------------------------------------------------------------------ */
@@ -66,17 +69,15 @@ const heroLines = ["Advanced Stomach", "Cancer Treatment", "with Precision &", "
 /* Metadata                                                            */
 /* ------------------------------------------------------------------ */
 
-// SOURCE: EXISTING title (identical to the live page, keeps the SEO). The live description is written
-// (not the plugin's excerpt) but 145 characters: "Stomach cancer treatment in Bangalore at OncoXpert,
-// with advanced surgery, minimally invasive procedures and personalized surgical oncology care."
-// It is lengthened to 150–160 with the page's own words (as on the lung page). The live page has no
-// <h1> (its headings are styled divs): `h1` is the hero heading, which becomes the page's one <h1>.
-// The live canonical is the local address; the rebuilt one is the live domain.
+// SOURCE: EXISTING title and description (both identical to the live page: the client's choice,
+// 19 Nov 2026, so the description stays at its live 145 characters rather than the site's usual
+// 150–160). The live page has no <h1> (its headings are styled divs): `h1` is the hero heading,
+// which becomes the page's one <h1>. The live canonical is the local address; the rebuilt one is the
+// live domain.
 export const meta = {
   title: "Stomach Cancer Treatment in Bangalore | OncoXpert",
-  // SOURCE: NEW (lengthened to 150-160 characters: 153). PENDING DOCTOR: approve.
   description:
-    "Stomach cancer treatment in Bangalore at OncoXpert, with robotic and laparoscopic gastrectomy, minimally invasive surgery and personalized oncology care.",
+    "Stomach cancer treatment in Bangalore at OncoXpert, with advanced surgery, minimally invasive procedures and personalized surgical oncology care.",
   h1: heroLines.join(" "),
   canonical: "https://oncoxpert.in/stomach-cancer/",
   ogImage: stomachOgImage,
@@ -311,7 +312,7 @@ export const treatments = {
 };
 
 /* ------------------------------------------------------------------ */
-/* 5 · #techniques (Robotic Precision vs Laparoscopic Expertise)       */
+/* 5 · #approach (Robotic Precision vs Laparoscopic Expertise)         */
 /* ------------------------------------------------------------------ */
 
 export const techniques = {
@@ -319,7 +320,8 @@ export const techniques = {
   // labels and "vs" for the comparison on phones)
   title: "Robotic Precision vs Laparoscopic Expertise",
   labels: { vs: "vs", tabs: "Surgical technique" },
-  // SOURCE: EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, photos, the link)
+  // SOURCE: EXISTING (titles, text, points); NEW (keys, tab labels, icon keys from TechniqueCompare's
+  // set, photos, the link)
   sides: [
     {
       key: "robotic",
@@ -327,15 +329,15 @@ export const techniques = {
       title: "Robotic Precision",
       body: "The pinnacle of surgical technology. Robotic instruments mimic the human wrist with 7 degrees of freedom, allowing for dissection in spaces too narrow for human hands.",
       points: [
-        { icon: "wrist", title: "EndoWrist Technology", text: "Superior dexterity for complex suturing." },
+        { icon: "instruments", title: "EndoWrist Technology", text: "Superior dexterity for complex suturing." },
         {
-          icon: "magnification",
+          icon: "view",
           title: "10x Magnification",
           text: "Crystal clear view of microscopic nerves and vessels.",
         },
       ],
       image: "robotic",
-      link: { label: "Learn about robotic surgery", href: "/robotic-surgery/", cta: "stomach:techniques:robotic" },
+      link: { label: "Learn about robotic surgery", href: "/robotic-surgery/", cta: "stomach:approach:robotic" },
     },
     {
       key: "laparoscopic",
@@ -344,7 +346,7 @@ export const techniques = {
       body: "Standard-of-care minimally invasive surgery. Uses specialized long instruments through tiny incisions to achieve radical cure with minimal trauma.",
       points: [
         { icon: "recovery", title: "Rapid Recovery", text: "Patients typically walk within 24 hours of surgery." },
-        { icon: "scarring", title: "Minimal Scarring", text: "5-10mm incisions instead of a large abdominal cut." },
+        { icon: "incisions", title: "Minimal Scarring", text: "5-10mm incisions instead of a large abdominal cut." },
       ],
       image: "laparoscopy",
     },
@@ -379,16 +381,18 @@ export const surgeon = {
     "Dr. Sunil Navalgund is a pioneer in robotic-assisted stomach cancer surgeries in India. His patient-first philosophy ensures that clinical excellence is balanced with empathy and constant support throughout the",
     "cancer journey.",
   ],
-  // SOURCE: EXISTING (labels; "International Fellowship <br> trained" on the live page); NEW (icons)
+  // SOURCE: EXISTING (labels; "International Fellowship <br> trained" on the live page); NEW (icons,
+  // DoctorCard's set)
   badges: [
-    { icon: "fellowship", label: "International Fellowship trained" },
-    { icon: "team", label: "Multi-disciplinary approach" },
-    { icon: "evidence", label: "Evidence-based protocols" },
-    { icon: "compassion", label: "Compassionate care model" },
+    { icon: "graduation-cap", label: "International Fellowship trained" },
+    { icon: "stethoscope", label: "Multi-disciplinary approach" },
+    { icon: "badge-check", label: "Evidence-based protocols" },
+    { icon: "heart-handshake", label: "Compassionate care model" },
   ],
-  // SOURCE: NEW (the live block has no buttons; labels as on the other cancer pages)
-  cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation", cta: "stomach:surgeon:book" },
-  link: { label: "View Full Profile", href: "/about-us/" },
+  // SOURCE: NEW (the live block has no buttons; label as on the other cancer pages)
+  cta: { label: "Book Appointment with Dr. Sunil", service: "Consultation" },
+  // SOURCE: NEW (the name links to the profile, analytics label)
+  profile: { href: "/about-us/", cta: "stomach:surgeon:profile" },
   image: "doctor",
 } as const satisfies {
   title: string;
@@ -397,7 +401,7 @@ export const surgeon = {
   bio: readonly string[];
   badges: readonly { icon: SurgeonBadgeIcon; label: string }[];
   cta: AppointmentCta;
-  link: { label: string; href: string };
+  profile: { href: string; cta: string };
   image: StomachImageKey;
 };
 

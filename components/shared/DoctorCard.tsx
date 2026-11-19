@@ -1,5 +1,13 @@
 import * as React from "react";
-import { ArrowRight, Award, BadgeCheck, GraduationCap, Stethoscope, type LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  BadgeCheck,
+  GraduationCap,
+  HeartHandshake,
+  Stethoscope,
+  type LucideIcon,
+} from "lucide-react";
 import type { AppointmentService } from "@/content/site";
 import type { SectionLook, SectionTone, Stat } from "@/content/types";
 import { cn } from "@/lib/utils";
@@ -13,13 +21,14 @@ import { textStyles } from "@/components/ui/text-styles";
 import { AppointmentButton, type LinkLook } from "@/components/shared/AppointmentButton";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 
-type DoctorIcon = "badge-check" | "award" | "graduation-cap" | "stethoscope";
+type DoctorIcon = "badge-check" | "award" | "graduation-cap" | "stethoscope" | "heart-handshake";
 
 const icons: Record<DoctorIcon, LucideIcon> = {
   "badge-check": BadgeCheck,
   award: Award,
   "graduation-cap": GraduationCap,
   stethoscope: Stethoscope,
+  "heart-handshake": HeartHandshake,
 };
 
 type DoctorCardProps = {

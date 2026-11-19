@@ -87,14 +87,14 @@ export const stomachImages = {
     width: 2000,
     height: 1333,
   },
-  // The final band (the family on the right).
+  // The final band (focal point on the middle couple, so faces stay in view in the narrow phone crop).
   finalMeal: {
     file: "family-table.jpg",
     src: `${BASE}/family-table.jpg`,
     pexelsId: 8818741,
     alt: "A family gathered around a table set with Indian dishes in a warm, decorated room",
     credit: { photographer: "Yan Krukau", url: pexels(8818741) },
-    focal: "70% 45%",
+    focal: "60% 60%",
     width: 2000,
     height: 1333,
   },

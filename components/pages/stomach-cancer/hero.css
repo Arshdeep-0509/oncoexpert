@@ -1,0 +1,156 @@
+/* ==================================================================
+   Stomach hero "WARMTH". Plain CSS, prefix gastro- (hero-styles.ts).
+   Load (after the intro): the eyebrow drops in, the H1's lines rise in turn, then the definition,
+   the lead and the buttons; the photo (the LCP image, on screen from the first paint) settles from a
+   slight zoom (transform only, never an opacity fade); the trust card pops in and its figure counts.
+   Loops: three steam curls rise off the photo card and fade (7–9s each), and grain-like specks in
+   saffron and periwinkle drift through the hero (16–26s). The pause button (data-paused) and leaving
+   the screen (data-offscreen) stop every loop; reduced motion shows the still final state.
+   Transform and opacity only; every entrance waits for the intro (--intro), scaled by --pace.
+   ================================================================== */
+
+.gastro-hero {
+  --intro: var(--intro-delay, 0s);
+  --pace: 0.75;
+  --rise: 16px;
+}
+@media (min-width: 768px) {
+  .gastro-hero {
+    --pace: 1;
+    --rise: 22px;
+  }
+}
+
+.gastro-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Steam above the photo card (still: three soft curls, half visible). */
+.gastro-steam {
+  position: absolute;
+  right: 14%;
+  bottom: calc(100% - 6px);
+  width: 22%;
+  max-width: 120px;
+  pointer-events: none;
+}
+.gastro-curl {
+  opacity: var(--o, 0.5);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+/* Specks behind the content. */
+.gastro-specks {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.gastro-speck {
+  position: absolute;
+  width: 7px;
+  height: 3px;
+  border-radius: 9999px;
+  opacity: var(--o, 0.5);
+  rotate: var(--r, 20deg);
+}
+
+@media (max-width: 767px) {
+  .gastro-phoneHidden {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gastro-fadeDown {
+    animation-name: gastro-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .gastro-fadeUp {
+    animation-name: gastro-fadeUp;
+    animation-duration: 0.75s;
+  }
+  .gastro-pop {
+    animation-name: gastro-pop;
+    animation-duration: 0.6s;
+  }
+  .gastro-photo {
+    animation: gastro-settle calc(1.3s * var(--pace)) cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--intro) + 0.15s * var(--pace));
+  }
+  .gastro-curl {
+    animation: gastro-rise var(--t, 8s) ease-in-out infinite backwards;
+    animation-delay: calc(var(--intro) + var(--s, 0s));
+  }
+  .gastro-speck {
+    animation: gastro-drift var(--t, 20s) ease-in-out infinite backwards;
+    animation-delay: calc(var(--intro) + var(--s, 0s));
+  }
+  .gastro-hero:is([data-paused], [data-offscreen]) :is(.gastro-curl, .gastro-speck) {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes gastro-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes gastro-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise);
+  }
+}
+@keyframes gastro-pop {
+  from {
+    opacity: 0;
+    scale: 0.9;
+    translate: 0 10px;
+  }
+}
+@keyframes gastro-settle {
+  from {
+    scale: 1.06;
+  }
+}
+/* A curl rises, swaying a little, and fades out at the top. */
+@keyframes gastro-rise {
+  0% {
+    opacity: 0;
+    translate: 0 18px;
+    scale: 0.9 0.8;
+  }
+  25% {
+    opacity: var(--o, 0.5);
+  }
+  60% {
+    translate: 4px -14px;
+  }
+  100% {
+    opacity: 0;
+    translate: -3px -40px;
+    scale: 1.08 1.15;
+  }
+}
+/* A speck drifts upward and sideways, fading in and out. */
+@keyframes gastro-drift {
+  0% {
+    opacity: 0;
+    translate: 0 0;
+  }
+  15%,
+  85% {
+    opacity: var(--o, 0.5);
+  }
+  100% {
+    opacity: 0;
+    translate: var(--dx, 40px) var(--dy, -90px);
+    rotate: calc(var(--r, 20deg) + 90deg);
+  }
+}

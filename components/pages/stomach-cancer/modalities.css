@@ -1,0 +1,112 @@
+/* ==================================================================
+   Stomach #modalities: the care pathway and the cards. Plain CSS, prefix gastro-m-.
+   A lit stop's node fills with the accent (its number turns white); the rail's fill grows to the
+   last lit stop (scaleX); a lit card lifts (transform) with an accent edge; chips fill when lit.
+   Colour and transform transitions, 0.35s; nothing loops. Reduced motion: no transitions.
+   ================================================================== */
+
+/* Rail stops */
+.gastro-m-node {
+  background: var(--surface);
+  color: var(--muted);
+  box-shadow:
+    0 0 0 2px var(--line),
+    var(--shadow-sm);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease,
+    scale 0.35s ease;
+}
+.gastro-m-stop {
+  color: var(--muted);
+  transition: color 0.35s ease;
+}
+.gastro-m-stop:hover {
+  color: var(--ink);
+}
+.gastro-m-stop[data-on] {
+  color: var(--ink);
+}
+.gastro-m-stop[data-on] .gastro-m-node {
+  background: var(--accent);
+  color: white;
+  box-shadow:
+    0 0 0 4px var(--accent-soft),
+    var(--accent-shadow);
+  scale: 1.06;
+}
+.gastro-m-stop:focus-visible .gastro-m-node {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.gastro-m-fill {
+  scale: var(--f, 0) 1;
+  transition: scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Phone chips */
+.gastro-m-chip {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--line);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+.gastro-m-chipNum {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+.gastro-m-chip[data-on] {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.gastro-m-chip[data-on] .gastro-m-chipNum {
+  background: white;
+  color: var(--accent-hover);
+}
+.gastro-m-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Cards */
+.gastro-m-card {
+  box-shadow:
+    0 0 0 1px var(--line),
+    var(--shadow-sm);
+  transition:
+    translate 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+.gastro-m-card[data-on] {
+  translate: 0 -4px;
+  box-shadow:
+    0 0 0 2px var(--accent),
+    var(--shadow);
+}
+@media (max-width: 767px) {
+  .gastro-m-card[data-on] {
+    translate: none;
+  }
+  .gastro-m-row {
+    mask-image: linear-gradient(90deg, transparent, #000 14px, #000 calc(100% - 28px), transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gastro-m-node,
+  .gastro-m-stop,
+  .gastro-m-fill,
+  .gastro-m-chip,
+  .gastro-m-card {
+    transition: none;
+  }
+  .gastro-m-card[data-on],
+  .gastro-m-stop[data-on] .gastro-m-node {
+    translate: none;
+    scale: none;
+  }
+}

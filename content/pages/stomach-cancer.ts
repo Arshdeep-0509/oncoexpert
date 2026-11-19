@@ -16,10 +16,10 @@
  * Clarity?" form is not rebuilt: every button opens the booking page. Images:
  * content/pages/stomach-cancer.images.ts.
  *
- * Live order: #hero → #understanding → #warning-signs → #treatments → #techniques → #surgeon →
+ * Live order: #hero → #understanding → #warning-signs → #modalities → #techniques → #surgeon →
  * shared reviews, videos, locations.
  */
-import type { PageMeta } from "@/content/types";
+import type { PageMeta, SymptomIcon } from "@/content/types";
 import type { StomachImageKey } from "@/content/pages/stomach-cancer.images";
 import { stomachOgImage } from "@/content/pages/stomach-cancer.images";
 import type { AppointmentService } from "@/content/site";
@@ -33,11 +33,12 @@ import { reviewsSection } from "@/content/shared/sections";
 /** A button that opens the booking page with `service` preselected (and `note` in the email). */
 type AppointmentCta = { label: string; service: AppointmentService; note?: string; cta?: string };
 
-/** Icon keys, mapped to icons in components/pages/stomach-cancer (built in a later step). */
-export type WarningIcon = "pain" | "weight" | "appetite" | "nausea";
+/** Icon keys, mapped to icons in components/pages/stomach-cancer and the shared SymptomGrid. */
+export type WarningIcon = Extract<SymptomIcon, "pain" | "weight" | "full" | "nausea">;
 export type TreatmentPointIcon =
   "nodes" | "survival" | "visualization" | "tremor" | "targeted" | "side-effects" | "genetics" | "response";
 export type TechniquePointIcon = "wrist" | "magnification" | "recovery" | "scarring";
+export type ModalityKey = "gastrectomy" | "robotic" | "flot" | "immunotherapy";
 export type SurgeonBadgeIcon = "fellowship" | "team" | "evidence" | "compassion";
 
 /* ------------------------------------------------------------------ */
@@ -108,6 +109,12 @@ export const hero = {
     note: "Global standards of care in Bangalore",
   },
   image: "heroMeal",
+  // SOURCE: NEW (choice: the words set in the accent, Fraunces italic). The live heading colours
+  // "Precision" instead; set `emphasis: "Precision"` to match it.
+  // PENDING DOCTOR (or client): "Personalized Care" or "Precision"?
+  emphasis: "Personalized Care",
+  // SOURCE: NEW (screen-reader labels)
+  a11y: { pause: "Pause the hero animation", play: "Play the hero animation" },
 } as const satisfies {
   eyebrow: string;
   lines: readonly string[];
@@ -115,6 +122,8 @@ export const hero = {
   ctas: { primary: AppointmentCta; secondary: AppointmentCta };
   card: { value: number; suffix: string; label: string; note: string };
   image: StomachImageKey;
+  emphasis: string;
+  a11y: { pause: string; play: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -134,11 +143,19 @@ export const understanding = {
     { key: "multi", title: "Multi", body: "Disciplinary team approach for every case" },
   ],
   image: "anatomy",
+  // SOURCE: NEW (the stomach wall visual: its layers from the inside out, the cluster's label and the
+  // screen-reader description). PENDING DOCTOR: the layer names and the cluster label.
+  wall: {
+    layers: ["Mucosa (inner lining)", "Submucosa", "Muscle layer", "Serosa (outer layer)"],
+    cluster: "Abnormal cells",
+    a11y: "Line drawing of the stomach with an inset of its wall, peeled into four layers from the inner lining to the outer layer; a small cluster of abnormal cells sits in the inner lining",
+  },
 } as const satisfies {
   lines: readonly string[];
   paragraphs: readonly string[];
   tiles: readonly { key: string; title: string; body: string }[];
   image: StomachImageKey;
+  wall: { layers: readonly [string, string, string, string]; cluster: string; a11y: string };
 };
 
 /* ------------------------------------------------------------------ */
@@ -166,7 +183,7 @@ export const warningSigns = {
     },
     {
       key: "appetite",
-      icon: "appetite",
+      icon: "full",
       title: "Appetite Loss",
       body: "Feeling full after eating only a small amount.",
       image: "symptomAppetite",
@@ -179,29 +196,41 @@ export const warningSigns = {
       image: "symptomNausea",
     },
   ],
-  // SOURCE: NEW (the live block has no button; label as on the thyroid symptoms)
-  cta: { label: "Book Consultation", service: "Consultation", cta: "stomach:warning-signs:book-consultation" },
-  a11y: { group: "Warning signs" },
+  // SOURCE: NEW (the checklist: the line before anything is ticked, the line and button after, the
+  // note prefix the booking email gets, screen-reader labels; the live block has no button)
+  // PENDING DOCTOR: the two lines (gentle guidance, never a diagnosis).
+  empty: "Tick any signs you have noticed for a few weeks or more.",
+  result: {
+    some: "Thank you for checking. These signs often have everyday causes, and a specialist can tell you calmly and clearly.",
+    cta: { label: "Book Consultation", service: "Consultation", cta: "stomach:warning-signs:book-consultation" },
+    notePrefix: "Symptoms: ",
+  },
+  a11y: { group: "Warning signs", result: "Your checklist" },
 } as const satisfies {
   title: string;
   intro: string;
   items: readonly { key: string; icon: WarningIcon; title: string; body: string; image: StomachImageKey }[];
-  cta: AppointmentCta;
-  a11y: { group: string };
+  empty: string;
+  result: {
+    some: string;
+    cta: { label: string; service: AppointmentService; cta?: string };
+    notePrefix: string;
+  };
+  a11y: { group: string; result: string };
 };
 
 /* ------------------------------------------------------------------ */
-/* 4 · #treatments ("Comprehensive Treatment Modalites", 4 cards)      */
+/* 4 · #modalities ("Comprehensive Treatment Modalites", 4 cards)      */
 /* ------------------------------------------------------------------ */
 
-// PENDING DOCTOR: where should "Explore All Procedures" lead? On the live page it links to "#".
-// Options: the robotic surgery page, Home's services, or the booking page.
+// PENDING DOCTOR: where should "Explore All Procedures" lead? On the live page it links to "#". For
+// now: the robotic page's #techniques. Options: that, Home's services, or the booking page.
 export const treatments = {
   // SOURCE: EXISTING. "Modalites" (sic) as on the live page.
   lines: ["Comprehensive Treatment", "Modalites"],
   intro: "We offer cutting-edge surgical and oncological protocols tailored to the stage and location of the tumor.",
   // SOURCE: EXISTING (label); NEW (target, until the doctor says)
-  link: { label: "Explore All Procedures", href: "/robotic-surgery/", cta: "stomach:treatments:explore" },
+  link: { label: "Explore All Procedures", href: "/robotic-surgery/#techniques", cta: "stomach:modalities:explore" },
   // SOURCE: EXISTING (tag, title, text and its line breaks, the two points); NEW (icon keys)
   items: [
     {
@@ -249,12 +278,31 @@ export const treatments = {
       ],
     },
   ],
+  // SOURCE: NEW (the care pathway rail above the cards: where each treatment sits on one line; it
+  // restates the live text's "peri-operative" (before and after surgery) and "advanced"; nothing
+  // beyond it). Each stop names the card(s) it lights. PENDING DOCTOR: the stop labels.
+  pathway: {
+    label: "Where each treatment fits",
+    stops: [
+      { key: "before", label: "FLOT before surgery", cards: ["flot"] },
+      { key: "surgery", label: "D2 Gastrectomy or Robotic Surgery", cards: ["gastrectomy", "robotic"] },
+      { key: "after", label: "FLOT after surgery", cards: ["flot"] },
+      { key: "advanced", label: "Immunotherapy for advanced disease", cards: ["immunotherapy"] },
+    ],
+  },
+  // SOURCE: NEW (the cards' swipe row name on phones)
+  a11y: { cards: "Treatment modalities" },
 } as const satisfies {
   lines: readonly string[];
   intro: string;
   link: { label: string; href: string; cta: string };
+  pathway: {
+    label: string;
+    stops: readonly { key: string; label: string; cards: readonly ModalityKey[] }[];
+  };
+  a11y: { cards: string };
   items: readonly {
-    key: string;
+    key: ModalityKey;
     tag: string;
     title: string;
     body: readonly string[];

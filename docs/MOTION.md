@@ -167,3 +167,12 @@ properties and are not listed.
 | `.uro-drop` | uro-drift (hero.css) | page load (after the intro) | var(--t, 20s) | yes | pause button (48px), off-screen | final state (no animation) |
 | `[data-inview] .uro-ld-live::after` | uro-ld-breathe (leadership.css) | scrolled into view | 2.4s | repeats | n/a (runs once) | final state (no animation) |
 | `.uro-pv-spare[data-mode="spare"] .uro-pv-cut` | uro-pv-draw (preservation.css) | page load (after the intro) | 0.6s | no | n/a (runs once) | final state (no animation) |
+
+## Stomach
+
+| Element | Animation | Trigger | Duration | Loop | Pause / stop | Reduced motion |
+| --- | --- | --- | --- | --- | --- | --- |
+| `.gastro-photo` | gastro-settle (hero.css) | page load (after the intro) | 1.3s | no | n/a (runs once) | final state (no animation) |
+| `.gastro-curl` | gastro-rise (hero.css) | page load (after the intro) | var(--t, 8s) | yes | pause button (48px), off-screen | final state (no animation) |
+| `.gastro-speck` | gastro-drift (hero.css) | page load (after the intro) | var(--t, 20s) | yes | pause button (48px), off-screen | final state (no animation) |
+| `.sgx-check[aria-checked="true"] .sgx-box` | sgx-bounce (symptom-grid.css) | an interaction (state change) | 0.45s | no | n/a (runs once) | final state (no animation) |

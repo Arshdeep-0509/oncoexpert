@@ -31,7 +31,9 @@ export type AnalyticsEvent =
   // Urology page: a specialty chosen on the clinical dashboard (organ, chip or card).
   | { event: "urology_specialty_select"; label: string }
   // Urology page: the "Spare vs Remove" kidney switch.
-  | { event: "urology_preservation_toggle"; label: string };
+  | { event: "urology_preservation_toggle"; label: string }
+  // Stomach page: a modality chosen (a pathway stop or a card).
+  | { event: "stomach_modality_select"; label: string };
 
 declare global {
   interface Window {

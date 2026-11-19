@@ -1640,13 +1640,21 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts | cta | EXISTING (button labels; both link to the booking page on the live … | stomach:hero:second-opinion |
 | stomach-cancer.ts | label | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Surgeries Performed |
 | stomach-cancer.ts | note | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Global standards of care in Bangalore |
-| stomach-cancer.ts |  | EXISTING (the floating card: "5,000+ Surgeries Performed" over its … | Understanding Stomach (Gastric) Cancer |
+| stomach-cancer.ts | emphasis | NEW (choice: the words set in the accent, Fraunces italic). The liv… | Personalized Care |
+| stomach-cancer.ts | pause | NEW (screen-reader labels) | Pause the hero animation |
+| stomach-cancer.ts | play | NEW (screen-reader labels) | Play the hero animation |
+| stomach-cancer.ts |  | NEW (screen-reader labels) | Understanding Stomach (Gastric) Cancer |
 | stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | Understanding Stomach |
 | stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | (Gastric) Cancer |
 | stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | Stomach cancer begins when cells in the stomach lining grow out of control. It is often a silent disease in its early stages, making expert evaluation critical … |
 | stomach-cancer.ts |  | EXISTING. "pathology,genomics" (no space) as on the live page. | At OncoXpert, we believe that understanding the biology of the tumor is the first step toward a cure. Our approach integrates advanced pathology,genomics, and c… |
 | stomach-cancer.ts | body | EXISTING (the two tiles: a large word over its line). The 70% is `c… | Diagnosis increases cure rate by ${cureRateIncrease}% |
 | stomach-cancer.ts | body | EXISTING (the two tiles: a large word over its line). The 70% is `c… | Disciplinary team approach for every case |
+| stomach-cancer.ts |  | NEW (the stomach wall visual: its layers from the inside out, the c… | Mucosa (inner lining) |
+| stomach-cancer.ts |  | NEW (the stomach wall visual: its layers from the inside out, the c… | Muscle layer |
+| stomach-cancer.ts |  | NEW (the stomach wall visual: its layers from the inside out, the c… | Serosa (outer layer) |
+| stomach-cancer.ts | cluster | NEW (the stomach wall visual: its layers from the inside out, the c… | Abnormal cells |
+| stomach-cancer.ts | a11y | NEW (the stomach wall visual: its layers from the inside out, the c… | Line drawing of the stomach with an inset of its wall, peeled into four layers from the inner lining to the outer layer; a small cluster of abnormal cells sits … |
 | stomach-cancer.ts | title | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Warning Signs Not to Ignore |
 | stomach-cancer.ts | intro | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Persistent digestive issues should always be evaluated by a specialist oncologist. |
 | stomach-cancer.ts | title | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Persistent Pain |
@@ -1659,15 +1667,18 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts | title | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Chronic Nausea |
 | stomach-cancer.ts | body | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | Persistent nausea or vomiting after meals. |
 | stomach-cancer.ts | image | EXISTING (title, intro, card titles, text); NEW (icon keys, photos) | symptomNausea |
-| stomach-cancer.ts | label | NEW (the live block has no button; label as on the thyroid symptoms) | Book Consultation |
-| stomach-cancer.ts | service | NEW (the live block has no button; label as on the thyroid symptoms) | Consultation |
-| stomach-cancer.ts | cta | NEW (the live block has no button; label as on the thyroid symptoms) | stomach:warning-signs:book-consultation |
-| stomach-cancer.ts | group | NEW (the live block has no button; label as on the thyroid symptoms) | Warning signs |
-| stomach-cancer.ts |  | NEW (the live block has no button; label as on the thyroid symptoms) | Comprehensive Treatment Modalites |
+| stomach-cancer.ts | empty | NEW (the checklist: the line before anything is ticked, the line an… | Tick any signs you have noticed for a few weeks or more. |
+| stomach-cancer.ts | some | NEW (the checklist: the line before anything is ticked, the line an… | Thank you for checking. These signs often have everyday causes, and a specialist can tell you calmly and clearly. |
+| stomach-cancer.ts | label | NEW (the checklist: the line before anything is ticked, the line an… | Book Consultation |
+| stomach-cancer.ts | service | NEW (the checklist: the line before anything is ticked, the line an… | Consultation |
+| stomach-cancer.ts | cta | NEW (the checklist: the line before anything is ticked, the line an… | stomach:warning-signs:book-consultation |
+| stomach-cancer.ts | group | NEW (the checklist: the line before anything is ticked, the line an… | Warning signs |
+| stomach-cancer.ts | result | NEW (the checklist: the line before anything is ticked, the line an… | Your checklist |
+| stomach-cancer.ts |  | NEW (the checklist: the line before anything is ticked, the line an… | Comprehensive Treatment Modalites |
 | stomach-cancer.ts |  | EXISTING. "Modalites" (sic) as on the live page. | Comprehensive Treatment |
 | stomach-cancer.ts | intro | EXISTING. "Modalites" (sic) as on the live page. | We offer cutting-edge surgical and oncological protocols tailored to the stage and location of the tumor. |
 | stomach-cancer.ts | label | EXISTING (label); NEW (target, until the doctor says) | Explore All Procedures |
-| stomach-cancer.ts | cta | EXISTING (label); NEW (target, until the doctor says) | stomach:treatments:explore |
+| stomach-cancer.ts | cta | EXISTING (label); NEW (target, until the doctor says) | stomach:modalities:explore |
 | stomach-cancer.ts | title | EXISTING (tag, title, text and its line breaks, the two points); NE… | D2 Gastrectomy |
 | stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | Removal of the tumor with |
 | stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | extensive lymph node |
@@ -1687,6 +1698,12 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 | stomach-cancer.ts |  | EXISTING (tag, title, text and its line breaks, the two points); NE… | Harnessing the body’s immune system to fight advanced gastric cancers using PD-L1 inhibitors. |
 | stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Personalized genetics |
 | stomach-cancer.ts | label | EXISTING (tag, title, text and its line breaks, the two points); NE… | Longer-term response |
+| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | Where each treatment fits |
+| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | FLOT before surgery |
+| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | D2 Gastrectomy or Robotic Surgery |
+| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | FLOT after surgery |
+| stomach-cancer.ts | label | NEW (the care pathway rail above the cards: where each treatment si… | Immunotherapy for advanced disease |
+| stomach-cancer.ts | cards | NEW (the cards' swipe row name on phones) | Treatment modalities |
 | stomach-cancer.ts | title | NEW (the live block has no heading; the section needs one for the o… | Robotic Precision vs Laparoscopic Expertise |
 | stomach-cancer.ts | tabs | NEW (the live block has no heading; the section needs one for the o… | Surgical technique |
 | stomach-cancer.ts | title | EXISTING (titles, text, points); NEW (keys, tab labels, icon keys, … | Robotic Precision |
@@ -1727,11 +1744,29 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 - Stomach cancer treatment in Bangalore at OncoXpert, with robotic and laparoscopic gastrectomy, minimally invasive surgery and personalized oncology care.
 - Consultation
+- Personalized Care
+- Pause the hero animation
+- Play the hero animation
+- Understanding Stomach (Gastric) Cancer
+- Mucosa (inner lining)
+- Muscle layer
+- Serosa (outer layer)
+- Abnormal cells
+- Line drawing of the stomach with an inset of its wall, peeled into four layers from the inner lining to the outer layer; a small cluster of abnormal cells sits in the inner lining
+- Tick any signs you have noticed for a few weeks or more.
+- Thank you for checking. These signs often have everyday causes, and a specialist can tell you calmly and clearly.
 - Book Consultation
 - Consultation
 - stomach:warning-signs:book-consultation
 - Warning signs
+- Your checklist
 - Comprehensive Treatment Modalites
+- Where each treatment fits
+- FLOT before surgery
+- D2 Gastrectomy or Robotic Surgery
+- FLOT after surgery
+- Immunotherapy for advanced disease
+- Treatment modalities
 - Robotic Precision vs Laparoscopic Expertise
 - Surgical technique
 - Book Appointment with Dr. Sunil
@@ -1747,7 +1782,9 @@ PENDING DOCTOR item. `${…}` marks a figure filled in from the content (never r
 
 - (stomach-cancer.ts) "5,000+ Surgeries Performed": all surgeries, or stomach cancer surgeries? Thyroid said "10,000+ Surgeries" (removed in the client review), Home "3,000+ patients".
 - (stomach-cancer.ts) "Early / Diagnosis increases cure rate by 70%": compared with what, and which source? (A relative figure like this is hard to back up; a stage-wise survival figure may read more clearly.)
-- (stomach-cancer.ts) where should "Explore All Procedures" lead? On the live page it links to "#". Options: the robotic surgery page, Home's services, or the booking page.
+- (stomach-cancer.ts) (or client): "Personalized Care" or "Precision"?
+- (stomach-cancer.ts) the two lines (gentle guidance, never a diagnosis).
+- (stomach-cancer.ts) where should "Explore All Procedures" lead? On the live page it links to "#". For now: the robotic page's #techniques. Options: that, Home's services, or the booking page.
 - (stomach-cancer.ts) "a pioneer in robotic-assisted stomach cancer surgeries in India": can this claim be backed up (first cases, year)? Also "International Fellowship trained": which fellowship (see content/shared/organization.ts)?
 - (stomach-cancer.ts) the live page shows Vasudeva Murthy's review, which is about colon cancer surgery. Hidden on this page by default (as on the other cancer pages); set showColonReview to true to show it. (A GI page could reasonably show it: the doctor's call.)
 

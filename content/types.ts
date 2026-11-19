@@ -173,7 +173,8 @@ export type TechniqueSideContent<Img = PageImage> = {
 export type ChartRow = { label: string; value: number };
 
 /** Icons of SymptomGrid's cards (components/shared/SymptomGrid.tsx). */
-export type SymptomIcon = "bloating" | "pelvic" | "full" | "urination" | "lump" | "cough" | "voice" | "swallow";
+export type SymptomIcon =
+  "bloating" | "pelvic" | "full" | "urination" | "lump" | "cough" | "voice" | "swallow" | "pain" | "weight" | "nausea";
 
 /** One card of SymptomGrid. `body` is shown by the "disclose" mode; `image` puts a photo on top. */
 export type SymptomItem = {

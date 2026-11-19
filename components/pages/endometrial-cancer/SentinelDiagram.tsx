@@ -4,12 +4,29 @@ import * as React from "react";
 import { RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+/**
+ * The uterus, as the hero draws it (its 400 × 360 line art, scaled 0.5 and placed so the cervix
+ * ends at 180,140 here): the body (filled), the tubes running out to the ovaries, the fundus, the
+ * inner cavity.
+ */
+const UTERUS_TRANSFORM = "translate(80 -19) scale(0.5)";
+const UTERUS_BODY =
+  "M148 150 C140 200 170 250 186 285 L186 312 C192 320 208 320 214 312 L214 285 C230 250 260 200 252 150 C228 118 172 118 148 150 Z";
+const UTERUS_TUBES =
+  "M58 150 C80 118 112 110 140 124 C150 130 150 140 148 150 C140 200 170 250 186 285 L186 312 C192 320 208 320 214 312 L214 285 C230 250 260 200 252 150 C250 140 250 130 260 124 C288 110 320 118 342 150";
+const UTERUS_FUNDUS = "M148 150 C172 118 228 118 252 150";
+const UTERUS_CAVITY = "M172 168 C190 178 210 178 228 168 C220 202 210 230 200 250 C190 230 180 202 172 168Z";
+const OVARIES = [
+  { cx: 52, cy: 150 },
+  { cx: 348, cy: 150 },
+] as const;
+
 /** The lymph paths from the uterus (viewBox 360 × 320) and the nodes on them. */
-const LEFT = "M162 112 C130 142 112 172 104 205 C98 232 92 255 80 282";
-const RIGHT = "M198 112 C230 142 248 172 256 205 C262 232 268 255 280 282";
-const CENTRE = "M180 132 C180 172 180 212 180 250";
+const LEFT = "M165 106 C130 142 112 172 104 205 C98 232 92 255 80 282";
+const RIGHT = "M195 106 C230 142 248 172 256 205 C262 232 268 255 280 282";
+const CENTRE = "M180 140 C180 176 180 212 180 250";
 /** The tracer's way: from the uterus to the first node on the left path, the sentinel node. */
-const TO_SENTINEL = "M162 112 C130 142 112 172 104 205";
+const TO_SENTINEL = "M165 106 C130 142 112 172 104 205";
 const NODES = [
   { x: 104, y: 205, sentinel: true },
   { x: 80, y: 282 },
@@ -52,12 +69,28 @@ export function SentinelDiagram({ labels }: SentinelDiagramProps) {
         data-play={play ? "" : undefined}
       >
         <svg key={run} viewBox="0 0 360 320" role="img" aria-label={labels.label} className="w-full overflow-visible">
-          {/* uterus */}
-          <path
-            d="M150 62 C150 50 162 44 180 44 C198 44 210 50 210 62 C210 96 196 120 187 132 L173 132 C164 120 150 96 150 62Z"
-            style={{ fill: "var(--accent-soft)", stroke: "var(--accent-bright)" }}
-            strokeWidth="2.5"
-          />
+          {/* uterus: body, tubes, ovaries, fundus and cavity (the hero's line art, scaled) */}
+          <g transform={UTERUS_TRANSFORM} strokeLinecap="round" strokeLinejoin="round">
+            <path d={UTERUS_BODY} style={{ fill: "var(--accent-soft)" }} />
+            <path d={UTERUS_TUBES} fill="none" style={{ stroke: "var(--accent-bright)" }} strokeWidth="6" />
+            <path d={UTERUS_FUNDUS} fill="none" style={{ stroke: "var(--accent-bright)" }} strokeWidth="6" />
+            <path
+              d={UTERUS_CAVITY}
+              style={{ fill: "var(--surface)", stroke: "var(--accent-bright)" }}
+              strokeOpacity="0.6"
+              strokeWidth="3.5"
+            />
+            {OVARIES.map((o) => (
+              <circle
+                key={o.cx}
+                cx={o.cx}
+                cy={o.cy}
+                r="16"
+                style={{ fill: "var(--accent-soft)", stroke: "var(--accent-bright)" }}
+                strokeWidth="5"
+              />
+            ))}
+          </g>
           {/* lymph paths */}
           {[LEFT, RIGHT, CENTRE].map((d) => (
             <path

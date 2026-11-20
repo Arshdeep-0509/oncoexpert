@@ -157,6 +157,41 @@ export const breastImages = {
     width: 1333,
     height: 2000,
   },
+  // #overview "Your care plan" parallax panels. Slots for the AI-generated pictures (no pexelsId:
+  // the image script only checks they exist). Until those arrive they hold copies of surgery-team,
+  // colorectal infusion, pathology-lab and imaging-scan. Replace the file, then update width/height.
+  careSurgery: {
+    file: "care-surgery.jpg",
+    src: `${BASE}/care-surgery.jpg`,
+    alt: "Surgical team operating in a modern operating theatre",
+    focal: "50% 50%",
+    width: 2000,
+    height: 1333,
+  },
+  careChemotherapy: {
+    file: "care-chemotherapy.jpg",
+    src: `${BASE}/care-chemotherapy.jpg`,
+    alt: "A nurse adjusting a chemotherapy infusion beside a patient",
+    focal: "50% 50%",
+    width: 2000,
+    height: 1333,
+  },
+  careImmunotherapy: {
+    file: "care-immunotherapy.jpg",
+    src: `${BASE}/care-immunotherapy.jpg`,
+    alt: "Laboratory work studying how the immune system fights cancer",
+    focal: "50% 50%",
+    width: 2000,
+    height: 1333,
+  },
+  careRadiotherapy: {
+    file: "care-radiotherapy.jpg",
+    src: `${BASE}/care-radiotherapy.jpg`,
+    alt: "Patient being positioned for precisely targeted radiotherapy",
+    focal: "50% 50%",
+    width: 2000,
+    height: 1333,
+  },
 } as const satisfies Record<string, PageImage>;
 
 export type BreastImageKey = keyof typeof breastImages;

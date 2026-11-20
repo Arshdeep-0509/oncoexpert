@@ -65,11 +65,10 @@ export type HeroContent = {
 export type OverviewContent = Required<Pick<SectionCopy, "eyebrow" | "title" | "emphasis">> & {
   paragraphs: readonly string[];
   image: BreastImageKey;
-  diagram: {
-    label: string;
-    centre: string;
-    nodes: readonly { key: Treatment; label: string }[];
-    a11y: { pause: string; play: string };
+  carePlan: {
+    eyebrow: string;
+    title: string;
+    panels: readonly { key: Treatment; label: string; body: string; image: BreastImageKey }[];
   };
 };
 
@@ -139,16 +138,35 @@ export const overview = {
   ],
   image: "consultation",
   // SOURCE: NEW
-  diagram: {
-    label: "Multimodality treatment",
-    centre: "Your care plan",
-    nodes: [
-      { key: "surgery", label: "Surgery" },
-      { key: "chemotherapy", label: "Chemotherapy" },
-      { key: "immunotherapy", label: "Immunotherapy" },
-      { key: "radiotherapy", label: "Radiotherapy" },
+  carePlan: {
+    eyebrow: "Multimodality treatment",
+    title: "Your care plan",
+    panels: [
+      {
+        key: "surgery",
+        label: "Surgery",
+        body: "Removing the tumour, with breast-conserving and reconstructive options wherever possible.",
+        image: "careSurgery",
+      },
+      {
+        key: "chemotherapy",
+        label: "Chemotherapy",
+        body: "Medicines that destroy cancer cells throughout the body, given before or after surgery.",
+        image: "careChemotherapy",
+      },
+      {
+        key: "immunotherapy",
+        label: "Immunotherapy",
+        body: "Treatments that help your own immune system recognise and fight the cancer.",
+        image: "careImmunotherapy",
+      },
+      {
+        key: "radiotherapy",
+        label: "Radiotherapy",
+        body: "Precisely targeted radiation that lowers the chance of the cancer coming back.",
+        image: "careRadiotherapy",
+      },
     ],
-    a11y: { pause: "Pause animation", play: "Play animation" },
   },
 } as const satisfies OverviewContent;
 

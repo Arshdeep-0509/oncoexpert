@@ -12,6 +12,7 @@ import { buttonClasses } from "@/components/ui/Button";
 import { textStyles } from "@/components/ui/text-styles";
 import { LazyAppointmentForm } from "@/components/shared/appointment/LazyAppointmentForm";
 import type { FormStyles } from "@/components/shared/appointment/form";
+import { sentScript } from "@/components/shared/appointment/sent";
 
 /*
  * Mobile form rules: inputs 16px+ (no iOS zoom), 52px tall, labels above,
@@ -137,6 +138,8 @@ export function AppointmentSection({
         <Reveal className="lg:col-span-7" delay={s.formDelay}>
           <div className={cn("border", s.panel)}>
             <FormTitle className={cn("mb-6 text-ink", s.formTitle)}>{copy.form.title}</FormTitle>
+            {/* Before paint: a device that already sent the form gets the thank-you note, not the form. */}
+            <script dangerouslySetInnerHTML={{ __html: sentScript }} />
             <LazyAppointmentForm page={page} styles={formStyles} />
           </div>
         </Reveal>

@@ -580,3 +580,10 @@
 [data-theme="thyroid"] .cta-shine:is(:hover, :focus-visible)::after {
   animation: none;
 }
+
+/* Appointment form: once this device has sent it, show the thank-you note instead
+   (components/shared/appointment/sent.ts sets data-appt-sent on <html>). */
+:root:not([data-appt-sent]) .appt-sent,
+[data-appt-sent] .appt-form {
+  display: none;
+}

@@ -62,7 +62,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-IN" className={`${jakarta.variable} ${jakartaText.variable} ${fraunces.variable} ${inter.variable}`}>
+    <html lang="en-IN" suppressHydrationWarning className={`${jakarta.variable} ${jakartaText.variable} ${fraunces.variable} ${inter.variable}`}>
       <body className="min-h-dvh bg-white font-sans text-text antialiased">
         <Preloader />
         <SmoothScroll />

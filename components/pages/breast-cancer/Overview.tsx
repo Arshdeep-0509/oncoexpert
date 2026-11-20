@@ -4,11 +4,11 @@ import { breastImages } from "@/content/pages/breast-cancer.images";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
-import { MultimodalityDiagram } from "@/components/pages/breast-cancer/MultimodalityDiagram";
+import { CarePlanParallax } from "@/components/pages/breast-cancer/CarePlanParallax";
 
 /**
  * 2 · #overview. Text + consultation photo (photo first on phones), then the
- * multimodality diagram full width.
+ * "Your care plan" parallax panels full width.
  */
 export function Overview() {
   const img = breastImages[overview.image];
@@ -52,7 +52,7 @@ export function Overview() {
       </div>
 
       <div className="mt-14 md:mt-20">
-        <MultimodalityDiagram {...overview.diagram} />
+        <CarePlanParallax {...overview.carePlan} />
       </div>
     </Section>
   );

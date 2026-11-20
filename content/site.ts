@@ -46,6 +46,8 @@ export const site = {
         { label: "Colorectal Cancer", href: "/colon-cancer-hospital-bangalore/", icon: "colorectal" },
         { label: "Endometrial Cancer", href: "/endometrial-cancer-hospital-bangalore/", icon: "endometrial" },
         { label: "Lung Cancer", href: "/lung-cancer-in-bangalore/", icon: "lung" },
+        { label: "Urology", href: "/urology/", icon: "urology" },
+        { label: "Stomach Cancer", href: "/stomach-cancer/", icon: "stomach" },
         { label: "Ovarian Cancer", href: "/ovarian-cancer-hospital/", icon: "ovarian" },
         { label: "Thyroid Cancer", href: "/thyroid-cancer/", icon: "thyroid" },
       ],
@@ -135,6 +137,11 @@ export const site = {
     closing: "We're here to help.",
     openLabel: "Open Chat",
   },
+
+  // SOURCE: NEW (switch, the client's request, 19 Nov 2026): the heroes' pause buttons are hidden
+  // (display: none: still mounted, so the hero loops still stop off-screen and the intro timing
+  // still works; not focusable). Set to true to show them again on every page.
+  heroPauseButton: false,
 
   // Mobile action bar (fixed to the bottom of the screen under 768px).
   actionBar: {

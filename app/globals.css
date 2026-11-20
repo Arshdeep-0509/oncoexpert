@@ -13,6 +13,8 @@
 @import "../styles/themes/lung.css";
 @import "../styles/themes/ovarian.css";
 @import "../styles/themes/thyroid.css";
+@import "../styles/themes/urology.css";
+@import "../styles/themes/stomach.css";
 
 /* ------------------------------------------------------------------
    Token → utility map. `inline`: each utility reads the CSS variable
@@ -577,4 +579,11 @@
 [data-theme="thyroid"] :is(a, button):is(:hover, :focus-visible) > [class*="animate-wa-pulse"],
 [data-theme="thyroid"] .cta-shine:is(:hover, :focus-visible)::after {
   animation: none;
+}
+
+/* Appointment form: once this device has sent it, show the thank-you note instead
+   (components/shared/appointment/sent.ts sets data-appt-sent on <html>). */
+:root:not([data-appt-sent]) .appt-sent,
+[data-appt-sent] .appt-form {
+  display: none;
 }

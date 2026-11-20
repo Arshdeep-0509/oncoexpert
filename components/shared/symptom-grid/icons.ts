@@ -1,4 +1,17 @@
-import { Activity, CircleDot, Droplets, Mic, Soup, UtensilsCrossed, Waves, Wind, type LucideIcon } from "lucide-react";
+import {
+  Activity,
+  CircleDot,
+  Droplets,
+  Frown,
+  Mic,
+  Scale,
+  Soup,
+  UtensilsCrossed,
+  Waves,
+  Wind,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import type { SymptomIcon } from "@/content/types";
 
 /** SymptomGrid's card icons (lucide, stroke 1.75). */
@@ -11,4 +24,7 @@ export const symptomIcons: Record<SymptomIcon, LucideIcon> = {
   cough: Wind,
   voice: Mic,
   swallow: Soup,
+  pain: Zap,
+  weight: Scale,
+  nausea: Frown,
 };

@@ -18,6 +18,8 @@ type PackageCardsProps = {
   page: string;
   /** The swipe row's accessible name (phones). */
   label: string;
+  /** Price display: "rupees" (default: counts up, en-IN grouping) or "lakh" (static "₹1.6L", Urology). */
+  priceFormat?: "rupees" | "lakh";
 };
 
 /**
@@ -26,7 +28,15 @@ type PackageCardsProps = {
  * phones a swipe row starting on the featured card. Server-rendered except the counters, the
  * inclusion reveal, the buttons and the estimator. Place it inside the page's own <section>.
  */
-export function PackageCards({ packages, footnote, initialIndex, estimator, page, label }: PackageCardsProps) {
+export function PackageCards({
+  packages,
+  footnote,
+  initialIndex,
+  estimator,
+  page,
+  label,
+  priceFormat = "rupees",
+}: PackageCardsProps) {
   const featured = packages.findIndex((p) => p.featured);
   return (
     <div>
@@ -45,7 +55,7 @@ export function PackageCards({ packages, footnote, initialIndex, estimator, page
         gridClassName="md:mx-auto md:max-w-xl md:grid-cols-1 md:gap-6 lg:max-w-none lg:grid-cols-3 lg:items-stretch lg:pt-3"
       >
         {packages.map((item) => (
-          <PackageCard key={item.name} item={item} page={page} />
+          <PackageCard key={item.name} item={item} page={page} priceFormat={priceFormat} />
         ))}
       </SwipeRow>
       {estimator ? <CycleEstimator estimator={estimator} page={page} /> : null}

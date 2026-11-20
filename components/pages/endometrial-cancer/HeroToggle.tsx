@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { site } from "@/content/site";
+import { cn } from "@/lib/utils";
 import { Pause, Play } from "lucide-react";
 
 /**
@@ -43,7 +45,10 @@ export function HeroToggle({ pause, play }: { pause: string; play: string }) {
       type="button"
       onClick={() => setPaused((p) => !p)}
       aria-label={paused ? play : pause}
-      className="grid size-12 shrink-0 place-items-center rounded-full bg-white/80 text-muted ring-1 shadow-soft-sm ring-line transition-colors hover:bg-accent-soft hover:text-accent motion-reduce:hidden"
+      className={cn(
+        "grid size-12 shrink-0 place-items-center rounded-full bg-white/80 text-muted ring-1 shadow-soft-sm ring-line transition-colors hover:bg-accent-soft hover:text-accent motion-reduce:hidden",
+        !site.heroPauseButton && "hidden",
+      )}
     >
       {paused ? (
         <Play className="size-4 translate-x-px" strokeWidth={1.75} aria-hidden="true" />

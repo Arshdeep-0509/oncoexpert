@@ -20,8 +20,8 @@ const services = site.nav
 
 /**
  * Any address with no page (Next serves this with a 404 status): "This page is under construction"
- * with the site's header and footer, a way home, a booking button and the cancer pages. The menu
- * still links pages that are not rebuilt yet (Urology, Stomach Cancer, Our Services, Blogs).
+ * with the site's header and footer, a way home, a booking button and the cancer pages. Live
+ * addresses that are not rebuilt yet (and have no redirect) land here.
  */
 export default function NotFound() {
   return (

@@ -17,7 +17,17 @@
 
 /** One file per theme in styles/themes/<name>.css. */
 export type ThemeName =
-  "home" | "breast" | "robotic" | "care" | "colorectal" | "endometrial" | "lung" | "ovarian" | "thyroid";
+  | "home"
+  | "breast"
+  | "robotic"
+  | "care"
+  | "colorectal"
+  | "endometrial"
+  | "lung"
+  | "ovarian"
+  | "thyroid"
+  | "urology"
+  | "stomach";
 
 /**
  * Header bar sizes and layout (components/layout/header/header-variants.ts), named after the hero
@@ -163,7 +173,8 @@ export type TechniqueSideContent<Img = PageImage> = {
 export type ChartRow = { label: string; value: number };
 
 /** Icons of SymptomGrid's cards (components/shared/SymptomGrid.tsx). */
-export type SymptomIcon = "bloating" | "pelvic" | "full" | "urination" | "lump" | "cough" | "voice" | "swallow";
+export type SymptomIcon =
+  "bloating" | "pelvic" | "full" | "urination" | "lump" | "cough" | "voice" | "swallow" | "pain" | "weight" | "nausea";
 
 /** One card of SymptomGrid. `body` is shown by the "disclose" mode; `image` puts a photo on top. */
 export type SymptomItem = {
@@ -190,7 +201,17 @@ export type PackageItem = {
   featured?: boolean;
   /** The featured card's ribbon. */
   ribbon?: string;
+  /** Optional small label above the name, e.g. "STANDARD CARE" (Urology). */
+  tier?: string;
+  /** Optional line under the price, e.g. "Traditional clinical approach" (Urology). */
+  tagline?: string;
+  /** Optional icon per inclusion (same order); without it every inclusion gets the check. */
+  inclusionIcons?: readonly PackageIcon[];
 };
+
+/** Inclusion icons of PackageCards (components/shared/package-cards/icons.ts). */
+export type PackageIcon =
+  "efficacy" | "team" | "recovery" | "scarring" | "visualization" | "precision" | "cosmetic" | "discharge";
 
 /** PackageCards' optional cycle estimator: "{n}", "{price}", "{total}" fill `sentence`. */
 export type PackageEstimator = {

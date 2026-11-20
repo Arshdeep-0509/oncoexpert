@@ -21,6 +21,8 @@ const builtPaths = new Set([
   "/lung-cancer-in-bangalore/",
   "/ovarian-cancer-hospital/",
   "/thyroid-cancer/",
+  "/urology/",
+  "/stomach-cancer/",
 ]);
 
 /** next/link's `prefetch` for `href`: the default (the page loads in the background once the link is on

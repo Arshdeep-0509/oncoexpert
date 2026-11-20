@@ -352,6 +352,8 @@ export const insideTheRobot = {
 
 export type OutcomeItem = {
   label: string;
+  /** The card's icon (components/pages/robotic-surgery/RoboticVsOpen.tsx). */
+  icon: "blood" | "stay" | "pain";
   /** Robotic value as a % of open surgery (open surgery = 100). */
   robotic: number;
   open: number;
@@ -367,12 +369,31 @@ export const outcomes = {
   heading: "Robotic vs open surgery",
   // SOURCE: NEW
   barLabels: { open: "Open surgery", robotic: "Robotic surgery" },
+  // SOURCE: NEW (the headline on each card: "75% less", computed from the doctor's figures, and the
+  // line under it; icon keys: the card's icon and the picture unit of its comparison)
+  less: "less",
+  thanOpen: "than open surgery",
+  // SOURCE: NEW (the badge between the two sides of each comparison)
+  vs: "vs",
   // SOURCE: DOCTOR (captions exactly as written)
   items: [
-    { label: "Blood loss", robotic: 25, open: 100, caption: "Blood loss – 25% compared to open surgery" },
-    { label: "Hospital stay", robotic: 60, open: 100, caption: "Hospital stay – 60% compared to open surgery" },
+    {
+      label: "Blood loss",
+      icon: "blood",
+      robotic: 25,
+      open: 100,
+      caption: "Blood loss – 25% compared to open surgery",
+    },
+    {
+      label: "Hospital stay",
+      icon: "stay",
+      robotic: 60,
+      open: 100,
+      caption: "Hospital stay – 60% compared to open surgery",
+    },
     {
       label: "Pain",
+      icon: "pain",
       robotic: 30,
       open: 100,
       caption: "Pain – 30% as compared to normal surgery",
@@ -514,7 +535,7 @@ export const cancers = {
     {
       title: "Stomach",
       body: "Advanced gastrectomy through small ports, facilitating quicker return to oral nutrition.",
-      href: null,
+      href: "/stomach-cancer/",
       countKey: "stomach",
       icon: "soup",
       image: "/images/robotic/cancer-stomach.jpg",

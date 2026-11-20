@@ -14,6 +14,8 @@ import { meta as endometrialMeta } from "@/content/pages/endometrial-cancer";
 import { meta as lungMeta } from "@/content/pages/lung-cancer";
 import { meta as ovarianMeta } from "@/content/pages/ovarian-cancer";
 import { meta as thyroidMeta } from "@/content/pages/thyroid-cancer";
+import { meta as urologyMeta } from "@/content/pages/urology";
+import { meta as stomachMeta } from "@/content/pages/stomach-cancer";
 
 export const pages = {
   home: {
@@ -109,6 +111,25 @@ export const pages = {
     theme: "thyroid",
     themeColor: "#F7F5FE",
     meta: thyroidMeta,
+  },
+  // The live URLs, kept for SEO.
+  urology: {
+    slug: "urology",
+    lastModified: "2026-11-19",
+    path: "/urology/",
+    title: urologyMeta.title,
+    theme: "urology",
+    themeColor: "#F1F8F4",
+    meta: urologyMeta,
+  },
+  "stomach-cancer": {
+    slug: "stomach-cancer",
+    lastModified: "2026-11-19",
+    path: "/stomach-cancer/",
+    title: stomachMeta.title,
+    theme: "stomach",
+    themeColor: "#FFF8EE",
+    meta: stomachMeta,
   },
 } as const satisfies Record<string, PageEntry>;
 

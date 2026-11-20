@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { site } from "@/content/site";
 import { styles } from "@/components/pages/home/hero-styles";
 
 /**
@@ -57,6 +58,7 @@ export function HeroMotionToggle({ pause, play }: { pause: string; play: string 
       className={cn(
         styles.pause,
         "grid size-11 shrink-0 place-items-center rounded-full text-white/80 ring-1 ring-white/20 transition-colors hover:bg-white/10 hover:text-white",
+        !site.heroPauseButton && "hidden",
       )}
     >
       {paused ? (

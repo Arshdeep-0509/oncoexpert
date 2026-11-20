@@ -3,6 +3,14 @@ export function formatRupees(amount: number): string {
   return `₹${Math.round(amount).toLocaleString("en-IN")}`;
 }
 
+/**
+ * Lakh shorthand with one decimal, as the live Urology page writes its prices, e.g. 160000 → "1.6L",
+ * 500000 → "5.0L". No currency sign: the caller adds its prefix.
+ */
+export function formatLakh(amount: number): string {
+  return `${(amount / 100000).toFixed(1)}L`;
+}
+
 /** Up to two initials for an avatar, e.g. "shwetha jayaraj" → "SJ". */
 export function initials(name: string): string {
   return name

@@ -1,0 +1,271 @@
+/* ==================================================================
+   Urology hero "FLOW". Plain CSS, prefix uro- (hero-styles.ts).
+   Load (after the intro): the eyebrow drops in, the H1's lines rise one by one, the lead, the
+   definition and the buttons follow. The visual (no photo): the glow pops in, the gauge ring and
+   ticks draw; the urinary tract draws itself in turn (kidneys 0.3s, adrenals, ureters, bladder,
+   prostate, urethra), the organs fill softly (opacity), then marigold pulses flow down the ureters
+   and out (stroke-dashoffset, 3.6s) and the kidneys breathe (scale 1 → 1.03, 7s); the dashboard
+   chips pop in, then float (8s) with their live dots breathing (2.4s).
+   Behind: streamlines whose bright pulses flow along them (stroke-dashoffset, 11–17s) and droplets
+   drifting across (transform and opacity, 16–24s).
+   The pause button (data-paused) and leaving the screen (data-offscreen) stop every loop.
+   Every entrance waits for the intro (--intro), scaled by --pace. Transform and opacity only, plus
+   the stroke draws and the dash flow; the default is the final state; motion lives in no-preference.
+   ================================================================== */
+
+.uro-hero {
+  --intro: var(--intro-delay, 0s);
+  --pace: 0.75;
+  --rise: 16px;
+}
+@media (min-width: 768px) {
+  .uro-hero {
+    --pace: 1;
+    --rise: 22px;
+  }
+}
+
+.uro-step {
+  animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The urinary tract ---------------------------------------------------- */
+
+.uro-ring,
+.uro-tick,
+.uro-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.uro-fill {
+  opacity: 0.9;
+}
+.uro-kidney {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+/* A marigold pulse travels each duct (pathLength 1: dash 0.14, gap 0.86); still: hidden. */
+.uro-pulse {
+  stroke-dasharray: 0.14 0.86;
+  stroke-dashoffset: 0.14;
+  opacity: 0;
+}
+
+/* Dashboard chips ----------------------------------------------------- */
+
+.uro-live {
+  position: relative;
+}
+.uro-live::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  background: var(--highlight);
+  opacity: 0;
+}
+
+/* Phones show only the first `phoneChips` chips. */
+@media (max-width: 767px) {
+  .uro-phoneHidden {
+    display: none;
+  }
+}
+
+/* The flow ------------------------------------------------------------ */
+
+.uro-flow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.uro-flowDash {
+  stroke-dasharray: 0.07 0.93;
+  stroke-dashoffset: 0;
+}
+.uro-drop {
+  opacity: var(--o, 0.7);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .uro-fadeDown {
+    animation-name: uro-fadeDown;
+    animation-duration: 0.7s;
+  }
+  .uro-fadeUp {
+    animation-name: uro-fadeUp;
+    animation-duration: 0.75s;
+  }
+  .uro-pop {
+    animation-name: uro-pop;
+    animation-duration: 0.6s;
+  }
+  .uro-fadeIn {
+    animation-name: uro-fadeIn;
+    animation-duration: 1.2s;
+  }
+
+  .uro-line {
+    animation: uro-draw calc(0.7s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace));
+  }
+  .uro-fill {
+    animation: uro-fill calc(0.9s * var(--pace)) ease-out both;
+    animation-delay: calc(var(--intro) + 1.9s * var(--pace));
+  }
+  .uro-pulse {
+    animation: uro-pulse 3.6s ease-in-out infinite backwards;
+    animation-delay: calc(var(--intro) + var(--s, 2.4s) * var(--pace));
+  }
+  /* The kidneys keep breathing once drawn (the stroke also draws first). */
+  .uro-line.uro-kidney {
+    animation:
+      uro-draw calc(0.7s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both,
+      uro-kidney 7s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + var(--d, 0s) * var(--pace)), calc(var(--intro) + 3s * var(--pace));
+  }
+  .uro-fill .uro-kidney {
+    animation: uro-kidney 7s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + 3s * var(--pace));
+  }
+  .uro-ring {
+    animation: uro-draw calc(1.4s * var(--pace)) cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--intro) + (0.5s + var(--r, 0s)) * var(--pace));
+  }
+  .uro-tick {
+    animation: uro-draw calc(0.9s * var(--pace)) ease-out both;
+    animation-delay: calc(var(--intro) + 1.2s * var(--pace));
+  }
+
+  .uro-chipFloat {
+    animation: uro-float 8s ease-in-out infinite;
+    animation-delay: calc(var(--intro) + (2.4s + var(--i, 0) * 0.7s) * var(--pace));
+  }
+  .uro-live::after {
+    animation: uro-breathe 2.4s ease-out infinite;
+    animation-delay: calc(var(--intro) + 2.6s + var(--i, 0) * 0.4s);
+  }
+
+  .uro-flowDash {
+    animation: uro-stream var(--t, 14s) linear infinite;
+    animation-delay: calc(var(--intro) + var(--s, 0s));
+  }
+  .uro-drop {
+    animation: uro-drift var(--t, 20s) ease-in-out infinite backwards;
+    animation-delay: calc(var(--intro) + var(--s, 0s));
+  }
+
+  .uro-hero:is([data-paused], [data-offscreen]) :is(.uro-chipFloat, .uro-flowDash, .uro-drop, .uro-pulse, .uro-kidney),
+  .uro-hero:is([data-paused], [data-offscreen]) .uro-live::after {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes uro-fadeDown {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+@keyframes uro-fadeUp {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise);
+  }
+}
+@keyframes uro-pop {
+  from {
+    opacity: 0;
+    scale: 0.88;
+  }
+}
+@keyframes uro-fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes uro-fill {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes uro-pulse {
+  0% {
+    stroke-dashoffset: 0.14;
+    opacity: 0;
+  }
+  10%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -0.86;
+    opacity: 0;
+  }
+}
+@keyframes uro-kidney {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.03;
+  }
+}
+@keyframes uro-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes uro-float {
+  0%,
+  100% {
+    translate: 0 -3px;
+  }
+  50% {
+    translate: 0 4px;
+  }
+}
+@keyframes uro-breathe {
+  0% {
+    opacity: 0.45;
+    scale: 0.6;
+  }
+  70%,
+  100% {
+    opacity: 0;
+    scale: 1.6;
+  }
+}
+/* A bright pulse travels the whole streamline (pathLength 1: dash 0.07, gap 0.93). */
+@keyframes uro-stream {
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+/* A droplet drifts left to right with a slow sway, fading in and out at the ends. */
+@keyframes uro-drift {
+  0% {
+    opacity: 0;
+    translate: -40px 0;
+  }
+  12% {
+    opacity: var(--o, 0.7);
+  }
+  50% {
+    translate: calc(var(--dx, 260px) * 0.5) var(--dy, -18px);
+  }
+  88% {
+    opacity: var(--o, 0.7);
+  }
+  100% {
+    opacity: 0;
+    translate: var(--dx, 260px) 0;
+  }
+}

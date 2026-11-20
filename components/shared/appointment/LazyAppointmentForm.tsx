@@ -3,7 +3,9 @@
 import * as React from "react";
 import { APPOINTMENT_ID, useAppointment } from "@/components/layout/AppointmentProvider";
 import { AppointmentFormPlaceholder } from "@/components/shared/appointment/AppointmentFormPlaceholder";
-import { type FormStyles } from "@/components/shared/appointment/form";
+import { CircleCheck } from "lucide-react";
+import { formCopy, type FormStyles } from "@/components/shared/appointment/form";
+import { SENT_ATTR, hasSent } from "@/components/shared/appointment/sent";
 
 // The interactive form (react-hook-form + zod + Radix Select) is ~100 KB of JS the
 // first screen doesn't need, so it loads as the visitor approaches #appointment.
@@ -18,6 +20,12 @@ export function LazyAppointmentForm({ page, styles }: { page: string; styles: Fo
   const [visible, setVisible] = React.useState(false);
   const { requestId } = useAppointment();
   const ready = visible || requestId > 0;
+
+  // Sent before on this device: keep the form hidden (the inline script already did this on a full
+  // load; this covers arriving by client-side navigation).
+  React.useEffect(() => {
+    if (hasSent()) document.documentElement.setAttribute(SENT_ATTR, "");
+  }, []);
 
   React.useEffect(() => {
     const el = ref.current;
@@ -38,13 +46,23 @@ export function LazyAppointmentForm({ page, styles }: { page: string; styles: Fo
 
   return (
     <div ref={ref}>
-      {ready ? (
-        <React.Suspense fallback={<AppointmentFormPlaceholder styles={styles} />}>
-          <AppointmentForm page={page} styles={styles} />
-        </React.Suspense>
-      ) : (
-        <AppointmentFormPlaceholder styles={styles} />
-      )}
+      {/* Shown instead of the form once this device has sent it (globals.css, data-appt-sent). */}
+      <p
+        role="status"
+        className="appt-sent flex items-start gap-3 rounded-xl border border-accent/20 bg-accent/[0.05] p-4 text-ink"
+      >
+        <CircleCheck className="mt-0.5 size-5 shrink-0 text-accent" strokeWidth={1.75} aria-hidden="true" />
+        {formCopy.sent}
+      </p>
+      <div className="appt-form">
+        {ready ? (
+          <React.Suspense fallback={<AppointmentFormPlaceholder styles={styles} />}>
+            <AppointmentForm page={page} styles={styles} />
+          </React.Suspense>
+        ) : (
+          <AppointmentFormPlaceholder styles={styles} />
+        )}
+      </div>
     </div>
   );
 }

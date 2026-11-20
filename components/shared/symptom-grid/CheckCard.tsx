@@ -66,9 +66,19 @@ export function CheckCard({ item, checked, onToggle }: CheckCardProps) {
           <Check className="sgx-tick size-4 text-white" strokeWidth={3} />
         </span>
       </span>
-      <span className={cn("mt-4 text-base leading-snug font-semibold md:text-lg", photo ? "text-white" : "text-ink")}>
+      <span
+        className={cn(
+          "mt-4 text-base leading-snug font-semibold md:text-lg",
+          photo ? "text-white" : "text-ink",
+          item.body && "mt-auto pt-4",
+        )}
+      >
         {item.title}
       </span>
+      {/* Optional line under the title (Stomach); without it the card is as before (Ovarian). */}
+      {item.body ? (
+        <span className={cn("mt-1.5 text-base leading-snug", photo ? "text-white/85" : "text-muted")}>{item.body}</span>
+      ) : null}
     </div>
   );
 }

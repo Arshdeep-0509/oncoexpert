@@ -173,7 +173,7 @@ export function cancerPageGraph({ meta, seo, breadcrumb, physicianDescription }:
       physicianNode(physicianDescription),
       clinicNode(),
       breadcrumbNode(url, breadcrumb),
-      ...(approvals.quickAnswers ? [faqPageNode(url, seo.quickAnswers)] : []),
+      ...(approvals.quickAnswers && seo.quickAnswers.length ? [faqPageNode(url, seo.quickAnswers)] : []),
       ...(approvals.packageOffers ? offerNodes(url, seo.offers) : []),
     ],
   };

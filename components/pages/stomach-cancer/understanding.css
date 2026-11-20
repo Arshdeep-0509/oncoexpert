@@ -1,0 +1,24 @@
+/* ==================================================================
+   Stomach #understanding: the stomach wall inset. Plain CSS, prefix gastro-u-.
+   ScrollVar writes --p (0 → 1 as the inset passes through the screen). --peel rises from 0 to 1
+   over the first half of that; each layer (--i, inner lining first) slides right and down by its
+   index, tilting slightly, so the wall fans out into its four layers. Transform only. The default
+   (and reduced motion) is the peeled state.
+   ================================================================== */
+
+.gastro-u-inset {
+  --peel: 1;
+}
+.gastro-u-layer {
+  translate: calc(var(--i) * 12px * var(--peel)) calc(var(--i) * 8px * var(--peel));
+  rotate: calc(var(--i) * -0.8deg * var(--peel));
+}
+.gastro-u-layer + .gastro-u-layer {
+  margin-top: -6px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gastro-u-inset {
+    --peel: clamp(0, (var(--p, 1) - 0.18) * 3, 1);
+  }
+}

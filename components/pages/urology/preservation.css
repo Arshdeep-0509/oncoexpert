@@ -1,0 +1,164 @@
+/* ==================================================================
+   Urology #preservation. Plain CSS, prefix uro-pv-.
+   "Spare vs Remove" (SpareRemove, data-mode on its wrapper):
+     spare  → the cut line draws (0.6s), then only the wedge with the tumour lifts away (0.55s);
+              the healthy kidney stays in the accent; the "kept" label fades in.
+     remove → the cut line hides; the whole kidney lifts away and fades to 25%; a dashed outline
+              stays where it was.
+   The switch's thumb slides (transform). The trimodal ring's three arcs fill in turn once in view
+   (InView), their legend rows following. The default is the final state; motion in no-preference.
+   ================================================================== */
+
+/* The switch ----------------------------------------------------------- */
+
+.uro-pv-thumb {
+  box-shadow: var(--accent-shadow);
+}
+.uro-pv-spare[data-mode="remove"] .uro-pv-thumb {
+  translate: calc(100% + 0px) 0;
+}
+
+/* The kidney ----------------------------------------------------------- */
+
+.uro-pv-kidney {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.uro-pv-wedgeFill {
+  fill: var(--surface);
+  stroke: var(--muted);
+  stroke-opacity: 0.6;
+  stroke-width: 2;
+}
+.uro-pv-wedgeEdge {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.6;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.uro-pv-tumour {
+  fill: var(--highlight);
+  fill-opacity: 0.85;
+  stroke: var(--ink);
+  stroke-opacity: 0.35;
+  stroke-width: 1.5;
+}
+.uro-pv-duct {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.45;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.uro-pv-ghost {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 5;
+}
+.uro-pv-cut {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.uro-pv-leader {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+.uro-pv-text {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.uro-pv-textAccent {
+  fill: var(--accent-hover);
+}
+
+/* Spare: the wedge lifted away, the kept label shown. */
+.uro-pv-spare[data-mode="spare"] .uro-pv-wedge {
+  translate: 18px -18px;
+}
+/* Remove: everything lifts away and fades, the outline stays; the spare-only marks hide. */
+.uro-pv-spare[data-mode="remove"] .uro-pv-whole {
+  translate: 0 -14px;
+  opacity: 0.25;
+}
+.uro-pv-spare[data-mode="remove"] .uro-pv-ghost {
+  stroke-opacity: 0.7;
+}
+.uro-pv-spare[data-mode="remove"] .uro-pv-cut,
+.uro-pv-spare[data-mode="remove"] :is(.uro-pv-labelKept, .uro-pv-labelCut) {
+  opacity: 0;
+}
+
+/* The trimodal ring ----------------------------------------------------- */
+
+.uro-pv-arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .uro-pv-thumb {
+    transition: translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .uro-pv-wedge {
+    transition: translate 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .uro-pv-spare[data-mode="spare"] .uro-pv-wedge {
+    transition-delay: 0.55s;
+  }
+  .uro-pv-whole {
+    transition:
+      translate 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.6s ease;
+  }
+  .uro-pv-ghost {
+    transition: stroke-opacity 0.5s ease;
+  }
+  .uro-pv-label,
+  .uro-pv-cut {
+    transition: opacity 0.35s ease;
+  }
+  .uro-pv-spare[data-mode="spare"] .uro-pv-cut {
+    animation: uro-pv-draw 0.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
+  .uro-pv-spare[data-mode="spare"] .uro-pv-labelKept {
+    transition-delay: 0.9s;
+  }
+
+  .uro-pv-arc {
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .uro-pv-legend {
+    opacity: 0;
+    translate: 8px 0;
+    transition:
+      opacity 0.5s ease,
+      translate 0.5s ease;
+    transition-delay: var(--d, 0s);
+  }
+  [data-inview] .uro-pv-arc {
+    stroke-dashoffset: 0;
+  }
+  [data-inview] .uro-pv-legend {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes uro-pv-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { site } from "@/content/site";
 import { MEDIA, useMedia } from "@/lib/hooks/use-media";
 import { styles } from "@/components/pages/breast-cancer/hero-styles";
 
@@ -99,7 +100,10 @@ export function HeroStage({ photo, labels, children, className }: HeroStageProps
           type="button"
           onClick={() => setUserPaused((p) => !p)}
           aria-label={userPaused ? labels.play : labels.pause}
-          className="absolute bottom-[6%] left-[5%] z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink ring-1 shadow-soft-sm ring-line transition-colors hover:bg-white md:right-[7%] md:bottom-[7%] md:left-auto"
+          className={cn(
+            "absolute bottom-[6%] left-[5%] z-10 grid size-11 place-items-center rounded-full bg-white/90 text-ink ring-1 shadow-soft-sm ring-line transition-colors hover:bg-white md:right-[7%] md:bottom-[7%] md:left-auto",
+            !site.heroPauseButton && "hidden",
+          )}
         >
           {userPaused ? (
             <Play className="size-4 translate-x-px" strokeWidth={1.75} aria-hidden="true" />

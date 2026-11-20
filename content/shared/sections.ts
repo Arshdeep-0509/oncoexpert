@@ -32,6 +32,8 @@ export const appointmentSection = {
     // SOURCE: NEW
     sending: "Sending…",
     success: "Thank you! Our team will call you shortly to confirm your appointment.",
+    // SOURCE: NEW (shown instead of the form once this device has sent it)
+    sent: "Thank you for filling the form. Your request has been sent to the doctor and will be answered shortly.",
     error: "Something went wrong. Please call +91 8002 8002 95.",
     // SOURCE: NEW (validation messages)
     errors: {

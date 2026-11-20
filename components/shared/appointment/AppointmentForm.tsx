@@ -15,6 +15,7 @@ import { useAppointment } from "@/components/layout/AppointmentProvider";
 import { Field } from "@/components/shared/appointment/Field";
 import { appointmentDraft as draft } from "@/components/shared/appointment/draft";
 import { formCopy as f, type FormStyles } from "@/components/shared/appointment/form";
+import { markSent } from "@/components/shared/appointment/sent";
 
 type Status = "idle" | "success" | "error";
 
@@ -111,6 +112,8 @@ export function AppointmentForm({ page, styles }: AppointmentFormProps) {
           setStatus("success");
           track({ event: "form_submit", status: "success", service: values.service, page });
           reset(empty);
+          // From now on this device sees the thank-you note instead of the form.
+          markSent();
         } else {
           setStatus("error");
           track({ event: "form_submit", status: "error", service: values.service, page });

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
+import { Activity, BedDouble, BedSingle, Droplet, Droplets, Zap, type LucideIcon } from "lucide-react";
 import { outcomes, type OutcomeItem } from "@/content/pages/robotic-surgery";
 import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -14,40 +15,88 @@ import { bleedFade } from "@/lib/image-fade";
 const glass = "rounded-[22px] border border-white/10 bg-white/[0.05] p-6 sm:p-7";
 const pct = (item: OutcomeItem) => Math.round((item.robotic / item.open) * 100);
 
-function Bar({
-  fill,
-  value,
+/** The card's title icon and the unit each pictogram is built from. */
+const icons: Record<OutcomeItem["icon"], { title: LucideIcon; unit: LucideIcon }> = {
+  blood: { title: Droplets, unit: Droplet },
+  stay: { title: BedDouble, unit: BedSingle },
+  pain: { title: Activity, unit: Zap },
+};
+
+/** The fewest units that show `value`% exactly (25% → 1 of 4, 60% → 3 of 5, 30% → 3 of 10). */
+function unitsFor(value: number) {
+  const total = [4, 5, 10, 20].find((n) => Number.isInteger((value * n) / 100)) ?? 10;
+  return { total, filled: Math.round((value * total) / 100) };
+}
+
+/**
+ * One side of the comparison: its name, a row of the card's unit icon (open surgery: every unit;
+ * robotic surgery: only its share lit, the units it saves left as faint outlines) and its figure.
+ */
+function Side({
+  item,
+  robotic,
   label,
+  value,
   delay,
-  gradient,
 }: {
-  fill: number;
-  value: number;
+  item: OutcomeItem;
+  robotic: boolean;
   label: string;
+  value: number;
   delay: number;
-  gradient: boolean;
 }) {
   const reduce = useReducedMotion();
+  const Unit = icons[item.icon].unit;
+  const { total, filled } = unitsFor(pct(item));
   return (
-    <div>
-      <div className="mb-1.5 flex items-baseline justify-between text-[13px] text-white/60">
-        <span>{label}</span>
-        <span className="tabular-nums">{value}%</span>
-      </div>
-      <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
-        <motion.div
-          className={
-            gradient
-              ? "h-full origin-left rounded-full bg-linear-to-r from-teal to-glow shadow-[0_0_14px_rgb(45_212_191/0.55)]"
-              : "h-full origin-left rounded-full bg-slate/80"
-          }
-          style={{ width: `${fill * 100}%` }}
-          initial={reduce ? false : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1.2, ease: EASE_OUT_EXPO, delay }}
-        />
-      </div>
+    <div
+      className={
+        robotic
+          ? "flex flex-col rounded-2xl bg-glow/[0.07] p-4 ring-1 ring-glow/30 sm:p-5"
+          : "flex flex-col rounded-2xl bg-white/[0.03] p-4 ring-1 ring-white/10 sm:p-5"
+      }
+    >
+      <p
+        className={`min-h-[2.6em] text-[13px] leading-tight font-semibold tracking-wide sm:min-h-0 ${robotic ? "text-glow" : "text-white/60"}`}
+      >
+        {label}
+      </p>
+      <ul
+        className="mt-3 grid gap-1.5 sm:gap-2"
+        style={{ gridTemplateColumns: `repeat(${Math.min(total, 5)}, minmax(0, 1fr))` }}
+      >
+        {Array.from({ length: total }, (_, i) => {
+          const lit = !robotic || i < filled;
+          return (
+            <motion.li
+              key={i}
+              className={
+                robotic
+                  ? lit
+                    ? "text-glow drop-shadow-[0_0_8px_rgb(45_212_191/0.6)]"
+                    : "text-white/15"
+                  : "text-white/45"
+              }
+              initial={reduce ? false : { opacity: 0, scale: 0.6 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.8 }}
+              transition={{ duration: 0.45, ease: EASE_OUT_EXPO, delay: delay + i * 0.06 }}
+            >
+              <Unit
+                className="aspect-square h-auto w-full max-w-8"
+                strokeWidth={1.75}
+                fill={lit ? "currentColor" : "none"}
+                fillOpacity={lit ? 0.25 : 0}
+              />
+            </motion.li>
+          );
+        })}
+      </ul>
+      <p
+        className={`mt-auto pt-4 font-display text-2xl font-bold tabular-nums ${robotic ? "text-white" : "text-white/70"}`}
+      >
+        {value}%
+      </p>
     </div>
   );
 }
@@ -55,17 +104,24 @@ function Bar({
 function BarCard({ item, index }: { item: OutcomeItem; index: number }) {
   const { barLabels } = outcomes;
   const delay = index * 0.15;
+  const Icon = icons[item.icon].title;
+  const saved = 100 - pct(item);
   return (
     <article className={`${glass} flex h-full flex-col`}>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-center gap-3">
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-glow/10 text-glow">
+          <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+        </span>
         <h3 className="type-h3 text-white">{item.label}</h3>
-        <p
-          aria-hidden="true"
-          className="font-display text-5xl leading-none font-bold tracking-[-0.03em] text-glow sm:text-6xl"
-        >
-          <Counter value={pct(item)} suffix="%" />
-        </p>
       </div>
+      {/* The headline: what robotic surgery saves, in plain words */}
+      <p aria-hidden="true" className="mt-6 flex flex-wrap items-baseline gap-x-2">
+        <span className="font-display text-5xl leading-none font-bold tracking-[-0.03em] text-glow sm:text-6xl">
+          <Counter value={saved} suffix="%" />
+        </span>
+        <span className="text-2xl font-semibold text-white">{outcomes.less}</span>
+        <span className="w-full pt-1 text-[15px] text-white/60">{outcomes.thanOpen}</span>
+      </p>
       {item.image ? (
         // Fills the card's spare height (it sits beside the taller scar card on tablet/desktop).
         // Screen blend drops the photo's black background on the dark glass card.
@@ -87,15 +143,13 @@ function BarCard({ item, index }: { item: OutcomeItem; index: number }) {
           </div>
         </div>
       ) : null}
-      <div aria-hidden="true" className="mt-auto grid gap-4 pt-8">
-        <Bar fill={1} value={item.open} label={barLabels.open} delay={delay} gradient={false} />
-        <Bar
-          fill={item.robotic / item.open}
-          value={item.robotic}
-          label={barLabels.robotic}
-          delay={delay + 0.15}
-          gradient
-        />
+      {/* Open surgery vs robotic surgery, in picture units */}
+      <div aria-hidden="true" className="relative mt-auto grid grid-cols-2 gap-3 pt-8 sm:gap-4">
+        <Side item={item} robotic={false} label={barLabels.open} value={item.open} delay={delay} />
+        <Side item={item} robotic label={barLabels.robotic} value={pct(item)} delay={delay + 0.3} />
+        <span className="absolute top-1/2 left-1/2 mt-4 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-ink text-[11px] font-bold tracking-wider text-white/80 uppercase ring-1 ring-white/15">
+          {outcomes.vs}
+        </span>
       </div>
       <p className="pt-6 text-[15px] leading-relaxed text-white/70">{item.caption}</p>
     </article>

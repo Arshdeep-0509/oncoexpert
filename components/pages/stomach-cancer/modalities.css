@@ -1,0 +1,63 @@
+/* ==================================================================
+   Stomach #modalities: the treatment journey. Plain CSS, prefix gastro-m-.
+   The line joining the phases runs down the left on phones and tablets (through the nodes' centres)
+   and across the top on desktop (from the first node to the third). Once the journey is in view
+   (InView sets data-inview) the line draws (scaleY / scaleX) and the phases rise in turn (--p),
+   the advanced lane last. Transform and opacity only, once. The default (and reduced motion) is the
+   final state.
+   ================================================================== */
+
+.gastro-m-line {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 23px;
+  width: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-bright), var(--highlight));
+  transform-origin: top;
+}
+@media (min-width: 1024px) {
+  .gastro-m-line {
+    top: 23px;
+    bottom: auto;
+    left: 24px;
+    right: calc((100% - 3rem) / 3 - 1.5rem);
+    width: auto;
+    height: 2px;
+    background: linear-gradient(to right, var(--accent), var(--accent-bright), var(--highlight));
+    transform-origin: left;
+  }
+}
+.gastro-m-node {
+  box-shadow:
+    0 0 0 6px var(--surface-warm),
+    var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gastro-m-line {
+    scale: 1 0;
+    transition: scale 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  @media (min-width: 1024px) {
+    .gastro-m-line {
+      scale: 0 1;
+    }
+  }
+  .gastro-m-phase {
+    opacity: 0;
+    translate: 0 18px;
+    transition:
+      opacity 0.6s ease,
+      translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(0.15s + var(--p, 0) * 0.25s);
+  }
+  [data-inview] .gastro-m-line {
+    scale: 1;
+  }
+  [data-inview] .gastro-m-phase {
+    opacity: 1;
+    translate: 0 0;
+  }
+}

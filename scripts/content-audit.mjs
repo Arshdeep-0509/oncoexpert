@@ -13,6 +13,8 @@ const PAGES = {
   Lung: ["content/pages/lung-cancer.ts", "content/pages/lung-cancer.seo.ts"],
   Ovarian: ["content/pages/ovarian-cancer.ts", "content/pages/ovarian-cancer.seo.ts"],
   Thyroid: ["content/pages/thyroid-cancer.ts", "content/pages/thyroid-cancer.seo.ts"],
+  Urology: ["content/pages/urology.ts", "content/pages/urology.seo.ts"],
+  "Stomach Cancer": ["content/pages/stomach-cancer.ts", "content/pages/stomach-cancer.seo.ts"],
   "Shared (every page)": [
     "content/shared/sections.ts",
     "content/shared/organization.ts",

@@ -93,7 +93,7 @@ export function AboutHero() {
             >
               {hero.ctas.secondary.label}
             </Button>
-            <MotionToggle pause={hero.a11y.pause} play={hero.a11y.play} onDark />
+            <MotionToggle hero pause={hero.a11y.pause} play={hero.a11y.play} onDark />
           </div>
         </div>
       </Container>

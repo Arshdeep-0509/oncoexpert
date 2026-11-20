@@ -2,8 +2,11 @@
  * One-off: cuts Dr. Sunil's head out of the studio backdrop, for the Home hero, where the
  * head breaks out of the top of the ring.
  *
- *   node scripts/make-portrait-cutout.mjs [in.png] [out.png]
+ *   node scripts/make-portrait-cutout.mjs [in.png] [out.png] [keep]
  *   default: public/images/brand/dr-sunil-navalgund.png → public/images/brand/dr-sunil-navalgund-head.png
+ *   keep: share of the photo height kept (default 0.4, the head and neck). The Urology hero uses
+ *   dr-sunil-navalgund-cutout.png, made with keep 0.86 (head to mid-torso; its bottom edge is faded
+ *   in CSS).
  *
  * The backdrop is a smooth blue-grey studio gradient: its colour is modelled per pixel from the
  * photo's own top rows (left → right) and its two side edges (top → bottom). Each pixel's alpha
@@ -21,7 +24,7 @@ const input = process.argv[2] ?? path.join(root, "public/images/brand/dr-sunil-n
 const output = process.argv[3] ?? path.join(root, "public/images/brand/dr-sunil-navalgund-head.png");
 
 /** Rows kept, as a share of the photo height (the head and neck end above it). */
-const KEEP = 0.4;
+const KEEP = Number(process.argv[4] ?? 0.4);
 /** Colour distance (0–441) below which a pixel is backdrop, and above which it is subject. */
 const NEAR = 22;
 const FAR = 52;
@@ -63,8 +66,27 @@ for (let y = 0; y < rows; y++) {
 
 // Fill each row solid between the outer edges of the run that contains the head's centre line.
 let centre = Math.round(W / 2);
+// Below the shoulders (a run wider than SHOULDERS × W), the light shirt on the centre line can be as
+// pale as the backdrop: there each row is filled between the silhouette's outer edges, found
+// scanning in from both sides (RUN solid pixels in a row), so the jacket is never cut off.
+const SHOULDERS = 0.45;
+const RUN = 4;
+let torso = false;
+const outerEdge = (row, from, step) => {
+  for (let x = from, run = 0; x >= 0 && x < W; x += step) {
+    run = row[x] >= 0.5 ? run + 1 : 0;
+    if (run >= RUN) return x - step * (RUN - 1);
+  }
+  return -1;
+};
 for (let y = 0; y < rows; y++) {
   const row = alpha.subarray(y * W, (y + 1) * W);
+  if (torso) {
+    const l = outerEdge(row, 0, 1);
+    const r = outerEdge(row, W - 1, -1);
+    if (l >= 0 && r > l) for (let x = l; x <= r; x++) row[x] = 1;
+    continue;
+  }
   if (row[centre] < 0.5) continue; // above the head
   let l = centre;
   let r = centre;
@@ -84,6 +106,7 @@ for (let y = 0; y < rows; y++) {
   for (let x = 0; x < W; x++) if (x < l - GAP || x > r + GAP) row[x] = 0;
   for (let x = l; x <= r; x++) row[x] = 1;
   centre = Math.round((l + r) / 2);
+  if (KEEP > 0.4 && r - l > SHOULDERS * W) torso = true; // the default head cutout stays as it was
 }
 
 // Soften the edge slightly, then build RGBA with the backdrop tint removed from edge pixels.
